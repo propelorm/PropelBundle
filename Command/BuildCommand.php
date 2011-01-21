@@ -38,8 +38,8 @@ class BuildCommand extends PhingCommand
             ->setDescription('Hub for Propel build commands (model, sql)')
 
             ->setDefinition(array(
-                new InputOption('--classes', '', InputOption::PARAMETER_NONE, 'Build only classes'),
-                new InputOption('--sql', '', InputOption::PARAMETER_NONE, 'Build only code'),
+                new InputOption('--classes', '', InputOption::VALUE_NONE, 'Build only classes'),
+                new InputOption('--sql', '', InputOption::VALUE_NONE, 'Build only code'),
             ))
             ->setName('propel:build')
         ;
