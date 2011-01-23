@@ -16,13 +16,6 @@ class PropelBundle extends Bundle
         }
     }
 
-    public function registerExtensions(ContainerBuilder $container)
-    {
-        $this->initReflection();
-
-        parent::registerExtensions($container);
-    }
-
     /**
      * {@inheritdoc}
      */
