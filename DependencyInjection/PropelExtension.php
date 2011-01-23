@@ -13,11 +13,13 @@ class PropelExtension extends Extension
     /**
      * Loads the Propel configuration.
      *
-     * @param array            $config    An array of configuration settings
+     * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function configLoad(array $config, ContainerBuilder $container)
+    public function configLoad(array $configs, ContainerBuilder $container)
     {
+        $config = $configs[0];
+
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
             $loader->load('propel.xml');
