@@ -21,7 +21,7 @@ class PropelExtension extends Extension
         $config = $configs[0];
 
         if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+          $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
             $loader->load('propel.xml');
         }
 
@@ -45,21 +45,25 @@ class PropelExtension extends Extension
     /**
      * Loads the DBAL configuration.
      *
-     * @param array            $config    An array of configuration settings
+     * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function dbalLoad(array $config, ContainerBuilder $container)
+    public function dbalLoad(array $configs, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
             $loader->load('propel.xml');
         }
 
+        $mergedConfig = array(
+            'default_connection'  => 'default',
+        );
+        
         $defaultConnection = array(
             'driver'              => 'mysql',
             'user'                => 'root',
-            'password'            => null,
-            'dsn'                 => null,
+            'password'            => '',
+            'dsn'                 => '',
 // FIXME: should be automatically changed based on %kernel.debug%
             'classname'           => 'DebugPDO', //'PropelPDO',
             'options'             => array(),
@@ -68,46 +72,52 @@ class PropelExtension extends Extension
             'settings'            => array('charset' => array('value' => 'UTF8')),
         );
 
-        $defaultConnectionName = isset($config['default_connection']) ? $config['default_connection'] : $container->getParameter('propel.dbal.default_connection');
-        $container->setParameter('propel.dbal.default_connection', $defaultConnectionName);
-
-        $connections = array();
-        if (isset($config['connections'])) {
-            foreach ($config['connections'] as $name => $connection) {
-                $connections[isset($connection['id']) ? $connection['id'] : $name] = $connection;
+        foreach ($configs as $config) {
+            if (isset($config['default-connection'])) {
+                $mergedConfig['default_connection'] = $config['default-connection'];
+            } else if (isset($config['default_connection'])) {
+                $mergedConfig['default_connection'] = $config['default_connection'];
             }
-        } else {
-            $connections = array($defaultConnectionName => $config);
         }
 
-        $arguments = $container->getDefinition('propel.configuration')->getArguments();
-        if (count($arguments)) {
-            $c = $arguments[0];
-        } else {
-            $c = array(
-// FIXME: should be the same value as %zend.logger.priority%
-                'log'         => array('level' => 7),
-                'datasources' => array(),
-            );
-        }
-
-        foreach ($connections as $name => $connection) {
-            if (isset($c['datasources'][$name])) {
-            } else {
-                $connection = array_replace($defaultConnection, $connection);
-
-                $c['datasources'][$name] = array(
-                  'connection' => array(),
-                );
-            }
-
-            if (isset($connection['driver'])) {
-                $c['datasources'][$name]['adapter'] = $connection['driver'];
-            }
-            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
-                if (isset($connection[$att])) {
-                    $c['datasources'][$name]['connection'][$att] = $connection[$att];
+        foreach ($configs as $config) {
+            if (isset($config['connections'])) {
+                $configConnections = $config['connection'];
+                if (isset($config['connections']['connection']) && isset($config['connections']['connection'][0])) {
+                    $configConnections = $config['connections']['connection'];
                 }
+            } else {
+                $configConnections[$mergedConfig['default_connection']] = $config;
+            }
+
+            foreach ($configConnections as $name => $connection) {
+                $connectionName = isset($connection['name']) ? $connection['name'] : $name;
+                if (!isset($mergedConfig['connections'][$connectionName])) {
+                    $mergedConfig['connections'][$connectionName] = $defaultConnection;
+                }
+
+                $mergedConfig['connections'][$connectionName]['name'] = $connectionName;
+
+
+                foreach ($connection as $k => $v) {
+                    if (isset($defaultConnection[$k])) {
+                        $mergedConfig['connections'][$connectionName][$k] = $v;
+                    }
+                }
+            }
+        }
+
+        $config = $mergedConfig;
+        $connectionName = $config['default_connection'];
+
+        $container->setParameter('propel.dbal.default_connection', $connectionName);
+
+        $c = array();
+        $c['datasources'][$connectionName]['adapter'] = $config['connections'][$connectionName]['driver'];
+        
+        foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
+            if (isset($config['connections'][$connectionName][$att])) {
+                $c['datasources'][$connectionName]['connection'][$att] = $config['connections'][$connectionName][$att];
             }
         }
 
