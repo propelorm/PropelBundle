@@ -14,6 +14,8 @@ class PropelBundle extends Bundle
         if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
             set_include_path($this->container->getParameter('propel.phing_path').'/classes'.PATH_SEPARATOR.get_include_path());
         }
+
+        $this->container->get('propel');
     }
 
     /**
