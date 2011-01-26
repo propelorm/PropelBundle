@@ -27,7 +27,7 @@ Sample Configuration
     propel.config:
       path:       %kernel.root_dir%/../src/vendor/propel
       phing_path: %kernel.root_dir%/../src/vendor/phing
-    #  charset:   "UTF8"  
+    #  charset:   "UTF8"
 
     propel.dbal:
       driver:               mysql
