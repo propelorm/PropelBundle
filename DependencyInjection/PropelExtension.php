@@ -58,14 +58,15 @@ class PropelExtension extends Extension
         $mergedConfig = array(
             'default_connection'  => 'default',
         );
-        
+
+        $className = $container->getParameter('kernel.debug') ? 'DebugPDO' : 'PropelPDO';
+
         $defaultConnection = array(
             'driver'              => 'mysql',
             'user'                => 'root',
             'password'            => '',
             'dsn'                 => '',
-// FIXME: should be automatically changed based on %kernel.debug%
-            'classname'           => 'DebugPDO', //'PropelPDO',
+            'classname'           => $className,
             'options'             => array(),
             'attributes'          => array(),
 // FIXME: Mysql wants UTF8, not UTF-8 (%kernel.charset%)
