@@ -40,6 +40,13 @@ class PropelExtension extends Extension
         if (isset($config['phing_path'])) {
             $container->setParameter('propel.phing_path', $config['phing_path']);
         }
+
+        if (isset($config['charset'])) {
+            $charset = $config['charset'];
+        } else {
+            $charset = 'UTF8';
+        }
+        $container->setParameter('propel.charset', $charset);
     }
 
     /**
@@ -69,8 +76,7 @@ class PropelExtension extends Extension
             'classname'           => $className,
             'options'             => array(),
             'attributes'          => array(),
-// FIXME: Mysql wants UTF8, not UTF-8 (%kernel.charset%)
-            'settings'            => array('charset' => array('value' => 'UTF8')),
+            'settings'            => array('charset' => array('value' => $container->getParameter('propel.charset'))),
         );
 
         foreach ($configs as $config) {
