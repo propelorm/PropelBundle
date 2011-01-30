@@ -66,7 +66,15 @@ class PropelExtension extends Extension
             'default_connection'  => 'default',
         );
 
-        $className = $container->getParameter('kernel.debug') ? 'DebugPDO' : 'PropelPDO';
+        if (!$container->hasParameter('propel.charset')) {
+            $container->setParameter('propel.charset', 'utf8'); 
+        }
+
+        if ($container->hasParameter('kernel.debug')) {
+            $className = $container->getParameter('kernel.debug') ? 'DebugPDO' : 'PropelPDO';
+        } else {
+            $className = 'PropelPDO';
+        }
 
         $defaultConnection = array(
             'driver'              => 'mysql',
