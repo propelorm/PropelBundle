@@ -12,7 +12,7 @@ class PropelBundle extends Bundle
         require_once $this->container->getParameter('propel.path').'/runtime/lib/Propel.php';
 
         if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
-            set_include_path($this->container->getParameter('propel.phing_path').PATH_SEPARATOR.get_include_path());
+            set_include_path($this->container->getParameter('propel.phing_path').'/classes'.PATH_SEPARATOR.get_include_path());
         }
 
         $this->container->get('propel');
