@@ -23,16 +23,16 @@ class PropelExtensionTest extends TestCase
         $loader = new PropelExtension();
 
         try {
-            $loader->configLoad(array(), $container);
+            $loader->configLoad(array(array()), $container);
             $this->fail();
         } catch (\Exception $e) {
             $this->assertInstanceOf('InvalidArgumentException', $e, '->configLoad() throws an \InvalidArgumentException if the Propel path is not set.');
         }
 
-        $loader->configLoad(array('path' => '/propel'), $container);
+        $loader->configLoad(array(array('path' => '/propel')), $container);
         $this->assertEquals('/propel', $container->getParameter('propel.path'), '->configLoad() sets the Propel path');
 
-        $loader->configLoad(array(), $container);
+        $loader->configLoad(array(array()), $container);
         $this->assertEquals('/propel', $container->getParameter('propel.path'), '->configLoad() sets the Propel path');
     }
 
@@ -41,26 +41,25 @@ class PropelExtensionTest extends TestCase
         $container = new ContainerBuilder();
         $loader = new PropelExtension();
 
-        $loader->dbalLoad(array(), $container);
+        $loader->dbalLoad(array(array()), $container);
         $this->assertEquals('Propel', $container->getParameter('propel.class'), '->dbalLoad() loads the propel.xml file if not already loaded');
 
         // propel.dbal.default_connection
         $this->assertEquals('default', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
-        $loader->dbalLoad(array('default_connection' => 'foo'), $container);
-        $this->assertEquals('foo', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
-        $loader->dbalLoad(array(), $container);
+        $loader->dbalLoad(array(array('default_connection' => 'foo')), $container);
         $this->assertEquals('foo', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
 
         $container = new ContainerBuilder();
         $loader = new PropelExtension();
-        $loader->dbalLoad(array('password' => 'foo'), $container);
+
+        $loader->dbalLoad(array(array('password' => 'foo')), $container);
 
         $arguments = $container->getDefinition('propel.configuration')->getArguments();
         $config = $arguments[0];
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
 
-        $loader->dbalLoad(array('user' => 'foo'), $container);
+        $loader->dbalLoad(array(array('user' => 'foo')), $container);
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
     }

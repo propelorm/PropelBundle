@@ -15,7 +15,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!file_exists($file = __DIR__.'/../../../../../vendor/propel/runtime/lib/Propel.php')) {
+        if (!file_exists($file = __DIR__.'/../../../../../../../vendor/propel/runtime/lib/Propel.php')) {
             $this->markTestSkipped('Propel is not available.');
         }
 
