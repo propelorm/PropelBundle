@@ -15,8 +15,10 @@ Installation
  * Checkout Propel and Phing in the src/vendor/ directory
 
     > cd sandbox/src/vendor
+
     > svn checkout http://svn.propelorm.org/branches/1.5 propel
-    > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing phing
+
+    > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
     
 Sample Configuration
 --------------------
