@@ -1,25 +1,25 @@
 Propel Bundle
 =============
 
-This is a (work in progress) implementation of Propel in Symfony 2.
+This is a (work in progress) implementation of Propel in Symfony2.
 
 Currently supports:
 
  * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/*schema.xml`.
- * Runtime autoloading of Propel and generated classes
+ * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
 
 Installation
 ------------
 
- * Checkout Propel and Phing in the src/vendor/ directory
+ * Checkout Propel and Phing in the `src/vendor/` directory
 
     > cd sandbox/src/vendor
 
-    > svn checkout http://svn.propelorm.org/branches/1.5 propel
+    > svn checkout http://svn.propelorm.org/branches/1.6 propel
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
-    
+
 Sample Configuration
 --------------------
 
@@ -29,7 +29,7 @@ Sample Configuration
     propel.config:
       path:       %kernel.root_dir%/../src/vendor/propel
       phing_path: %kernel.root_dir%/../src/vendor/phing
-    #  charset:   "UTF8"  
+    #  charset:   "UTF8"
 
     propel.dbal:
       driver:               mysql
@@ -75,7 +75,7 @@ Place the following schema in src/Application/HelloBundle/Resources/config/schem
 
 Call the application console with the `propel:build` task:
 
-    > ./hello/console propel:build --classes
+    > php hello/console propel:build [--classes] [--sql]
 
 ### Use The Model Classes 
 
@@ -89,7 +89,7 @@ Use the Model classes as any other class in Symfony. Just use the correct namesp
         $author->setFirstName($name);
         $author->save();
 
-        return $this->render('HelloBundle:Hello:index', array('name' => $name, 'author' => $author));
+        return $this->render('HelloBundle:Hello:index.html.twig', array('name' => $name, 'author' => $author));
       }
     }
 
