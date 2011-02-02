@@ -3,11 +3,8 @@
 namespace Symfony\Bundle\PropelBundle\Command;
 
 use Symfony\Bundle\PropelBundle\Command\PhingCommand;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 
 /*
  * This file is part of the Symfony framework.
@@ -33,9 +30,9 @@ class BuildModelCommand extends PhingCommand
         $this
             ->setDescription('Build the Propel Object Model classes based on XML schemas')
             ->setHelp(<<<EOT
-The <info>propel:build-model</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles:
+The <info>propel:build-model</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles.
 
-  <info>./symfony propel:build-model</info>
+  <info>php app/console propel:build-model</info>
 EOT
             )
             ->setName('propel:build-model')
