@@ -1,0 +1,71 @@
+<?php
+
+namespace Symfony\Bundle\PropelBundle\Command;
+
+use Symfony\Bundle\PropelBundle\Command\PhingCommand;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\Output;
+
+/*
+ * This file is part of the Symfony framework.
+ *
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+/**
+ * MigrateCommand.
+ *
+ * @author William DURAND <william.durand1@gmail.com>  
+ */
+class MigrateCommand extends PhingCommand
+{
+    /**
+     * @see Command
+     */
+    protected function configure()
+    {
+        $this
+            ->setDescription('Executes the next migrations up')
+            ->setDefinition(array(
+                new InputOption('--up', '', InputOption::VALUE_NONE, 'Executes the next migration up'),
+                new InputOption('--down', '', InputOption::VALUE_NONE, 'Executes the next migration down'),
+            ))
+            ->setHelp(<<<EOT
+The <info>propel:migrate</info> command checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and executes them.
+
+    <info>php app/console propel:migrate [--up] [--down]</info>
+
+    <info>php app/console propel:migrate</info> : is the default command, it <comment>executes all</comment> migrations files.
+
+    <info>php app/console propel:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed 
+                                          (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
+
+    <info>php app/console propel:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed 
+                                            (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
+EOT
+            )
+            ->setName('propel:migrate')
+        ;
+    }
+
+    /**
+     * @see Command
+     *
+     * @throws \InvalidArgumentException When the target directory does not exist
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->hasParameterOption('--down')) {
+            $this->callPhing('migration-down');
+        } else if($input->hasParameterOption('--up')) {
+            $this->callPhing('migration-up');
+        } else {
+            $this->callPhing('migrate');
+        }
+    }
+}
