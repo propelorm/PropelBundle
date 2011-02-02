@@ -97,6 +97,23 @@ Use the Model classes as any other class in Symfony. Just use the correct namesp
       }
     }
 
+### Migrations
+
+Generates SQL diff between the XML schemas and the current database structure:
+
+    > php hello/console propel:migration:generate-diff
+
+Executes the migrations:
+
+    > php hello/console propel:migration:migrate
+
+    > php hello/console propel:migration:migrate --up
+
+    > php hello/console propel:migration:migrate --down
+
+Lists the migrations yet to be executed:
+
+    > php hello/console propel:migration:status
 
 Known Problems
 --------------
