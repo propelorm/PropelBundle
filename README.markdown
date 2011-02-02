@@ -51,24 +51,24 @@ Sample Configuration
 
     # in ./app/config/config.yml
     propel.config:
-      path:       %kernel.root_dir%/../src/vendor/propel
-      phing_path: %kernel.root_dir%/../src/vendor/phing
-    #  charset:   "UTF8"
+        path:       %kernel.root_dir%/../src/vendor/propel
+        phing_path: %kernel.root_dir%/../src/vendor/phing
+    #    charset:   "UTF8"
 
     propel.dbal:
-      driver:               mysql
-      user:                 root
-      password:             null
-      dsn:                  mysql:host=localhost;dbname=test
-      options:              {}
-    #  default_connection:       default
-    #  connections:
-    #    default:
-    #      driver:               mysql
-    #      user:                 root
-    #      password:             null
-    #      dsn:                  mysql:host=localhost;dbname=test
-    #      options:              {}
+        driver:               mysql
+        user:                 root
+        password:             null
+        dsn:                  mysql:host=localhost;dbname=test
+        options:              {}
+    #    default_connection:       default
+    #    connections:
+    #      default:
+    #        driver:               mysql
+    #        user:                 root
+    #        password:             null
+    #        dsn:                  mysql:host=localhost;dbname=test
+    #        options:              {}
 
 
 ### Sample Schema
@@ -78,21 +78,21 @@ Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xm
     <?xml version="1.0" encoding="UTF-8"?>
     <database name="default" namespace="Sensio\HelloBundle\Model" defaultIdMethod="native">
 
-      <table name="book">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="title" type="varchar" primaryString="1" size="100" />
-        <column name="ISBN" type="varchar" size="20" />
-        <column name="author_id" type="integer" />
-        <foreign-key foreignTable="author">
-          <reference local="author_id" foreign="id" />
-        </foreign-key>
-      </table>
+        <table name="book">
+            <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+            <column name="title" type="varchar" primaryString="1" size="100" />
+            <column name="ISBN" type="varchar" size="20" />
+            <column name="author_id" type="integer" />
+            <foreign-key foreignTable="author">
+                <reference local="author_id" foreign="id" />
+            </foreign-key>
+        </table>
 
-      <table name="author">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="first_name" type="varchar" size="100" />
-        <column name="last_name" type="varchar" size="100" />
-      </table>
+        <table name="author">
+            <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+            <column name="first_name" type="varchar" size="100" />
+            <column name="last_name" type="varchar" size="100" />
+        </table>
 
     </database>
 
