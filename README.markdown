@@ -8,6 +8,10 @@ Currently supports:
  * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/*schema.xml`.
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
+ 
+Experimental: 
+
+  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
 
 Installation
 ------------
