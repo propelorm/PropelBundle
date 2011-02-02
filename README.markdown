@@ -27,7 +27,7 @@ Installation
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
 
-  * Register it your `AppKernel` class:
+  * Register this bundle in the `AppKernel` class:
  
          public function registerBundles()
          {
@@ -49,12 +49,13 @@ Sample Configuration
 
 ### Project configuration
 
-    # in ./app/config/config.yml
+    # in app/config/config.yml
     propel.config:
-        path:       %kernel.root_dir%/../src/vendor/propel
-        phing_path: %kernel.root_dir%/../src/vendor/phing
+        path:       "%kernel.root_dir%/../vendor/propel"
+        phing_path: "%kernel.root_dir%/../vendor/phing"
     #    charset:   "UTF8"
 
+    # in app/config/config*.yml
     propel.dbal:
         driver:               mysql
         user:                 root
@@ -104,14 +105,14 @@ Commands
 
 Call the application console with the `propel:build` command:
 
-    > php hello/console propel:build [--classes] [--sql]
+    > php app/console propel:build [--classes] [--sql]
 
 
 ### Insert SQL
 
 Call the application console with the `propel:insert-sql` command:
 
-    > php hello/console propel:insert-sql [--force]
+    > php app/console propel:insert-sql [--force]
 
 Note that the `--force` option is needed to actually execute the SQL statements.
 
@@ -137,23 +138,23 @@ Use the Model classes as any other class in Symfony2. Just use the correct names
 
 Generates SQL diff between the XML schemas and the current database structure:
 
-    > php hello/console propel:migration:generate-diff
+    > php app/console propel:migration:generate-diff
 
 Executes the migrations:
 
-    > php hello/console propel:migration:migrate
+    > php app/console propel:migration:migrate
 
 Executes the next migration up:
 
-    > php hello/console propel:migration:migrate --up
+    > php app/console propel:migration:migrate --up
 
 Executes the previous migration down:
 
-    > php hello/console propel:migration:migrate --down
+    > php app/console propel:migration:migrate --down
 
 Lists the migrations yet to be executed:
 
-    > php hello/console propel:migration:status
+    > php app/console propel:migration:status
 
 
 Known Problems
