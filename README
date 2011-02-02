@@ -27,6 +27,22 @@ Installation
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
 
+  * Register it your `AppKernel` class:
+ 
+         public function registerBundles()
+         {
+             $bundles = array(
+                 ...
+
+                 // PropelBundle
+                 new Symfony\Bundle\PropelBundle\PropelBundle(),
+                 // register your bundles
+                 new Sensio\HelloBundle\HelloBundle(),
+             );
+
+             ...
+         }
+
 
 Sample Configuration
 --------------------
@@ -106,14 +122,14 @@ Use the Model classes as any other class in Symfony2. Just use the correct names
 
     class HelloController extends Controller
     {
-      public function indexAction($name)
-      {
-        $author = new \Sensio\HelloBundle\Model\Author();
-        $author->setFirstName($name);
-        $author->save();
+        public function indexAction($name)
+        {
+            $author = new \Sensio\HelloBundle\Model\Author();
+            $author->setFirstName($name);
+            $author->save();
 
-        return $this->render('HelloBundle:Hello:index.html.twig', array('name' => $name, 'author' => $author));
-      }
+            return $this->render('HelloBundle:Hello:index.html.twig', array('name' => $name, 'author' => $author));
+        }
     }
 
 
