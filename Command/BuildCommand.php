@@ -65,5 +65,4 @@ class BuildCommand extends PhingCommand
             $sqlCommand->execute($input, $output);
         }
     }
-
 }

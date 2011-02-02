@@ -61,9 +61,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->hasParameterOption('--down')) {
+        if ($input->getOption('down')) {
             $this->callPhing('migration-down');
-        } else if($input->hasParameterOption('--up')) {
+        } else if($input->getOption('up')) {
             $this->callPhing('migration-up');
         } else {
             $this->callPhing('migrate');
