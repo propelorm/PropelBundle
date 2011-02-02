@@ -75,9 +75,10 @@ abstract class PhingCommand extends Command
         }
 
         $filesystem->touch($tmpDir.'/build.properties');
+        // Required by the Phing task
+        $this->createBuildTimeFile($tmpDir.'/buildtime-conf.xml');
 
         $args = array();
-//        $bufferPhingOutput = !$this->commandApplication->withTrace();
 
         $properties = array_merge(array(
             'propel.database'   => 'mysql',
@@ -94,17 +95,6 @@ abstract class PhingCommand extends Command
         $args[] = '-f';
         $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
-/*
-        // Logger
-        if (DIRECTORY_SEPARATOR != '\\' && (function_exists('posix_isatty') && @posix_isatty(STDOUT))) {
-            $args[] = '-logger';
-            $args[] = 'phing.listener.AnsiColorLogger';
-        }
-
-        // Add our listener to detect errors
-        $args[] = '-listener';
-        $args[] = 'sfPhingListener';
-*/
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
             if (in_array($arg, array('verbose', 'debug'))) {
@@ -121,8 +111,6 @@ abstract class PhingCommand extends Command
         Phing::startup();
         Phing::setProperty('phing.home', getenv('PHING_HOME'));
 
-//      $this->logSection('propel', 'Running "'.$taskName.'" phing task');
-
         $bufferPhingOutput = false;
         if ($bufferPhingOutput) {
             ob_start();
@@ -137,50 +125,70 @@ abstract class PhingCommand extends Command
         }
         print $bufferPhingOutput;
         chdir($kernel->getRootDir());
-/*
-        // any errors?
-        $ret = true;
-        if (sfPhingListener::hasErrors())
-        {
-            $messages = array('Some problems occurred when executing the task:');
-
-            foreach (sfPhingListener::getExceptions() as $exception)
-            {
-              $messages[] = '';
-              $messages[] = preg_replace('/^.*build\-propel\.xml/', 'build-propel.xml', $exception->getMessage());
-              $messages[] = '';
-            }
-
-            if (count(sfPhingListener::getErrors()))
-            {
-              $messages[] = 'If the exception message is not clear enough, read the output of the task for';
-              $messages[] = 'more information';
-            }
-
-            $this->logBlock($messages, 'ERROR_LARGE');
-
-            $ret = false;
-        }
-*/
 
         $ret = true;
         return $ret;
     }
 
-    protected function getPhingPropertiesForConnection($databaseManager, $connection)
+    /**
+     * Write an XML file which represents propel.configuration
+     *
+     * @param string $file  Should be 'buildtime-conf.xml'.
+     */
+    protected function createBuildTimeFile($file)
     {
-        $database = $databaseManager->getDatabase($connection);
+        $container = $this->application->getKernel()->getContainer();
 
-        return array(
-            'propel.database'          => $database->getParameter('phptype'),
-            'propel.database.driver'   => $database->getParameter('phptype'),
-            'propel.database.url'      => $database->getParameter('dsn'),
-            'propel.database.user'     => $database->getParameter('username'),
-            'propel.database.password' => $database->getParameter('password'),
-            'propel.database.encoding' => $database->getParameter('encoding'),
-        );
+        if (!$container->has('propel.configuration')) {
+            throw new \InvalidArgumentException('Could not find Propel configuration.');   
+        }
+
+        $xml = strtr(<<<EOT
+<?xml version="1.0"?>
+<config>
+  <propel>
+    <datasources default="%default_connection%">
+
+EOT
+        , array('%default_connection%' => $container->getParameter('propel.dbal.default_connection')));
+
+        $configuration = $container->get('propel.configuration');
+        foreach ($configuration->getParameter('datasources') as $name => $datasource) {
+            $xml .= strtr(<<<EOT
+      <datasource id="%name%">
+        <adapter>%adapter%</adapter>
+        <connection>
+          <dsn>%dsn%</dsn>
+          <user>%username%</user>
+          <password>%password%</password>
+        </connection>
+      </datasource>
+
+EOT
+            , array(
+                '%name%'     => $name,
+                '%adapter%'  => $datasource['adapter'],
+                '%dsn%'      => $datasource['connection']['dsn'],
+                '%username%' => $datasource['connection']['user'],
+                '%password%' => $datasource['connection']['password'],
+            ));
+        }
+
+        $xml .= <<<EOT
+    </datasources>
+  </propel>
+</config>
+EOT;
+
+        file_put_contents($file, $xml);
     }
 
+    /**
+     * Returns an array of properties as key/value pairs from an input file.
+     * 
+     * @param string $file  A file properties.
+     * @return array        An array of properties as key/value pairs.
+     */
     protected function getProperties($file)
     {
         $properties = array();
