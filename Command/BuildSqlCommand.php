@@ -34,9 +34,9 @@ class BuildSqlCommand extends PhingCommand
         $this
             ->setDescription('Build the SQL generation code for all tables based on Propel XML schemas')
             ->setHelp(<<<EOT
-The <info>propel:build-sql</info> command builds the SQL table generation code based on the XML schemas defined in all Bundles:
+The <info>propel:build-sql</info> command builds the SQL table generation code based on the XML schemas defined in all Bundles.
 
-  <info>./symfony propel:build-sql</info>
+  <info>php app/console propel:build-sql</info>
 EOT
             )
             ->setName('propel:build-sql')
