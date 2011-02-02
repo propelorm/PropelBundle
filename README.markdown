@@ -6,30 +6,34 @@ This is a (work in progress) implementation of Propel in Symfony2.
 Currently supports:
 
  * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/*schema.xml`.
+ * Insertion of SQL statements.
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
- 
-Experimental: 
+ * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
 
-  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
 
 Installation
 ------------
 
- * Checkout Propel and Phing in the `src/vendor/` directory
+ * Clone this bundle in the `vendor/symfony/src/Symfony/Bundle` directory:
 
-    > cd sandbox/src/vendor
+    > git submodule add git@github.com:willdurand/PropelBundle.git vendor/symfony/src/Symfony/Bundle/PropelBundle
+
+ * Checkout Propel and Phing in the `vendor` directory:
+
+    > cd vendor
 
     > svn checkout http://svn.propelorm.org/branches/1.6 propel
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
+
 
 Sample Configuration
 --------------------
 
 ### Project configuration
 
-    # in sandbox/hello/config/config.yml
+    # in ./app/config/config.yml
     propel.config:
       path:       %kernel.root_dir%/../src/vendor/propel
       phing_path: %kernel.root_dir%/../src/vendor/phing
@@ -50,12 +54,13 @@ Sample Configuration
     #      dsn:                  mysql:host=localhost;dbname=test
     #      options:              {}
 
+
 ### Sample Schema
 
-Place the following schema in src/Application/HelloBundle/Resources/config/schema.xml:
+Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xml` :
 
     <?xml version="1.0" encoding="UTF-8"?>
-    <database name="default" namespace="Application\HelloBundle\Model" defaultIdMethod="native">
+    <database name="default" namespace="Sensio\HelloBundle\Model" defaultIdMethod="native">
 
       <table name="book">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
@@ -75,27 +80,42 @@ Place the following schema in src/Application/HelloBundle/Resources/config/schem
 
     </database>
 
+
+Commands
+--------
+
 ### Build Process
 
-Call the application console with the `propel:build` task:
+Call the application console with the `propel:build` command:
 
     > php hello/console propel:build [--classes] [--sql]
 
+
+### Insert SQL
+
+Call the application console with the `propel:insert-sql` command:
+
+    > php hello/console propel:insert-sql [--force]
+
+Note that the `--force` option is needed to actually execute the SQL statements.
+
+
 ### Use The Model Classes 
 
-Use the Model classes as any other class in Symfony. Just use the correct namespace, and Symfony will autoload them:
+Use the Model classes as any other class in Symfony2. Just use the correct namespace, and Symfony2 will autoload them:
 
     class HelloController extends Controller
     {
       public function indexAction($name)
       {
-        $author = new \Application\HelloBundle\Model\Author();
+        $author = new \Sensio\HelloBundle\Model\Author();
         $author->setFirstName($name);
         $author->save();
 
         return $this->render('HelloBundle:Hello:index.html.twig', array('name' => $name, 'author' => $author));
       }
     }
+
 
 ### Migrations
 
@@ -107,13 +127,18 @@ Executes the migrations:
 
     > php hello/console propel:migration:migrate
 
+Executes the next migration up:
+
     > php hello/console propel:migration:migrate --up
+
+Executes the previous migration down:
 
     > php hello/console propel:migration:migrate --down
 
 Lists the migrations yet to be executed:
 
     > php hello/console propel:migration:status
+
 
 Known Problems
 --------------
