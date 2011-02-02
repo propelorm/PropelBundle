@@ -18,11 +18,11 @@ use Symfony\Component\Console\Output\Output;
  */
 
 /**
- * MigrateCommand.
+ * MigrationMigrateCommand.
  *
  * @author William DURAND <william.durand1@gmail.com>  
  */
-class MigrateCommand extends PhingCommand
+class MigrationMigrateCommand extends PhingCommand
 {
     /**
      * @see Command
@@ -36,20 +36,21 @@ class MigrateCommand extends PhingCommand
                 new InputOption('--down', '', InputOption::VALUE_NONE, 'Executes the next migration down'),
             ))
             ->setHelp(<<<EOT
-The <info>propel:migrate</info> command checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and executes them.
+The <info>propel:migration:migrate</info> command checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and executes them.
 
-    <info>php app/console propel:migrate [--up] [--down]</info>
+    <info>php app/console propel:migration:migrate [--up] [--down]</info>
 
-    <info>php app/console propel:migrate</info> : is the default command, it <comment>executes all</comment> migrations files.
+    <info>php app/console propel:migration:migrate</info> : is the default command, it <comment>executes all</comment> migrations files.
 
-    <info>php app/console propel:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed 
-                                          (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
+    <info>php app/console propel:migration:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed 
+                                                    (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
 
-    <info>php app/console propel:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed 
-                                            (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
+    <info>php app/console propel:migration:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed 
+                                                      (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
+
 EOT
             )
-            ->setName('propel:migrate')
+            ->setName('propel:migration:migrate')
         ;
     }
 

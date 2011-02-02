@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 
 /**
- * GenerateDiffCommand.
+ * MigrationGenerateDiffCommand.
  *
  * @author William DURAND <william.durand1@gmail.com>  
  */
-class GenerateDiffCommand extends PhingCommand
+class MigrationGenerateDiffCommand extends PhingCommand
 {
     /**
      * @see Command
@@ -30,12 +30,12 @@ class GenerateDiffCommand extends PhingCommand
         $this
             ->setDescription('Generates SQL diff between the XML schemas and the current database structure')
             ->setHelp(<<<EOT
-The <info>propel:generate-diff</info> command compares the current database structure and the available schemas. If there is a difference, it creates a migration file.
+The <info>propel:migration:generate-diff</info> command compares the current database structure and the available schemas. If there is a difference, it creates a migration file.
 
-  <info>php app/console propel:generate-diff</info>
+  <info>php app/console propel:migration:generate-diff</info>
 EOT
             )
-            ->setName('propel:generate-diff')
+            ->setName('propel:migration:generate-diff')
         ;
     }
 
