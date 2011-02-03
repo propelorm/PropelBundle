@@ -17,7 +17,7 @@ Installation
 
  * Clone this bundle in the `vendor/symfony/src/Symfony/Bundle` directory:
 
-    > git submodule add git@github.com:willdurand/PropelBundle.git vendor/symfony/src/Symfony/Bundle/PropelBundle
+    > git submodule add https://github.com/willdurand/PropelBundle.git vendor/symfony/src/Symfony/Bundle/PropelBundle
 
  * Checkout Propel and Phing in the `vendor` directory:
 
@@ -27,21 +27,29 @@ Installation
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
 
-  * Register this bundle in the `AppKernel` class:
+ * You can also clone the unofficial Git repositories:
+
+    > cd vendor
+
+    > git submodule add https://github.com/KaroDidi/phing vendor/phing
+
+    > git submodule add https://github.com/KaroDidi/propel1.6 vendor/propel
+
+ * Register this bundle in the `AppKernel` class:
  
-         public function registerBundles()
-         {
-             $bundles = array(
-                 ...
+        public function registerBundles()
+        {
+            $bundles = array(
+                ...
 
-                 // PropelBundle
-                 new Symfony\Bundle\PropelBundle\PropelBundle(),
-                 // register your bundles
-                 new Sensio\HelloBundle\HelloBundle(),
-             );
+                // PropelBundle
+                new Symfony\Bundle\PropelBundle\PropelBundle(),
+                // register your bundles
+                new Sensio\HelloBundle\HelloBundle(),
+            );
 
-             ...
-         }
+            ...
+        }
 
 
 Sample Configuration
