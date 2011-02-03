@@ -27,7 +27,7 @@ Installation
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
 
- * You can also clone the unofficial Git repositories:
+ * Instead of using svn, you can clone the unofficial Git repositories:
 
     > cd vendor
 
