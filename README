@@ -15,9 +15,9 @@ Currently supports:
 Installation
 ------------
 
- * Clone this bundle in the `vendor/symfony/src/Symfony/Bundle` directory:
+ * Clone this bundle in the `src/Propel` directory:
 
-    > git submodule add https://github.com/willdurand/PropelBundle.git vendor/symfony/src/Symfony/Bundle/PropelBundle
+    > git submodule add https://github.com/willdurand/PropelBundle.git src/Propel/PropelBundle
 
  * Checkout Propel and Phing in the `vendor` directory:
 
@@ -50,6 +50,14 @@ Installation
 
             ...
         }
+
+  * Don't forget to add the register the PropelBundle namespace in `app/autoload.php`:
+
+        $loader->registerNamespaces(array(
+            ...
+
+            'Propel' => __DIR__.'/../src',
+        ));
 
 
 Sample Configuration
