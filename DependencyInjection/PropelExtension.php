@@ -116,7 +116,7 @@ class PropelExtension extends Extension
 
                 foreach ($connection as $k => $v) {
                     if (isset($defaultConnection[$k])) {
-                        $mergedConfig['connections'][$connectionName][$k] = $v;
+                        $mergedConfig['connections'][$connectionName][$k] = null !== $v ? $v : '';
                     }
                 }
             }
