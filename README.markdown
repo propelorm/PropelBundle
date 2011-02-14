@@ -51,7 +51,7 @@ Installation
             ...
         }
 
-  * Don't forget to add the register the PropelBundle namespace in `app/autoload.php`:
+  * Don't forget to register the PropelBundle namespace in `app/autoload.php`:
 
         $loader->registerNamespaces(array(
             ...
