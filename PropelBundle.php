@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle;
+namespace Propel\PropelBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

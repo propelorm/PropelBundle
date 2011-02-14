@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
-use Symfony\Bundle\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

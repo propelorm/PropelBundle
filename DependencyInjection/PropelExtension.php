@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle\DependencyInjection;
+namespace Propel\PropelBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

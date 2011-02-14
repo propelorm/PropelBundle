@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
-use Symfony\Bundle\PropelBundle\Command\PhingCommand;
-use Symfony\Bundle\PropelBundle\Command\BuildModelCommand;
-use Symfony\Bundle\PropelBundle\Command\BuildSqlCommand;
+use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\BuildModelCommand;
+use Propel\PropelBundle\Command\BuildSqlCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;

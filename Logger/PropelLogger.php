@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle\Logger;
+namespace Propel\PropelBundle\Logger;
 
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 

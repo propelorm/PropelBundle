@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
 require_once 'phing/Phing.php';
 

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Bundle\PropelBundle\Tests\DependencyInjection;
+namespace Propel\PropelBundle\Tests\DependencyInjection;
 
-use Symfony\Bundle\PropelBundle\Tests\TestCase;
-use Symfony\Bundle\PropelBundle\DependencyInjection\PropelExtension;
+use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\DependencyInjection\PropelExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PropelExtensionTest extends TestCase

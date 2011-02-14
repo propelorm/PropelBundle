@@ -43,7 +43,7 @@ Installation
                 ...
 
                 // PropelBundle
-                new Symfony\Bundle\PropelBundle\PropelBundle(),
+                new Propel\PropelBundle\PropelBundle(),
                 // register your bundles
                 new Sensio\HelloBundle\HelloBundle(),
             );
