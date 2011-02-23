@@ -19,6 +19,13 @@ class PropelExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $dbal = array();
+        foreach ($configs as $config) {
+            if (isset($config['dbal'])) {
+                $dbal[] = $config['dbal'];
+            }
+        }
+
         $config = $configs[0];
 
         if (!$container->hasDefinition('propel')) {
@@ -48,6 +55,10 @@ class PropelExtension extends Extension
             $charset = 'UTF8';
         }
         $container->setParameter('propel.charset', $charset);
+
+        if (!empty($dbal)) {
+            $this->dbalLoad($dbal, $container);
+        }
     }
 
     /**
@@ -56,7 +67,7 @@ class PropelExtension extends Extension
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function dbalLoad(array $configs, ContainerBuilder $container)
+    protected function dbalLoad(array $configs, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
