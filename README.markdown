@@ -66,26 +66,27 @@ Sample Configuration
 ### Project configuration
 
     # in app/config/config.yml
-    propel.config:
+    propel:
         path:       "%kernel.root_dir%/../vendor/propel"
         phing_path: "%kernel.root_dir%/../vendor/phing"
     #    charset:   "UTF8"
 
     # in app/config/config*.yml
-    propel.dbal:
-        driver:               mysql
-        user:                 root
-        password:             null
-        dsn:                  mysql:host=localhost;dbname=test
-        options:              {}
-    #    default_connection:       default
-    #    connections:
-    #      default:
-    #        driver:               mysql
-    #        user:                 root
-    #        password:             null
-    #        dsn:                  mysql:host=localhost;dbname=test
-    #        options:              {}
+    propel:
+        dbal:
+            driver:               mysql
+            user:                 root
+            password:             null
+            dsn:                  mysql:host=localhost;dbname=test
+            options:              {}
+    #        default_connection:       default
+    #        connections:
+    #           default:
+    #               driver:               mysql
+    #               user:                 root
+    #               password:             null
+    #               dsn:                  mysql:host=localhost;dbname=test
+    #               options:              {}
 
 
 ### Sample Schema
