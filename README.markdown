@@ -31,9 +31,9 @@ Installation
 
     > cd vendor
 
-    > git submodule add https://github.com/KaroDidi/phing vendor/phing
+    > git submodule add https://github.com/Xosofox/phing vendor/phing
 
-    > git submodule add https://github.com/KaroDidi/propel1.6 vendor/propel
+    > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
 
  * Register this bundle in the `AppKernel` class:
  
