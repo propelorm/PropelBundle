@@ -10,6 +10,7 @@ Currently supports:
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
+ * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
 
 
 Installation
@@ -21,15 +22,11 @@ Installation
 
  * Checkout Propel and Phing in the `vendor` directory:
 
-    > cd vendor
+    > svn checkout http://svn.propelorm.org/branches/1.6 vendor/propel
 
-    > svn checkout http://svn.propelorm.org/branches/1.6 propel
-
-    > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 phing
+    > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 vendor/phing
 
  * Instead of using svn, you can clone the unofficial Git repositories:
-
-    > cd vendor
 
     > git submodule add https://github.com/Xosofox/phing vendor/phing
 
@@ -172,6 +169,17 @@ Executes the previous migration down:
 Lists the migrations yet to be executed:
 
     > php app/console propel:migration:status
+
+
+### Working with existing databases
+
+Run the following command to generate an XML schema from your `default` database:
+
+    > php app/console propel:reverse
+
+You can define which connection to use:
+
+    > php app/console propel:reverse --connection=default
 
 
 Known Problems
