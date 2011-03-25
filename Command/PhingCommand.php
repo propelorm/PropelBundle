@@ -24,6 +24,7 @@ use Symfony\Component\Finder\Finder;
  * Wrapper command for Phing tasks
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author William DURAND <william.durand1@gmail.com> 
  */
 abstract class PhingCommand extends Command
 {
@@ -32,7 +33,7 @@ abstract class PhingCommand extends Command
 
     protected function callPhing($taskName, $properties = array())
     {
-        $kernel = $this->application->getKernel();
+        $kernel = $this->getApplication()->getKernel();
 
         $tmpDir = sys_get_temp_dir().'/propel-gen';
         $filesystem = new Filesystem();
@@ -137,7 +138,7 @@ abstract class PhingCommand extends Command
      */
     protected function createBuildTimeFile($file)
     {
-        $container = $this->application->getKernel()->getContainer();
+        $container = $this->getApplication()->getKernel()->getContainer();
 
         if (!$container->has('propel.configuration')) {
             throw new \InvalidArgumentException('Could not find Propel configuration.');   
@@ -152,8 +153,8 @@ abstract class PhingCommand extends Command
 EOT
         , array('%default_connection%' => $container->getParameter('propel.dbal.default_connection')));
 
-        $configuration = $container->get('propel.configuration');
-        foreach ($configuration->getParameter('datasources') as $name => $datasource) {
+        $propelConfiguration = $container->get('propel.configuration');
+        foreach ($propelConfiguration['datasources'] as $name => $datasource) {
             $xml .= strtr(<<<EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>
