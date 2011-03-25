@@ -181,6 +181,10 @@ You can define which connection to use:
 
     > php app/console propel:reverse --connection=default
 
+You can dump data from your database in XML to `app/propel/dump/xml/`:
+
+    > php app/console propel:data-dump [--connection[="..."]]
+
 
 Known Problems
 --------------
