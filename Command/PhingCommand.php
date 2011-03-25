@@ -30,15 +30,16 @@ abstract class PhingCommand extends Command
 {
     protected $additionalPhingArgs = array();
     protected $tempSchemas = array();
+    protected $tmpDir = null;
 
     protected function callPhing($taskName, $properties = array())
     {
         $kernel = $this->getApplication()->getKernel();
 
-        $tmpDir = sys_get_temp_dir().'/propel-gen';
+        $this->tmpDir = sys_get_temp_dir().'/propel-gen';
         $filesystem = new Filesystem();
-        $filesystem->remove($tmpDir);
-        $filesystem->mkdirs($tmpDir);
+        $filesystem->remove($this->tmpDir);
+        $filesystem->mkdirs($this->tmpDir);
         foreach ($kernel->getBundles() as $bundle) {
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder = new Finder();
@@ -50,7 +51,7 @@ abstract class PhingCommand extends Command
                 foreach ($schemas as $schema) {
                     $tempSchema = md5($schema).'_'.$schema->getBaseName();
                     $this->tempSchemas[$tempSchema] = array('bundle' => $bundle->getName(), 'basename' => $schema->getBaseName(), 'path' =>$schema->getPathname());
-                    $file = $tmpDir.DIRECTORY_SEPARATOR.$tempSchema;
+                    $file = $this->tmpDir.DIRECTORY_SEPARATOR.$tempSchema;
                     $filesystem->copy((string) $schema, $file);
                     
                     // the package needs to be set absolute
@@ -75,15 +76,15 @@ abstract class PhingCommand extends Command
             }
         }
 
-        $filesystem->touch($tmpDir.'/build.properties');
+        $filesystem->touch($this->tmpDir.'/build.properties');
         // Required by the Phing task
-        $this->createBuildTimeFile($tmpDir.'/buildtime-conf.xml');
+        $this->createBuildTimeFile($this->tmpDir.'/buildtime-conf.xml');
 
         $args = array();
 
         $properties = array_merge(array(
             'propel.database'   => 'mysql',
-            'project.dir'       => $tmpDir,
+            'project.dir'       => $this->tmpDir,
             'propel.output.dir' => $kernel->getRootDir().'/propel',
             'propel.php.dir'    => '/',
             'propel.packageObjectModel' => true,
@@ -214,5 +215,9 @@ EOT;
         }
 
         return $properties;
+    }
+
+    protected function getTmpDir() {
+        return $this->tmpDir;
     }
 }
