@@ -109,7 +109,7 @@ class PropelExtension extends Extension
 
         foreach ($configs as $config) {
             if (isset($config['connections'])) {
-                $configConnections = $config['connection'];
+                $configConnections = $config['connections'];
                 if (isset($config['connections']['connection']) && isset($config['connections']['connection'][0])) {
                     $configConnections = $config['connections']['connection'];
                 }
