@@ -17,23 +17,23 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PropelExtensionTest extends TestCase
 {
-    public function testConfigLoad()
+    public function testLoad()
     {
         $container = new ContainerBuilder();
         $loader = new PropelExtension();
 
         try {
-            $loader->configLoad(array(array()), $container);
+            $loader->load(array(array()), $container);
             $this->fail();
         } catch (\Exception $e) {
-            $this->assertInstanceOf('InvalidArgumentException', $e, '->configLoad() throws an \InvalidArgumentException if the Propel path is not set.');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an \InvalidArgumentException if the Propel path is not set.');
         }
 
-        $loader->configLoad(array(array('path' => '/propel')), $container);
-        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->configLoad() sets the Propel path');
+        $loader->load(array(array('path' => '/propel')), $container);
+        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->load() sets the Propel path');
 
-        $loader->configLoad(array(array()), $container);
-        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->configLoad() sets the Propel path');
+        $loader->load(array(array()), $container);
+        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->load() sets the Propel path');
     }
 
     public function testDbalLoad()
@@ -41,26 +41,115 @@ class PropelExtensionTest extends TestCase
         $container = new ContainerBuilder();
         $loader = new PropelExtension();
 
-        $loader->dbalLoad(array(array()), $container);
-        $this->assertEquals('Propel', $container->getParameter('propel.class'), '->dbalLoad() loads the propel.xml file if not already loaded');
+        $loader->load(array(array('path' => '/propel')), $container);
 
         // propel.dbal.default_connection
         $this->assertEquals('default', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
-        $loader->dbalLoad(array(array('default_connection' => 'foo')), $container);
+        $loader->load(array(array('dbal' => array('default_connection' => 'foo'))), $container);
         $this->assertEquals('foo', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
 
         $container = new ContainerBuilder();
         $loader = new PropelExtension();
 
-        $loader->dbalLoad(array(array('password' => 'foo')), $container);
+        $loader->load(array(array('path' => '/propel'), array('dbal' => array('password' => 'foo'))), $container);
 
         $arguments = $container->getDefinition('propel.configuration')->getArguments();
         $config = $arguments[0];
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
 
-        $loader->dbalLoad(array(array('user' => 'foo')), $container);
+        $loader->load(array(array('path' => '/propel'), array('dbal' => array('user' => 'foo'))), $container);
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
+
+    }
+
+    public function testDbalLoadCascade() {
+        $container = new ContainerBuilder();
+        $loader = new PropelExtension();
+
+        $config_base = array('path' => '/propel');
+
+        $config_prod = array('dbal' => array(
+            'user'      => 'toto',
+            'password'  => 'titi',
+            'dsn'       => 'foobar',
+            'driver'    => 'my_driver',
+            'options'   => array('o1', 'o2')
+        ));
+
+        $config_dev = array('dbal' => array(
+            'user'      => 'toto_dev',
+            'password'  => 'titi_dev',
+            'dsn'       => 'foobar',
+        ));
+
+        $configs = array($config_base, $config_prod, $config_dev);
+
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+        $this->assertEquals('toto_dev',  $config['datasources']['default']['connection']['user']);
+        $this->assertEquals('titi_dev',  $config['datasources']['default']['connection']['password']);
+        $this->assertEquals('foobar',    $config['datasources']['default']['connection']['dsn']);
+        $this->assertEquals('my_driver', $config['datasources']['default']['adapter']);
+        $this->assertEquals('o1',        $config['datasources']['default']['connection']['options'][0]);
+        $this->assertEquals('o2',        $config['datasources']['default']['connection']['options'][1]);
+    }
+
+    public function testDbalLoadMultipleConnections() {
+        $container = new ContainerBuilder();
+        $loader = new PropelExtension();
+
+        $config_base = array('path' => '/propel');
+
+        $config_mysql = array(
+            'user'      => 'mysql_usr',
+            'password'  => 'mysql_pwd',
+            'dsn'       => 'mysql_dsn',
+            'driver'    => 'mysql',
+        );
+
+         $config_sqlite = array(
+            'user'      => 'sqlite_usr',
+            'password'  => 'sqlite_pwd',
+            'dsn'       => 'sqlite_dsn',
+            'driver'    => 'sqlite',
+        );
+
+        $config_connections = array(
+            'default_connection' => 'sqlite',
+            'connections' => array('mysql' => $config_mysql, 'sqlite' => $config_sqlite,
+        ));
+
+        $configs = array($config_base, array('dbal' => $config_connections));
+
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+        $this->assertEquals('sqlite', $container->getParameter('propel.dbal.default_connection'));
+        $this->assertEquals('sqlite_usr',  $config['datasources']['sqlite']['connection']['user']);
+        $this->assertEquals('sqlite_pwd',  $config['datasources']['sqlite']['connection']['password']);
+        $this->assertEquals('sqlite_dsn',  $config['datasources']['sqlite']['connection']['dsn']);
+        $this->assertEquals('sqlite',      $config['datasources']['sqlite']['adapter']);
+
+        $config_connections = array(
+            'default_connection' => 'mysql',
+            'connections' => array('mysql' => $config_mysql, 'sqlite' => $config_sqlite,
+        ));
+
+        $configs = array($config_base, array('dbal' => $config_connections));
+
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+        $this->assertEquals('mysql', $container->getParameter('propel.dbal.default_connection'));
+        $this->assertEquals('mysql_usr',  $config['datasources']['mysql']['connection']['user']);
+        $this->assertEquals('mysql_pwd',  $config['datasources']['mysql']['connection']['password']);
+        $this->assertEquals('mysql_dsn',  $config['datasources']['mysql']['connection']['dsn']);
+        $this->assertEquals('mysql',      $config['datasources']['mysql']['adapter']);
     }
 }
