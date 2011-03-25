@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
  * BuildCommand.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class BuildSqlCommand extends PhingCommand
 {
@@ -52,7 +53,7 @@ EOT
     {
         $this->callPhing('sql', array('propel.packageObjectModel' => false));
         $filesystem = new Filesystem();
-        $basePath = $this->application->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+        $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
         $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
         foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
             $sqlFile = str_replace('.xml', '.sql', $schemaFile);

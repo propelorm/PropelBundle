@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\Output;
  * BuildCommand.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class BuildCommand extends PhingCommand
 {
@@ -54,14 +55,14 @@ class BuildCommand extends PhingCommand
         if (!$input->getOption('sql')) {
             $output->writeln('<info>Building model classes</info>');
             $modelCommand = new BuildModelCommand();
-            $modelCommand->setApplication($this->application);
+            $modelCommand->setApplication($this->getApplication());
             $modelCommand->execute($input, $output);
         }
 
         if (!$input->getOption('classes')) {
             $output->writeln('<info>Building model sql</info>');
             $sqlCommand = new BuildSQLCommand();
-            $sqlCommand->setApplication($this->application);
+            $sqlCommand->setApplication($this->getApplication());
             $sqlCommand->execute($input, $output);
         }
     }

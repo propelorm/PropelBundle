@@ -24,7 +24,7 @@ use Symfony\Component\Finder\Finder;
  * Wrapper command for Phing tasks
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
- * @author William DURAND <william.durand1@gmail.com> 
+ * @author William DURAND <william.durand1@gmail.com>
  */
 abstract class PhingCommand extends Command
 {
