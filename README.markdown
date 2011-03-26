@@ -119,7 +119,7 @@ Commands
 
 Call the application console with the `propel:build` command:
 
-    > php app/console propel:build [--classes] [--sql]
+    > php app/console propel:build [--classes] [--sql] [--insert-sql]
 
 
 ### Insert SQL
@@ -184,6 +184,21 @@ You can define which connection to use:
 You can dump data from your database in XML to `app/propel/dump/xml/`:
 
     > php app/console propel:data-dump [--connection[="..."]]
+
+Once you ran `propel:data-dump` you can generate SQL statements from dumped data:
+
+    > php app/console propel:data-sql [--connection[="..."]]
+
+SQL will be write in `app/propel/sql/`.
+
+
+### Graphviz
+
+You can generate **Graphviz** file for your project by using the following command line:
+
+    > php app/console propel:graphviz
+
+It will write files in `app/propel/graph/`.
 
 
 Known Problems
