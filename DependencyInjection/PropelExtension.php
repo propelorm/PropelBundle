@@ -125,7 +125,6 @@ class PropelExtension extends Extension
 
                 $mergedConfig['connections'][$connectionName]['name'] = $connectionName;
 
-
                 foreach ($connection as $k => $v) {
                     if (isset($defaultConnection[$k])) {
                         $mergedConfig['connections'][$connectionName][$k] = null !== $v ? $v : '';
@@ -140,11 +139,14 @@ class PropelExtension extends Extension
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
         $c = array();
-        $c['datasources'][$connectionName]['adapter'] = $config['connections'][$connectionName]['driver'];
-        
-        foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
-            if (isset($config['connections'][$connectionName][$att])) {
-                $c['datasources'][$connectionName]['connection'][$att] = $config['connections'][$connectionName][$att];
+
+        foreach ($config['connections'] as $name => $conf) {
+            $c['datasources'][$name]['adapter'] = $config['connections'][$name]['driver'];
+
+            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
+                if (isset($config['connections'][$name][$att])) {
+                    $c['datasources'][$name]['connection'][$att] = $config['connections'][$name][$att];
+                }
             }
         }
 
