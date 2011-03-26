@@ -36,8 +36,7 @@ The <info>propel:insert-sql</info> command connects to the database and executes
 
   <info>php app/console propel:insert-sql</info>
 
-  The <info>--force</info> parameter has to be used to actually insert SQL.
-
+The <info>--force</info> parameter has to be used to actually insert SQL.
 EOT
             )
             ->setName('propel:insert-sql')

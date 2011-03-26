@@ -40,7 +40,7 @@ class BuildCommand extends PhingCommand
             ->setDefinition(array(
                 new InputOption('--classes', '', InputOption::VALUE_NONE, 'Build only classes'),
                 new InputOption('--sql', '', InputOption::VALUE_NONE, 'Build only code'),
-                new InputOption('--insert-sql', '', InputOption::VALUE_NONE, 'Insert SQL'),
+                new InputOption('--insert-sql', '', InputOption::VALUE_NONE, 'Build all and insert SQL'),
             ))
             ->setName('propel:build');
     }

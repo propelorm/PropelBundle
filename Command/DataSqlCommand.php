@@ -76,5 +76,4 @@ EOT
         ));
 
         $output->writeln(sprintf('SQL from XML data dump file is in "<info>%s</info>".', $dest));
-    }
-}
+    }}

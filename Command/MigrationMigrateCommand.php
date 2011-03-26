@@ -47,7 +47,6 @@ The <info>propel:migration:migrate</info> command checks the version of the data
 
     <info>php app/console propel:migration:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed 
                                                       (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
-
 EOT
             )
             ->setName('propel:migration:migrate')

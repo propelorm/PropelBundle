@@ -40,8 +40,8 @@ The <info>propel:data-dump</info> dumps data from database into xml file.
           
   <info>php app/console propel:data-dump</info>
 
-  The <info>--connection</info> parameter allows you to change the connection to use.
-  The default connection is the active connection (propel.dbal.default_connection).
+The <info>--connection</info> parameter allows you to change the connection to use.
+The default connection is the active connection (propel.dbal.default_connection).
 EOT
             )
             ->setName('propel:data-dump')

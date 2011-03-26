@@ -38,8 +38,8 @@ The <info>propel:reverse</info> command generates an XML schema from reverse-eng
           
   <info>php app/console propel:reverse</info>
 
-  The <info>--connection</info> parameter allows you to change the connection to use.
-  The default connection is the active connection (propel.dbal.default_connection).
+The <info>--connection</info> parameter allows you to change the connection to use.
+The default connection is the active connection (propel.dbal.default_connection).
 EOT
             )
             ->setName('propel:reverse')
