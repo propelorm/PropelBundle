@@ -40,6 +40,7 @@ abstract class PhingCommand extends Command
         $filesystem = new Filesystem();
         $filesystem->remove($this->tmpDir);
         $filesystem->mkdirs($this->tmpDir);
+
         foreach ($kernel->getBundles() as $bundle) {
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder = new Finder();
@@ -50,7 +51,11 @@ abstract class PhingCommand extends Command
 
                 foreach ($schemas as $schema) {
                     $tempSchema = md5($schema).'_'.$schema->getBaseName();
-                    $this->tempSchemas[$tempSchema] = array('bundle' => $bundle->getName(), 'basename' => $schema->getBaseName(), 'path' =>$schema->getPathname());
+                    $this->tempSchemas[$tempSchema] = array(
+                        'bundle' => $bundle->getName(),
+                        'basename' => $schema->getBaseName(),
+                        'path' =>$schema->getPathname()
+                    );
                     $file = $this->tmpDir.DIRECTORY_SEPARATOR.$tempSchema;
                     $filesystem->copy((string) $schema, $file);
                     
@@ -217,6 +222,11 @@ EOT;
         return $properties;
     }
 
+    /**
+     * Returns the current tmpfile.
+     *
+     * @return string   The current tmpfile
+     */
     protected function getTmpDir() {
         return $this->tmpDir;
     }
