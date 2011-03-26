@@ -52,9 +52,11 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->callPhing('sql', array('propel.packageObjectModel' => false));
+
         $filesystem = new Filesystem();
         $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
         $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
+
         foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
             $sqlFile = str_replace('.xml', '.sql', $schemaFile);
             $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
@@ -64,7 +66,7 @@ EOT
             $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
             $output->writeln(sprintf('Wrote SQL file for bundle "<info>%s</info>" in "<info>%s</info>"', $schemaDetails['bundle'], $targetSqlFilePath));
         }
+
         file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
     }
-
 }
