@@ -25,6 +25,8 @@ use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
  */
 class DataDumpCommand extends PhingCommand
 {
+    protected static $destPath = '/propel/dump';
+
     /**
      * @see Command
      */
@@ -78,12 +80,13 @@ EOT
         $datas = $finder->name('*_data.xml')->in($this->getTmpDir());
 
         foreach($datas as $data) {
-            $filesystem->copy((string) $data, $this->getApplication()->getKernel()->getRootDir() . '/propel/dump/xml/' . $data->getFilename());  
+            $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
+
+            $filesystem->copy((string) $data, $dest);
+            $output->writeln(sprintf('Wrote dumped data in "<info>%s</info>".', $dest));
         }
 
-        if (count($datas) > 0) {
-            $output->writeln('New dumped files present at <info>app/propel/dump/xml/</info>.');
-        } else {
+        if (count($datas) <= 0) {
             $output->writeln('No new dumped files.');
         }
     }
