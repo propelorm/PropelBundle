@@ -36,10 +36,15 @@ abstract class PhingCommand extends Command
     {
         $kernel = $this->getApplication()->getKernel();
 
-        $this->tmpDir = sys_get_temp_dir().'/propel-gen';
         $filesystem = new Filesystem();
-        $filesystem->remove($this->tmpDir);
-        $filesystem->mkdirs($this->tmpDir);
+
+        if (isset($properties['propel.schema.dir'])) {
+            $this->tmpDir = $properties['propel.schema.dir']; 
+        } else {
+            $this->tmpDir = sys_get_temp_dir().'/propel-gen';
+            $filesystem->remove($this->tmpDir);
+            $filesystem->mkdirs($this->tmpDir);
+        }
 
         foreach ($kernel->getBundles() as $bundle) {
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
@@ -102,6 +107,8 @@ abstract class PhingCommand extends Command
         $args[] = '-f';
         $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
+        $bufferPhingOutput = false;
+
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
             if (in_array($arg, array('verbose', 'debug'))) {
@@ -118,7 +125,6 @@ abstract class PhingCommand extends Command
         Phing::startup();
         Phing::setProperty('phing.home', getenv('PHING_HOME'));
 
-        $bufferPhingOutput = false;
         if ($bufferPhingOutput) {
             ob_start();
         }
@@ -130,7 +136,7 @@ abstract class PhingCommand extends Command
         if ($bufferPhingOutput) {
             ob_end_clean();
         }
-        print $bufferPhingOutput;
+
         chdir($kernel->getRootDir());
 
         $ret = true;

@@ -19,32 +19,30 @@ use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
  */
 
 /**
- * DataDumpCommand.
+ * DataSqlCommand.
  *
  * @author William DURAND <william.durand1@gmail.com>  
  */
-class DataDumpCommand extends PhingCommand
+class DataSqlCommand extends PhingCommand
 {
-    protected static $destPath = '/propel/dump';
-
     /**
      * @see Command
      */
     protected function configure()
     {
         $this
-            ->setDescription('Dump data from database into xml file')
+            ->setDescription('Generates sql from data xml')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:data-dump</info> dumps data from database into xml file.
+The <info>propel:data-sql</info> generates sql from data xml.
           
-  <info>php app/console propel:data-dump</info>
+  <info>php app/console propel:data-sql</info>
 
-  The <info>--connection</info> parameter allows you to change the connection to use.
-  The default connection is the active connection (propel.dbal.default_connection).
+The <info>--connection</info> parameter allows you to change the connection to use.
+The default connection is the active connection (propel.dbal.default_connection).
 EOT
             )
-            ->setName('propel:data-dump')
+            ->setName('propel:data-sql')
         ;
     }
 
@@ -65,30 +63,18 @@ EOT
             throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
         }
 
-        $output->writeln(sprintf('<info>Generate XML schema from connection named <comment>%s</comment></info>', $name));
+        $output->writeln(sprintf('<info>Dump data into XML from connection named <comment>%s</comment></info>', $name));
+        $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/sql/';
 
-        $this->callPhing('datadump', array(
+        $this->callPhing('datasql', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
             'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
             'propel.database.password'  => $defaultConfig['connection']['password'],
+            'propel.sql.dir'            => $dest,
             'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
         ));
 
-        $finder = new Finder();
-        $filesystem = new Filesystem();
-
-        $datas = $finder->name('*_data.xml')->in($this->getTmpDir());
-
-        foreach($datas as $data) {
-            $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
-
-            $filesystem->copy((string) $data, $dest);
-            $output->writeln(sprintf('Wrote dumped data in "<info>%s</info>".', $dest));
-        }
-
-        if (count($datas) <= 0) {
-            $output->writeln('No new dumped files.');
-        }
+        $output->writeln(sprintf('SQL from XML data dump file is in "<info>%s</info>".', $dest));
     }
 }
