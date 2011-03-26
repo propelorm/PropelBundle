@@ -40,9 +40,9 @@ class BuildCommand extends PhingCommand
             ->setDefinition(array(
                 new InputOption('--classes', '', InputOption::VALUE_NONE, 'Build only classes'),
                 new InputOption('--sql', '', InputOption::VALUE_NONE, 'Build only code'),
+                new InputOption('--insert-sql', '', InputOption::VALUE_NONE, 'Insert SQL'),
             ))
-            ->setName('propel:build')
-        ;
+            ->setName('propel:build');
     }
 
     /**
@@ -64,6 +64,18 @@ class BuildCommand extends PhingCommand
             $sqlCommand = new BuildSQLCommand();
             $sqlCommand->setApplication($this->getApplication());
             $sqlCommand->execute($input, $output);
+        }
+
+        if ($input->getOption('insert-sql')) {
+            $output->writeln('<info>Inserting SQL statements</info>');
+            $insertCommand = new InsertSqlCommand();
+            $insertCommand->setApplication($this->getApplication());
+
+            // By-pass the '--force' required option
+            $this->addOption('--force', '', InputOption::VALUE_NONE, '');
+            $input->setOption('force', true);
+
+            $insertCommand->execute($input, $output);
         }
     }
 }
