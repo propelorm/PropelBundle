@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
+use Symfony\Component\HttpKernel\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /*
@@ -43,7 +43,7 @@ abstract class PhingCommand extends Command
         } else {
             $this->tmpDir = sys_get_temp_dir().'/propel-gen';
             $filesystem->remove($this->tmpDir);
-            $filesystem->mkdirs($this->tmpDir);
+            $filesystem->mkdir($this->tmpDir);
         }
 
         foreach ($kernel->getBundles() as $bundle) {
@@ -73,6 +73,7 @@ abstract class PhingCommand extends Command
                     } elseif (isset($database['namespace'])) {
                         $database['package'] = $prefix . '.' . str_replace('\\', '.', $database['namespace']);
                     }
+
                     foreach ($database->table as $table)
                     {
                         if (isset($table['package'])) {
@@ -81,6 +82,7 @@ abstract class PhingCommand extends Command
                             $table['package'] = $prefix . '.' . str_replace('\\', '.', $table['namespace']);
                         }
                     }
+
                     file_put_contents($file, $database->asXML());
                 }
             }

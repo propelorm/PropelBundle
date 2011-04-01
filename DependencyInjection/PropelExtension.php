@@ -133,6 +133,7 @@ class PropelExtension extends Extension
             }
         }
 
+
         $config = $mergedConfig;
         $connectionName = $config['default_connection'];
 
