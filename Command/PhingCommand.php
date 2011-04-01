@@ -72,6 +72,8 @@ abstract class PhingCommand extends Command
                         $database['package'] = $prefix . '.' . $database['package'];
                     } elseif (isset($database['namespace'])) {
                         $database['package'] = $prefix . '.' . str_replace('\\', '.', $database['namespace']);
+                    } else {
+                        throw new \RuntimeException(sprintf('Please define a `package` attribute or a `namespace` attribute for schema `%s`', $schema->getBaseName()));
                     }
 
                     foreach ($database->table as $table)
@@ -80,6 +82,8 @@ abstract class PhingCommand extends Command
                             $table['package'] = $prefix . '.' . $table['package'];
                         } elseif (isset($table['namespace'])) {
                             $table['package'] = $prefix . '.' . str_replace('\\', '.', $table['namespace']);
+                        } else {
+                            $table['package'] = $database['package'];
                         }
                     }
 
