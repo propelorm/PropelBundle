@@ -70,7 +70,7 @@ class PropelExtension extends Extension
     protected function dbalLoad(array $configs, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
         }
 

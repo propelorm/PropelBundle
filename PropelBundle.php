@@ -15,7 +15,9 @@ class PropelBundle extends Bundle
             set_include_path($this->container->getParameter('propel.phing_path').'/classes'.PATH_SEPARATOR.get_include_path());
         }
 
-        $this->container->get('propel');
+        \Propel::setConfiguration($this->container->get('propel.configuration'));
+        \Propel::setLogger($this->container->get('propel.logger'));
+        \Propel::initialize();
     }
 
     /**

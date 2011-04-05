@@ -5,23 +5,12 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
   <parameters>
-    <parameter key="propel.class">Propel</parameter>
     <parameter key="propel.configuration.class">PropelConfiguration</parameter>
     <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
     <parameter key="propel.dbal.default_connection">default</parameter>
   </parameters>
 
   <services>
-    <service id="propel" class="%propel.class%">
-      <call method="setConfiguration">
-        <argument type="service" id="propel.configuration" />
-      </call>
-      <call method="setLogger">
-        <argument type="service" id="propel.logger" />
-      </call>
-      <call method="initialize" />
-    </service>
-
     <service id="propel.configuration" class="%propel.configuration.class%" />
 
     <service id="propel.logger" class="%propel.logger.class%">
