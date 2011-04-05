@@ -37,15 +37,17 @@ class PropelExtension extends Extension
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
                 throw new \InvalidArgumentException('The "path" parameter is mandatory.');
+            } else {
+                $container->setParameter('propel.path', $config['path']);
             }
         }
 
-        if (isset($config['path'])) {
-            $container->setParameter('propel.path', $config['path']);
-        }
-
-        if (isset($config['phing_path'])) {
-            $container->setParameter('propel.phing_path', $config['phing_path']);
+        if (!$container->hasParameter('propel.phing_path')) {
+            if (!isset($config['phing_path'])) {
+                throw new \InvalidArgumentException('The "phing_path" parameter is mandatory.');
+            } else {
+                $container->setParameter('propel.phing_path', $config['phing_path']);
+            }
         }
 
         if (isset($config['charset'])) {
@@ -83,7 +85,8 @@ class PropelExtension extends Extension
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
         }
-/*
+
+        /*
         $mergedConfig = array(
             'default_connection'  => 'default',
         );
@@ -141,6 +144,11 @@ class PropelExtension extends Extension
 
         $config = $mergedConfig;
  */
+        if (empty ($config['default_connection'])) {
+            $keys = array_keys($config['connections']);
+            $config['default_connection'] = reset($keys);
+        }
+
         $connectionName = $config['default_connection'];
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
