@@ -56,6 +56,14 @@ class PropelExtension extends Extension
         }
         $container->setParameter('propel.charset', $charset);
 
+        if (isset($config['logging']) && $config['logging'])) {
+            $logging = $config['logging'];
+        } else {
+            $logging = false;
+        }
+        $container->setParameter('propel.logging', $logging);
+
+
         if (!empty($dbal)) {
             $this->dbalLoad($dbal, $container);
         }
