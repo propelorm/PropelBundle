@@ -56,6 +56,14 @@ class PropelExtension extends Extension
         }
         $container->setParameter('propel.charset', $charset);
 
+        if (isset($config['logging']) && $config['logging']) {
+            $logging = $config['logging'];
+        } else {
+            $logging = false;
+        }
+        $container->setParameter('propel.logging', $logging);
+
+
         if (!empty($dbal)) {
             $this->dbalLoad($dbal, $container);
         }
@@ -70,7 +78,7 @@ class PropelExtension extends Extension
     protected function dbalLoad(array $configs, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
         }
 
