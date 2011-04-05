@@ -11,6 +11,9 @@
 
 namespace Propel\PropelBundle\Tests;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
 /**
  * TestCase
  *
@@ -20,10 +23,18 @@ class TestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!file_exists($file = __DIR__.'/../../../../../../../vendor/propel/runtime/lib/Propel.php')) {
+        if (!file_exists($file = $this->getContainer()->getParameter('kernel.root_dir').'/../vendor/propel/runtime/lib/Propel.php')) {
             $this->markTestSkipped('Propel is not available.');
         }
 
         require_once $file;
+    }
+
+    public function getContainer()
+    {
+        return new ContainerBuilder(new ParameterBag(array(
+            'kernel.debug'  => false,
+            'kernel.root_dir' => __DIR__.'/../../../../',
+        )));
     }
 }
