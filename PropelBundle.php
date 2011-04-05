@@ -16,7 +16,11 @@ class PropelBundle extends Bundle
         }
 
         \Propel::setConfiguration($this->container->get('propel.configuration'));
-        \Propel::setLogger($this->container->get('propel.logger'));
+
+        if ($this->container->getParameter('propel.logging')) {
+            \Propel::setLogger($this->container->get('propel.logger'));
+        }
+
         \Propel::initialize();
     }
 
