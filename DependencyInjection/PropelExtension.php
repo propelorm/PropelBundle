@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Definition\Processor;
 
 class PropelExtension extends Extension
 {
@@ -19,6 +20,11 @@ class PropelExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $processor = new Processor();
+        $configuration = new Configuration($container->getParameter('kernel.debug'));
+        $config = $processor->processConfiguration($configuration, $configs);
+
+        /*
         $dbal = array();
         foreach ($configs as $config) {
             if (isset($config['dbal'])) {
@@ -27,18 +33,11 @@ class PropelExtension extends Extension
         }
 
         $config = $configs[0];
-
-        if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('propel.xml');
-        }
-
+         */
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
                 throw new \InvalidArgumentException('The "path" parameter is mandatory.');
             }
-
-            $container->setParameter('propel.path', $config['path']);
         }
 
         if (isset($config['path'])) {
@@ -54,6 +53,7 @@ class PropelExtension extends Extension
         } else {
             $charset = 'UTF8';
         }
+
         $container->setParameter('propel.charset', $charset);
 
         if (isset($config['logging']) && $config['logging']) {
@@ -61,34 +61,32 @@ class PropelExtension extends Extension
         } else {
             $logging = false;
         }
+
         $container->setParameter('propel.logging', $logging);
 
-
-        if (!empty($dbal)) {
-            $this->dbalLoad($dbal, $container);
+        if (!empty($config['dbal'])) {
+            $this->dbalLoad($config['dbal'], $container);
+        } else {
+            throw new \RuntimeException('No "dbal" configuration found.');
         }
     }
 
     /**
      * Loads the DBAL configuration.
      *
-     * @param array            $configs   An array of configuration settings
+     * @param array            $config    An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    protected function dbalLoad(array $configs, ContainerBuilder $container)
+    protected function dbalLoad(array $config, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
         }
-
+/*
         $mergedConfig = array(
             'default_connection'  => 'default',
         );
-
-        if (!$container->hasParameter('propel.charset')) {
-            $container->setParameter('propel.charset', 'utf8'); 
-        }
 
         if ($container->hasParameter('kernel.debug')) {
             $className = $container->getParameter('kernel.debug') ? 'DebugPDO' : 'PropelPDO';
@@ -142,8 +140,8 @@ class PropelExtension extends Extension
         }
 
         $config = $mergedConfig;
+ */
         $connectionName = $config['default_connection'];
-
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
         $c = array();
