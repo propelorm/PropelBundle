@@ -52,7 +52,9 @@ class PropelLogger implements \BasicLogger
      */
     public function alert($message)
     {
-      $this->logger->alert($message);
+        if (null !== $this->logger) {
+            $this->logger->alert($message);
+        }
     }
 
     /**
@@ -62,7 +64,9 @@ class PropelLogger implements \BasicLogger
      */
     public function crit($message)
     {
-      $this->logger->crit($message);
+        if (null !== $this->logger) {
+            $this->logger->crit($message);
+        }
     }
 
     /**
@@ -72,7 +76,9 @@ class PropelLogger implements \BasicLogger
      */
     public function err($message)
     {
-      $this->logger->err($message);
+        if (null !== $this->logger) {
+            $this->logger->err($message);
+        }
     }
 
     /**
@@ -82,7 +88,9 @@ class PropelLogger implements \BasicLogger
      */
     public function warning($message)
     {
-      $this->logger->warning($message);
+        if (null !== $this->logger) {
+            $this->logger->warning($message);
+        }
     }
 
     /**
@@ -92,7 +100,9 @@ class PropelLogger implements \BasicLogger
      */
     public function notice($message)
     {
-      $this->logger->notice($message);
+        if (null !== $this->logger) {
+            $this->logger->notice($message);
+        }
     }
 
     /**
@@ -102,7 +112,9 @@ class PropelLogger implements \BasicLogger
      */
     public function info($message)
     {
-      $this->logger->info($message);
+        if (null !== $this->logger) {
+            $this->logger->info($message);
+        }
     }
 
     /**
@@ -112,6 +124,8 @@ class PropelLogger implements \BasicLogger
      */
     public function debug($message)
     {
-      $this->logger->debug($message);
+        if (null !== $this->logger) {
+            $this->logger->debug($message);
+        }
     }
 }
