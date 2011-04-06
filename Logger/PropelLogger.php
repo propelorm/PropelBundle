@@ -52,7 +52,7 @@ class PropelLogger implements \BasicLogger
      */
     public function alert($message)
     {
-      $this->log($message, 1);
+      $this->logger->alert($message);
     }
 
     /**
@@ -62,7 +62,7 @@ class PropelLogger implements \BasicLogger
      */
     public function crit($message)
     {
-      $this->log($message, 2);
+      $this->logger->crit($message);
     }
 
     /**
@@ -72,7 +72,7 @@ class PropelLogger implements \BasicLogger
      */
     public function err($message)
     {
-      $this->log($message, 3);
+      $this->logger->err($message);
     }
 
     /**
@@ -82,7 +82,7 @@ class PropelLogger implements \BasicLogger
      */
     public function warning($message)
     {
-      $this->log($message, 4);
+      $this->logger->warning($message);
     }
 
     /**
@@ -92,7 +92,7 @@ class PropelLogger implements \BasicLogger
      */
     public function notice($message)
     {
-      $this->log($message, 5);
+      $this->logger->notice($message);
     }
 
     /**
@@ -102,7 +102,7 @@ class PropelLogger implements \BasicLogger
      */
     public function info($message)
     {
-      $this->log($message, 6);
+      $this->logger->info($message);
     }
 
     /**
@@ -112,6 +112,6 @@ class PropelLogger implements \BasicLogger
      */
     public function debug($message)
     {
-      $this->log($message, 7);
+      $this->logger->debug($message);
     }
 }
