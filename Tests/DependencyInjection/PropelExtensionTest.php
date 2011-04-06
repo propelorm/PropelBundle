@@ -13,62 +13,109 @@ namespace Propel\PropelBundle\Tests\DependencyInjection;
 
 use Propel\PropelBundle\Tests\TestCase;
 use Propel\PropelBundle\DependencyInjection\PropelExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Container;
 
 class PropelExtensionTest extends TestCase
 {
     public function testLoad()
     {
-        $container = new ContainerBuilder();
+        $container = $this->getContainer();
         $loader = new PropelExtension();
-
         try {
             $loader->load(array(array()), $container);
             $this->fail();
         } catch (\Exception $e) {
-            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an \InvalidArgumentException if the Propel path is not set.');
+            $this->assertInstanceOf('InvalidArgumentException', $e,
+                '->load() throws an \InvalidArgumentException if the Propel path is not set');
         }
 
-        $loader->load(array(array('path' => '/propel')), $container);
-        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->load() sets the Propel path');
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+        try {
+            $loader->load(array(array(
+                'path'       => '/propel',
+                'phing_path' => '/phing',
+            )), $container);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf('InvalidArgumentException', $e,
+                '->load() throws an \InvalidArgumentException if a "dbal" configuration is not set.');
+        }
 
-        $loader->load(array(array()), $container);
-        $this->assertEquals('/propel', $container->getParameter('propel.path'), '->load() sets the Propel path');
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+        try {
+            $loader->load(array(array(
+                'path' => '/propel',
+                'dbal' => array(),
+            )), $container);
+            $this->fail();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf('InvalidArgumentException', $e,
+                '->load() throws an \InvalidArgumentException if the Phing path is not set.');
+        }
+
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+        $loader->load(array(array(
+            'path' => '/propel',
+            'phing_path' => '/phing',
+            'dbal' => array()
+        )), $container);
+        $this->assertEquals('/propel',  $container->getParameter('propel.path'), '->load() requires the Propel path');
+        $this->assertEquals('/phing',   $container->getParameter('propel.phing_path'), '->load() requires the Phing path');
     }
 
     public function testDbalLoad()
     {
-        $container = new ContainerBuilder();
+        $container = $this->getContainer();
         $loader = new PropelExtension();
 
-        $loader->load(array(array('path' => '/propel')), $container);
-
-        // propel.dbal.default_connection
-        $this->assertEquals('default', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
-        $loader->load(array(array('dbal' => array('default_connection' => 'foo'))), $container);
+        $loader->load(array(array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+            'dbal' => array(
+                'default_connection' => 'foo',
+            )
+        )), $container);
         $this->assertEquals('foo', $container->getParameter('propel.dbal.default_connection'), '->dbalLoad() overrides existing configuration options');
 
-        $container = new ContainerBuilder();
+        $container = $this->getContainer();
         $loader = new PropelExtension();
 
-        $loader->load(array(array('path' => '/propel'), array('dbal' => array('password' => 'foo'))), $container);
+        $loader->load(array(array(
+            'path'          => '/propel',
+            'phing_path'    => '/phing',
+            'dbal'          => array(
+                'password' => 'foo',
+            )
+        )), $container);
 
         $arguments = $container->getDefinition('propel.configuration')->getArguments();
         $config = $arguments[0];
+
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
 
-        $loader->load(array(array('path' => '/propel'), array('dbal' => array('user' => 'foo'))), $container);
+        $loader->load(array(array(
+            'path' => '/propel',
+            'dbal' => array(
+                'user' => 'foo',
+            )
+        )), $container);
         $this->assertEquals('foo', $config['datasources']['default']['connection']['password']);
         $this->assertEquals('root', $config['datasources']['default']['connection']['user']);
 
     }
 
     public function testDbalLoadCascade() {
-        $container = new ContainerBuilder();
+        $container = $this->getContainer();
         $loader = new PropelExtension();
 
-        $config_base = array('path' => '/propel');
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/propel',
+        );
 
         $config_prod = array('dbal' => array(
             'user'      => 'toto',
@@ -99,10 +146,13 @@ class PropelExtensionTest extends TestCase
     }
 
     public function testDbalLoadMultipleConnections() {
-        $container = new ContainerBuilder();
+        $container = $this->getContainer();
         $loader = new PropelExtension();
 
-        $config_base = array('path' => '/propel');
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+        );
 
         $config_mysql = array(
             'user'      => 'mysql_usr',

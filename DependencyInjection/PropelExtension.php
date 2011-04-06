@@ -24,16 +24,6 @@ class PropelExtension extends Extension
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
 
-        /*
-        $dbal = array();
-        foreach ($configs as $config) {
-            if (isset($config['dbal'])) {
-                $dbal[] = $config['dbal'];
-            }
-        }
-
-        $config = $configs[0];
-         */
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
                 throw new \InvalidArgumentException('The "path" parameter is mandatory.');
@@ -69,7 +59,7 @@ class PropelExtension extends Extension
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);
         } else {
-            throw new \RuntimeException('No "dbal" configuration found.');
+            throw new \InvalidArgumentException('No "dbal" configuration found.');
         }
     }
 
@@ -86,65 +76,7 @@ class PropelExtension extends Extension
             $loader->load('propel.xml');
         }
 
-        /*
-        $mergedConfig = array(
-            'default_connection'  => 'default',
-        );
-
-        if ($container->hasParameter('kernel.debug')) {
-            $className = $container->getParameter('kernel.debug') ? 'DebugPDO' : 'PropelPDO';
-        } else {
-            $className = 'PropelPDO';
-        }
-
-        $defaultConnection = array(
-            'driver'              => 'mysql',
-            'user'                => 'root',
-            'password'            => '',
-            'dsn'                 => '',
-            'classname'           => $className,
-            'options'             => array(),
-            'attributes'          => array(),
-            'settings'            => array('charset' => array('value' => $container->getParameter('propel.charset'))),
-        );
-
-        foreach ($configs as $config) {
-            if (isset($config['default-connection'])) {
-                $mergedConfig['default_connection'] = $config['default-connection'];
-            } else if (isset($config['default_connection'])) {
-                $mergedConfig['default_connection'] = $config['default_connection'];
-            }
-        }
-
-        foreach ($configs as $config) {
-            if (isset($config['connections'])) {
-                $configConnections = $config['connections'];
-                if (isset($config['connections']['connection']) && isset($config['connections']['connection'][0])) {
-                    $configConnections = $config['connections']['connection'];
-                }
-            } else {
-                $configConnections[$mergedConfig['default_connection']] = $config;
-            }
-
-            foreach ($configConnections as $name => $connection) {
-                $connectionName = isset($connection['name']) ? $connection['name'] : $name;
-                if (!isset($mergedConfig['connections'][$connectionName])) {
-                    $mergedConfig['connections'][$connectionName] = $defaultConnection;
-                }
-
-                $mergedConfig['connections'][$connectionName]['name'] = $connectionName;
-
-                foreach ($connection as $k => $v) {
-                    if (isset($defaultConnection[$k])) {
-                        $mergedConfig['connections'][$connectionName][$k] = null !== $v ? $v : '';
-                    }
-                }
-            }
-        }
-
-        $config = $mergedConfig;
- */
-        if (empty ($config['default_connection'])) {
+        if (empty($config['default_connection'])) {
             $keys = array_keys($config['connections']);
             $config['default_connection'] = reset($keys);
         }
@@ -152,8 +84,11 @@ class PropelExtension extends Extension
         $connectionName = $config['default_connection'];
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
-        $c = array();
+        if (0 == count($config['connections'])) {
+            $config['connections'] = array($connectionName => $config);
+        }
 
+        $c = array();
         foreach ($config['connections'] as $name => $conf) {
             $c['datasources'][$name]['adapter'] = $config['connections'][$name]['driver'];
 
