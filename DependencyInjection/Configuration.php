@@ -132,7 +132,7 @@ class Configuration implements ConfigurationInterface
                 ->children()
                 ->scalarNode('driver')->defaultValue('mysql')->end()
                 ->scalarNode('user')->defaultValue('root')->end()
-                ->scalarNode('password')->defaultNull()->end()
+                ->scalarNode('password')->defaultValue('')->end()
                 ->scalarNode('dsn')->defaultValue('')->end()
                 ->scalarNode('classname')->defaultValue($this->debug ? 'DebugPDO' : 'PropelPDO')->end()
             ->end()
