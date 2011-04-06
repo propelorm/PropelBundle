@@ -1,0 +1,76 @@
+<h2>Propel configuration</h2>
+
+<table summary="Current Propel configuration">
+    <thead>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Default connection</th>
+            <td>{{ default_connection }}</td>
+        <tr>
+            <th>Logging</th>
+            <td>{{ logging ? 'enabled' : 'disabled' }}</td>
+        </tr>
+        <tr>
+            <th>Charset</th>
+            <td>{{ charset }}</td>
+        </tr>
+        <tr>
+            <th>Propel path</th>
+            <td>{{ path }}</td>
+        </tr>
+        <tr>
+            <th>Phing path</th>
+            <td>{{ phing_path }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Propel connections</h2>
+
+<table summary="Current Propel connections">
+    <thead>
+        <tr>
+            <th>Connection name</th>
+            <th colspan="2" style="text-align: center;">Configuration parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, config in configuration.datasources %}
+        <tr>
+            <th rowspan="6" style="vertical-align: top;">
+                {{ name }}
+                {% if name == default_connection %} <em style="color: red;">(current)</em>{% endif %}
+            </th>
+            <th>Adapter</th>
+            <td>{{ config.adapter }}</td>
+        </tr>
+        <tr>
+            <th>DSN</th>
+            <td>{{ config.connection.dsn }}</td>
+        </tr>
+        <tr>
+            <th>User</th>
+            <td>{{ config.connection.user }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ config.connection.password }}</td>
+        </tr> 
+        <tr>
+            <th>Class</th>
+            <td>{{ config.connection.classname }}</td>
+        </tr>
+        <tr>
+            <th>Options</th>
+            <td>
+                <ul>
+                    {% for key, value in config.connection.options %}
+                    <li>{{ name }} : {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
