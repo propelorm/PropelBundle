@@ -44,6 +44,15 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * Adds 'general' configuration.
+     *
+     * propel:
+     *     path:        xxxxxxx
+     *     path_phing:  xxxxxxx
+     *     charset:     "UTF8"
+     *     logging:     %kernel.debug%
+     */
     private function addGeneralSection(ArrayNodeDefinition $node)
     {
         $node
@@ -55,7 +64,19 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addDbalSection(ArrayNodeDefinition $node)
+    /**
+     * Adds 'dbal' configuration.
+     *
+     * propel:
+     *     dbal:
+     *         driver:      mysql
+     *         user:        root
+     *         password:    null
+     *         dsn:         xxxxxxxx
+     *         options:     {}
+     *         default_connection:  xxxxxx
+     */
+   private function addDbalSection(ArrayNodeDefinition $node)
     {
         $node
             ->children()
@@ -65,7 +86,19 @@ class Configuration implements ConfigurationInterface
                     ->then(function($v) { return array ('connections' => array('default' => array())); })
                 ->end()
                 ->children()
-                    ->scalarNode('default_connection')->end()
+                    ->scalarNode('driver')->defaultValue('mysql')->end()
+                    ->scalarNode('user')->defaultValue('root')->end()
+                    ->scalarNode('password')->defaultNull()->end()
+                    ->scalarNode('dsn')->defaultValue('')->end()
+                    ->scalarNode('classname')->defaultValue($this->debug ? 'DebugPDO' : 'PropelPDO')->end()
+                    ->scalarNode('default_connection')->defaultValue('default')->end()
+                ->end()
+                ->fixXmlConfig('option')
+                ->children()
+                    ->arrayNode('options')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                    ->end()
                 ->end()
                 ->fixXmlConfig('connection')
                 ->append($this->getDbalConnectionsNode())
@@ -73,6 +106,20 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
+    /**
+     * Returns a tree configuration for this part of configuration:
+     *
+     * connections:
+     *     default:
+     *         driver:      mysql
+     *         user:        root
+     *         password:    null
+     *         dsn:         xxxxxxxx
+     *         classname:   PropelPDO
+     *         options:     {}
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
+     */
     private function getDbalConnectionsNode()
     {
         $treeBuilder = new TreeBuilder();
