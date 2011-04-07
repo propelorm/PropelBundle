@@ -38,7 +38,7 @@ class PropelLogger implements \BasicLogger
      * @param string $message  The message to log
      * @param int    $severity The numeric severity
      */
-    public function log($message, $severity = 6)
+    public function log($message, $severity = 100)
     {
         if (null !== $this->logger) {
             $this->logger->log($message, $severity);
@@ -52,7 +52,7 @@ class PropelLogger implements \BasicLogger
      */
     public function alert($message)
     {
-      $this->log($message, 1);
+      $this->log($message, 400);
     }
 
     /**
@@ -62,7 +62,7 @@ class PropelLogger implements \BasicLogger
      */
     public function crit($message)
     {
-      $this->log($message, 2);
+      $this->log($message, 400);
     }
 
     /**
@@ -72,7 +72,7 @@ class PropelLogger implements \BasicLogger
      */
     public function err($message)
     {
-      $this->log($message, 3);
+      $this->log($message, 400);
     }
 
     /**
@@ -82,7 +82,7 @@ class PropelLogger implements \BasicLogger
      */
     public function warning($message)
     {
-      $this->log($message, 4);
+      $this->log($message, 300);
     }
 
     /**
@@ -92,7 +92,7 @@ class PropelLogger implements \BasicLogger
      */
     public function notice($message)
     {
-      $this->log($message, 5);
+      $this->log($message, 200);
     }
 
     /**
@@ -102,7 +102,7 @@ class PropelLogger implements \BasicLogger
      */
     public function info($message)
     {
-      $this->log($message, 6);
+      $this->log($message, 200);
     }
 
     /**
@@ -112,6 +112,6 @@ class PropelLogger implements \BasicLogger
      */
     public function debug($message)
     {
-      $this->log($message, 7);
+      $this->log($message, 100);
     }
 }
