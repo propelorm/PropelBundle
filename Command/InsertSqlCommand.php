@@ -64,7 +64,7 @@ EOT
                 throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
             }
 
-            $output->writeln(sprintf('<info>Generate XML schema from connection named <comment>%s</comment></info>', $name));
+            $output->writeln(sprintf('<info>Inserted SQL statements for connection named <comment>%s</comment></info>', $name));
 
             $this->callPhing('insert-sql', array(
                 'propel.database.url'       => $defaultConfig['connection']['dsn'],
