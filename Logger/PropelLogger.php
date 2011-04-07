@@ -38,7 +38,7 @@ class PropelLogger implements \BasicLogger
      * @param string $message  The message to log
      * @param int    $severity The numeric severity
      */
-    public function log($message, $severity = 6)
+    public function log($message, $severity = 100)
     {
         if (null !== $this->logger) {
             $this->logger->log($message, $severity);
@@ -52,9 +52,7 @@ class PropelLogger implements \BasicLogger
      */
     public function alert($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->alert($message);
-        }
+        $this->log($message, 400);
     }
 
     /**
@@ -64,9 +62,7 @@ class PropelLogger implements \BasicLogger
      */
     public function crit($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->crit($message);
-        }
+        $this->log($message, 400);
     }
 
     /**
@@ -76,9 +72,7 @@ class PropelLogger implements \BasicLogger
      */
     public function err($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->err($message);
-        }
+        $this->log($message, 400);
     }
 
     /**
@@ -88,9 +82,7 @@ class PropelLogger implements \BasicLogger
      */
     public function warning($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->warning($message);
-        }
+        $this->log($message, 300);
     }
 
     /**
@@ -100,9 +92,7 @@ class PropelLogger implements \BasicLogger
      */
     public function notice($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->notice($message);
-        }
+        $this->log($message, 200);
     }
 
     /**
@@ -112,9 +102,7 @@ class PropelLogger implements \BasicLogger
      */
     public function info($message)
     {
-        if (null !== $this->logger) {
-            $this->logger->info($message);
-        }
+        $this->log($message, 200);
     }
 
     /**
@@ -125,10 +113,7 @@ class PropelLogger implements \BasicLogger
     public function debug($message)
     {
         $this->queries[] = $message;
-
-        if (null !== $this->logger) {
-            $this->logger->debug($message);
-        }
+        $this->log($message, 100);
     }
 
     /**
