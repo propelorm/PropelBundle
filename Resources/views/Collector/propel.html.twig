@@ -44,7 +44,10 @@
         {% else %}
             {% for query in collector.queries %}
             <tr>
-                <td><code>{{ query }}</code></td>
+                <td>
+                    <code>{{ query.sql }}</code>
+                    <div style="color: gray;font-size: 0.9em;">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
+                </td>
             </tr>
             {% endfor %}
         {% endif %}

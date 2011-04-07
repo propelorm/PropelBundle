@@ -45,7 +45,8 @@ class PropelDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'queries'        => $this->logger->getQueries(),
+            'queries'        => $this->buildQueries(),
+            'querycount'     => \Propel::getConnection($this->connectionName)->getQueryCount(),
             'connectionName' => $this->connectionName,
         );
     }
@@ -58,6 +59,36 @@ class PropelDataCollector extends DataCollector
     public function getName()
     {
         return 'propel';
+    }
+
+    /**
+     * Creates an array of Build objects.
+     *
+     * @return array  An array of Build objects
+     */
+    private function buildQueries()
+    {
+        $queries = array();
+
+        $config    = \Propel::getConfiguration(\PropelConfiguration::TYPE_OBJECT);
+        $outerGlue = $config->getParameter('debugpdo.logging.outerglue', ' | ');
+        $innerGlue = $config->getParameter('debugpdo.logging.innerglue', ': ');
+
+        foreach($this->logger->getQueries() as $q)
+        {
+            $parts     = explode($outerGlue, $q);
+
+            $times     = explode($innerGlue, $parts[0]);
+            $memories  = explode($innerGlue, $parts[1]);
+
+            $sql       = trim($parts[2]);
+            $time      = trim($times[1]);
+            $memory    = trim($memories[1]);
+
+            $queries[] = new Query($sql, $time, $memory);
+        }
+
+        return $queries;
     }
 
     /**
@@ -77,7 +108,7 @@ class PropelDataCollector extends DataCollector
      */
     public function getQueryCount()
     {
-        return count($this->data['queries']);
+        return count($this->data['querycount']);
     }
 
     /**
