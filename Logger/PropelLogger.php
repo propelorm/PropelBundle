@@ -4,19 +4,11 @@ namespace Propel\PropelBundle\Logger;
 
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * PropelLogger.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class PropelLogger implements \BasicLogger
 {

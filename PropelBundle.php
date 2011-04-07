@@ -5,8 +5,16 @@ namespace Propel\PropelBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * PropelBundle
+ *
+ * @author William DURAND <william.durand1@gmail.com>
+ */
 class PropelBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
         require_once $this->container->getParameter('propel.path').'/runtime/lib/Propel.php';

@@ -10,6 +10,11 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 
+/**
+ * PropelExtension loads the PropelBundle configuration.
+ *
+ * @author William DURAND <william.durand1@gmail.com>
+ */
 class PropelExtension extends Extension
 {
     /**

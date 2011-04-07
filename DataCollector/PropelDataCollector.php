@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Propel package.
- *
- * (c) William DURAND <william.durand1@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Propel\PropelBundle\DataCollector;
 
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
