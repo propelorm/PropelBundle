@@ -13,8 +13,9 @@
 
     <services>
         <service id="propel.configuration" class="%propel.configuration.class%" />
+
         <service id="propel.logger" class="%propel.logger.class%">
-            <tag name="monolog.logger" channel="doctrine" />
+            <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
         </service>
 
