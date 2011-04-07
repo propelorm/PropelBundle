@@ -5,8 +5,16 @@ namespace Propel\PropelBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * PropelBundle
+ *
+ * @author William DURAND <william.durand1@gmail.com>
+ */
 class PropelBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
         require_once $this->container->getParameter('propel.path').'/runtime/lib/Propel.php';
@@ -15,9 +23,15 @@ class PropelBundle extends Bundle
             set_include_path($this->container->getParameter('propel.phing_path').'/classes'.PATH_SEPARATOR.get_include_path());
         }
 
-        \Propel::setConfiguration($this->container->get('propel.configuration'));
-        \Propel::setLogger($this->container->get('propel.logger'));
-        \Propel::initialize();
+        if (!\Propel::isInit()) {
+            \Propel::setConfiguration($this->container->get('propel.configuration'));
+
+            if ($this->container->getParameter('propel.logging')) {
+                \Propel::setLogger($this->container->get('propel.logger'));
+            }
+
+            \Propel::initialize();
+        }
     }
 
     /**

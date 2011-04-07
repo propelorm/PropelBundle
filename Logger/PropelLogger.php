@@ -4,23 +4,22 @@ namespace Propel\PropelBundle\Logger;
 
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * PropelLogger.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class PropelLogger implements \BasicLogger
 {
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+    /**
+     * @var array
+     */
+    protected $queries;
 
     /**
      * Constructor.
@@ -29,7 +28,8 @@ class PropelLogger implements \BasicLogger
      */
     public function __construct(LoggerInterface $logger = null)
     {
-        $this->logger = $logger;
+        $this->logger  = $logger;
+        $this->queries = array();
     }
 
     /**
@@ -52,7 +52,9 @@ class PropelLogger implements \BasicLogger
      */
     public function alert($message)
     {
-      $this->log($message, 400);
+        if (null !== $this->logger) {
+            $this->logger->alert($message);
+        }
     }
 
     /**
@@ -62,7 +64,10 @@ class PropelLogger implements \BasicLogger
      */
     public function crit($message)
     {
-      $this->log($message, 400);
+
+        if (null !== $this->logger) {
+            $this->logger->crit($message);
+        }
     }
 
     /**
@@ -72,7 +77,9 @@ class PropelLogger implements \BasicLogger
      */
     public function err($message)
     {
-      $this->log($message, 400);
+        if (null !== $this->logger) {
+            $this->logger->err($message);
+        }
     }
 
     /**
@@ -82,7 +89,9 @@ class PropelLogger implements \BasicLogger
      */
     public function warning($message)
     {
-      $this->log($message, 300);
+        if (null !== $this->logger) {
+            $this->logger->warning($message);
+        }
     }
 
     /**
@@ -92,7 +101,9 @@ class PropelLogger implements \BasicLogger
      */
     public function notice($message)
     {
-      $this->log($message, 200);
+        if (null !== $this->logger) {
+            $this->logger->notice($message);
+        }
     }
 
     /**
@@ -102,7 +113,9 @@ class PropelLogger implements \BasicLogger
      */
     public function info($message)
     {
-      $this->log($message, 200);
+        if (null !== $this->logger) {
+            $this->logger->info($message);
+        }
     }
 
     /**
@@ -112,6 +125,21 @@ class PropelLogger implements \BasicLogger
      */
     public function debug($message)
     {
-      $this->log($message, 100);
+
+        $this->queries[] = $message;
+
+        if (null !== $this->logger) {
+            $this->logger->debug($message);
+        }
+    }
+
+    /**
+     * Returns queries.
+     *
+     * @return array    Queries
+     */
+    public function getQueries()
+    {
+        return $this->queries;
     }
 }

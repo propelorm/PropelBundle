@@ -4,18 +4,25 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-  <parameters>
-    <parameter key="propel.configuration.class">PropelConfiguration</parameter>
-    <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
-    <parameter key="propel.dbal.default_connection">default</parameter>
-  </parameters>
+    <parameters>
+        <parameter key="propel.configuration.class">PropelConfiguration</parameter>
+        <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
+        <parameter key="propel.dbal.default_connection">default</parameter>
+        <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
+    </parameters>
 
-  <services>
-    <service id="propel.configuration" class="%propel.configuration.class%" />
+    <services>
+        <service id="propel.configuration" class="%propel.configuration.class%" />
 
-    <service id="propel.logger" class="%propel.logger.class%">
-      <argument type="service" id="logger" on-invalid="null" />
-    </service>
+        <service id="propel.logger" class="%propel.logger.class%">
+            <tag name="monolog.logger" channel="propel" />
+            <argument type="service" id="logger" on-invalid="null" />
+        </service>
 
-  </services>
+        <service id="data_collector.propel" class="%propel.data_collector.class%" public="false">
+            <tag name="data_collector" template="PropelBundle:Collector:propel" id="propel" />
+            <argument type="service" id="propel.logger" />
+            <argument>%propel.dbal.default_connection%</argument>
+        </service>
+    </services>
 </container>

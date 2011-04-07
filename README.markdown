@@ -16,9 +16,9 @@ Currently supports:
 Installation
 ------------
 
- * Clone this bundle in the `src/Propel` directory:
+ * Clone this bundle in the `vendor/bundles/Propel` directory:
 
-    > git submodule add https://github.com/willdurand/PropelBundle.git src/Propel/PropelBundle
+    > git submodule add https://github.com/willdurand/PropelBundle.git vendor/bundles/Propel/PropelBundle
 
  * Checkout Propel and Phing in the `vendor` directory:
 
@@ -53,7 +53,7 @@ Installation
         $loader->registerNamespaces(array(
             ...
 
-            'Propel' => __DIR__.'/../src',
+            'Propel' => __DIR__.'/../vendor/bundles',
         ));
 
 
@@ -67,6 +67,7 @@ Sample Configuration
         path:       "%kernel.root_dir%/../vendor/propel"
         phing_path: "%kernel.root_dir%/../vendor/phing"
     #    charset:   "UTF8"
+    #    logging:   %kernel.debug%
 
     # in app/config/config*.yml
     propel:

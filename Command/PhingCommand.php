@@ -31,6 +31,7 @@ abstract class PhingCommand extends Command
     protected $additionalPhingArgs = array();
     protected $tempSchemas = array();
     protected $tmpDir = null;
+    protected $debug;
 
     protected function callPhing($taskName, $properties = array())
     {
@@ -113,7 +114,7 @@ abstract class PhingCommand extends Command
         $args[] = '-f';
         $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
-        $bufferPhingOutput = false;
+        $bufferPhingOutput = $kernel->getContainer()->getParameter('kernel.debug');
 
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
