@@ -20,7 +20,14 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  */
 class PropelLogger implements \BasicLogger
 {
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+    /**
+     * @var array
+     */
+    protected $queries;
 
     /**
      * Constructor.
@@ -29,7 +36,8 @@ class PropelLogger implements \BasicLogger
      */
     public function __construct(LoggerInterface $logger = null)
     {
-        $this->logger = $logger;
+        $this->logger  = $logger;
+        $this->queries = array();
     }
 
     /**
@@ -124,8 +132,20 @@ class PropelLogger implements \BasicLogger
      */
     public function debug($message)
     {
+        $this->queries[] = $message;
+
         if (null !== $this->logger) {
             $this->logger->debug($message);
         }
+    }
+
+    /**
+     * Returns queries.
+     *
+     * @return array    Queries
+     */
+    public function getQueries()
+    {
+        return $this->queries;
     }
 }

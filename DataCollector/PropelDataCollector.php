@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the FOSPropel package.
+ * This file is part of the Propel package.
  *
  * (c) William DURAND <william.durand1@gmail.com>
  *
@@ -28,9 +28,19 @@ class PropelDataCollector extends DataCollector
      * @var Propel\PropelBundle\Logger\PropelLogger
      */
     private $logger;
-
+    /**
+     * Connection name
+     *
+     * @var string
+     */
     private $connectionName;
 
+    /**
+     * Constructor
+     *
+     * @param \Propel\PropelBundle\Logger\PropelLogger $logger  A PropelLogger
+     * @param string $connectionName    A connection name
+     */
     public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName)
     {
         $this->logger = $logger;
@@ -44,15 +54,46 @@ class PropelDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
+            'queries'        => $this->logger->getQueries(),
             'connectionName' => $this->connectionName,
         );
     }
 
+    /**
+     * Returns the collector name.
+     *
+     * @return string   The collector name.
+     */
     public function getName()
     {
         return 'propel';
     }
 
+    /**
+     * Returns queries.
+     *
+     * @return array    Queries
+     */
+    public function getQueries()
+    {
+        return $this->data['queries'];
+    }
+
+    /**
+     * Returns the query count.
+     *
+     * @return integer  The query count
+     */
+    public function getQueryCount()
+    {
+        return count($this->data['queries']);
+    }
+
+    /**
+     * Returns the connection name.
+     *
+     * @return string   The connection name
+     */
     public function getConnectionName()
     {
         return $this->data['connectionName'];

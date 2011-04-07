@@ -17,13 +17,35 @@
     {# the menu content #}
     <span class="label">
         <span class="icon"><img src="{{ asset('bundles/propel/images/profiler/propel.png') }}" alt="" /></span>
-        <strong>Propel</strong>
-        
-
+        <strong>Propel</strong>        
+        <span class="count">
+            <span>{{ collector.querycount }}</span>
+        </span>
     </span>     
 {% endblock %}
 
 {% block panel %}
     {# the panel content #}
+
+    <h2>Queries</h2>
+    <table summary="Show logged queries">
+        <thead>
+            <tr>
+                <th>SQL queries</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if not collector.querycount %}
+            <tr><td>No queries.</td></tr>
+        {% else %}
+            {% for query in collector.queries %}
+            <tr>
+                <td><code>{{ query }}</code></td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
     {% render 'PropelBundle:Panel:configuration' with { 'collector': collector } %}
 {% endblock %}
