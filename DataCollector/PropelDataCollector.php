@@ -25,6 +25,12 @@ class PropelDataCollector extends DataCollector
      * @var string
      */
     private $connectionName;
+    /**
+     * Propel configuration
+     *
+     * @var \PropelConfiguration
+     */
+    protected $propelConfiguration;
 
     /**
      * Constructor
@@ -32,10 +38,11 @@ class PropelDataCollector extends DataCollector
      * @param \Propel\PropelBundle\Logger\PropelLogger $logger  A PropelLogger
      * @param string $connectionName    A connection name
      */
-    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName)
+    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName, \PropelConfiguration $propelConfiguration)
     {
         $this->logger = $logger;
         $this->connectionName = $connectionName;
+        $this->propelConfiguration = $propelConfiguration;
     }
 
     /**
@@ -70,9 +77,8 @@ class PropelDataCollector extends DataCollector
     {
         $queries = array();
 
-        $config    = \Propel::getConfiguration(\PropelConfiguration::TYPE_OBJECT);
-        $outerGlue = $config->getParameter('debugpdo.logging.outerglue', ' | ');
-        $innerGlue = $config->getParameter('debugpdo.logging.innerglue', ': ');
+        $outerGlue = $this->propelConfiguration->getParameter('debugpdo.logging.outerglue', ' | ');
+        $innerGlue = $this->propelConfiguration->getParameter('debugpdo.logging.innerglue', ': ');
 
         foreach($this->logger->getQueries() as $q)
         {
