@@ -108,7 +108,7 @@ class PropelDataCollector extends DataCollector
      */
     public function getQueryCount()
     {
-        return count($this->data['querycount']);
+        return $this->data['querycount'];
     }
 
     /**
