@@ -38,7 +38,7 @@
     <tbody>
         {% for name, config in configuration.datasources %}
         <tr>
-            <th rowspan="6" style="vertical-align: top;">
+            <th rowspan="7" style="vertical-align: top;">
                 {{ name }}
                 {% if name == default_connection %} <em style="color: red;">(current)</em>{% endif %}
             </th>
@@ -66,7 +66,17 @@
             <td>
                 <ul>
                     {% for key, value in config.connection.options %}
-                    <li>{{ name }} : {{ value }}</li>
+                    <li>{{ key }} : {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Attributes</th>
+            <td>
+                <ul>
+                    {% for key, value in config.connection.attributes %}
+                    <li>{{ key }} : {{ value }}</li>
                     {% endfor %}
                 </ul>
             </td>
