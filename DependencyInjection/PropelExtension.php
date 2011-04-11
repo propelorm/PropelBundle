@@ -89,19 +89,21 @@ class PropelExtension extends Extension
         $connectionName = $config['default_connection'];
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
-        if (0 == count($config['connections'])) {
+        if (0 === count($config['connections'])) {
             $config['connections'] = array($connectionName => $config);
         }
 
         $c = array();
         foreach ($config['connections'] as $name => $conf) {
-            $c['datasources'][$name]['adapter'] = $config['connections'][$name]['driver'];
+            $c['datasources'][$name]['adapter'] = $conf['driver'];
 
             foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
-                if (isset($config['connections'][$name][$att])) {
-                    $c['datasources'][$name]['connection'][$att] = $config['connections'][$name][$att];
+                if (isset($conf[$att])) {
+                    $c['datasources'][$name]['connection'][$att] = $conf[$att];
                 }
             }
+
+            $c['datasources'][$name]['connection']['settings']['charset'] = array('value' => $container->getParameter('propel.charset'));
         }
 
         $container->getDefinition('propel.configuration')->setArguments(array($c));
