@@ -11,7 +11,7 @@ Currently supports:
  * Propel runtime initialization through the XML configuration.
  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
  * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
-
+ * Integration to the Symfony2 Profiler.
 
 Installation
 ------------
@@ -77,6 +77,7 @@ Sample Configuration
             password:             null
             dsn:                  mysql:host=localhost;dbname=test
             options:              {}
+            attributes:           {}
     #        default_connection:       default
     #        connections:
     #           default:
@@ -85,6 +86,7 @@ Sample Configuration
     #               password:             null
     #               dsn:                  mysql:host=localhost;dbname=test
     #               options:              {}
+    #               attributes:           {}
 
 
 ### Sample Schema
