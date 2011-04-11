@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
      *         password:    null
      *         dsn:         xxxxxxxx
      *         options:     {}
+     *         attributes:  {}
      *         default_connection:  xxxxxx
      */
    private function addDbalSection(ArrayNodeDefinition $node)
@@ -100,6 +101,13 @@ class Configuration implements ConfigurationInterface
                     ->prototype('scalar')->end()
                     ->end()
                 ->end()
+                ->fixXmlConfig('attribute')
+                ->children()
+                    ->arrayNode('attributes')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                    ->end()
+                ->end()
                 ->fixXmlConfig('connection')
                 ->append($this->getDbalConnectionsNode())
             ->end()
@@ -117,6 +125,7 @@ class Configuration implements ConfigurationInterface
      *         dsn:         xxxxxxxx
      *         classname:   PropelPDO
      *         options:     {}
+     *         attributes:  {}
      *
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
      */
@@ -136,9 +145,16 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('dsn')->defaultValue('')->end()
                 ->scalarNode('classname')->defaultValue($this->debug ? 'DebugPDO' : 'PropelPDO')->end()
             ->end()
-            ->fixXmlConfig('options')
+            ->fixXmlConfig('option')
                 ->children()
                     ->arrayNode('options')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+            ->fixXmlConfig('attribute')
+                ->children()
+                    ->arrayNode('attributes')
                     ->useAttributeAsKey('key')
                     ->prototype('scalar')->end()
                 ->end()
