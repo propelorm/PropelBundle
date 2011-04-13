@@ -41,7 +41,7 @@ class PropelBundle extends Bundle
             \Propel::initialize();
 
             $this->container->set('propel.connection',
-                \Pnfigurationropel::getConnection($this->container->getParameter('propel.dbal.default_connection')));
+                \Propel::getConnection($this->container->getParameter('propel.dbal.default_connection')));
         }
     }
 
