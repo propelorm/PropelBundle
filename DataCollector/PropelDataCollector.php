@@ -31,6 +31,12 @@ class PropelDataCollector extends DataCollector
      * @var \PropelConfiguration
      */
     protected $propelConfiguration;
+    /**
+     * Propel connection
+     *
+     * @var \PropelPDO
+     */
+    protected $propelConnection;
 
     /**
      * Constructor
@@ -38,11 +44,12 @@ class PropelDataCollector extends DataCollector
      * @param \Propel\PropelBundle\Logger\PropelLogger $logger  A PropelLogger
      * @param string $connectionName    A connection name
      */
-    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName, \PropelConfiguration $propelConfiguration)
+    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName, \PropelConfiguration $propelConfiguration, \PropelPDO $propelConnection)
     {
         $this->logger = $logger;
         $this->connectionName = $connectionName;
         $this->propelConfiguration = $propelConfiguration;
+        $this->propelConnection = $propelConnection;
     }
 
     /**
@@ -53,7 +60,7 @@ class PropelDataCollector extends DataCollector
     {
         $this->data = array(
             'queries'        => $this->buildQueries(),
-            'querycount'     => \Propel::getConnection($this->connectionName)->getQueryCount(),
+            'querycount'     => $this->propelConnection->getQueryCount(),
             'connectionName' => $this->connectionName,
         );
     }

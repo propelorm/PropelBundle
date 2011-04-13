@@ -24,6 +24,7 @@
             <argument type="service" id="propel.logger" />
             <argument>%propel.dbal.default_connection%</argument>
             <argument type="service" id="propel.configuration" />
+            <argument type="service" id="propel.connection" />
         </service>
     </services>
 </container>
