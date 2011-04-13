@@ -31,7 +31,7 @@ abstract class PhingCommand extends Command
     protected $additionalPhingArgs = array();
     protected $tempSchemas = array();
     protected $tmpDir = null;
-    protected $debug;
+    protected $buffer = null;
 
     protected function callPhing($taskName, $properties = array())
     {
@@ -141,6 +141,7 @@ abstract class PhingCommand extends Command
         $m->runBuild();
 
         if ($bufferPhingOutput) {
+            $this->buffer = ob_get_contents();
             ob_end_clean();
         }
 

@@ -50,7 +50,7 @@ EOT
         $this->callPhing('om');
 
         foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-            $output->writeln(sprintf('Built model classes for bundle "<info>%s</info>"', $schemaDetails['bundle']));
+            $output->writeln(sprintf('Built Model classes for bundle "<info>%s</info>" from "<info>%s</info>"', $schemaDetails['bundle'], $schemaDetails['path']));
         }
     }
 }

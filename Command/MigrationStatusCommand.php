@@ -47,5 +47,18 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {   
         $this->callPhing('status');
+
+        foreach (explode("\n", $this->buffer) as $line) {
+            if (false !== strpos($line, '[propel-migration-status]')) {
+                $arr  = preg_split('#\[propel-migration-status\] #', $line);
+                $info = $arr[1];
+
+                if (' ' === $info[0]) {
+                    $info = sprintf('<info>%s</info>', $info);
+                }
+
+                $output->writeln($info);
+            }
+        }
     }
 }
