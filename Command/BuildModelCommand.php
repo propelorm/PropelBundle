@@ -48,6 +48,9 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->callPhing('om');
-    }
 
+        foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
+            $output->writeln(sprintf('Built model classes for bundle "<info>%s</info>"', $schemaDetails['bundle']));
+        }
+    }
 }
