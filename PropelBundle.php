@@ -39,6 +39,7 @@ class PropelBundle extends Bundle
             }
 
             \Propel::initialize();
+        }
     }
 
     /**
