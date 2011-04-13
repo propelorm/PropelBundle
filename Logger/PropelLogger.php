@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PropelLogger implements \BasicLogger
+class PropelLogger
 {
     /**
      * @var LoggerInterface
