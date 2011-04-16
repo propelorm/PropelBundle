@@ -106,7 +106,6 @@ class PropelExtension extends Extension
             $c['datasources'][$name]['connection']['settings']['charset'] = array('value' => $container->getParameter('propel.charset'));
         }
 
-        $c['datasources']['default'] = $connectionName;
         $container->getDefinition('propel.configuration')->setArguments(array($c));
     }
 
