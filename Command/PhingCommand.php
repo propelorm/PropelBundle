@@ -32,6 +32,7 @@ abstract class PhingCommand extends Command
     protected $tempSchemas = array();
     protected $tmpDir = null;
     protected $buffer = null;
+    protected $buildPropertiesFile = null;
 
     protected function callPhing($taskName, $properties = array())
     {
@@ -40,7 +41,7 @@ abstract class PhingCommand extends Command
         $filesystem = new Filesystem();
 
         if (isset($properties['propel.schema.dir'])) {
-            $this->tmpDir = $properties['propel.schema.dir']; 
+            $this->tmpDir = $properties['propel.schema.dir'];
         } else {
             $this->tmpDir = sys_get_temp_dir().'/propel-gen';
             $filesystem->remove($this->tmpDir);
@@ -64,7 +65,7 @@ abstract class PhingCommand extends Command
                     );
                     $file = $this->tmpDir.DIRECTORY_SEPARATOR.$tempSchema;
                     $filesystem->copy((string) $schema, $file);
-                    
+
                     // the package needs to be set absolute
                     // besides, the automated namespace to package conversion has not taken place yet
                     // so it needs to be done manually
@@ -93,7 +94,10 @@ abstract class PhingCommand extends Command
             }
         }
 
-        $filesystem->touch($this->tmpDir.'/build.properties');
+        // build.properties
+        $this->buildPropertiesFile = $kernel->getRootDir().'/config/propel.ini';
+        $filesystem->touch($this->buildPropertiesFile);
+        $filesystem->copy($this->buildPropertiesFile, $this->tmpDir.'/build.properties');
         // Required by the Phing task
         $this->createBuildTimeFile($this->tmpDir.'/buildtime-conf.xml');
 
