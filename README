@@ -88,6 +88,10 @@ Sample Configuration
     #               options:              {}
     #               attributes:           {}
 
+You can create a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/wiki/Documentation/1.6/BuildConfiguration)).
+
+    # in app/config/propel.ini
+    xxxx.xxxx.xxxx = XXXX
 
 ### Sample Schema
 
