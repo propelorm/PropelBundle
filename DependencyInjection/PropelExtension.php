@@ -106,6 +106,11 @@ class PropelExtension extends Extension
             $c['datasources'][$name]['connection']['settings']['charset'] = array('value' => $container->getParameter('propel.charset'));
         }
 
+        // Alias the default connection if not defined
+        if (!isset($c['datasources']['default'])) {
+            $c['datasources']['default'] = $c['datasources'][$connectionName];
+        }
+
         $container->getDefinition('propel.configuration')->setArguments(array($c));
     }
 
