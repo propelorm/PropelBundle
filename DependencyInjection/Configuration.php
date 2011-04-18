@@ -52,6 +52,9 @@ class Configuration implements ConfigurationInterface
      *     path_phing:  xxxxxxx
      *     charset:     "UTF8"
      *     logging:     %kernel.debug%
+     *     build_properties:
+     *         xxxx.xxxx:   xxxxxx
+     *         ...
      */
     private function addGeneralSection(ArrayNodeDefinition $node)
     {
@@ -61,6 +64,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('phing_path')->end()
                 ->scalarNode('charset')->defaultValue('UTF8')->end()
                 ->scalarNode('logging')->defaultValue($this->debug)->end()
+                ->arrayNode('build_properties')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                ->end()
         ;
     }
 

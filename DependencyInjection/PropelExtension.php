@@ -61,6 +61,22 @@ class PropelExtension extends Extension
 
         $container->setParameter('propel.logging', $logging);
 
+        // Load services
+        if (!$container->hasDefinition('propel')) {
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('propel.xml');
+        }
+
+        if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
+            if (isset($config['build_properties']) && is_array($config['build_properties'])) {
+                $buildProperties = $config['build_properties'];
+            } else {
+                $buildProperties = array();
+            }
+
+            $container->getDefinition('propel.build_properties')->setArguments(array($buildProperties));
+        }
+
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);
         } else {
@@ -76,11 +92,6 @@ class PropelExtension extends Extension
      */
     protected function dbalLoad(array $config, ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('propel.xml');
-        }
-
         if (empty($config['default_connection'])) {
             $keys = array_keys($config['connections']);
             $config['default_connection'] = reset($keys);

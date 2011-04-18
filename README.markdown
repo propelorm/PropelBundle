@@ -88,10 +88,23 @@ Sample Configuration
     #               options:              {}
     #               attributes:           {}
 
-You can create a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/wiki/Documentation/1.6/BuildConfiguration)).
+
+### Build properties
+
+You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/wiki/Documentation/1.6/BuildConfiguration)).
 
     # in app/config/propel.ini
     xxxx.xxxx.xxxx = XXXX
+
+But you can follow the Symfony2 way by adding build properties in `app/config/config.yml`:
+
+    # in app/config/config.yml
+    propel:
+        build_properties:
+            xxxxx.xxxx.xxxxx:   XXXX
+            xxxxx.xxxx.xxxxx:   XXXX
+            ...
+
 
 ### Sample Schema
 
@@ -138,7 +151,7 @@ Call the application console with the `propel:insert-sql` command:
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-### Use The Model Classes 
+### Use The Model Classes
 
 Use the Model classes as any other class in Symfony2. Just use the correct namespace, and Symfony2 will autoload them:
 

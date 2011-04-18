@@ -110,6 +110,10 @@ abstract class PhingCommand extends Command
             'propel.php.dir'    => '/',
             'propel.packageObjectModel' => true,
         ), $properties);
+        $properties = array_merge(
+            $kernel->getContainer()->get('propel.build_properties')->getProperties(),
+            $properties
+        );
         foreach ($properties as $key => $value) {
             $args[] = "-D$key=$value";
         }
