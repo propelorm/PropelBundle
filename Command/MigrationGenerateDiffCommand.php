@@ -45,20 +45,9 @@ EOT
      * @throws \InvalidArgumentException When the target directory does not exist
      */
     protected function execute(InputInterface $input, OutputInterface $output)
-    {   
+    {
         $this->callPhing('diff');
 
-        foreach (explode("\n", $this->buffer) as $line) {
-            if (false !== strpos($line, '[propel-sql-diff]')) {
-                $arr  = preg_split('#\[propel-sql-diff\] #', $line);
-                $info = $arr[1];
-
-                if ('"' === $info[0]) {
-                    $info = sprintf('<info>%s</info>', $info);
-                }
-
-                $output->writeln($info);
-            }
-        }
+        $this->summary($output, 'propel-sql-diff');
     }
 }

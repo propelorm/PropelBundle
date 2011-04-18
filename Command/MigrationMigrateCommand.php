@@ -68,13 +68,6 @@ EOT
             $this->callPhing('migrate');
         }
 
-        foreach (explode("\n", $this->buffer) as $line) {
-            if (false !== strpos($line, '[propel-migration]')) {
-                $arr  = preg_split('#\[propel-migration\] #', $line);
-                $info = $arr[1];
-
-                $output->writeln($info);
-            }
-        }
+        $this->summary($output, 'propel-migration');
     }
 }

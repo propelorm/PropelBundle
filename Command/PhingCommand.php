@@ -248,4 +248,24 @@ EOT;
     protected function getTmpDir() {
         return $this->tmpDir;
     }
+
+    /**
+     * Write Propel output as summary.
+     *
+     * @param $taskname A task name
+     */
+    protected function summary($output, $taskname) {
+        foreach (explode("\n", $this->buffer) as $line) {
+            if (false !== strpos($line, '[' . $taskname . ']')) {
+                $arr  = preg_split('#\[' . $taskname . '\] #', $line);
+                $info = $arr[1];
+
+                if ('"' === $info[0]) {
+                    $info = sprintf('<info>%s</info>', $info);
+                }
+
+                $output->writeln($info);
+            }
+        }
+    }
 }
