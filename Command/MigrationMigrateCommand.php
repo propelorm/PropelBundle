@@ -8,19 +8,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * MigrationMigrateCommand.
  *
- * @author William DURAND <william.durand1@gmail.com>  
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class MigrationMigrateCommand extends PhingCommand
 {
@@ -42,11 +33,9 @@ The <info>propel:migration:migrate</info> command checks the version of the data
 
     <info>php app/console propel:migration:migrate</info> : is the default command, it <comment>executes all</comment> migrations files.
 
-    <info>php app/console propel:migration:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed 
-                                                    (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
+    <info>php app/console propel:migration:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
 
-    <info>php app/console propel:migration:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed 
-                                                      (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
+    <info>php app/console propel:migration:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
 EOT
             )
             ->setName('propel:migration:migrate')

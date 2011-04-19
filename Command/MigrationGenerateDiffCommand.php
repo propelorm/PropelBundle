@@ -6,19 +6,10 @@ use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * MigrationGenerateDiffCommand.
  *
- * @author William DURAND <william.durand1@gmail.com>  
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class MigrationGenerateDiffCommand extends PhingCommand
 {
