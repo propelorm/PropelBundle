@@ -6,15 +6,6 @@ use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * BuildCommand.
  *
@@ -50,7 +41,7 @@ EOT
         $this->callPhing('om');
 
         foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-            $output->writeln(sprintf('Built Model classes for bundle "<info>%s</info>" from "<info>%s</info>"', $schemaDetails['bundle'], $schemaDetails['path']));
+            $output->writeln(sprintf('Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.', $schemaDetails['bundle'], $schemaDetails['path']));
         }
     }
 }
