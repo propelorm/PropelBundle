@@ -11,15 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * BuildCommand.
  *
@@ -54,21 +45,21 @@ class BuildCommand extends PhingCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$input->getOption('sql')) {
-            $output->writeln('<info>Building model classes</info>');
+            $output->writeln('<comment>Building model classes:</comment>');
             $modelCommand = new BuildModelCommand();
             $modelCommand->setApplication($this->getApplication());
             $modelCommand->execute($input, $output);
         }
 
         if (!$input->getOption('classes')) {
-            $output->writeln('<info>Building model sql</info>');
+            $output->writeln('<comment>Building model sql:</comment>');
             $sqlCommand = new BuildSQLCommand();
             $sqlCommand->setApplication($this->getApplication());
             $sqlCommand->execute($input, $output);
         }
 
         if ($input->getOption('insert-sql')) {
-            $output->writeln('<info>Inserting SQL statements</info>');
+            $output->writeln('<comment>Inserting SQL statements:</comment>');
             $insertCommand = new InsertSqlCommand();
             $insertCommand->setApplication($this->getApplication());
 
