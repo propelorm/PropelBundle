@@ -10,15 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * BuildCommand.
  *
@@ -64,7 +55,8 @@ EOT
             $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
             $filesystem->remove($targetSqlFilePath);
             $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
-            $output->writeln(sprintf('Wrote SQL file for bundle "<info>%s</info>" in "<info>%s</info>"', $schemaDetails['bundle'], $targetSqlFilePath));
+
+            $output->writeln(sprintf('Wrote SQL file for bundle <info>%s</info> in <comment>%s</comment>.', $schemaDetails['bundle'], $targetSqlFilePath));
         }
 
         file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
