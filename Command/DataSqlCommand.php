@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
 /**
  * DataSqlCommand.
  *
- * @author William DURAND <william.durand1@gmail.com>  
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class DataSqlCommand extends PhingCommand
 {
@@ -32,14 +32,10 @@ class DataSqlCommand extends PhingCommand
     {
         $this
             ->setDescription('Generates sql from data xml')
-            ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>propel:data-sql</info> generates sql from data xml.
-          
-  <info>php app/console propel:data-sql</info>
 
-The <info>--connection</info> parameter allows you to change the connection to use.
-The default connection is the active connection (propel.dbal.default_connection).
+  <info>php app/console propel:data-sql</info>
 EOT
             )
             ->setName('propel:data-sql')
@@ -52,28 +48,31 @@ EOT
      * @throws \InvalidArgumentException When the target directory does not exist
      */
     protected function execute(InputInterface $input, OutputInterface $output)
-    {  
-        $container = $this->getApplication()->getKernel()->getContainer();
-        $propelConfiguration = $container->get('propel.configuration');
-        $name = $input->getOption('connection') ? $input->getOption('connection') : $container->getParameter('propel.dbal.default_connection');
+    {
+        $rootDir    = $this->getApplication()->getKernel()->getRootDir();
+        $schemaDir  = $rootDir . '/propel/schema/';
+        $sqlDir     = $rootDir . '/propel/sql/';
+        $xmlDumpDir = $rootDir . '/propel/dump/xml/';
 
-        if (isset($propelConfiguration['datasources'][$name])) {
-            $defaultConfig = $propelConfiguration['datasources'][$name];
-        } else {
-            throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
+        $filesystem = new Filesystem();
+
+        $finder = new Finder();
+        foreach($finder->name('*_data.xml')->in($xmlDumpDir) as $data) {
+            $filesystem->copy((string) $data, $schemaDir . $data->getFilename());
         }
 
-        $output->writeln(sprintf('<info>Dump data into XML from connection named <comment>%s</comment></info>', $name));
-        $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/sql/';
-
         $this->callPhing('datasql', array(
-            'propel.database.url'       => $defaultConfig['connection']['dsn'],
-            'propel.database.database'  => $defaultConfig['adapter'],
-            'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => $defaultConfig['connection']['password'],
-            'propel.sql.dir'            => $dest,
-            'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
+            'propel.sql.dir'            => $sqlDir,
+            'propel.schema.dir'         => $schemaDir,
         ));
 
-        $output->writeln(sprintf('SQL from XML data dump file is in "<info>%s</info>".', $dest));
-    }}
+        $finder = new Finder();
+        foreach($finder->name('*_data.xml')->in($schemaDir) as $data) {
+            $filesystem->remove($data);
+        }
+
+        $this->summary($output, 'propel-data-sql');
+        $output->writeln(sprintf('SQL from XML data dump file is in <comment>%s</comment>.', $sqlDir));
+    }
+}
+
