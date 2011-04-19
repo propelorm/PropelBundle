@@ -54,6 +54,8 @@ EOT
                 'propel.database.password'  => $defaultConfig['connection']['password'],
                 'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
             ));
+
+            $output->writeln('<info>All SQL statements have been executed.</info>');
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
         }
