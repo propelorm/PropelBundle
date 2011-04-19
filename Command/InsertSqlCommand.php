@@ -7,19 +7,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 /**
  * InsertSqlCommand.
  *
- * @author William DURAND <william.durand1@gmail.com> 
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class InsertSqlCommand extends PhingCommand
 {
@@ -54,17 +45,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('force')) {
-            $container = $this->getApplication()->getKernel()->getContainer();
-            $propelConfiguration = $container->get('propel.configuration');
-            $name = $input->getOption('connection') ? $input->getOption('connection') : $container->getParameter('propel.dbal.default_connection');
-
-            if (isset($propelConfiguration['datasources'][$name])) {
-                $defaultConfig = $propelConfiguration['datasources'][$name];
-            } else {
-                throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
-            }
-
-            $output->writeln(sprintf('<info>Inserted SQL statements for connection named <comment>%s</comment></info>', $name));
+            $defaultConfig = $this->getConnection($input, $output);
 
             $this->callPhing('insert-sql', array(
                 'propel.database.url'       => $defaultConfig['connection']['dsn'],
