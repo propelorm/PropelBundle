@@ -69,7 +69,7 @@ EOT
         $datadbContent = '';
         $datas = $finder->name('*.xml')->in($fixturesDir);
         foreach($datas as $data) {
-            $output->writeln(sprintf('Loaded fixtures from "<comment>%s</comment>".', $data));
+            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
             $datadbContent .= $data->getFilename() . '=default' . "\n";
         }
 
