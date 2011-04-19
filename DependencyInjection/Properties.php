@@ -21,7 +21,7 @@ class Properties
      *
      * @param $properties   An array of properties.
      */
-    public function __construct(array $properties) {
+    public function __construct(array $properties = array()) {
         $this->properties = $properties;
     }
 
