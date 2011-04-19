@@ -41,6 +41,7 @@ class BuildCommand extends PhingCommand
                 new InputOption('--classes', '', InputOption::VALUE_NONE, 'Build only classes'),
                 new InputOption('--sql', '', InputOption::VALUE_NONE, 'Build only code'),
                 new InputOption('--insert-sql', '', InputOption::VALUE_NONE, 'Build all and insert SQL'),
+                new InputOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ))
             ->setName('propel:build');
     }
