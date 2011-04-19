@@ -12,6 +12,7 @@ Currently supports:
  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
  * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
  * Integration to the Symfony2 Profiler.
+ * Load XML fixtures.
 
 Installation
 ------------
@@ -68,6 +69,9 @@ Sample Configuration
         phing_path: "%kernel.root_dir%/../vendor/phing"
     #    charset:   "UTF8"
     #    logging:   %kernel.debug%
+    #    build_properties:
+    #        xxxxx.xxxxx: xxxxxx
+    #        xxxxx.xxxxx: xxxxxx
 
     # in app/config/config*.yml
     propel:
@@ -207,9 +211,28 @@ You can dump data from your database in XML to `app/propel/dump/xml/`:
 
 Once you ran `propel:data-dump` you can generate SQL statements from dumped data:
 
-    > php app/console propel:data-sql [--connection[="..."]]
+    > php app/console propl:data-sql
 
 SQL will be write in `app/propel/sql/`.
+
+
+### Fixtures
+
+You can load your own fixtures by using the following command:
+
+    > php app/console propel:load-fixtures  [-d|--dir="..."] [--connection[="..."]]
+
+As usual, `--connection` allows to specify a connection.
+
+The `--dir` option allows to specify a directory containing the fixtures (default is: `app/propel/fixtures/`).
+Note that the `--dir` expects a relative path from the root dir (which is `app/`).
+
+A valid _XML fixtures file_ is:
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <dataset name="all">
+        <Object Id="..." />
+    </dataset>
 
 
 ### Graphviz
