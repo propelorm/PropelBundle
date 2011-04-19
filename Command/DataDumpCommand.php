@@ -28,7 +28,7 @@ class DataDumpCommand extends PhingCommand
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>propel:data-dump</info> dumps data from database into xml file.
-          
+
   <info>php app/console propel:data-dump</info>
 
 The <info>--connection</info> parameter allows you to change the connection to use.
@@ -46,7 +46,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $defaultConfig = $this->getConnection($input, $output);
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $this->callPhing('datadump', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],

@@ -45,7 +45,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('force')) {
-            $defaultConfig = $this->getConnection($input, $output);
+            list($name, $defaultConfig) = $this->getConnection($input, $output);
 
             $this->callPhing('insert-sql', array(
                 'propel.database.url'       => $defaultConfig['connection']['dsn'],

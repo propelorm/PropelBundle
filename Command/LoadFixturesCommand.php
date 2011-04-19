@@ -60,8 +60,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $defaultConfig = $this->getConnection($input, $output);
-
         $finder = new Finder();
         $filesystem = new Filesystem();
         $dir = $input->getOption('dir') ?: $this->defaultFixturesDir;

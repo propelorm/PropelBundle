@@ -255,13 +255,13 @@ EOT;
 
     /**
      * Get connection by checking the input option named 'connection'.
-     * Returns the default connection if no option specified or an exception 
+     * Returns the default connection if no option specified or an exception
      * if the specified connection doesn't exist.
      *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throw \InvalidArgumentException If the connection does not exist.
-     * @return array   A Propel Configuration as an array.
+     * @return array
      */
     protected function getConnection(InputInterface $input, OutputInterface $output) {
         $container = $this->getApplication()->getKernel()->getContainer();
@@ -277,7 +277,7 @@ EOT;
 
         $output->writeln(sprintf('<info>Use connection named <comment>%s</comment></info>', $name));
 
-        return $defaultConfig;
+        return array($name, $defaultConfig);
     }
 
     /**
