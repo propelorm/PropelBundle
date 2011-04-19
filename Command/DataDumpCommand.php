@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
 /**
  * DataDumpCommand.
  *
- * @author William DURAND <william.durand1@gmail.com>  
+ * @author William DURAND <william.durand1@gmail.com>
  */
 class DataDumpCommand extends PhingCommand
 {
@@ -54,18 +54,8 @@ EOT
      * @throws \InvalidArgumentException When the target directory does not exist
      */
     protected function execute(InputInterface $input, OutputInterface $output)
-    {  
-        $container = $this->getApplication()->getKernel()->getContainer();
-        $propelConfiguration = $container->get('propel.configuration');
-        $name = $input->getOption('connection') ? $input->getOption('connection') : $container->getParameter('propel.dbal.default_connection');
-
-        if (isset($propelConfiguration['datasources'][$name])) {
-            $defaultConfig = $propelConfiguration['datasources'][$name];
-        } else {
-            throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
-        }
-
-        $output->writeln(sprintf('<info>Generate XML schema from connection named <comment>%s</comment></info>', $name));
+    {
+        $defaultConfig = $this->getConnection($input, $output);
 
         $this->callPhing('datadump', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
@@ -84,6 +74,8 @@ EOT
             $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
 
             $filesystem->copy((string) $data, $dest);
+            $filesystem->remove($data);
+
             $output->writeln(sprintf('Wrote dumped data in "<info>%s</info>".', $dest));
         }
 
