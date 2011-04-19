@@ -254,6 +254,33 @@ EOT;
     }
 
     /**
+     * Get connection by checking the input option named 'connection'.
+     * Returns the default connection if no option specified or an exception 
+     * if the specified connection doesn't exist.
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throw \InvalidArgumentException If the connection does not exist.
+     * @return array   A Propel Configuration as an array.
+     */
+    protected function getConnection(InputInterface $input, OutputInterface $output) {
+        $container = $this->getApplication()->getKernel()->getContainer();
+        $propelConfiguration = $container->get('propel.configuration');
+        $name = $input->getOption('connection') ?: $container->getParameter('propel.dbal.default_connection');
+
+
+        if (isset($propelConfiguration['datasources'][$name])) {
+            $defaultConfig = $propelConfiguration['datasources'][$name];
+        } else {
+            throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
+        }
+
+        $output->writeln(sprintf('<info>Use connection named <comment>%s</comment></info>', $name));
+
+        return $defaultConfig;
+    }
+
+    /**
      * Write Propel output as summary.
      *
      * @param $taskname A task name
