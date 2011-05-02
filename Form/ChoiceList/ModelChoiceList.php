@@ -196,8 +196,10 @@ class ModelChoiceList extends ArrayChoiceList
      */
     public function getIdentifierValues($model)
     {
-        $pks = $model->getPrimaryKey();
+        if ($model instanceof \BaseObject) {
+            return array($model->getPrimaryKey());
+        }
 
-        return is_array($pks) ? $pks : array($pks);
+        return $model->getPrimaryKeys();
     }
 }
