@@ -37,7 +37,6 @@ class MergeCollectionListener implements EventSubscriberInterface
             }
         }
 
-        echo $data;
         $event->setData($collection);
     }
 }
