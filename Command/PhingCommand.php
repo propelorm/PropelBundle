@@ -122,7 +122,7 @@ abstract class PhingCommand extends Command
         $args[] = '-f';
         $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
-        $bufferPhingOutput = $kernel->getContainer()->getParameter('kernel.debug');
+        $bufferPhingOutput = !$kernel->getContainer()->getParameter('kernel.debug');
 
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
@@ -169,7 +169,7 @@ abstract class PhingCommand extends Command
         $container = $this->getApplication()->getKernel()->getContainer();
 
         if (!$container->has('propel.configuration')) {
-            throw new \InvalidArgumentException('Could not find Propel configuration.');   
+            throw new \InvalidArgumentException('Could not find Propel configuration.');
         }
 
         $xml = strtr(<<<EOT
@@ -214,7 +214,7 @@ EOT;
 
     /**
      * Returns an array of properties as key/value pairs from an input file.
-     * 
+     *
      * @param string $file  A file properties.
      * @return array        An array of properties as key/value pairs.
      */
