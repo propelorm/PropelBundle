@@ -25,7 +25,7 @@ class MergeCollectionListener implements EventSubscriberInterface
         } else {
             // merge $data into $collection
             foreach ($collection as $model) {
-                if (!$data->contains($model)) {
+                if ($data->search($model) === false) {
                     $collection->remove($model);
                 } else {
                     $data->remove($model);
