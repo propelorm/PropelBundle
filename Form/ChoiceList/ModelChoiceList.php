@@ -30,25 +30,21 @@ class ModelChoiceList extends ArrayChoiceList
      * @var array
      */
     private $identifier = array();
-
     /**
-     * A cache for \ReflectionProperty instances for the underlying class
+     * TableMap
      *
-     * This property should only be accessed through getReflProperty().
-     *
-     * @var array
+     * @var \TableMap
      */
-    private $reflProperties = array();
+    private $table = null;
+    /**
+     * Property path
+     *
+     * @var \Symfony\Component\Form\Util\PropertyPath
+     */
+    private $propertyPath = null;
 
-    private $propertyPath;
-
-    private $relationMap;
-
-    private $table;
-
-    public function __construct(\RelationMap $relationMap, $class, $property = null, $queryBuilder = null, $choices = array())
+    public function __construct($class, $property = null, $choices = array())
     {
-        $this->relationMap  = $relationMap;
         $this->class        = $class;
 
         $queryClass         = $this->class . 'Query';
