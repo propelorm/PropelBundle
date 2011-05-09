@@ -33,26 +33,13 @@ class PropelLogger
     }
 
     /**
-     * Log message.
-     *
-     * @param string $message  The message to log
-     * @param int    $severity The numeric severity
-     */
-    public function log($message, $severity = 100)
-    {
-        if (null !== $this->logger) {
-            $this->logger->log($message, $severity);
-        }
-    }
-
-    /**
      * A convenience function for logging an alert event.
      *
      * @param mixed $message the message to log.
      */
     public function alert($message)
     {
-        $this->log($message, 400);
+        $this->logger->alert($message);
     }
 
     /**
@@ -62,7 +49,7 @@ class PropelLogger
      */
     public function crit($message)
     {
-        $this->log($message, 400);
+        $this->logger->crit($message);
     }
 
     /**
@@ -72,7 +59,7 @@ class PropelLogger
      */
     public function err($message)
     {
-        $this->log($message, 400);
+        $this->logger->err($message);
     }
 
     /**
@@ -82,7 +69,7 @@ class PropelLogger
      */
     public function warning($message)
     {
-        $this->log($message, 300);
+        $this->logger->warn($message);
     }
 
     /**
@@ -92,7 +79,7 @@ class PropelLogger
      */
     public function notice($message)
     {
-        $this->log($message, 200);
+        $this->logger->notice($message);
     }
 
     /**
@@ -102,7 +89,7 @@ class PropelLogger
      */
     public function info($message)
     {
-        $this->log($message, 200);
+        $this->logger->info($message);
     }
 
     /**
@@ -113,7 +100,7 @@ class PropelLogger
     public function debug($message)
     {
         $this->queries[] = $message;
-        $this->log($message, 100);
+        $this->logger->debug($message);
     }
 
     /**
