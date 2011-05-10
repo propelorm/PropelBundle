@@ -42,8 +42,12 @@ class ModelChoiceList extends ArrayChoiceList
      * @var \Symfony\Component\Form\Util\PropertyPath
      */
     private $propertyPath = null;
+    /**
+     * Query
+     */
+    private $query = null;
 
-    public function __construct($class, $property = null, $choices = array())
+    public function __construct($class, $property = null, $choices = array(), $queryObject = null)
     {
         $this->class        = $class;
 
@@ -52,6 +56,7 @@ class ModelChoiceList extends ArrayChoiceList
 
         $this->table        = $query->getTableMap();
         $this->identifier   = $this->table->getPrimaryKeys();
+        $this->query        = $queryObject ?: $query;
 
         // The property option defines, which property (path) is used for
         // displaying models as strings
@@ -88,8 +93,7 @@ class ModelChoiceList extends ArrayChoiceList
         if ($this->choices) {
             $models = $this->choices;
         } else {
-            $queryClass = $this->class . 'Query';
-            $models = $queryClass::create()->find();
+            $models = $this->query->find();
         }
 
         $this->choices = array();

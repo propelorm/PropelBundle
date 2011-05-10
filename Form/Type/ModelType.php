@@ -30,6 +30,7 @@ class ModelType extends AbstractType
             'expanded'      => false,
             'class'         => null,
             'property'      => null,
+            'query'         => null,
             'choices'       => array(),
             'preferred_choices' => array(),
             'multiple'      => false,
@@ -42,7 +43,8 @@ class ModelType extends AbstractType
             $defaultOptions['choice_list'] = new ModelChoiceList(
                 $options['class'],
                 $options['property'],
-                $options['choices']
+                $options['choices'],
+                $options['query']
             );
         }
 
