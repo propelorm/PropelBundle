@@ -79,8 +79,6 @@ class PropelExtension extends Extension
 
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);
-        } else {
-            throw new \InvalidArgumentException('No "dbal" configuration found.');
         }
     }
 
