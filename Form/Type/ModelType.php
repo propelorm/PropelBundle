@@ -28,9 +28,9 @@ class ModelType extends AbstractType
             'template'      => 'choice',
             'multiple'      => false,
             'expanded'      => false,
-            'relation_map'  => null,
             'class'         => null,
             'property'      => null,
+            'query'         => null,
             'choices'       => array(),
             'preferred_choices' => array(),
             'multiple'      => false,
@@ -41,10 +41,10 @@ class ModelType extends AbstractType
 
         if (!isset($options['choice_list'])) {
             $defaultOptions['choice_list'] = new ModelChoiceList(
-                $options['relation_map'],
                 $options['class'],
                 $options['property'],
-                $options['choices']
+                $options['choices'],
+                $options['query']
             );
         }
 

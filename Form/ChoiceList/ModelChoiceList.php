@@ -30,25 +30,25 @@ class ModelChoiceList extends ArrayChoiceList
      * @var array
      */
     private $identifier = array();
-
     /**
-     * A cache for \ReflectionProperty instances for the underlying class
+     * TableMap
      *
-     * This property should only be accessed through getReflProperty().
-     *
-     * @var array
+     * @var \TableMap
      */
-    private $reflProperties = array();
+    private $table = null;
+    /**
+     * Property path
+     *
+     * @var \Symfony\Component\Form\Util\PropertyPath
+     */
+    private $propertyPath = null;
+    /**
+     * Query
+     */
+    private $query = null;
 
-    private $propertyPath;
-
-    private $relationMap;
-
-    private $table;
-
-    public function __construct(\RelationMap $relationMap, $class, $property = null, $queryBuilder = null, $choices = array())
+    public function __construct($class, $property = null, $choices = array(), $queryObject = null)
     {
-        $this->relationMap  = $relationMap;
         $this->class        = $class;
 
         $queryClass         = $this->class . 'Query';
@@ -56,6 +56,7 @@ class ModelChoiceList extends ArrayChoiceList
 
         $this->table        = $query->getTableMap();
         $this->identifier   = $this->table->getPrimaryKeys();
+        $this->query        = $queryObject ?: $query;
 
         // The property option defines, which property (path) is used for
         // displaying models as strings
@@ -92,8 +93,7 @@ class ModelChoiceList extends ArrayChoiceList
         if ($this->choices) {
             $models = $this->choices;
         } else {
-            $queryClass = $this->class . 'Query';
-            $models = $queryClass::create()->find();
+            $models = $this->query->find();
         }
 
         $this->choices = array();
