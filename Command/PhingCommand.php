@@ -2,23 +2,11 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Bundle\FrameworkBundle\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 use Symfony\Component\Finder\Finder;
-
-/*
- * This file is part of the Symfony framework.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
 
 /**
  * Wrapper command for Phing tasks
@@ -34,6 +22,22 @@ abstract class PhingCommand extends Command
     protected $buffer = null;
     protected $buildPropertiesFile = null;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        parent::initialize($input, $output);
+
+        $this->checkConfiguration();
+    }
+
+    /**
+     * Call a Phing task.
+     *
+     * @param string $taskName  A Propel task name.
+     * @param array $properties An array of properties to pass to Phing.
+     */
     protected function callPhing($taskName, $properties = array())
     {
         $kernel = $this->getApplication()->getKernel();
@@ -169,7 +173,7 @@ abstract class PhingCommand extends Command
         $container = $this->getApplication()->getKernel()->getContainer();
 
         if (!$container->has('propel.configuration')) {
-            throw new \InvalidArgumentException('Could not find Propel configuration.');   
+            throw new \InvalidArgumentException('Could not find Propel configuration.');
         }
 
         $xml = strtr(<<<EOT
@@ -214,7 +218,7 @@ EOT;
 
     /**
      * Returns an array of properties as key/value pairs from an input file.
-     * 
+     *
      * @param string $file  A file properties.
      * @return array        An array of properties as key/value pairs.
      */
@@ -297,6 +301,17 @@ EOT;
 
                 $output->writeln($info);
             }
+        }
+    }
+
+    /**
+     * Check the PropelConfiguration object.
+     */
+    protected function checkConfiguration()
+    {
+        $parameters = $this->container->get('propel.configuration')->getParameters();
+        if (0 === count($parameters['datasources'])) {
+            throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
     }
 }
