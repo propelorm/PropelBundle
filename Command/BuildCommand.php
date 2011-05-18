@@ -29,9 +29,9 @@ class BuildCommand extends PhingCommand
         $this
             ->setDescription('Hub for Propel build commands (model, sql)')
             ->setDefinition(array(
-                new InputOption('--classes', '', InputOption::VALUE_NONE, 'Build only classes'),
-                new InputOption('--sql', '', InputOption::VALUE_NONE, 'Build only code'),
-                new InputOption('--insert-sql', '', InputOption::VALUE_NONE, 'Build all and insert SQL'),
+                new InputOption('classes', '', InputOption::VALUE_NONE, 'Build only classes'),
+                new InputOption('sql', '', InputOption::VALUE_NONE, 'Build only code'),
+                new InputOption('insert-sql', '', InputOption::VALUE_NONE, 'Build all and insert SQL'),
                 new InputOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ))
             ->setName('propel:build');
@@ -64,7 +64,7 @@ class BuildCommand extends PhingCommand
             $insertCommand->setApplication($this->getApplication());
 
             // By-pass the '--force' required option
-            $this->addOption('--force', '', InputOption::VALUE_NONE, '');
+            $this->addOption('force', '', InputOption::VALUE_NONE, '');
             $input->setOption('force', true);
 
             $insertCommand->execute($input, $output);
