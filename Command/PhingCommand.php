@@ -310,7 +310,7 @@ EOT;
     protected function checkConfiguration()
     {
         $parameters = $this->container->get('propel.configuration')->getParameters();
-        if (0 === count($parameters['datasources'])) {
+        if (!isset($parameters['datasources']) ||0 === count($parameters['datasources'])) {
             throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
     }
