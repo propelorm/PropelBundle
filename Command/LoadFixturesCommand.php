@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
 /**
- * LoadFixturesCommand : loads XML fixtures files.
+ * LoadFixturesCommand
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
@@ -21,12 +21,10 @@ class LoadFixturesCommand extends PhingCommand
      * Default fixtures directory.
      */
     private $defaultFixturesDir = 'propel/fixtures';
-
     /**
      * Absolute path for fixtures directory
      */
     private $absoluteFixturesPath = '';
-
     /**
      * Filesystem for manipulating files
      */
@@ -38,10 +36,10 @@ class LoadFixturesCommand extends PhingCommand
     protected function configure()
     {
         $this
-            ->setDescription('Load fixtures')
+            ->setDescription('Load XML fixtures')
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory where XML or/and SQL fixtures files are located', $this->defaultFixturesDir)
-            ->addOption('xml', '', InputOption::VALUE_NONE, 'Load xml fixtures')
-            ->addOption('sql', '', InputOption::VALUE_NONE, 'Load sql fixtures')
+            ->addOption('xml', '', InputOption::VALUE_NONE, 'Load XML fixtures')
+            ->addOption('sql', '', InputOption::VALUE_NONE, 'Load SQL fixtures')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>propel:load-fixtures</info> loads <info>XML</info> and/or <info>SQL</info> fixtures.
@@ -56,8 +54,8 @@ The <info>--dir</info> parameter allows you to change the directory that contain
 The <info>--xml</info> parameter allows you to load only <info>XML</info> fixtures.
 The <info>--sql</info> parameter allows you to load only <info>SQL</info> fixtures.
 
-You can mix <info>--xml</info> parameter and <info>--sql</info> parameter to load XML and SQL fixtures.
-If none of this parameter are set all files, XML and SQL, in the directory will be load.
+You can mix <info>--xml</info> and <info>--sql</info> parameters to load both XML and SQL fixtures.
+If none of this parameter is set, all XML and SQL files in the directory will be load.
 
 XML fixtures files are the same XML files you can get with the command <info>propel:data-dump</info>:
 <comment>
