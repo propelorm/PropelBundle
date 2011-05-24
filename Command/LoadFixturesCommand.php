@@ -38,7 +38,7 @@ class LoadFixturesCommand extends PhingCommand
     protected function configure()
     {
         $this
-            ->setDescription('Load XML fixtures')
+            ->setDescription('Load fixtures')
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory where XML or/and SQL fixtures files are located', $this->defaultFixturesDir)
             ->addOption('xml', '', InputOption::VALUE_NONE, 'Load xml fixtures')
             ->addOption('sql', '', InputOption::VALUE_NONE, 'Load sql fixtures')
@@ -55,6 +55,7 @@ The <info>--dir</info> parameter allows you to change the directory that contain
 
 The <info>--xml</info> parameter allows you to load only <info>XML</info> fixtures.
 The <info>--sql</info> parameter allows you to load only <info>SQL</info> fixtures.
+
 You can mix <info>--xml</info> parameter and <info>--sql</info> parameter to load XML and SQL fixtures.
 If none of this parameter are set all files, XML and SQL, in the directory will be load.
 
@@ -98,7 +99,7 @@ EOT
 
     /**
      * Load XML fixtures
-     * 
+     *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
@@ -108,7 +109,7 @@ EOT
         $output->writeln('<info>Loading XML Fixtures.</info>');
 
         $finder = new Finder();
-      
+
         // Create a "datadb.map" file
         $datadbContent = '';
         $datas = $finder->name('*.xml')->in($this->absoluteFixturesPath);
