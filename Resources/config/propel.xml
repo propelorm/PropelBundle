@@ -10,6 +10,7 @@
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.build_properties.class">Propel\PropelBundle\DependencyInjection\Properties</parameter>
+        <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
     </parameters>
 
     <services>
@@ -29,5 +30,8 @@
             <argument type="service" id="propel.configuration" />
         </service>
 
+        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
+            <tag name="twig.extension" />
+        </service>
     </services>
 </container>

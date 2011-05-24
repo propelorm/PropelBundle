@@ -30,6 +30,11 @@
 
 {% block panel %}
     {# the panel content #}
+    <style type="text/css">
+    .SQLKeyword {
+        color: blue;
+    }
+    </style>
 
     <h2>Queries</h2>
     <table summary="Show logged queries">
@@ -45,7 +50,7 @@
             {% for query in collector.queries %}
             <tr>
                 <td>
-                    <code>{{ query.sql }}</code>
+                    <code>{{ query.sql|formatSQL }}</code>
                     <div style="color: gray;font-size: 0.9em;">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
                 </td>
             </tr>
