@@ -195,6 +195,9 @@ EOT
           <user>%username%</user>
           <password>%password%</password>
         </connection>
+        <settings>
+          <setting id="charset">%charset%</setting>
+        </settings>
       </datasource>
 
 EOT
@@ -204,6 +207,7 @@ EOT
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
                 '%password%' => $datasource['connection']['password'],
+                '%charset%'  => $container->getParameter('propel.charset'),
             ));
         }
 
