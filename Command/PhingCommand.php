@@ -194,6 +194,7 @@ EOT
           <dsn>%dsn%</dsn>
           <user>%username%</user>
           <password>%password%</password>
+          <charset>%charset%</charset>
         </connection>
       </datasource>
 
@@ -204,6 +205,7 @@ EOT
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
                 '%password%' => $datasource['connection']['password'],
+                '%charset%'  => $datasource['connection']['settings']['charset']['value'],
             ));
         }
 
@@ -310,7 +312,7 @@ EOT;
     protected function checkConfiguration()
     {
         $parameters = $this->container->get('propel.configuration')->getParameters();
-        if (!isset($parameters['datasources']) ||0 === count($parameters['datasources'])) {
+        if (!isset($parameters['datasources']) || 0 === count($parameters['datasources'])) {
             throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
     }
