@@ -42,6 +42,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getOption('verbose')) {
+           $this->additionalPhingArgs[]= 'verbose';
+        }
         $this->callPhing('sql', array('propel.packageObjectModel' => false));
 
         $filesystem = new Filesystem();
