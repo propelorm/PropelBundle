@@ -126,7 +126,7 @@ abstract class PhingCommand extends Command
         $args[] = '-f';
         $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
-        $bufferPhingOutput = !$kernel->getContainer()->getParameter('kernel.debug');
+        $bufferPhingOutput = true; //!$kernel->getContainer()->getParameter('kernel.debug');
 
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
@@ -141,26 +141,30 @@ abstract class PhingCommand extends Command
 
         // enable output buffering
         Phing::setOutputStream(new \OutputStream(fopen('php://output', 'w')));
+        Phing::setErrorStream(new \OutputStream(fopen('php://output', 'w')));
         Phing::startup();
         Phing::setProperty('phing.home', getenv('PHING_HOME'));
 
-        if ($bufferPhingOutput) {
-            ob_start();
-        }
+        ob_start();
 
-        $m = new Phing();
-        $m->execute($args);
-        $m->runBuild();
+        $phing = new Phing();
+        $returnStatus = true; // optimistic way
 
-        if ($bufferPhingOutput) {
+        try {
+            $phing->execute($args);
+            $phing->runBuild();
+
             $this->buffer = ob_get_contents();
-            ob_end_clean();
+            $returnStatus = false !== preg_match('#failed. Aborting.#', $this->buffer);
+        } catch(Exception $e) {
+            $returnStatus = false;
         }
+
+        ob_end_flush();
 
         chdir($kernel->getRootDir());
 
-        $ret = true;
-        return $ret;
+        return $returnStatus;
     }
 
     /**

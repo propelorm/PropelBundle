@@ -47,7 +47,7 @@ EOT
         if ($input->getOption('force')) {
             list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-            $this->callPhing('insert-sql', array(
+            $ret = $this->callPhing('insert-sql', array(
                 'propel.database.url'       => $defaultConfig['connection']['dsn'],
                 'propel.database.database'  => $defaultConfig['adapter'],
                 'propel.database.user'      => $defaultConfig['connection']['user'],
@@ -55,7 +55,11 @@ EOT
                 'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
             ));
 
-            $output->writeln('<info>All SQL statements have been executed.</info>');
+            if (true === $ret) {
+                $output->writeln('<info>All SQL statements have been executed.</info>');
+            } else {
+                $output->writeln('<error>WARNING ! An error has occured.</error>');
+            }
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
         }
