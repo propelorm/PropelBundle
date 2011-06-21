@@ -46,7 +46,7 @@ class ModelToIdTransformer implements DataTransformerInterface
         }
 
         if (!($model = $this->choiceList->getModel($key))) {
-            throw new TransformationFailedException('The model with key "%s" could not be found', $key);
+            throw new TransformationFailedException(sprintf('The model with key "%s" could not be found', $key));
         }
 
         return $model;
