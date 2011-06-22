@@ -2,7 +2,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Util\Filesystem;
@@ -14,7 +14,7 @@ use Symfony\Component\Finder\Finder;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-abstract class PhingCommand extends Command
+abstract class PhingCommand extends ContainerAwareCommand
 {
     protected $additionalPhingArgs = array();
     protected $tempSchemas = array();
@@ -115,7 +115,7 @@ abstract class PhingCommand extends Command
             'propel.packageObjectModel' => true,
         ), $properties);
         $properties = array_merge(
-            $kernel->getContainer()->get('propel.build_properties')->getProperties(),
+            $this->getContainer()->get('propel.build_properties')->getProperties(),
             $properties
         );
         foreach ($properties as $key => $value) {
@@ -124,9 +124,9 @@ abstract class PhingCommand extends Command
 
         // Build file
         $args[] = '-f';
-        $args[] = realpath($kernel->getContainer()->getParameter('propel.path').'/generator/build.xml');
+        $args[] = realpath($this->getContainer()->getParameter('propel.path').'/generator/build.xml');
 
-        $bufferPhingOutput = true; //!$kernel->getContainer()->getParameter('kernel.debug');
+        $bufferPhingOutput = !$this->getContainer()->getParameter('kernel.debug');
 
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
@@ -174,7 +174,7 @@ abstract class PhingCommand extends Command
      */
     protected function createBuildTimeFile($file)
     {
-        $container = $this->getApplication()->getKernel()->getContainer();
+        $container = $this->getContainer();
 
         if (!$container->has('propel.configuration')) {
             throw new \InvalidArgumentException('Could not find Propel configuration.');
@@ -276,7 +276,7 @@ EOT;
      * @return array
      */
     protected function getConnection(InputInterface $input, OutputInterface $output) {
-        $container = $this->getApplication()->getKernel()->getContainer();
+        $container = $this->getContainer();
         $propelConfiguration = $container->get('propel.configuration');
         $name = $input->getOption('connection') ?: $container->getParameter('propel.dbal.default_connection');
 
@@ -317,7 +317,7 @@ EOT;
      */
     protected function checkConfiguration()
     {
-        $parameters = $this->container->get('propel.configuration')->getParameters();
+        $parameters = $this->getContainer()->get('propel.configuration')->getParameters();
         if (!isset($parameters['datasources']) ||0 === count($parameters['datasources'])) {
             throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
