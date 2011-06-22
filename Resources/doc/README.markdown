@@ -249,7 +249,7 @@ You can generate **Graphviz** file for your project by using the following comma
 It will write files in `app/propel/graph/`.
 
 
-## Database
+### Database
 
 You can drop a **database**:
 
