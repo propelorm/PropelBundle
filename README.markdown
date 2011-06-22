@@ -34,7 +34,7 @@ Installation
     > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
 
  * Register this bundle in the `AppKernel` class:
- 
+
         public function registerBundles()
         {
             $bundles = array(
@@ -247,6 +247,15 @@ You can generate **Graphviz** file for your project by using the following comma
     > php app/console propel:graphviz
 
 It will write files in `app/propel/graph/`.
+
+
+## Database
+
+You can drop a **database**:
+
+    > php app/console propel:database:drop
+
+As usual, `--connection` allows to specify a connection.
 
 
 Known Problems

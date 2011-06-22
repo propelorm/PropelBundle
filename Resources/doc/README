@@ -34,7 +34,7 @@ Installation
     > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
 
  * Register this bundle in the `AppKernel` class:
- 
+
         public function registerBundles()
         {
             $bundles = array(
@@ -220,12 +220,17 @@ SQL will be write in `app/propel/sql/`.
 
 You can load your own fixtures by using the following command:
 
-    > php app/console propel:load-fixtures  [-d|--dir="..."] [--connection[="..."]]
+    > php app/console propel:load-fixtures [-d|--dir[="..."]] [--xml] [--sql] [--connection[="..."]]
 
 As usual, `--connection` allows to specify a connection.
 
 The `--dir` option allows to specify a directory containing the fixtures (default is: `app/propel/fixtures/`).
 Note that the `--dir` expects a relative path from the root dir (which is `app/`).
+
+The --xml parameter allows you to load only XML fixtures.
+The --sql parameter allows you to load only SQL fixtures.
+You can mix --xml parameter and --sql parameter to load XML and SQL fixtures.
+If none of this parameter are set all files, XML and SQL, in the directory will be load.
 
 A valid _XML fixtures file_ is:
 
@@ -242,6 +247,15 @@ You can generate **Graphviz** file for your project by using the following comma
     > php app/console propel:graphviz
 
 It will write files in `app/propel/graph/`.
+
+
+## Database
+
+You can drop a **database**:
+
+    > php app/console propel:database:drop
+
+As usual, `--connection` allows to specify a connection.
 
 
 Known Problems
