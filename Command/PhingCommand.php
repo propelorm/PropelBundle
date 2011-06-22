@@ -160,7 +160,11 @@ abstract class PhingCommand extends ContainerAwareCommand
             $returnStatus = false;
         }
 
-        ob_end_clean();
+        if ($bufferPhingOutput) {
+            ob_end_clean();
+        } else {
+            ob_end_flush();
+        }
 
         chdir($kernel->getRootDir());
 
@@ -344,5 +348,13 @@ EOT;
             $this->getHelperSet()->get('formatter')->formatBlock($text, $style, true),
             '',
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function askConfirmation(OutputInterface $output, $question, $default = null)
+    {
+        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
     }
 }
