@@ -52,7 +52,7 @@ EOT
             try {
                 $connection = \Propel::getConnection($name);
                 $statement  = $connection->prepare($query);
-                //$statement->execute();
+                $statement->execute();
                 $output->writeln(sprintf('<info><comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (Exception $e) {
                 $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
