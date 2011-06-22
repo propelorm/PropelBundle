@@ -33,6 +33,8 @@ class DatabaseCreateCommand extends PhingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:database:create');
+
         list($name, $config) = $this->getConnection($input, $output);
         $dbName = $this->parseDbName($config['connection']['dsn']);
         $query  = 'CREATE DATABASE '. $dbName .';';

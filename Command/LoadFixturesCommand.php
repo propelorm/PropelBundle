@@ -79,18 +79,18 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:load-fixtures');
+
         $this->absoluteFixturesPath = $this->getApplication()->getKernel()->getRootDir() . DIRECTORY_SEPARATOR . $input->getOption('dir');
         $this->filesystem = new Filesystem();
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql'));
 
-        if ($input->getOption('xml') || $noOptions)
-        {
+        if ($input->getOption('xml') || $noOptions) {
             $this->loadXmlFixtures($input, $output);
         }
 
-        if ($input->getOption('sql') || $noOptions)
-        {
+        if ($input->getOption('sql') || $noOptions) {
             $this->loadSqlFixtures($input, $output);
         }
 

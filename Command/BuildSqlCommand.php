@@ -43,10 +43,12 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('verbose')) {
-           $this->additionalPhingArgs[]= 'verbose';
+            $this->additionalPhingArgs[] = 'verbose';
         }
 
         if (true === $this->callPhing('sql', array('propel.packageObjectModel' => false))) {
+            $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+
             $filesystem = new Filesystem();
             $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
             $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');

@@ -45,6 +45,8 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('force')) {
+            $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
+
             list($name, $defaultConfig) = $this->getConnection($input, $output);
 
             $ret = $this->callPhing('insert-sql', array(

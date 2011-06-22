@@ -45,6 +45,8 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('force')) {
+            $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
+
             list($name, $config) = $this->getConnection($input, $output);
             $dbName = $this->parseDbName($config['connection']['dsn']);
             $query  = 'DROP DATABASE '. $dbName .';';
