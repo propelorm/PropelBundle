@@ -160,7 +160,7 @@ abstract class PhingCommand extends ContainerAwareCommand
             $returnStatus = false;
         }
 
-        ob_end_flush();
+        ob_end_clean();
 
         chdir($kernel->getRootDir());
 
@@ -331,5 +331,18 @@ EOT;
         if (!isset($parameters['datasources']) ||0 === count($parameters['datasources'])) {
             throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
+    }
+
+    /**
+     * Comes from the SensioGeneratorBundle.
+     * @see https://github.com/sensio/SensioGeneratorBundle/blob/master/Command/Helper/DialogHelper.php#L52
+     */
+    public function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
+    {
+        $output->writeln(array(
+            '',
+            $this->getHelperSet()->get('formatter')->formatBlock($text, $style, true),
+            '',
+        ));
     }
 }
