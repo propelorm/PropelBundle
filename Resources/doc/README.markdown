@@ -34,28 +34,32 @@ Installation
     > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
 
  * Register this bundle in the `AppKernel` class:
- 
-        public function registerBundles()
-        {
-            $bundles = array(
-                ...
 
-                // PropelBundle
-                new Propel\PropelBundle\PropelBundle(),
-                // register your bundles
-                new Sensio\HelloBundle\HelloBundle(),
-            );
+``` php
+public function registerBundles()
+{
+    $bundles = array(
+        ...
 
-            ...
-        }
+        // PropelBundle
+        new Propel\PropelBundle\PropelBundle(),
+        // register your bundles
+        new Sensio\HelloBundle\HelloBundle(),
+    );
+
+    ...
+}
+```
 
   * Don't forget to register the PropelBundle namespace in `app/autoload.php`:
 
-        $loader->registerNamespaces(array(
-            ...
+``` php
+$loader->registerNamespaces(array(
+    ...
 
-            'Propel' => __DIR__.'/../vendor/bundles',
-        ));
+    'Propel' => __DIR__.'/../vendor/bundles',
+));
+```
 
 
 Sample Configuration
@@ -63,34 +67,36 @@ Sample Configuration
 
 ### Project configuration
 
-    # in app/config/config.yml
-    propel:
-        path:       "%kernel.root_dir%/../vendor/propel"
-        phing_path: "%kernel.root_dir%/../vendor/phing"
-    #    charset:   "UTF8"
-    #    logging:   %kernel.debug%
-    #    build_properties:
-    #        xxxxx.xxxxx: xxxxxx
-    #        xxxxx.xxxxx: xxxxxx
+``` yaml
+# in app/config/config.yml
+propel:
+    path:       "%kernel.root_dir%/../vendor/propel"
+    phing_path: "%kernel.root_dir%/../vendor/phing"
+#    charset:   "UTF8"
+#    logging:   %kernel.debug%
+#    build_properties:
+#        xxxxx.xxxxx: xxxxxx
+#        xxxxx.xxxxx: xxxxxx
 
-    # in app/config/config*.yml
-    propel:
-        dbal:
-            driver:               mysql
-            user:                 root
-            password:             null
-            dsn:                  mysql:host=localhost;dbname=test
-            options:              {}
-            attributes:           {}
-    #        default_connection:       default
-    #        connections:
-    #           default:
-    #               driver:               mysql
-    #               user:                 root
-    #               password:             null
-    #               dsn:                  mysql:host=localhost;dbname=test
-    #               options:              {}
-    #               attributes:           {}
+# in app/config/config*.yml
+propel:
+    dbal:
+        driver:               mysql
+        user:                 root
+        password:             null
+        dsn:                  mysql:host=localhost;dbname=test
+        options:              {}
+        attributes:           {}
+#        default_connection:       default
+#        connections:
+#           default:
+#               driver:               mysql
+#               user:                 root
+#               password:             null
+#               dsn:                  mysql:host=localhost;dbname=test
+#               options:              {}
+#               attributes:           {}
+```
 
 
 ### Build properties
@@ -102,38 +108,42 @@ You can define _build properties_ by creating a `propel.ini` file in `app/config
 
 But you can follow the Symfony2 way by adding build properties in `app/config/config.yml`:
 
-    # in app/config/config.yml
-    propel:
-        build_properties:
-            xxxxx.xxxx.xxxxx:   XXXX
-            xxxxx.xxxx.xxxxx:   XXXX
-            ...
+``` yaml
+# in app/config/config.yml
+propel:
+    build_properties:
+        xxxxx.xxxx.xxxxx:   XXXX
+        xxxxx.xxxx.xxxxx:   XXXX
+        ...
+```
 
 
 ### Sample Schema
 
 Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xml` :
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <database name="default" namespace="Sensio\HelloBundle\Model" defaultIdMethod="native">
+``` xml
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Sensio\HelloBundle\Model" defaultIdMethod="native">
 
-        <table name="book">
-            <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-            <column name="title" type="varchar" primaryString="1" size="100" />
-            <column name="ISBN" type="varchar" size="20" />
-            <column name="author_id" type="integer" />
-            <foreign-key foreignTable="author">
-                <reference local="author_id" foreign="id" />
-            </foreign-key>
-        </table>
+    <table name="book">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" type="varchar" primaryString="1" size="100" />
+        <column name="ISBN" type="varchar" size="20" />
+        <column name="author_id" type="integer" />
+        <foreign-key foreignTable="author">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+    </table>
 
-        <table name="author">
-            <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-            <column name="first_name" type="varchar" size="100" />
-            <column name="last_name" type="varchar" size="100" />
-        </table>
+    <table name="author">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="first_name" type="varchar" size="100" />
+        <column name="last_name" type="varchar" size="100" />
+    </table>
 
-    </database>
+</database>
+```
 
 
 Commands
@@ -220,19 +230,26 @@ SQL will be write in `app/propel/sql/`.
 
 You can load your own fixtures by using the following command:
 
-    > php app/console propel:load-fixtures  [-d|--dir="..."] [--connection[="..."]]
+    > php app/console propel:load-fixtures [-d|--dir[="..."]] [--xml] [--sql] [--connection[="..."]]
 
 As usual, `--connection` allows to specify a connection.
 
 The `--dir` option allows to specify a directory containing the fixtures (default is: `app/propel/fixtures/`).
 Note that the `--dir` expects a relative path from the root dir (which is `app/`).
 
+The --xml parameter allows you to load only XML fixtures.
+The --sql parameter allows you to load only SQL fixtures.
+You can mix --xml parameter and --sql parameter to load XML and SQL fixtures.
+If none of this parameter are set all files, XML and SQL, in the directory will be load.
+
 A valid _XML fixtures file_ is:
 
-    <?xml version="1.0" encoding="utf-8"?>
-    <dataset name="all">
-        <Object Id="..." />
-    </dataset>
+``` xml
+<?xml version="1.0" encoding="utf-8"?>
+<dataset name="all">
+    <Object Id="..." />
+</dataset>
+```
 
 
 ### Graphviz
@@ -242,6 +259,24 @@ You can generate **Graphviz** file for your project by using the following comma
     > php app/console propel:graphviz
 
 It will write files in `app/propel/graph/`.
+
+
+### Database
+
+You can create a **database**:
+
+    > php app/console propel:database:create [--connection[=""]]
+
+As usual, `--connection` allows to specify a connection.
+
+
+You can drop a **database**:
+
+    > php app/console propel:database:drop [--connection[=""]] [--force]
+
+As usual, `--connection` allows to specify a connection.
+
+Note that the `--force` option is needed to actually execute the SQL statements.
 
 
 Known Problems

@@ -53,7 +53,7 @@ class PropelDataCollector extends DataCollector
     {
         $this->data = array(
             'queries'        => $this->buildQueries(),
-            'querycount'     => \Propel::getConnection($this->connectionName)->getQueryCount(),
+            'querycount'     => $this->countQueries(),
             'connectionName' => $this->connectionName,
         );
     }
@@ -95,6 +95,15 @@ class PropelDataCollector extends DataCollector
         }
 
         return $queries;
+    }
+
+    /**
+     * Count queries.
+     * @return int  The number of queries.
+     */
+    private function countQueries()
+    {
+        return count($this->logger->getQueries());
     }
 
     /**

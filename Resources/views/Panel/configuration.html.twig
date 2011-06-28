@@ -38,9 +38,8 @@
     <tbody>
         {% for name, config in configuration.datasources %}
         <tr>
-            <th rowspan="7" style="vertical-align: top;">
+            <th rowspan="5" style="vertical-align: top;">
                 {{ name }}
-                {% if name == default_connection %} <em style="color: red;">(current)</em>{% endif %}
             </th>
             <th>Adapter</th>
             <td>{{ config.adapter }}</td>
@@ -49,14 +48,6 @@
             <th>DSN</th>
             <td>{{ config.connection.dsn }}</td>
         </tr>
-        <tr>
-            <th>User</th>
-            <td>{{ config.connection.user }}</td>
-        </tr>
-        <tr>
-            <th>Password</th>
-            <td>{{ config.connection.password }}</td>
-        </tr> 
         <tr>
             <th>Class</th>
             <td>{{ config.connection.classname }}</td>

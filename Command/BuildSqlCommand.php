@@ -42,23 +42,35 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->callPhing('sql', array('propel.packageObjectModel' => false));
-
-        $filesystem = new Filesystem();
-        $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
-        $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
-
-        foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-            $sqlFile = str_replace('.xml', '.sql', $schemaFile);
-            $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
-            $targetSqlFilePath = $basePath . DIRECTORY_SEPARATOR . $targetSqlFile;
-            $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
-            $filesystem->remove($targetSqlFilePath);
-            $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
-
-            $output->writeln(sprintf('Wrote SQL file for bundle <info>%s</info> in <comment>%s</comment>.', $schemaDetails['bundle'], $targetSqlFilePath));
+        if ($input->getOption('verbose')) {
+            $this->additionalPhingArgs[] = 'verbose';
         }
 
-        file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
+        if (true === $this->callPhing('sql', array('propel.packageObjectModel' => false))) {
+            $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+
+            $filesystem = new Filesystem();
+            $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+            $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
+
+            foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
+                $sqlFile = str_replace('.xml', '.sql', $schemaFile);
+                $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
+                $targetSqlFilePath = $basePath . DIRECTORY_SEPARATOR . $targetSqlFile;
+                $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
+                $filesystem->remove($targetSqlFilePath);
+                $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
+
+                $output->writeln(sprintf(
+                    'Wrote SQL file for bundle <info>%s</info> in <comment>%s</comment>.',
+                    $schemaDetails['bundle'],
+                    $targetSqlFilePath)
+                );
+            }
+
+            file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
+        } else {
+            $output->writeln('<error>WARNING ! An error has occured.</error>');
+        }
     }
 }

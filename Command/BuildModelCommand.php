@@ -38,10 +38,22 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->callPhing('om');
+        if ($input->getOption('verbose')) {
+           $this->additionalPhingArgs[] = 'verbose';
+        }
 
-        foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-            $output->writeln(sprintf('Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.', $schemaDetails['bundle'], $schemaDetails['path']));
+        if (true === $this->callPhing('om')) {
+            $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
+
+            foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
+                $output->writeln(sprintf(
+                    'Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.',
+                    $schemaDetails['bundle'],
+                    $schemaDetails['path']
+                ));
+            }
+        } else {
+            $output->writeln('<error>WARNING ! An error has occured.</error>');
         }
     }
 }
