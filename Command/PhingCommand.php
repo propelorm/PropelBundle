@@ -58,7 +58,8 @@ abstract class PhingCommand extends ContainerAwareCommand
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
                 $parts = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-                $prefix = implode('.', array_slice($parts, 1, -2));
+                $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+                $prefix = implode('.', array_slice($parts, 1, $length));
 
                 foreach ($schemas as $schema) {
                     $tempSchema = md5($schema).'_'.$schema->getBaseName();
