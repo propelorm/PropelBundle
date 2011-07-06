@@ -98,7 +98,7 @@ EOT
 
           $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
           $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
         }
