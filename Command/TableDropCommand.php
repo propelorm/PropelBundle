@@ -93,10 +93,17 @@ EOT
 
           $tablesToDelete = join(', ', $tablesToDelete);
 
-          $dropStatement = $connection->prepare('DROP TABLE ' . $tablesToDelete . ' ;');
-          $dropStatement->execute();
+          if ($tablesToDelete != '')
+          {
+            $dropStatement = $connection->prepare('DROP TABLE ' . $tablesToDelete . ' ;');
+            $dropStatement->execute();
 
-          $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
+            $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
+          }
+          else
+          {
+            $output->writeln('No table <info>has been dropped</info>');
+          }
         }
         catch (\Exception $e)
         {
