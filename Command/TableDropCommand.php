@@ -69,8 +69,7 @@ EOT
 
         try
         {
-          list($name, $config) = $this->getConnection($input, $output);
-          $connection = \Propel::getConnection($name);
+          $connection = $this->getContainer()->get('propel.connection');
 
           $showStatement = $connection->prepare('SHOW TABLES;');
           $showStatement->execute();
@@ -91,12 +90,13 @@ EOT
             $tablesToDelete = $allTables;
           }
 
+          $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
+
           $tablesToDelete = join(', ', $tablesToDelete);
 
           if ($tablesToDelete != '')
           {
-            $dropStatement = $connection->prepare('DROP TABLE ' . $tablesToDelete . ' ;');
-            $dropStatement->execute();
+            $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
 
             $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
           }
@@ -104,6 +104,8 @@ EOT
           {
             $output->writeln('No table <info>has been dropped</info>');
           }
+
+          $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
         }
         catch (\Exception $e)
         {
