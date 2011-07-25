@@ -205,9 +205,6 @@ EOT
           <password>%password%</password>
           <charset>%charset%</charset>
         </connection>
-        <settings>
-          <setting id="charset">%charset%</setting>
-        </settings>
       </datasource>
 
 EOT
