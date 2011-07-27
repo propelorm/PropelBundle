@@ -9,10 +9,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * DatabaseDropCommand class.
- * Useful to drop a database.
+ * TableDropCommand class.
+ * Useful to drop table in a database.
  *
- * @author William DURAND
+ * @author Maxime AILLOUD
  */
 class TableDropCommand extends PhingCommand
 {
