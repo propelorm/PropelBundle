@@ -111,6 +111,7 @@ EOT
         // Create a "datadb.map" file
         $datadbContent = '';
         $datas = $finder->name('*.xml')->in($this->absoluteFixturesPath);
+
         foreach($datas as $data) {
             $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
 
@@ -137,7 +138,6 @@ EOT
         $insertCommand->execute($input, $output);
 
         $this->removeTemporaryFiles();
-
         $this->filesystem->remove($datadbFile);
     }
 
@@ -159,7 +159,6 @@ EOT
         $datas = $finder->name('*.sql')->in($this->absoluteFixturesPath);
         foreach($datas as $data) {
             $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-
             $sqldbContent .= $data->getFilename() . '=default' . PHP_EOL;
         }
 
