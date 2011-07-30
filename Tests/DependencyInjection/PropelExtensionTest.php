@@ -33,19 +33,6 @@ class PropelExtensionTest extends TestCase
         $loader = new PropelExtension();
         try {
             $loader->load(array(array(
-                'path'       => '/propel',
-                'phing_path' => '/phing',
-            )), $container);
-            $this->fail();
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('InvalidArgumentException', $e,
-                '->load() throws an \InvalidArgumentException if a "dbal" configuration is not set.');
-        }
-
-        $container = $this->getContainer();
-        $loader = new PropelExtension();
-        try {
-            $loader->load(array(array(
                 'path' => '/propel',
                 'dbal' => array(),
             )), $container);

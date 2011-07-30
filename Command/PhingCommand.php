@@ -203,10 +203,8 @@ EOT
           <dsn>%dsn%</dsn>
           <user>%username%</user>
           <password>%password%</password>
+          <charset>%charset%</charset>
         </connection>
-        <settings>
-          <setting id="charset">%charset%</setting>
-        </settings>
       </datasource>
 
 EOT
