@@ -48,7 +48,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
       $tablesToDelete = $input->getArgument('table');
-      
+
       if ($input->getOption('force'))
       {
         $nbTable = count($tablesToDelete);
@@ -69,7 +69,8 @@ EOT
 
         try
         {
-          $connection = $this->getContainer()->get('propel.connection');
+          list($name, $config) = $this->getConnection($input, $output);
+          $connection = \Propel::getConnection($name);
 
           $showStatement = $connection->prepare('SHOW TABLES;');
           $showStatement->execute();
