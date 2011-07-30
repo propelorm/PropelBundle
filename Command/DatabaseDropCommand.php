@@ -25,9 +25,9 @@ class DatabaseDropCommand extends PhingCommand
             ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:database:drop</info> command will drop your database.</comment>.
+The <info>propel:database:drop</info> command will drop your database.
 
-  <info>php app/console propel:insert-sql</info>
+  <info>php app/console propel:database:drop</info>
 
 The <info>--force</info> parameter has to be used to actually drop the database.
 The <info>--connection</info> parameter allows you to change the connection to use.
@@ -64,7 +64,7 @@ EOT
                 $statement  = $connection->prepare($query);
                 $statement->execute();
                 $output->writeln(sprintf('<info><comment>%s</comment> has been dropped.</info>', $dbName));
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
             }
         } else {

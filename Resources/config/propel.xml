@@ -6,6 +6,8 @@
 
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
+        <parameter key="propel.connection.class">PDO</parameter>
+        <parameter key="propel.connection_factory.class">Propel</parameter>
         <parameter key="propel.configuration.class">PropelConfiguration</parameter>
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
@@ -16,6 +18,8 @@
 
     <services>
         <service id="propel.configuration" class="%propel.configuration.class%" />
+
+        <service id="propel.connection" class="%propel.connection.class%" factory-class="%propel.connection_factory.class%" factory-method="getConnection" abstract="false" />
 
         <service id="propel.build_properties" class="%propel.build_properties.class%" />
 
