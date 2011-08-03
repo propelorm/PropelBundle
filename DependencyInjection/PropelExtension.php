@@ -121,12 +121,6 @@ class PropelExtension extends Extension
         }
 
         $container->getDefinition('propel.configuration')->setArguments(array($c));
-
-        $container
-          ->getDefinition('propel.connection')
-          ->setArguments(array($name)
-          )
-        ;
     }
 
     /**
