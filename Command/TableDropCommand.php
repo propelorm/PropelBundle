@@ -36,85 +36,75 @@ The <info>--force</info> parameter has to be used to actually drop the table.
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
 EOT
-            )
+        )
             ->setName('propel:table:drop');
     }
 
-  /**
-   * @see Command
-   *
-   * @throws \InvalidArgumentException When the target directory does not exist
-   */
+    /**
+     * @see Command
+     *
+     * @throws \InvalidArgumentException When the target directory does not exist
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-      $tablesToDelete = $input->getArgument('table');
-      
-      if ($input->getOption('force'))
-      {
-        $nbTable = count($tablesToDelete);
-        $tablePlural = (($nbTable > 1 || $nbTable == 0) ? 's' : '' );
+        $tablesToDelete = $input->getArgument('table');
 
-        if ('prod' === $this->getApplication()->getKernel()->getEnvironment())
-        {
-          $this->writeSection($output, 'WARNING: you are about to drop ' . (count($input->getArgument('table')) ?: 'all') . ' table' . $tablePlural . ' in production !', 'bg=red;fg=white');
+        if ($input->getOption('force')) {
+            $nbTable = count($tablesToDelete);
+            $tablePlural = (($nbTable > 1 || $nbTable == 0) ? 's' : '' );
 
-          if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false))
-          {
-            $output->writeln('Aborted, nice decision !');
-            return -2;
-          }
-        }
+            if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
+                $this->writeSection($output, 'WARNING: you are about to drop ' . (count($input->getArgument('table')) ?: 'all') . ' table' . $tablePlural . ' in production !', 'bg=red;fg=white');
 
-        $this->writeSection($output, '[Propel] You are running the command: propel:table:drop');
-
-        try
-        {
-          $connection = $this->getContainer()->get('propel.connection');
-
-          $showStatement = $connection->prepare('SHOW TABLES;');
-          $showStatement->execute();
-          $allTables = $showStatement->fetchAll(\PDO::FETCH_COLUMN);
-
-          if ($nbTable)
-          {
-            foreach ($tablesToDelete as $tableToDelete)
-            {
-              if(!array_search($tableToDelete, $allTables))
-              {
-                throw new \InvalidArgumentException(sprintf('Table %s doesn\'t exist in the database.', $tableToDelete));
-              }
+                if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
+                    $output->writeln('Aborted, nice decision !');
+                    return -2;
+                }
             }
-          }
-          else
-          {
-            $tablesToDelete = $allTables;
-          }
 
-          $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
+            $this->writeSection($output, '[Propel] You are running the command: propel:table:drop');
 
-          $tablesToDelete = join(', ', $tablesToDelete);
+            try {
+                list($name, $config) = $this->getConnection($input, $output);
+                $connection = \Propel::getConnection($name);
 
-          if ($tablesToDelete != '')
-          {
-            $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
+                $showStatement = $connection->prepare('SHOW TABLES;');
+                $showStatement->execute();
 
-            $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
-          }
-          else
-          {
-            $output->writeln('No table <info>has been dropped</info>');
-          }
+                $allTables = $showStatement->fetchAll(\PDO::FETCH_COLUMN);
 
-          $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
+                if ($nbTable) {
+                    foreach ($tablesToDelete as $tableToDelete) {
+                        if(!array_search($tableToDelete, $allTables)) {
+                            throw new \InvalidArgumentException(sprintf('Table %s doesn\'t exist in the database.', $tableToDelete));
+                        }
+                    }
+                }
+                else {
+                    $tablesToDelete = $allTables;
+                }
+
+                $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
+
+                $tablesToDelete = join(', ', $tablesToDelete);
+
+                if ('' !== $tablesToDelete) {
+                    $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
+
+                    $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
+                }
+                else {
+                    $output->writeln('No table <info>has been dropped</info>');
+                }
+
+                $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
+            }
+            catch (\Exception $e) {
+                $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
+            }
         }
-        catch (\Exception $e)
-        {
-          $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
+        else {
+            $output->writeln('<error>You have to use --force to drop some table.</error>');
         }
-      }
-      else
-      {
-        $output->writeln('<error>You have to use --force to drop some table.</error>');
-      }
     }
 }

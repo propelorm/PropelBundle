@@ -58,7 +58,8 @@ abstract class PhingCommand extends ContainerAwareCommand
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
                 $parts = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-                $prefix = implode('.', array_slice($parts, 1, -2));
+                $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+                $prefix = implode('.', array_slice($parts, 1, $length));
 
                 foreach ($schemas as $schema) {
                     $tempSchema = md5($schema).'_'.$schema->getBaseName();
@@ -213,7 +214,7 @@ EOT
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
                 '%password%' => $datasource['connection']['password'],
-                '%charset%'  => $container->getParameter('propel.charset'),
+                '%charset%'  => $datasource['connection']['settings']['charset']['value'],
             ));
         }
 
@@ -330,7 +331,8 @@ EOT;
     protected function checkConfiguration()
     {
         $parameters = $this->getContainer()->get('propel.configuration')->getParameters();
-        if (!isset($parameters['datasources']) ||0 === count($parameters['datasources'])) {
+
+        if (!isset($parameters['datasources']) || 0 === count($parameters['datasources'])) {
             throw new \RuntimeException('Propel should be configured (no database configuration found).');
         }
     }

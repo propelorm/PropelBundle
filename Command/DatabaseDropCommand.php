@@ -47,6 +47,7 @@ EOT
         if ($input->getOption('force')) {
             if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
                 $this->writeSection($output, 'WARNING: you are about to drop a database in production !', 'bg=red;fg=white');
+
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('Aborted, nice decision !');
                     return -2;
@@ -63,6 +64,7 @@ EOT
                 $connection = \Propel::getConnection($name);
                 $statement  = $connection->prepare($query);
                 $statement->execute();
+
                 $output->writeln(sprintf('<info><comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
