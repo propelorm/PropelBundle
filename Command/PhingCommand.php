@@ -116,8 +116,8 @@ abstract class PhingCommand extends ContainerAwareCommand
             'propel.packageObjectModel' => true,
         ), $properties);
         $properties = array_merge(
-            $this->getContainer()->get('propel.build_properties')->getProperties(),
-            $properties
+            $properties,
+            $this->getContainer()->get('propel.build_properties')->getProperties()
         );
         foreach ($properties as $key => $value) {
             $args[] = "-D$key=$value";
