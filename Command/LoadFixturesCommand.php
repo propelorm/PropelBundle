@@ -86,13 +86,13 @@ EOT
 
         if ($input->getOption('xml') || $noOptions) {
             if (0 !== $this->loadXmlFixtures($input, $output)) {
-                $output->writeln('>> No XML fixtures found.');
+                $output->writeln('<error> >> No XML fixtures found.</error>');
             }
         }
 
         if ($input->getOption('sql') || $noOptions) {
             if (0 !== $this->loadSqlFixtures($input, $output)) {
-                $output->writeln('>> No SQL fixtures found.');
+                $output->writeln('<error> >> No SQL fixtures found.</error>');
             }
         }
     }
@@ -109,6 +109,8 @@ EOT
         $finder = new Finder();
         $datas  = $finder->name('*.xml')->in($this->absoluteFixturesPath);
 
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
+
         // Create a "datadb.map" file
         $datadbContent = '';
         foreach($datas as $data) {
@@ -121,7 +123,6 @@ EOT
         }
 
         $output->writeln('<info>Loading XML Fixtures.</info>');
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $datadbFile = $this->absoluteFixturesPath . '/datadb.map';
         file_put_contents($datadbFile, $datadbContent);
@@ -160,6 +161,8 @@ EOT
         $finder = new Finder();
         $datas  = $finder->name('*.sql')->in($this->absoluteFixturesPath);
 
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
+
         // Create a "sqldb.map" file
         $sqldbContent = '';
         foreach($datas as $data) {
@@ -172,8 +175,6 @@ EOT
         }
 
         $output->writeln('<info>Loading SQL Fixtures.</info>');
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
-
 
         $sqldbFile = $this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
