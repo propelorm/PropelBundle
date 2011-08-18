@@ -107,22 +107,21 @@ EOT
     protected function loadXmlFixtures(InputInterface $input, OutputInterface $output)
     {
         $finder = new Finder();
+        $datas  = $finder->name('*.xml')->in($this->absoluteFixturesPath);
 
         // Create a "datadb.map" file
         $datadbContent = '';
-        $datas = $finder->name('*.xml')->in($this->absoluteFixturesPath);
+        foreach($datas as $data) {
+            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
+            $datadbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
+        }
 
-        if (!$datas->getIterator()->valid()) {
+        if ('' === $datadbContent) {
             return -1;
         }
 
         $output->writeln('<info>Loading XML Fixtures.</info>');
         list($name, $defaultConfig) = $this->getConnection($input, $output);
-
-        foreach($datas as $data) {
-            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-            $datadbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
-        }
 
         $datadbFile = $this->absoluteFixturesPath . '/datadb.map';
         file_put_contents($datadbFile, $datadbContent);
@@ -159,22 +158,22 @@ EOT
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
         $finder = new Finder();
+        $datas  = $finder->name('*.sql')->in($this->absoluteFixturesPath);
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
-        $datas = $finder->name('*.sql')->in($this->absoluteFixturesPath);
+        foreach($datas as $data) {
+            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
+            $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
+        }
 
-        if (!$datas->getIterator()->valid()) {
+        if ('' === $sqldbContent) {
             return -1;
         }
 
         $output->writeln('<info>Loading SQL Fixtures.</info>');
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        foreach($datas as $data) {
-            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-            $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
-        }
 
         $sqldbFile = $this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
