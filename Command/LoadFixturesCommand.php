@@ -85,14 +85,16 @@ EOT
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql'));
 
         if ($input->getOption('xml') || $noOptions) {
-            $this->loadXmlFixtures($input, $output);
+            if (0 !== $this->loadXmlFixtures($input, $output)) {
+                $output->writeln('>> No XML fixtures found.');
+            }
         }
 
         if ($input->getOption('sql') || $noOptions) {
-            $this->loadSqlFixtures($input, $output);
+            if (0 !== $this->loadSqlFixtures($input, $output)) {
+                $output->writeln('>> No SQL fixtures found.');
+            }
         }
-
-        $output->writeln('<info>Fixtures successfully loaded.</info>');
     }
 
     /**
@@ -104,18 +106,22 @@ EOT
      */
     protected function loadXmlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Loading XML Fixtures.</info>');
-
         $finder = new Finder();
 
         // Create a "datadb.map" file
         $datadbContent = '';
         $datas = $finder->name('*.xml')->in($this->absoluteFixturesPath);
 
+        if (!$datas->getIterator()->valid()) {
+            return -1;
+        }
+
+        $output->writeln('<info>Loading XML Fixtures.</info>');
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
+
         foreach($datas as $data) {
             $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-
-            $datadbContent .= $data->getFilename() . '=default' . PHP_EOL;
+            $datadbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
         }
 
         $datadbFile = $this->absoluteFixturesPath . '/datadb.map';
@@ -139,6 +145,8 @@ EOT
 
         $this->removeTemporaryFiles();
         $this->filesystem->remove($datadbFile);
+
+        return 0;
     }
 
     /**
@@ -150,23 +158,26 @@ EOT
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Loading SQL Fixtures.</info>');
-
         $finder = new Finder();
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
         $datas = $finder->name('*.sql')->in($this->absoluteFixturesPath);
+
+        if (!$datas->getIterator()->valid()) {
+            return -1;
+        }
+
+        $output->writeln('<info>Loading SQL Fixtures.</info>');
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
+
         foreach($datas as $data) {
             $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-            $sqldbContent .= $data->getFilename() . '=default' . PHP_EOL;
+            $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
         }
 
         $sqldbFile = $this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map';
-
         file_put_contents($sqldbFile, $sqldbContent);
-
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $this->callPhing('insert-sql', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
@@ -180,6 +191,8 @@ EOT
         $this->removeTemporaryFiles();
 
         $this->filesystem->remove($this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map');
+
+        return 0;
     }
 
     /**
