@@ -41,7 +41,7 @@ class DatabaseCreateCommand extends PhingCommand
 
         try {
             \Propel::setConfiguration($this->getTemporaryConfiguration($name, $config));
-            $connection = \Propel::getConnection();
+            $connection = \Propel::getConnection($name);
 
             $statement = $connection->prepare($query);
             $statement->execute();
