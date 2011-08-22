@@ -28,7 +28,6 @@ class PanelController extends ContainerAware
                 'configuration'      => $this->container->get('propel.configuration')->getParameters(),
                 'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
                 'logging'            => $this->container->getParameter('propel.logging'),
-                'charset'            => $this->container->getParameter('propel.charset'),
                 'path'               => $this->container->getParameter('propel.path'),
                 'phing_path'         => $this->container->getParameter('propel.phing_path'),
             )

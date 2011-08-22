@@ -45,14 +45,6 @@ class PropelExtension extends Extension
             }
         }
 
-        if (isset($config['charset'])) {
-            $charset = $config['charset'];
-        } else {
-            $charset = 'UTF8';
-        }
-
-        $container->setParameter('propel.charset', $charset);
-
         if (isset($config['logging']) && $config['logging']) {
             $logging = $config['logging'];
         } else {
@@ -111,8 +103,6 @@ class PropelExtension extends Extension
                     $c['datasources'][$name]['connection'][$att] = $conf[$att];
                 }
             }
-
-            $c['datasources'][$name]['connection']['settings']['charset'] = array('value' => $container->getParameter('propel.charset'));
         }
 
         // Alias the default connection if not defined

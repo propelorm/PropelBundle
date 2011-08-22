@@ -72,7 +72,6 @@ Sample Configuration
 propel:
     path:       "%kernel.root_dir%/../vendor/propel"
     phing_path: "%kernel.root_dir%/../vendor/phing"
-#    charset:   "UTF8"
 #    logging:   %kernel.debug%
 #    build_properties:
 #        xxxxx.xxxxx: xxxxxx

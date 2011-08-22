@@ -203,7 +203,6 @@ EOT
           <dsn>%dsn%</dsn>
           <user>%username%</user>
           <password>%password%</password>
-          <charset>%charset%</charset>
         </connection>
       </datasource>
 
@@ -214,7 +213,6 @@ EOT
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
                 '%password%' => $datasource['connection']['password'],
-                '%charset%'  => $datasource['connection']['settings']['charset']['value'],
             ));
         }
 

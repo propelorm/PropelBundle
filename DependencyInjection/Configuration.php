@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 *
 * This information is solely responsible for how the different configuration
 * sections are normalized, and merged.
-* 
+*
 * @author William DURAND <william.durand1@gmail.com>
 */
 class Configuration implements ConfigurationInterface
@@ -50,7 +50,6 @@ class Configuration implements ConfigurationInterface
      * propel:
      *     path:        xxxxxxx
      *     path_phing:  xxxxxxx
-     *     charset:     "UTF8"
      *     logging:     %kernel.debug%
      *     build_properties:
      *         xxxx.xxxx:   xxxxxx
@@ -62,7 +61,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('path')->end()
                 ->scalarNode('phing_path')->end()
-                ->scalarNode('charset')->defaultValue('UTF8')->end()
                 ->scalarNode('logging')->defaultValue($this->debug)->end()
                 ->arrayNode('build_properties')
                     ->useAttributeAsKey('key')
