@@ -20,7 +20,7 @@ class LoadFixturesCommand extends PhingCommand
     /**
      * Default fixtures directory.
      */
-    private $defaultFixturesDir = 'propel/fixtures';
+    private $defaultFixturesDir = 'app/propel/fixtures';
     /**
      * Absolute path for fixtures directory
      */
@@ -79,20 +79,20 @@ EOT
     {
         $this->writeSection($output, '[Propel] You are running the command: propel:load-fixtures');
 
-        $this->absoluteFixturesPath = $this->getApplication()->getKernel()->getRootDir() . DIRECTORY_SEPARATOR . $input->getOption('dir');
         $this->filesystem = new Filesystem();
+        $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql'));
 
         if ($input->getOption('xml') || $noOptions) {
-            if (0 !== $this->loadXmlFixtures($input, $output)) {
-                $output->writeln('<error> >> No XML fixtures found.</error>');
+            if (-1 === $this->loadXmlFixtures($input, $output)) {
+                $output->writeln('<info>[Propel] No XML fixtures found.</info>');
             }
         }
 
         if ($input->getOption('sql') || $noOptions) {
-            if (0 !== $this->loadSqlFixtures($input, $output)) {
-                $output->writeln('<error> >> No SQL fixtures found.</error>');
+            if (-1 === $this->loadSqlFixtures($input, $output)) {
+                $output->writeln('<info>[Propel] No SQL fixtures found.</info>');
             }
         }
     }
@@ -107,45 +107,28 @@ EOT
     protected function loadXmlFixtures(InputInterface $input, OutputInterface $output)
     {
         $finder = new Finder();
+        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
         $datas  = $finder->name('*.xml')->in($this->absoluteFixturesPath);
+
+        $this->prepareCache($tmpdir);
 
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        // Create a "datadb.map" file
-        $datadbContent = '';
-        foreach($datas as $data) {
-            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
-            $datadbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
-        }
-
-        if ('' === $datadbContent) {
+        if (!$this->createDbFiles($name, $datas, $tmpdir, $output)) {
             return -1;
         }
 
-        $output->writeln('<info>Loading XML Fixtures.</info>');
-
-        $datadbFile = $this->absoluteFixturesPath . '/datadb.map';
-        file_put_contents($datadbFile, $datadbContent);
-
-        $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/sql/';
+        // Convert XML to SQL
         $this->callPhing('datasql', array(
-             'propel.sql.dir'            => $dest,
-             'propel.schema.dir'         => $this->absoluteFixturesPath,
+             'propel.sql.dir'    => $tmpdir,
+             'propel.schema.dir' => $tmpdir,
         ));
 
-        // Insert SQL
-        $insertCommand = new InsertSqlCommand();
-        $insertCommand->setApplication($this->getApplication());
+        if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
+            return -1;
+        }
 
-        // By-pass the '--force' required option for inserting SQL
-        $this->addOption('force', '', InputOption::VALUE_NONE, '');
-        $input->setOption('force', true);
-
-        $insertCommand->execute($input, $output);
-
-        $this->removeTemporaryFiles();
-        $this->filesystem->remove($datadbFile);
-
+        $this->filesystem->remove($tmpdir);
         return 0;
     }
 
@@ -159,55 +142,100 @@ EOT
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
         $finder = new Finder();
+        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
         $datas  = $finder->name('*.sql')->in($this->absoluteFixturesPath);
+
+        $this->prepareCache($tmpdir);
 
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
         foreach($datas as $data) {
-            $output->writeln(sprintf('Loaded fixtures from <comment>%s</comment>.', $data));
+            $output->writeln(sprintf('<info>[Propel] Loading SQL fixtures from</info> <comment>%s</comment>', $data));
+
             $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
+            $this->filesystem->copy($data, $tmpdir . '/fixtures/' . $data->getFilename(), true);
         }
 
         if ('' === $sqldbContent) {
             return -1;
         }
 
-        $output->writeln('<info>Loading SQL Fixtures.</info>');
-
-        $sqldbFile = $this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map';
+        $sqldbFile = $tmpdir . '/fixtures/sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
 
-        $this->callPhing('insert-sql', array(
-            'propel.database.url'       => $defaultConfig['connection']['dsn'],
-            'propel.database.database'  => $defaultConfig['adapter'],
-            'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => $defaultConfig['connection']['password'],
-            'propel.sql.dir'            => $this->absoluteFixturesPath,
-            'propel.schema.dir'         => $this->absoluteFixturesPath,
-        ));
+        if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
+            return -1;
+        }
 
-        $this->removeTemporaryFiles();
-
-        $this->filesystem->remove($this->absoluteFixturesPath . DIRECTORY_SEPARATOR . 'sqldb.map');
+        $this->filesystem->remove($tmpdir);
 
         return 0;
     }
 
-    /**
-     * Remove all temporary files
-     *
-     * @return void
-     */
-    protected function removeTemporaryFiles()
+    protected function prepareCache($tmpdir)
     {
-        $finder = new Finder();
+        // Recreate a propel directory in cache
+        $this->filesystem->remove($tmpdir);
+        $this->filesystem->mkdir($tmpdir);
 
-        // Delete temporary files
-        $datas = $finder->name('*_schema.xml')->name('build*')->in($this->absoluteFixturesPath);
+        $fixturesdir = $tmpdir . '/fixtures/';
+        $this->filesystem->remove($fixturesdir);
+        $this->filesystem->mkdir($fixturesdir);
+    }
+
+    protected function createDbFiles($name, $datas, $tmpdir, $output)
+    {
+        // Create a "datadb.map" file
+        $dbContent = '';
         foreach($datas as $data) {
-          $this->filesystem->remove($data);
+            $output->writeln(sprintf('<info>[Propel] Loading XML fixtures from</info> <comment>%s</comment>', $data));
+
+            $dbContent .= 'fixtures/' . $data->getFilename() . '=' . $name . PHP_EOL;
+            $this->filesystem->copy($data, $tmpdir . '/fixtures/' . $data->getFilename(), true);
         }
+
+        // No XML found
+        if ('' === $dbContent) {
+            return false;
+        }
+
+        // Write datadb.map and sqldb.map files
+        $datadbFile = $tmpdir . '/datadb.map';
+        $sqldbFile  = $tmpdir . '/fixtures/sqldb.map';
+        file_put_contents($datadbFile, $dbContent);
+
+        $dbContent = preg_replace('#fixtures/#', '', $dbContent);
+        $dbContent = preg_replace('#\.xml=#', '.sql=', $dbContent);
+
+        file_put_contents($sqldbFile,  $dbContent);
+
+        return true;
+    }
+
+    /**
+     * Insert SQL
+     */
+    protected function insertSql($config, $sqlDir, $schemaDir, $output)
+    {
+        // Insert SQL
+        $ret = $this->callPhing('insert-sql', array(
+            'propel.database.url'       => $config['connection']['dsn'],
+            'propel.database.database'  => $config['adapter'],
+            'propel.database.user'      => $config['connection']['user'],
+            'propel.database.password'  => $config['connection']['password'],
+            'propel.schema.dir'         => $schemaDir,
+            'propel.sql.dir'            => $sqlDir,
+        ));
+
+        if (true === $ret) {
+            $output->writeln('<info>[Propel] All SQL statements have been executed.</info>');
+        } else {
+            $output->writeln('<error>[Propel] WARNING ! An error has occured.</error>');
+            return false;
+        }
+
+        return true;
     }
 }
