@@ -288,7 +288,7 @@ EOT;
             throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
         }
 
-        $output->writeln(sprintf('<info>Use connection named <comment>%s</comment></info>', $name));
+        $output->writeln(sprintf('<info>[Propel] Use connection named <comment>%s</comment></info>', $name));
 
         return array($name, $defaultConfig);
     }
