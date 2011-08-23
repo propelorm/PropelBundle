@@ -1,7 +1,7 @@
 Propel Bundle
 =============
 
-This is a (work in progress) implementation of Propel in Symfony2.
+This is the implementation of Propel in Symfony2.
 
 Currently supports:
 
@@ -12,18 +12,20 @@ Currently supports:
  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
  * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
  * Integration to the Symfony2 Profiler.
- * Load XML fixtures.
+ * Load SQL and XML fixtures.
+ * Create/Drop databases.
+ * Dump data into XML and SQL.
 
 Installation
 ------------
 
  * Clone this bundle in the `vendor/bundles/Propel` directory:
 
-    > git submodule add https://github.com/willdurand/PropelBundle.git vendor/bundles/Propel/PropelBundle
+    > git submodule add https://github.com/propelorm/PropelBundle.git vendor/bundles/Propel/PropelBundle
 
  * Checkout Propel and Phing in the `vendor` directory:
 
-    > svn checkout http://svn.propelorm.org/branches/1.6 vendor/propel
+    > svn checkout http://svn.github.com/propelorm/Propel.git vendor/propel
 
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 vendor/phing
 
@@ -31,7 +33,7 @@ Installation
 
     > git submodule add https://github.com/Xosofox/phing vendor/phing
 
-    > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
+    > git submodule add https://github.com/propelorm/Propel.git vendor/propel
 
  * Register this bundle in the `AppKernel` class:
 
@@ -83,7 +85,7 @@ propel:
         driver:               mysql
         user:                 root
         password:             null
-        dsn:                  mysql:host=localhost;dbname=test
+        dsn:                  mysql:host=localhost;dbname=test;charset=UTF8
         options:              {}
         attributes:           {}
 #        default_connection:       default
