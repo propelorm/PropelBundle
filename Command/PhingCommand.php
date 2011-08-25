@@ -212,7 +212,7 @@ EOT
                 '%adapter%'  => $datasource['adapter'],
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
-                '%password%' => $datasource['connection']['password'],
+                '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
             ));
         }
 
