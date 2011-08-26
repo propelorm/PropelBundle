@@ -21,11 +21,11 @@
     {# the menu content #}
     <span class="label">
         <span class="icon"><img src="{{ asset('bundles/propel/images/profiler/propel.png') }}" alt="" /></span>
-        <strong>Propel</strong>        
+        <strong>Propel</strong>
         <span class="count">
             <span>{{ collector.querycount }}</span>
         </span>
-    </span>     
+    </span>
 {% endblock %}
 
 {% block panel %}
@@ -50,7 +50,7 @@
             {% for query in collector.queries %}
             <tr>
                 <td>
-                    <code>{{ query.sql|formatSQL }}</code>
+                    <code>{{ query.sql|format_sql }}</code>
                     <div style="color: gray;font-size: 0.9em;">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
                 </td>
             </tr>
