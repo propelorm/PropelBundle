@@ -59,7 +59,7 @@ abstract class PhingCommand extends ContainerAwareCommand
 
                 $parts = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
                 $length = count(explode('\\', $bundle->getNamespace())) * (-1);
-                $prefix = implode('.', array_slice($parts, 1, $length));
+                $prefix = implode('/', array_slice($parts, 1, $length));
 
                 foreach ($schemas as $schema) {
                     $tempSchema = md5($schema).'_'.$schema->getBaseName();
@@ -76,9 +76,9 @@ abstract class PhingCommand extends ContainerAwareCommand
                     // so it needs to be done manually
                     $database = simplexml_load_file($file);
                     if (isset($database['package'])) {
-                        $database['package'] = $prefix . '.' . $database['package'];
+                        $database['package'] = $prefix . '/' . $database['package'];
                     } elseif (isset($database['namespace'])) {
-                        $database['package'] = $prefix . '.' . str_replace('\\', '.', $database['namespace']);
+                        $database['package'] = $prefix . '/' . str_replace('\\', '/', $database['namespace']);
                     } else {
                         throw new \RuntimeException(sprintf('Please define a `package` attribute or a `namespace` attribute for schema `%s`', $schema->getBaseName()));
                     }
@@ -86,9 +86,9 @@ abstract class PhingCommand extends ContainerAwareCommand
                     foreach ($database->table as $table)
                     {
                         if (isset($table['package'])) {
-                            $table['package'] = $prefix . '.' . $table['package'];
+                            $table['package'] = $prefix . '/' . $table['package'];
                         } elseif (isset($table['namespace'])) {
-                            $table['package'] = $prefix . '.' . str_replace('\\', '.', $table['namespace']);
+                            $table['package'] = $prefix . '/' . str_replace('\\', '/', $table['namespace']);
                         } else {
                             $table['package'] = $database['package'];
                         }
