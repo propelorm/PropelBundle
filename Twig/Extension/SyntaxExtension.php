@@ -14,7 +14,7 @@ class SyntaxExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'formatSQL'    => new \Twig_Filter_Method($this, 'formatSQL', array('is_safe' => array('html'))),
+            'format_sql'    => new \Twig_Filter_Method($this, 'formatSQL', array('is_safe' => array('html'))),
         );
     }
 
