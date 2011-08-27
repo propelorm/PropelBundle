@@ -41,20 +41,4 @@ class PropelBundle extends Bundle
             \Propel::initialize();
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNamespace()
-    {
-        return __NAMESPACE__;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath()
-    {
-        return __DIR__;
-    }
 }
