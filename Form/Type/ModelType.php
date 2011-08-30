@@ -33,8 +33,6 @@ class ModelType extends AbstractType
             'query'         => null,
             'choices'       => array(),
             'preferred_choices' => array(),
-            'multiple'      => false,
-            'expanded'      => false,
         );
 
         $options = array_replace($defaultOptions, $options);
