@@ -44,6 +44,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
+
         if ($input->getOption('force')) {
             if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
                 $this->writeSection($output, 'WARNING: you are about to drop a database in production !', 'bg=red;fg=white');
@@ -54,8 +56,6 @@ EOT
                 }
             }
 
-            $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
-
             list($name, $config) = $this->getConnection($input, $output);
             $dbName = $this->parseDbName($config['connection']['dsn']);
             $query  = 'DROP DATABASE '. $dbName .';';
@@ -65,12 +65,12 @@ EOT
                 $statement  = $connection->prepare($query);
                 $statement->execute();
 
-                $output->writeln(sprintf('<info><comment>%s</comment> has been dropped.</info>', $dbName));
+                $output->writeln(sprintf('<info>[Propel] <comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (\Exception $e) {
-                $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
+                $this->writeSection($output, array('[Propel] Exception catched', '', $e->getMessage()), 'fg=white;bg=red');
             }
         } else {
-            $output->writeln('<error>You have to use --force to drop the database.</error>');
+            $output->writeln('<error>[Propel] You have to use --force to drop the database.</error>');
         }
     }
 }
