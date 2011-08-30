@@ -2,7 +2,7 @@
 
 namespace Propel\PropelBundle\Form\EventListener;
 
-use Symfony\Component\Form\Events;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\FilterDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -10,7 +10,7 @@ class MergeCollectionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return Events::onBindNormData;
+        return array(FormEvents::BIND_NORM_DATA => 'onBindNormData');
     }
 
     public function onBindNormData(FilterDataEvent $event)
