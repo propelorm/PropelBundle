@@ -38,12 +38,14 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:graphviz');
+
         $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/graph/';
 
         $this->callPhing('graphviz', array(
             'propel.graph.dir'    => $dest,
         ));
 
-        $output->writeln(sprintf('Graphviz file is in "<info>%s</info>".', $dest));
+        $output->writeln(sprintf('Graphviz file is in <info>%s</info>.', $dest));
     }
 }
