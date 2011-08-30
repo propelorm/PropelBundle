@@ -48,7 +48,7 @@ EOT
     {
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $this->callPhing('datadump', array(
+        $ret = $this->callPhing('datadump', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
             'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
@@ -56,22 +56,24 @@ EOT
             'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
         ));
 
-        $finder = new Finder();
-        $filesystem = new Filesystem();
+        if ($ret) {
+            $finder     = new Finder();
+            $filesystem = new Filesystem();
 
-        $datas = $finder->name('*_data.xml')->in($this->getTmpDir());
+            $datas = $finder->name('*_data.xml')->in($this->getTmpDir());
 
-        foreach($datas as $data) {
-            $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
+            foreach($datas as $data) {
+                $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
 
-            $filesystem->copy((string) $data, $dest);
-            $filesystem->remove($data);
+                $filesystem->copy((string) $data, $dest);
+                $filesystem->remove($data);
 
-            $output->writeln(sprintf('Wrote dumped data in "<info>%s</info>".', $dest));
-        }
+                $output->writeln(sprintf('Wrote dumped data in <info>%s</info>.', $dest));
+            }
 
-        if (count($datas) <= 0) {
-            $output->writeln('No new dumped files.');
+            if (iterator_count($datas) <= 0) {
+                $output->writeln('No dumped files.');
+            }
         }
     }
 }
