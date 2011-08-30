@@ -82,6 +82,10 @@ EOT
         $this->filesystem = new Filesystem();
         $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
 
+        if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
+            return $output->writeln('<info>[Propel] The fixtures directory does not exist.</info>');
+        }
+
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql'));
 
         if ($input->getOption('xml') || $noOptions) {
@@ -232,7 +236,7 @@ EOT
         if (true === $ret) {
             $output->writeln('<info>[Propel] All SQL statements have been executed.</info>');
         } else {
-            $output->writeln('<error>[Propel] WARNING ! An error has occured.</error>');
+            $this->writeSection($output, '<error>[Propel] WARNING ! An error has occured.</error>', 'fg=white;bg=red');
             return false;
         }
 
