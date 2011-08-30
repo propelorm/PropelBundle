@@ -55,9 +55,14 @@ EOT
         ));
 
         $filesystem = new Filesystem();
-        $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/' . $name . '_reversed_schema.xml';
-        $filesystem->copy($this->getTmpDir().'/schema.xml', $dest);
+        $generated  = $this->getTmpDir().'/schema.xml';
+        $destFile   = $this->getApplication()->getKernel()->getRootDir() . '/propel/' . $name . '_reversed_schema.xml';
 
-        $output->writeln(sprintf('New generated schema is <comment>%s</comment>.', $dest));
+        if (file_exists($generated)) {
+            $filesystem->copy($generated, $destFile);
+            $output->writeln(sprintf('New generated schema is <comment>%s</comment>.', $dest));
+        } else {
+            $output->writeln('No generated files.');
+        }
     }
 }
