@@ -47,6 +47,10 @@ EOT
 
         $filesystem = new Filesystem();
 
+        if (!is_dir($xmlDumpDir)) {
+            $filesystem->mkdir($xmlDumpDir);
+        }
+
         $finder = new Finder();
         foreach($finder->name('*_data.xml')->in($xmlDumpDir) as $data) {
             $filesystem->copy((string) $data, $schemaDir . $data->getFilename());
@@ -62,7 +66,7 @@ EOT
             $filesystem->remove($data);
         }
 
-        $this->summary($output, 'propel-data-sql');
+        $this->writeSummary($output, 'propel-data-sql');
         $output->writeln(sprintf('SQL from XML data dump file is in <comment>%s</comment>.', $sqlDir));
     }
 }
