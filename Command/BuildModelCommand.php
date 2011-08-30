@@ -42,9 +42,9 @@ EOT
            $this->additionalPhingArgs[] = 'verbose';
         }
 
-        if (true === $this->callPhing('om')) {
-            $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
+        $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
 
+        if (true === $this->callPhing('om')) {
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
                 $output->writeln(sprintf(
                     'Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.',
