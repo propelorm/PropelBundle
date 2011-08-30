@@ -15,8 +15,8 @@ class Phing extends \Phing
     }
 
     /**
-    * @see Phing
-    */
+     * @see Phing
+     */
     public function runBuild()
     {
         // workaround for included phing 2.3 which by default loads many tasks
