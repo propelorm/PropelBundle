@@ -39,6 +39,6 @@ EOT
     {
         $this->callPhing('diff');
 
-        $this->summary($output, 'propel-sql-diff');
+        $this->writeSummary($output, 'propel-sql-diff');
     }
 }

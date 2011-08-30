@@ -57,6 +57,6 @@ EOT
             $this->callPhing('migrate');
         }
 
-        $this->summary($output, 'propel-migration');
+        $this->writeSummary($output, 'propel-migration');
     }
 }
