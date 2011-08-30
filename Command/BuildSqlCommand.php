@@ -42,22 +42,27 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }
 
         if (true === $this->callPhing('sql', array('propel.packageObjectModel' => false))) {
-            $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
-
             $filesystem = new Filesystem();
-            $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
-            $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
+            $basePath   = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+            $sqlMap     = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
 
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
+                if (!file_exists($schemaFile)) {
+                    continue;
+                }
+
                 $sqlFile = str_replace('.xml', '.sql', $schemaFile);
                 $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
                 $targetSqlFilePath = $basePath . DIRECTORY_SEPARATOR . $targetSqlFile;
                 $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
+
                 $filesystem->remove($targetSqlFilePath);
                 $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
 
@@ -70,7 +75,11 @@ EOT
 
             file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
         } else {
-            $output->writeln('<error>WARNING ! An error has occured.</error>');
+            $this->writeSection($output, array(
+                '[Propel] Error',
+                '',
+                'An error has occured during the "sql" task process. To get more details, run the command with the "--verbose" option.'
+            ), 'fg=white;bg=red');
         }
     }
 }

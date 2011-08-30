@@ -123,10 +123,19 @@ EOT
         }
 
         // Convert XML to SQL
-        $this->callPhing('datasql', array(
+        $ret = $this->callPhing('datasql', array(
              'propel.sql.dir'    => $tmpdir,
              'propel.schema.dir' => $tmpdir,
         ));
+
+        if ($ret === false) {
+            $this->writeSection($output, array(
+                '[Propel] Error',
+                '',
+                'An error has occured during the "datasql" task process. To get more details, run the command with the "--verbose" option.'
+            ), 'fg=white;bg=red');
+            return -2;
+        }
 
         if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
             return -1;
