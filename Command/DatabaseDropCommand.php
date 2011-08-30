@@ -73,12 +73,16 @@ EOT
                 $statement  = $connection->prepare($query);
                 $statement->execute();
 
-                $output->writeln(sprintf('<info>[Propel] <comment>%s</comment> has been dropped.</info>', $dbName));
+                $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (\Exception $e) {
-                $this->writeSection($output, array('[Propel] Exception catched', '', $e->getMessage()), 'fg=white;bg=red');
+                $this->writeSection($output, array(
+                    '[Propel] Exception catched',
+                    '',
+                    $e->getMessage()
+                ), 'fg=white;bg=red');
             }
         } else {
-            $output->writeln('<error>[Propel] You have to use --force to drop the database.</error>');
+            $output->writeln('<error>You have to use --force to drop the database.</error>');
         }
     }
 }

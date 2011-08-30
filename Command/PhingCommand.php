@@ -440,4 +440,20 @@ EOT;
     {
         return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
     }
+
+    /**
+     * Renders an error message if a task has failed.
+     *
+     * @param string $taskName  A task name.
+     */
+    protected function writeTaskError($taskName, $more = true)
+    {
+        $moreText = $more ? ' To get more details, run the command with the "--verbose" option.' : '';
+
+        return $this->writeSection($output, array(
+            '[Propel] Error',
+            '',
+            'An error has occured during the "' . $taskName . '" task process.' . $moreText
+        ), 'fg=white;bg=red');
+    }
 }

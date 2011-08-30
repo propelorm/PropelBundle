@@ -62,10 +62,16 @@ EOT
             $tablePlural = (($nbTable > 1 || $nbTable == 0) ? 's' : '' );
 
             if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
-                $this->writeSection($output, 'WARNING: you are about to drop ' . (count($input->getArgument('table')) ?: 'all') . ' table' . $tablePlural . ' in production !', 'bg=red;fg=white');
+                $count = (count($input->getArgument('table')) ?: 'all');
+
+                $this->writeSection(
+                    $output,
+                    'WARNING: you are about to drop ' . $count . ' table' . $tablePlural . ' in production !',
+                    'bg=red;fg=white'
+                );
 
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
-                    $output->writeln('Aborted, nice decision !');
+                    $output->writeln('<info>Aborted, nice decision !</info>');
                     return -2;
                 }
             }
@@ -102,13 +108,17 @@ EOT
                     $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
                 }
                 else {
-                    $output->writeln('No table <info>has been dropped</info>');
+                    $output->writeln('<info>No tables have been dropped</info>');
                 }
 
                 $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
             }
             catch (\Exception $e) {
-                $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
+                $this->writeSection($output, array(
+                    '[Propel] Exception catched',
+                    '',
+                    $e->getMessage()
+                ), 'fg=white;bg=red');
             }
         }
         else {

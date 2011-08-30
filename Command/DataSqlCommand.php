@@ -64,18 +64,22 @@ EOT
             $filesystem->copy((string) $data, $schemaDir . $data->getFilename());
         }
 
-        $this->callPhing('datasql', array(
-            'propel.sql.dir'            => $sqlDir,
-            'propel.schema.dir'         => $schemaDir,
+        $ret = $this->callPhing('datasql', array(
+            'propel.sql.dir'    => $sqlDir,
+            'propel.schema.dir' => $schemaDir,
         ));
 
-        $finder = new Finder();
-        foreach($finder->name('*_data.xml')->in($schemaDir) as $data) {
-            $filesystem->remove($data);
-        }
+        if ($ret) {
+            $finder = new Finder();
+            foreach($finder->name('*_data.xml')->in($schemaDir) as $data) {
+                $filesystem->remove($data);
+            }
 
-        $this->writeSummary($output, 'propel-data-sql');
-        $output->writeln(sprintf('SQL from XML data dump file is in <comment>%s</comment>.', $sqlDir));
+            $this->writeSummary($output, 'propel-data-sql');
+            $output->writeln(sprintf('<info>SQL from XML data dump file is in <comment>%s</comment></info>.', $sqlDir));
+        } else {
+            $this->writeTaskError('datasql', false);
+        }
     }
 }
 

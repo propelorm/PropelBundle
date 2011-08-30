@@ -76,12 +76,14 @@ EOT
                 $filesystem->copy((string) $data, $dest);
                 $filesystem->remove($data);
 
-                $output->writeln(sprintf('Wrote dumped data in <info>%s</info>.', $dest));
+                $output->writeln(sprintf('<info>Wrote dumped data in <comment>%s</comment></info>.', $dest));
             }
 
             if (iterator_count($datas) <= 0) {
                 $output->writeln('No dumped files.');
             }
+        } else {
+            $this->writeTaskError('datadump', false);
         }
     }
 }

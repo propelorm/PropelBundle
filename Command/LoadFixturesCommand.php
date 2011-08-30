@@ -141,11 +141,7 @@ EOT
         ));
 
         if ($ret === false) {
-            $this->writeSection($output, array(
-                '[Propel] Error',
-                '',
-                'An error has occured during the "datasql" task process. To get more details, run the command with the "--verbose" option.'
-            ), 'fg=white;bg=red');
+            $this->writeTaskError('datasql');
             return -2;
         }
 
@@ -257,7 +253,7 @@ EOT
         if (true === $ret) {
             $output->writeln('<info>[Propel] All SQL statements have been executed.</info>');
         } else {
-            $this->writeSection($output, '<error>[Propel] WARNING ! An error has occured.</error>', 'fg=white;bg=red');
+            $this->writeTaskError('insert-sql', false);
             return false;
         }
 

@@ -55,6 +55,10 @@ EOT
         if ($input->getOption('force')) {
             $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
 
+            if ($input->getOption('verbose')) {
+                $this->additionalPhingArgs[] = 'verbose';
+            }
+
             list($name, $defaultConfig) = $this->getConnection($input, $output);
 
             $ret = $this->callPhing('insert-sql', array(
@@ -68,7 +72,7 @@ EOT
             if (true === $ret) {
                 $output->writeln('<info>All SQL statements have been executed.</info>');
             } else {
-                $output->writeln('<error>WARNING ! An error has occured.</error>');
+                $this->writeTaskError('insert-sql');
             }
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');

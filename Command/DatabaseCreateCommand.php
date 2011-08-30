@@ -54,9 +54,13 @@ class DatabaseCreateCommand extends PhingCommand
             $statement = $connection->prepare($query);
             $statement->execute();
 
-            $output->writeln(sprintf('<info>[Propel] <comment>%s</comment> has been created.</info>', $dbName));
+            $output->writeln(sprintf('<info>Database <comment>%s</comment> has been created.</info>', $dbName));
         } catch (\Exception $e) {
-            $this->writeSection($output, array('[Propel] Exception catched', '', $e->getMessage()), 'fg=white;bg=red');
+            $this->writeSection($output, array(
+                '[Propel] Exception catched',
+                '',
+                $e->getMessage()
+            ), 'fg=white;bg=red');
         }
     }
 
