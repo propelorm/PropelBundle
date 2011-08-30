@@ -82,6 +82,10 @@ EOT
         $this->filesystem = new Filesystem();
         $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
 
+        if ($input->getOption('verbose')) {
+           $this->additionalPhingArgs[] = 'verbose';
+        }
+
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
             return $output->writeln('<info>[Propel] The fixtures directory does not exist.</info>');
         }
