@@ -110,7 +110,10 @@ abstract class PhingCommand extends ContainerAwareCommand
             $this->buffer = ob_get_contents();
 
             // Guess errors
-            $returnStatus = (false === strstr($this->buffer, 'failed. Aborting.'));
+            if (strstr($this->buffer, 'failed. Aborting.') ||
+                strstr($this->buffer, 'failed for the following reason:')) {
+                $returnStatus = false;
+            }
         } catch(\Exception $e) {
             $returnStatus = false;
         }
