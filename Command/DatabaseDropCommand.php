@@ -82,7 +82,7 @@ EOT
                 ), 'fg=white;bg=red');
             }
         } else {
-            $output->writeln('<error>You have to use --force to drop the database.</error>');
+            $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
         }
     }
 }

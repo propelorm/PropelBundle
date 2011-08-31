@@ -55,6 +55,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:table:drop');
+
         $tablesToDelete = $input->getArgument('table');
 
         if ($input->getOption('force')) {
@@ -75,8 +77,6 @@ EOT
                     return -2;
                 }
             }
-
-            $this->writeSection($output, '[Propel] You are running the command: propel:table:drop');
 
             try {
                 list($name, $config) = $this->getConnection($input, $output);
@@ -122,7 +122,7 @@ EOT
             }
         }
         else {
-            $output->writeln('<error>You have to use --force to drop some table.</error>');
+            $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
         }
     }
 }
