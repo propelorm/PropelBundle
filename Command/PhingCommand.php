@@ -444,9 +444,11 @@ EOT;
     /**
      * Renders an error message if a task has failed.
      *
+     * @param OutputInterface $output   The output.
      * @param string $taskName  A task name.
+	 * @param Boolean $more		Whether to add a 'more details' message or not.
      */
-    protected function writeTaskError($taskName, $more = true)
+    protected function writeTaskError($output, $taskName, $more = true)
     {
         $moreText = $more ? ' To get more details, run the command with the "--verbose" option.' : '';
 
@@ -456,4 +458,13 @@ EOT;
             'An error has occured during the "' . $taskName . '" task process.' . $moreText
         ), 'fg=white;bg=red');
     }
+
+	/**
+     * @param OutputInterface $output   The output.
+	 * @param string $filename	The filename.
+	 */
+    protected function writeNewFile($output, $filename)
+	{
+		return $output->writeln('>>  <info>File+</info>    ' . $filename);
+	}
 }

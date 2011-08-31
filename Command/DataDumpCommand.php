@@ -83,7 +83,7 @@ EOT
                 $output->writeln('No dumped files.');
             }
         } else {
-            $this->writeTaskError('datadump', false);
+            $this->writeTaskError($output, 'datadump', false);
         }
     }
 }

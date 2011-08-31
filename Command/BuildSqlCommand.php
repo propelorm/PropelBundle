@@ -10,13 +10,15 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
+
+use Propel\PropelBundle\Command\PhingCommand;
 
 /**
  * BuildCommand.
@@ -56,32 +58,36 @@ EOT
             $this->additionalPhingArgs[] = 'verbose';
         }
 
-        if (true === $this->callPhing('sql', array('propel.packageObjectModel' => true))) {
-            $filesystem = new Filesystem();
-            $basePath   = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
-            $sqlMap     = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
+        $finder = new Finder();
+        $filesystem = new Filesystem();
 
-            foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-                if (!file_exists($schemaFile)) {
-                    continue;
+        $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+
+        $filesystem->remove($sqlDir);
+        $filesystem->mkdir($sqlDir);
+
+        // Execute the task
+        $ret = $this->callPhing('sql', array(
+            'propel.packageObjectModel' => true,
+        ));
+
+        if (true === $ret) {
+            $files = $finder->name('*')->in($sqlDir);
+
+            $nbFiles = 0;
+            foreach ($files as $file) {
+                $this->writeNewFile($output, (string) $file);
+
+                if ('sql' === $file->getExtension()) {
+                    $nbFiles++;
                 }
-
-                $sqlFile = str_replace('.xml', '.sql', $schemaFile);
-                $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
-                $targetSqlFilePath = $basePath . DIRECTORY_SEPARATOR . $targetSqlFile;
-                $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
-
-                $filesystem->remove($targetSqlFilePath);
-                $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
-
-                $output->writeln(sprintf(
-                    'Wrote SQL file for bundle <info>%s</info> in <comment>%s</comment>.',
-                    $schemaDetails['bundle'],
-                    $targetSqlFilePath)
-                );
             }
 
-            file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
+            $this->writeSection(
+                $output,
+                sprintf('<comment>%d</comment> <info>SQL file have been generated.</info>', $nbFiles),
+                'bg=black'
+            );
         } else {
             $this->writeSection($output, array(
                 '[Propel] Error',

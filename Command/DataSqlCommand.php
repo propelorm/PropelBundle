@@ -78,7 +78,7 @@ EOT
             $this->writeSummary($output, 'propel-data-sql');
             $output->writeln(sprintf('<info>SQL from XML data dump file is in <comment>%s</comment></info>.', $sqlDir));
         } else {
-            $this->writeTaskError('datasql', false);
+            $this->writeTaskError($output, 'datasql', false);
         }
     }
 }

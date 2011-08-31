@@ -72,7 +72,7 @@ EOT
             if (true === $ret) {
                 $output->writeln('<info>All SQL statements have been executed.</info>');
             } else {
-                $this->writeTaskError('insert-sql');
+                $this->writeTaskError($output, 'insert-sql');
             }
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');

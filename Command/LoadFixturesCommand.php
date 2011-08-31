@@ -141,7 +141,7 @@ EOT
         ));
 
         if ($ret === false) {
-            $this->writeTaskError('datasql');
+            $this->writeTaskError($output, 'datasql');
             return -2;
         }
 
@@ -253,7 +253,7 @@ EOT
         if (true === $ret) {
             $output->writeln('<info>[Propel] All SQL statements have been executed.</info>');
         } else {
-            $this->writeTaskError('insert-sql', false);
+            $this->writeTaskError($output, 'insert-sql', false);
             return false;
         }
 

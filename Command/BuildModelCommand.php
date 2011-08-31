@@ -54,16 +54,14 @@ EOT
 
         if (true === $this->callPhing('om')) {
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-                if (file_exists($schemaFile)) {
-                    $output->writeln(sprintf(
-                        'Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.',
-                        $schemaDetails['bundle'],
-                        $schemaDetails['path']
-                    ));
-                }
+                $output->writeln(sprintf(
+                    '>>  <info>%s</info>    Generated model classes from <comment>%s</comment>',
+                    $schemaDetails['bundle'],
+                    $schemaDetails['basename']
+                ));
             }
         } else {
-            $this->writeTaskError('om');
+            $this->writeTaskError($output, 'om');
         }
     }
 }
