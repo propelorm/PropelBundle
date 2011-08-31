@@ -45,8 +45,10 @@ class PropelTypeGuesser implements FormTypeGuesserInterface
             case \PropelColumnTypes::BOOLEAN_EMU:
                 return new TypeGuess('checkbox', array(), Guess::HIGH_CONFIDENCE);
             case \PropelColumnTypes::TIMESTAMP:
+            case \PropelColumnTypes::BU_TIMESTAMP:
                 return new TypeGuess('datetime', array(), Guess::HIGH_CONFIDENCE);
             case \PropelColumnTypes::DATE:
+            case \PropelColumnTypes::BU_DATE:
                 return new TypeGuess('date', array(), Guess::HIGH_CONFIDENCE);
             case \PropelColumnTypes::TIME:
                 return new TypeGuess('time', array(), Guess::HIGH_CONFIDENCE);
@@ -65,6 +67,9 @@ class PropelTypeGuesser implements FormTypeGuesserInterface
             case \PropelColumnTypes::VARCHAR:
                 return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
             case \PropelColumnTypes::LONGVARCHAR:
+            case \PropelColumnTypes::BLOB:
+            case \PropelColumnTypes::CLOB:
+            case \PropelColumnTypes::CLOB_EMU:
                 return new TypeGuess('textarea', array(), Guess::MEDIUM_CONFIDENCE);
             default:
                 return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
