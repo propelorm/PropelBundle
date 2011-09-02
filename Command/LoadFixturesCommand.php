@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
 
 use Propel\PropelBundle\Command\PhingCommand;
 use Propel\PropelBundle\DataFixtures\YamlDataLoader;
+use Propel\PropelBundle\DataFixtures\XmlDataLoader;
 
 /**
  * LoadFixturesCommand
@@ -71,23 +72,27 @@ If none of this parameter is set, all XML, YAML and SQL files in the directory w
 
 XML fixtures files are the same XML files you can get with the command <info>propel:data-dump</info>:
 <comment>
-    <?xml version="1.0" encoding="utf-8"?>
-    <dataset name="all">
-        <Object Id="..." />
-    </dataset>
+    <Fixtures>
+        <Object Namespace="Awesome">
+            <o1 Title="My title" MyFoo="bar" />
+        </Object>
+        <Related Namespace="Awesome">
+            <r1 ObjectId="o1" Description="Hello world !" />
+        </Related>
+    </Fixtures>
 </comment>
 
 YAML fixtures are:
 <comment>
-\Awesome\Object:
-    o1:
-        Title: My title
-        MyFoo: bar
+    \Awesome\Object:
+        o1:
+            Title: My title
+            MyFoo: bar
 
-\Awesome\Related:
-    r1:
-        ObjectId: o1
-        Description: Hello world !
+    \Awesome\Related:
+        r1:
+            ObjectId: o1
+            Description: Hello world !
 </comment>
 EOT
             )
@@ -117,37 +122,41 @@ EOT
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
-        if ($input->getOption('xml') || $noOptions) {
-            if (-1 === $this->loadXmlFixtures($input, $output)) {
-                $output->writeln('<info>[Propel] No XML fixtures found.</info>');
-            }
-        }
-
         if ($input->getOption('sql') || $noOptions) {
             if (-1 === $this->loadSqlFixtures($input, $output)) {
                 $output->writeln('<info>[Propel] No SQL fixtures found.</info>');
             }
         }
 
+        if ($input->getOption('xml') || $noOptions) {
+            if (-1 === $this->loadFixtures($input, $output, 'xml')) {
+                $output->writeln('<info>[Propel] No XML fixtures found.</info>');
+            }
+        }
+
         if ($input->getOption('yml') || $noOptions) {
-            if (-1 === $this->loadYamlFixtures($input, $output)) {
+            if (-1 === $this->loadFixtures($input, $output, 'yml')) {
                 $output->writeln('<info>[Propel] No YAML fixtures found.</info>');
             }
         }
     }
 
     /**
-     * Load YAML fixtures
+     * Load fixtures
      *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      */
-    protected function loadYamlFixtures(InputInterface $input, OutputInterface $output)
+    protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
+        if (null === $type) {
+            return;
+        }
+
         $finder = new Finder();
         $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
-        $datas  = $finder->name('*.yml')->in($this->absoluteFixturesPath);
+        $datas  = $finder->name('*.' . $type)->in($this->absoluteFixturesPath);
 
         if (count(iterator_to_array($datas)) === 0) {
             return -1;
@@ -155,7 +164,13 @@ EOT
 
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir());
+        if ('yml' === $type) {
+            $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir());
+        } elseif ('xml' === $type) {
+            $loader = new XmlDataLoader($this->getApplication()->getKernel()->getRootDir());
+        } else {
+            return;
+        }
 
         try {
             $nb = $loader->load($datas, $name);
@@ -169,31 +184,11 @@ EOT
 
         $this->writeSection(
             $output,
-            sprintf('<comment>%s</comment> YAML fixtures file%s loaded.', $nb, $nb > 1 ? 's' : ''),
+            sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''),
             'fg=white;bg=black'
         );
 
         return true;
-    }
-
-    /**
-     * Load XML fixtures
-     *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
-     */
-    protected function loadXmlFixtures(InputInterface $input, OutputInterface $output)
-    {
-        $finder = new Finder();
-        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
-        $datas  = $finder->name('*.xml')->in($this->absoluteFixturesPath);
-
-        $this->writeSection($output, array(
-            '[Propel] Error',
-            '',
-            'This feature is not yet implemented.'
-        ), 'fg=white;bg=red');
     }
 
     /**
