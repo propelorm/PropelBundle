@@ -73,6 +73,8 @@ abstract class AbstractDataLoader implements DataLoaderInterface
      */
     public function load($files = array(), $connectionName)
     {
+        $nbFiles = 0;
+
         // load map classes
         $this->loadMapBuilders();
         $this->dbMap = Propel::getDatabaseMap($connectionName);
@@ -87,6 +89,8 @@ abstract class AbstractDataLoader implements DataLoaderInterface
                 $datas = $this->transformDataToArray($file);
                 $this->deleteCurrentData($datas);
                 $this->loadDataFromArray($datas);
+
+                $nbFiles++;
             }
 
             $this->con->commit();
@@ -94,6 +98,8 @@ abstract class AbstractDataLoader implements DataLoaderInterface
             $this->con->rollBack();
             throw $e;
         }
+
+        return $nbFiles;
     }
 
     /**

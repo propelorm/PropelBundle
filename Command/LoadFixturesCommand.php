@@ -152,7 +152,7 @@ EOT
         $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir());
 
         try {
-            $loader->load($datas, $name);
+            $nb = $loader->load($datas, $name);
         } catch (\Exception $e) {
             $this->writeSection($output, array(
                 '[Propel] Exception',
@@ -160,6 +160,12 @@ EOT
                 $e->getMessage()), 'fg=white;bg=red');
             return false;
         }
+
+        $this->writeSection(
+            $output,
+            sprintf('<comment>%s</comment> YAML fixtures file%s loaded.', $nb, $nb > 1 ? 's' : ''),
+            'fg=white;bg=black'
+        );
 
         return true;
     }
