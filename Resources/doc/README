@@ -248,10 +248,14 @@ If none of this parameter are set all files YAML, XML and SQL in the directory w
 A valid _XML fixtures file_ is:
 
 ``` xml
-<?xml version="1.0" encoding="utf-8"?>
-<dataset name="all">
-    <Object Id="..." />
-</dataset>
+<Fixtures>
+    <Object Namespace="Awesome">
+        <o1 Title="My title" MyFoo="bar" />
+    </Object>
+    <Related Namespace="Awesome">
+        <r1 ObjectId="o1" Description="Hello world !" />
+    </Related>
+</Fixtures>
 ```
 
 A valid _YAML fixtures file_ is:
