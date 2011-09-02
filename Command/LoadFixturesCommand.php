@@ -10,13 +10,15 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
+
+use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\DataFixtures\YamlDataLoader;
 
 /**
  * LoadFixturesCommand
@@ -48,6 +50,7 @@ class LoadFixturesCommand extends PhingCommand
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory where XML or/and SQL fixtures files are located', $this->defaultFixturesDir)
             ->addOption('xml', '', InputOption::VALUE_NONE, 'Load XML fixtures')
             ->addOption('sql', '', InputOption::VALUE_NONE, 'Load SQL fixtures')
+            ->addOption('yml', '', InputOption::VALUE_NONE, 'Load YAML fixtures')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>propel:load-fixtures</info> loads <info>XML</info> and/or <info>SQL</info> fixtures.
@@ -61,9 +64,10 @@ The <info>--dir</info> parameter allows you to change the directory that contain
 
 The <info>--xml</info> parameter allows you to load only <info>XML</info> fixtures.
 The <info>--sql</info> parameter allows you to load only <info>SQL</info> fixtures.
+The <info>--yml</info> parameter allows you to load only <info>YAML</info> fixtures.
 
-You can mix <info>--xml</info> and <info>--sql</info> parameters to load both XML and SQL fixtures.
-If none of this parameter is set, all XML and SQL files in the directory will be load.
+You can mix <info>--xml</info>, <info>--sql</info> and <info>--yml</info> parameters to load XML, YAML and SQL fixtures at the same time.
+If none of this parameter is set, all XML, YAML and SQL files in the directory will be load.
 
 XML fixtures files are the same XML files you can get with the command <info>propel:data-dump</info>:
 <comment>
@@ -71,6 +75,13 @@ XML fixtures files are the same XML files you can get with the command <info>pro
     <dataset name="all">
         <Object Id="..." />
     </dataset>
+</comment>
+
+YAML fixtures are:
+<comment>
+\Awesome\Object:
+    Title: My title
+    MyFoo: bar
 </comment>
 EOT
             )
@@ -98,7 +109,7 @@ EOT
             return $output->writeln('<info>[Propel] The fixtures directory does not exist.</info>');
         }
 
-        $noOptions = (!$input->getOption('xml') && !$input->getOption('sql'));
+        $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
         if ($input->getOption('xml') || $noOptions) {
             if (-1 === $this->loadXmlFixtures($input, $output)) {
@@ -111,6 +122,46 @@ EOT
                 $output->writeln('<info>[Propel] No SQL fixtures found.</info>');
             }
         }
+
+        if ($input->getOption('yml') || $noOptions) {
+            if (-1 === $this->loadYamlFixtures($input, $output)) {
+                $output->writeln('<info>[Propel] No YAML fixtures found.</info>');
+            }
+        }
+    }
+
+    /**
+     * Load YAML fixtures
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @return void
+     */
+    protected function loadYamlFixtures(InputInterface $input, OutputInterface $output)
+    {
+        $finder = new Finder();
+        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
+        $datas  = $finder->name('*.yml')->in($this->absoluteFixturesPath);
+
+        if (count(iterator_to_array($datas)) === 0) {
+            return -1;
+        }
+
+        list($name, $defaultConfig) = $this->getConnection($input, $output);
+
+        $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir());
+
+        try {
+            $loader->load($datas, $name);
+        } catch (\Exception $e) {
+            $this->writeSection($output, array(
+                '[Propel] Exception',
+                '',
+                $e->getMessage()), 'fg=white;bg=red');
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -126,31 +177,11 @@ EOT
         $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
         $datas  = $finder->name('*.xml')->in($this->absoluteFixturesPath);
 
-        $this->prepareCache($tmpdir);
-
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
-
-        if (!$this->createDbFiles($name, $datas, $tmpdir, $output)) {
-            return -1;
-        }
-
-        // Convert XML to SQL
-        $ret = $this->callPhing('datasql', array(
-             'propel.sql.dir'    => $tmpdir,
-             'propel.schema.dir' => $tmpdir,
-        ));
-
-        if ($ret === false) {
-            $this->writeTaskError($output, 'datasql');
-            return -2;
-        }
-
-        if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
-            return -1;
-        }
-
-        $this->filesystem->remove($tmpdir);
-        return 0;
+        $this->writeSection($output, array(
+            '[Propel] Error',
+            '',
+            'This feature is not yet implemented.'
+        ), 'fg=white;bg=red');
     }
 
     /**
@@ -195,6 +226,11 @@ EOT
         return 0;
     }
 
+    /**
+     * Prepare the cache directory
+     *
+     * @param string $tmpdir    The temporary directory path.
+     */
     protected function prepareCache($tmpdir)
     {
         // Recreate a propel directory in cache
@@ -204,35 +240,6 @@ EOT
         $fixturesdir = $tmpdir . '/fixtures/';
         $this->filesystem->remove($fixturesdir);
         $this->filesystem->mkdir($fixturesdir);
-    }
-
-    protected function createDbFiles($name, $datas, $tmpdir, $output)
-    {
-        // Create a "datadb.map" file
-        $dbContent = '';
-        foreach($datas as $data) {
-            $output->writeln(sprintf('<info>[Propel] Loading XML fixtures from</info> <comment>%s</comment>', $data));
-
-            $dbContent .= 'fixtures/' . $data->getFilename() . '=' . $name . PHP_EOL;
-            $this->filesystem->copy($data, $tmpdir . '/fixtures/' . $data->getFilename(), true);
-        }
-
-        // No XML found
-        if ('' === $dbContent) {
-            return false;
-        }
-
-        // Write datadb.map and sqldb.map files
-        $datadbFile = $tmpdir . '/datadb.map';
-        $sqldbFile  = $tmpdir . '/fixtures/sqldb.map';
-        file_put_contents($datadbFile, $dbContent);
-
-        $dbContent = preg_replace('#fixtures/#', '', $dbContent);
-        $dbContent = preg_replace('#\.xml=#', '.sql=', $dbContent);
-
-        file_put_contents($sqldbFile,  $dbContent);
-
-        return true;
     }
 
     /**
@@ -256,7 +263,6 @@ EOT
             $this->writeTaskError($output, 'insert-sql', false);
             return false;
         }
-
         return true;
     }
 }
