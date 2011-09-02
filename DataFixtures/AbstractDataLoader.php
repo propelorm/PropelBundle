@@ -87,10 +87,12 @@ abstract class AbstractDataLoader implements DataLoaderInterface
 
             foreach ($files as $file) {
                 $datas = $this->transformDataToArray($file);
-                $this->deleteCurrentData($datas);
-                $this->loadDataFromArray($datas);
 
-                $nbFiles++;
+                if (count($datas) > 0) {
+                    $this->deleteCurrentData($datas);
+                    $this->loadDataFromArray($datas);
+                    $nbFiles++;
+                }
             }
 
             $this->con->commit();
