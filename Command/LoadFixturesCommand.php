@@ -80,8 +80,14 @@ XML fixtures files are the same XML files you can get with the command <info>pro
 YAML fixtures are:
 <comment>
 \Awesome\Object:
-    Title: My title
-    MyFoo: bar
+    o1:
+        Title: My title
+        MyFoo: bar
+
+\Awesome\Related:
+    r1:
+        ObjectId: o1
+        Description: Hello world !
 </comment>
 EOT
             )
