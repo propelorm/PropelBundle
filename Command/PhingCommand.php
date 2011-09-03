@@ -119,6 +119,7 @@ abstract class PhingCommand extends ContainerAwareCommand
 
             // Guess errors
             if (strstr($this->buffer, 'failed. Aborting.') ||
+                strstr($this->buffer, 'Failed to execute') ||
                 strstr($this->buffer, 'failed for the following reason:')) {
                 $returnStatus = false;
             }
