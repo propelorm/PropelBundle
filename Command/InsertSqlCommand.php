@@ -65,7 +65,7 @@ EOT
                 'propel.database.url'       => $defaultConfig['connection']['dsn'],
                 'propel.database.database'  => $defaultConfig['adapter'],
                 'propel.database.user'      => $defaultConfig['connection']['user'],
-                'propel.database.password'  => $defaultConfig['connection']['password'],
+                'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
                 'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
             ));
 
