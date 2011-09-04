@@ -52,25 +52,39 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:reverse');
+
+        if ($input->getOption('verbose')) {
+            $this->additionalPhingArgs[] = 'verbose';
+        }
+
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $this->callPhing('reverse', array(
+        $ret = $this->callPhing('reverse', array(
             'propel.project'            => $name,
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
             'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => $defaultConfig['connection']['password'],
+            'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
         ));
 
-        $filesystem = new Filesystem();
-        $generated  = $this->getTmpDir().'/schema.xml';
-        $destFile   = $this->getApplication()->getKernel()->getRootDir() . '/propel/' . $name . '_reversed_schema.xml';
+        if (true === $ret) {
+            $filesystem = new Filesystem();
+            $generated  = $this->getCacheDir().'/schema.xml';
+            $filename   = $name . '_reversed_schema.xml';
+            $destFile   = $this->getApplication()->getKernel()->getRootDir() . '/propel/generated-schemas/' . $filename;
 
-        if (file_exists($generated)) {
-            $filesystem->copy($generated, $destFile);
-            $output->writeln(sprintf('New generated schema is <comment>%s</comment>.', $dest));
+            if (file_exists($generated)) {
+                $filesystem->copy($generated, $destFile);
+                $output->writeln(array(
+                    '',
+                    sprintf('>>  <info>File+</info>    %s', $destFile),
+                ));
+            } else {
+                $output->writeln(array('', 'No generated files.'));
+            }
         } else {
-            $output->writeln('No generated files.');
+            $this->writeTaskError($output, 'reverse');
         }
     }
 }
