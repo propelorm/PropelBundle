@@ -30,14 +30,17 @@ class LoadFixturesCommand extends PhingCommand
 {
     /**
      * Default fixtures directory.
+     * @var string
      */
     private $defaultFixturesDir = 'app/propel/fixtures';
     /**
      * Absolute path for fixtures directory
+     * @var string
      */
     private $absoluteFixturesPath = '';
     /**
      * Filesystem for manipulating files
+     * @var \Symfony\Component\HttpKernel\Util\Filesystem
      */
     private $filesystem = null;
 
@@ -47,14 +50,18 @@ class LoadFixturesCommand extends PhingCommand
     protected function configure()
     {
         $this
-            ->setDescription('Load XML fixtures')
-            ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory where XML or/and SQL fixtures files are located', $this->defaultFixturesDir)
+            ->setDescription('Load XML, SQL and/or YAML fixtures')
+            ->addOption(
+                'dir', 'd', InputOption::VALUE_OPTIONAL,
+                'The directory where XML, SQL and/or YAML fixtures files are located',
+                $this->defaultFixturesDir
+            )
             ->addOption('xml', '', InputOption::VALUE_NONE, 'Load XML fixtures')
             ->addOption('sql', '', InputOption::VALUE_NONE, 'Load SQL fixtures')
             ->addOption('yml', '', InputOption::VALUE_NONE, 'Load YAML fixtures')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:load-fixtures</info> loads <info>XML</info> and/or <info>SQL</info> fixtures.
+The <info>propel:load-fixtures</info> loads <info>XML</info>, <info>SQL</info> and/or <info>YAML</info> fixtures.
 
   <info>php app/console propel:load-fixtures</info>
 
