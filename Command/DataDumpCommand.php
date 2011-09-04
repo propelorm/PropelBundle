@@ -54,34 +54,45 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:data-dump');
+
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $ret = $this->callPhing('datadump', array(
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
             'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => $defaultConfig['connection']['password'],
-            'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
+            'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
         ));
 
-        if ($ret) {
+        if (true === $ret) {
             $finder     = new Finder();
             $filesystem = new Filesystem();
 
-            $datas = $finder->name('*_data.xml')->in($this->getTmpDir());
+            $datas = $finder->name('*_data.xml')->in($this->getCacheDir());
 
+            $output->writeln('');
+
+            $nbFiles = 0;
             foreach($datas as $data) {
                 $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
 
-                $filesystem->copy((string) $data, $dest);
-                $filesystem->remove($data);
+                if (file_exists((string) $data)) {
+                    $filesystem->copy((string) $data, $dest);
+                    $filesystem->remove($data);
 
-                $output->writeln(sprintf('<info>Wrote dumped data in <comment>%s</comment></info>.', $dest));
+                    $output->writeln(sprintf('>>  <info>File+</info>    %s', $dest));
+                    $nbFiles++;
+                }
             }
 
-            if (iterator_count($datas) <= 0) {
-                $output->writeln('No dumped files.');
-            }
+            $this->writeSection(
+                $output,
+                sprintf('<comment>%d</comment> <info> file%s ha%s been generated.</info>',
+                    $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
+                ),
+                'bg=black'
+            );
         } else {
             $this->writeTaskError($output, 'datadump', false);
         }
