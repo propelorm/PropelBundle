@@ -38,7 +38,7 @@ abstract class PhingCommand extends ContainerAwareCommand
     /**
      * @var string
      */
-    protected $tmpDir = null;
+    protected $cacheDir = null;
     /**
      * The Phing output.
      * @string
@@ -66,28 +66,28 @@ abstract class PhingCommand extends ContainerAwareCommand
         $kernel = $this->getApplication()->getKernel();
 
         if (isset($properties['propel.schema.dir'])) {
-            $this->tmpDir = $properties['propel.schema.dir'];
+            $this->cacheDir = $properties['propel.schema.dir'];
         } else {
-            $this->tmpDir = $kernel->getRootDir().'/cache/propel/propel-gen';
+            $this->cacheDir = $kernel->getRootDir().'/cache/' . $kernel->getEnvironment() . '/propel';
 
             $filesystem = new Filesystem();
-            $filesystem->remove($this->tmpDir);
-            $filesystem->mkdir($this->tmpDir);
+            $filesystem->remove($this->cacheDir);
+            $filesystem->mkdir($this->cacheDir);
         }
 
-        $this->copySchemas($kernel, $this->tmpDir);
+        $this->copySchemas($kernel, $this->cacheDir);
 
         // build.properties
-        $this->createBuildPropertiesFile($kernel, $this->tmpDir.'/build.properties');
+        $this->createBuildPropertiesFile($kernel, $this->cacheDir.'/build.properties');
 
         // buidtime-conf.xml
-        $this->createBuildTimeFile($this->tmpDir.'/buildtime-conf.xml');
+        $this->createBuildTimeFile($this->cacheDir.'/buildtime-conf.xml');
 
         // Verbosity
         $bufferPhingOutput = $this->getContainer()->getParameter('kernel.debug');
 
         // Phing arguments
-        $args = $this->getPhingArguments($kernel, $this->tmpDir, $properties);
+        $args = $this->getPhingArguments($kernel, $this->cacheDir, $properties);
 
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
@@ -173,12 +173,12 @@ abstract class PhingCommand extends ContainerAwareCommand
     /**
      * @param KernelInterface $kernel   The application kernel.
      */
-    protected function copySchemas(KernelInterface $kernel, $tmpDir)
+    protected function copySchemas(KernelInterface $kernel, $cacheDir)
     {
         $filesystem = new Filesystem();
 
-        if (!is_dir($tmpDir)) {
-            $filesystem->mkdir($tmpDir);
+        if (!is_dir($cacheDir)) {
+            $filesystem->mkdir($cacheDir);
         }
 
         foreach ($kernel->getBundles() as $bundle) {
@@ -198,7 +198,7 @@ abstract class PhingCommand extends ContainerAwareCommand
                         'path'      => $schema->getPathname(),
                     );
 
-                    $file = $tmpDir.DIRECTORY_SEPARATOR.$tempSchema;
+                    $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
                     $filesystem->copy((string) $schema, $file, true);
 
                     // the package needs to be set absolute
@@ -336,11 +336,11 @@ EOT;
     }
 
     /**
-     * Returns the current tmpfile.
-     * @return string   The current tmpfile
+     * Return the current Propel cache directory.
+     * @return string   The current Propel cache directory.
      */
-    protected function getTmpDir() {
-        return $this->tmpDir;
+    protected function getCacheDir() {
+        return $this->cacheDir;
     }
 
     /**
