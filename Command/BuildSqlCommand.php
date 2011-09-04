@@ -85,7 +85,9 @@ EOT
 
             $this->writeSection(
                 $output,
-                sprintf('<comment>%d</comment> <info>SQL file have been generated.</info>', $nbFiles),
+                sprintf('<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
+                    $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
+                ),
                 'bg=black'
             );
         } else {
