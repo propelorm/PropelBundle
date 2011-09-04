@@ -52,9 +52,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('force')) {
-            $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
+        $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
 
+        if ($input->getOption('force')) {
             if ($input->getOption('verbose')) {
                 $this->additionalPhingArgs[] = 'verbose';
             }
@@ -66,7 +66,6 @@ EOT
                 'propel.database.database'  => $defaultConfig['adapter'],
                 'propel.database.user'      => $defaultConfig['connection']['user'],
                 'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
-                'propel.schema.dir'         => $this->getApplication()->getKernel()->getRootDir() . '/propel/schema/',
             ));
 
             if (true === $ret) {
