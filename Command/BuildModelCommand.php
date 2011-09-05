@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildModelCommand extends PhingCommand
+class BuildModelCommand extends AbstractPropelCommand
 {
     /**
      * @see Command

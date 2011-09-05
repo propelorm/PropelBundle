@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\Output;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class MigrationMigrateCommand extends PhingCommand
+class MigrationMigrateCommand extends AbstractPropelCommand
 {
     /**
      * @see Command

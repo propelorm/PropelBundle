@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @author William DURAND
  */
-class DatabaseCreateCommand extends PhingCommand
+class DatabaseCreateCommand extends AbstractPropelCommand
 {
     /**
      * @see Command

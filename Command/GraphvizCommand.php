@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class GraphvizCommand extends PhingCommand
+class GraphvizCommand extends AbstractPropelCommand
 {
     /**
      * @see Command

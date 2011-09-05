@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Propel\PropelBundle\DataFixtures\YamlDataLoader;
 use Propel\PropelBundle\DataFixtures\XmlDataLoader;
 
@@ -26,7 +26,7 @@ use Propel\PropelBundle\DataFixtures\XmlDataLoader;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class LoadFixturesCommand extends PhingCommand
+class LoadFixturesCommand extends AbstractPropelCommand
 {
     /**
      * Default fixtures directory.
@@ -124,26 +124,26 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $output->writeln('<info>[Propel] The fixtures directory does not exist.</info>');
+            return $output->writeln('<info>The fixtures directory does not exist.</info>');
         }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
         if ($input->getOption('sql') || $noOptions) {
             if (-1 === $this->loadSqlFixtures($input, $output)) {
-                $output->writeln('<info>[Propel] No SQL fixtures found.</info>');
+                $output->writeln('<info>No SQL fixtures found.</info>');
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
             if (-1 === $this->loadFixtures($input, $output, 'xml')) {
-                $output->writeln('<info>[Propel] No XML fixtures found.</info>');
+                $output->writeln('<info>No XML fixtures found.</info>');
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
             if (-1 === $this->loadFixtures($input, $output, 'yml')) {
-                $output->writeln('<info>[Propel] No YAML fixtures found.</info>');
+                $output->writeln('<info>No YAML fixtures found.</info>');
             }
         }
     }
@@ -218,7 +218,7 @@ EOT
         // Create a "sqldb.map" file
         $sqldbContent = '';
         foreach($datas as $data) {
-            $output->writeln(sprintf('<info>[Propel] Loading SQL fixtures from</info> <comment>%s</comment>', $data));
+            $output->writeln(sprintf('<info>Loading SQL fixtures from</info> <comment>%s</comment>.', $data));
 
             $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
             $this->filesystem->copy($data, $tmpdir . '/fixtures/' . $data->getFilename(), true);
@@ -272,7 +272,9 @@ EOT
         ));
 
         if (true === $ret) {
-            $output->writeln('<info>[Propel] All SQL statements have been executed.</info>');
+            $this->writeSection($output, array(
+                '', 'All SQL statements have been executed.'
+            ), 'fg=green;bg=black');
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
             return false;

@@ -18,12 +18,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
 /**
- * Wrapper command for Phing tasks
+ * Wrapper for Propel commands.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-abstract class PhingCommand extends ContainerAwareCommand
+abstract class AbstractPropelCommand extends ContainerAwareCommand
 {
     /**
      * Additional Phing args to add in specialized commands.
@@ -314,17 +314,13 @@ EOT;
         $properties = array();
 
         if (false === $lines = @file($file)) {
-            throw new sfCommandException('Unable to parse contents of the "sqldb.map" file.');
+            throw new \Exception(sprintf('Unable to parse contents of "%s".', $file));
         }
 
         foreach ($lines as $line) {
             $line = trim($line);
 
-            if ('' == $line) {
-                continue;
-            }
-
-            if (in_array($line[0], array('#', ';'))) {
+            if ('' == $line || in_array($line[0], array('#', ';'))) {
                 continue;
             }
 
@@ -363,7 +359,7 @@ EOT;
             throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
         }
 
-        $output->writeln(sprintf('<info>[Propel] Use connection named <comment>%s</comment></info>', $name));
+        $output->writeln(sprintf('<info>Use connection named</info> <comment>%s</comment>.', $name));
 
         return array($name, $defaultConfig);
     }
@@ -431,18 +427,6 @@ EOT;
     }
 
     /**
-     * Ask confirmation from the user.
-     *
-     * @param OutputInterface $output   The output.
-     * @param string $question  A given question.
-     * @param string $default   A default response.
-     */
-    protected function askConfirmation(OutputInterface $output, $question, $default = null)
-    {
-        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
-    }
-
-    /**
      * Renders an error message if a task has failed.
      *
      * @param OutputInterface $output   The output.
@@ -468,4 +452,16 @@ EOT;
 	{
 		return $output->writeln('>>  <info>File+</info>    ' . $filename);
 	}
+
+    /**
+     * Ask confirmation from the user.
+     *
+     * @param OutputInterface $output   The output.
+     * @param string $question  A given question.
+     * @param string $default   A default response.
+     */
+    protected function askConfirmation(OutputInterface $output, $question, $default = null)
+    {
+        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
+    }
 }

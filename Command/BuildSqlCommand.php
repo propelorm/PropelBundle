@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 
 /**
  * BuildCommand.
@@ -26,7 +26,7 @@ use Propel\PropelBundle\Command\PhingCommand;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildSqlCommand extends PhingCommand
+class BuildSqlCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
