@@ -68,7 +68,7 @@ EOT
         $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());
 
         try {
-            $dumper->dump($filename, $name);
+            $file = $dumper->dump($filename, $name);
         } catch (\Exception $e) {
             $this->writeSection($output, array(
                 '[Propel] Exception',
@@ -77,11 +77,7 @@ EOT
             return false;
         }
 
-        $this->writeSection(
-            $output,
-            sprintf('>>  <info>File+</info>    %s', $filename),
-            'fg=white;bg=black'
-        );
+        $output->writeln(sprintf('>>  <info>File+</info>    %s', $file));
 
         return true;
     }
