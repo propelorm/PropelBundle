@@ -14,8 +14,8 @@ use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Util\Filesystem;
+
+use Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
 
 /**
  * DataDumpCommand.
@@ -24,7 +24,11 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
  */
 class DataDumpCommand extends AbstractPropelCommand
 {
-    protected static $destPath = '/propel/dump';
+    /**
+     * Default fixtures directory.
+     * @var string
+     */
+    private $defaultFixturesDir = 'app/propel/fixtures';
 
     /**
      * @see Command
@@ -32,10 +36,10 @@ class DataDumpCommand extends AbstractPropelCommand
     protected function configure()
     {
         $this
-            ->setDescription('Dump data from database into xml file')
+            ->setDescription('Dump data from database into YAML file')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:data-dump</info> dumps data from database into xml file.
+The <info>propel:data-dump</info> dumps data from database into YAML file.
 
   <info>php app/console propel:data-dump</info>
 
@@ -58,43 +62,27 @@ EOT
 
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $ret = $this->callPhing('datadump', array(
-            'propel.database.url'       => $defaultConfig['connection']['dsn'],
-            'propel.database.database'  => $defaultConfig['adapter'],
-            'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
-        ));
+        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $this->defaultFixturesDir);
+        $filename = $path . '/fixtures_' . time();
 
-        if (true === $ret) {
-            $finder     = new Finder();
-            $filesystem = new Filesystem();
+        $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());
 
-            $datas = $finder->name('*_data.xml')->in($this->getCacheDir());
-
-            $output->writeln('');
-
-            $nbFiles = 0;
-            foreach($datas as $data) {
-                $dest = $this->getApplication()->getKernel()->getRootDir() . self::$destPath . '/xml/' . $data->getFilename();
-
-                if (file_exists((string) $data)) {
-                    $filesystem->copy((string) $data, $dest);
-                    $filesystem->remove($data);
-
-                    $output->writeln(sprintf('>>  <info>File+</info>    %s', $dest));
-                    $nbFiles++;
-                }
-            }
-
-            $this->writeSection(
-                $output,
-                sprintf('<comment>%d</comment> <info> file%s ha%s been generated.</info>',
-                    $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
-                ),
-                'bg=black'
-            );
-        } else {
-            $this->writeTaskError($output, 'datadump', false);
+        try {
+            $dumper->dump($filename, $name);
+        } catch (\Exception $e) {
+            $this->writeSection($output, array(
+                '[Propel] Exception',
+                '',
+                $e->getMessage()), 'fg=white;bg=red');
+            return false;
         }
+
+        $this->writeSection(
+            $output,
+            sprintf('>>  <info>File+</info>    %s', $filename),
+            'fg=white;bg=black'
+        );
+
+        return true;
     }
 }
