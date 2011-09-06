@@ -43,7 +43,9 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
         $filename .= '.' . $this->getFileExtension();
         $data = $this->transformArrayToData($array);
 
-        file_put_contents($filename, $data);
+        if (false === file_put_contents($filename, $data)) {
+            throw new \Exception(sprintf('Cannot write file: %s', $filename));
+        }
     }
 
     /**
