@@ -16,6 +16,7 @@ use \BaseObject;
 use \ColumnMap;
 use \PropelException;
 
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\PropelBundle\Util\PropelInflector;
 
 use Symfony\Component\Finder\Finder;
@@ -25,12 +26,8 @@ use Symfony\Component\Finder\Finder;
  *
  * @author William Durand <william.durand1@gmail.com>
  */
-abstract class AbstractDataLoader implements DataLoaderInterface
+abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoaderInterface
 {
-    /**
-     * @var string
-     */
-    protected $rootDir;
     /**
      * @var array
      */
@@ -47,7 +44,8 @@ abstract class AbstractDataLoader implements DataLoaderInterface
      */
     public function __construct($rootDir)
     {
-        $this->rootDir = $rootDir;
+        parent::__construct($rootDir);
+
         $this->deletedClasses = array();
         $this->object_references = array();
     }
@@ -59,14 +57,6 @@ abstract class AbstractDataLoader implements DataLoaderInterface
      * @return array
      */
     abstract protected function transformDataToArray($file);
-
-    /**
-     * @return string
-     */
-    public function getRootDir()
-    {
-        return $this->rootDir;
-    }
 
     /**
      * {@inheritdoc}
@@ -109,7 +99,7 @@ abstract class AbstractDataLoader implements DataLoaderInterface
      *
      * @param array   $data  The data to delete
      */
-    public function deleteCurrentData($data = null)
+    protected function deleteCurrentData($data = null)
     {
         if ($data !== null) {
             $classes = array_keys($data);
@@ -139,7 +129,7 @@ abstract class AbstractDataLoader implements DataLoaderInterface
      *
      * @param array   $data  The data to be loaded
      */
-    public function loadDataFromArray($data = null)
+    protected function loadDataFromArray($data = null)
     {
         if ($data === null) {
             return;
@@ -165,7 +155,9 @@ abstract class AbstractDataLoader implements DataLoaderInterface
                 $obj = new $class();
 
                 if (!$obj instanceof BaseObject) {
-                    throw new \RuntimeException(sprintf('The class "%s" is not a Propel class. This probably means there is already a class named "%s" somewhere in symfony or in your project.', $class, $class));
+                    throw new \RuntimeException(
+                        sprintf('The class "%s" is not a Propel class. There is probably another class named "%s" somewhere.', $class, $class)
+                    );
                 }
 
                 if (!is_array($data)) {
@@ -193,9 +185,13 @@ abstract class AbstractDataLoader implements DataLoaderInterface
                         if ($column->isForeignKey() && null !== $value) {
                             $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
                             if (!isset($this->object_references[$relatedTable->getPhpName().'_'.$value])) {
-                                throw new \InvalidArgumentException(sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getPhpName()));
+                                throw new \InvalidArgumentException(
+                                    sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getPhpName())
+                                );
                             }
-                            $value = $this->object_references[$relatedTable->getPhpName().'_'.$value]->getByName($column->getRelatedName(), BasePeer::TYPE_COLNAME);
+                            $value = $this
+                                ->object_references[$relatedTable->getPhpName().'_'.$value]
+                                ->getByName($column->getRelatedName(), BasePeer::TYPE_COLNAME);
                         }
                     }
 
@@ -251,32 +247,15 @@ abstract class AbstractDataLoader implements DataLoaderInterface
 
         foreach ($values as $value) {
             if (!isset($this->object_references[$relatedClass.'_'.$value])) {
-                throw new \InvalidArgumentException(sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedClass));
+                throw new \InvalidArgumentException(
+                    sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedClass)
+                );
             }
 
             $middle = new $middleClass();
             $middle->$setter($obj);
             $middle->$relatedSetter($this->object_references[$relatedClass.'_'.$value]);
             $middle->save();
-        }
-    }
-
-    /**
-     * Loads all map builders.
-     */
-    protected function loadMapBuilders()
-    {
-        $dbMap  = Propel::getDatabaseMap();
-
-        $finder = new Finder();
-        $files  = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../');
-
-        foreach ($files as $file) {
-            $omClass = basename($file, 'TableMap.php');
-            if (class_exists($omClass) && is_subclass_of($omClass, 'BaseObject')) {
-                $tableMapClass = basename($file, '.php');
-                $dbMap->addTableFromMapClass($tableMapClass);
-            }
         }
     }
 }
