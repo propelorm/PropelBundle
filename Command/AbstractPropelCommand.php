@@ -359,7 +359,8 @@ EOT;
             throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
         }
 
-        $output->writeln(sprintf('<info>Use connection named</info> <comment>%s</comment>.', $name));
+        $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
+            $name, $this->getApplication()->getKernel()->getEnvironment()));
 
         return array($name, $defaultConfig);
     }
