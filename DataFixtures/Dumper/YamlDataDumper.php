@@ -22,15 +22,18 @@ class YamlDataDumper extends AbstractDataDumper
     /**
      * {@inheritdoc}
      */
-    abstract protected function transformArrayToData($data)
+    protected function transformArrayToData($data)
     {
-        return Yaml::dump($data, 3);
+        var_dump($data);
+        die();
+
+        return Yaml::dump($data);
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract protected function getFileExtension()
+    protected function getFileExtension()
     {
         return 'yml';
     }

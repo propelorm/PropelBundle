@@ -11,10 +11,7 @@
 namespace Propel\PropelBundle\DataFixtures\Dumper;
 
 use \Propel;
-use \BasePeer;
 use \BaseObject;
-use \ColumnMap;
-use \PropelException;
 
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 
@@ -46,6 +43,8 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
         if (false === file_put_contents($filename, $data)) {
             throw new \Exception(sprintf('Cannot write file: %s', $filename));
         }
+
+        return $filename;
     }
 
     /**
@@ -71,7 +70,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
      * @param string $connectionName    The connection name
      * @return array
      */
-    protected getDataAsArray($connectionName)
+    protected function getDataAsArray()
     {
         $tables = array();
         foreach ($this->dbMap->getTables() as $table) {
