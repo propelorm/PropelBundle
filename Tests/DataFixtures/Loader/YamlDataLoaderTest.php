@@ -8,35 +8,36 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\DataFixtures;
+namespace Propel\PropelBundle\Tests\DataFixtures\Loader;
 
 use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\DataFixtures\XmlDataLoader;
+use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class XmlDataLoaderTest extends TestCase
+class YamlDataLoaderTest extends TestCase
 {
     protected $tmpfile;
 
     public function setUp()
     {
-        $fixtures = <<<XML
-<Fixtures>
-    <Bar Namespace="\Foo">
-        <fb1 Id="10" Title="Hello" />
-        <fb2 Id="20" Title="World" />
-    </Bar>
-</Fixtures>
-XML;
+        $fixtures = <<<YML
+\Foo\Bar:
+    fb1:
+        Id: 10
+        Title: Hello
+    fb2:
+        Id: 20
+        Title: World
+YML;
         $this->tmpfile = (string) tmpfile();
         file_put_contents($this->tmpfile, $fixtures);
     }
 
     public function testTransformDataToArray()
     {
-        $loader = new TestableXmlDataLoader();
+        $loader = new TestableYamlDataLoader();
         $array  = $loader->transformDataToArray($this->tmpfile);
 
         $this->assertTrue(is_array($array), 'Result is an array');
@@ -51,7 +52,7 @@ XML;
     }
 }
 
-class TestableXmlDataLoader extends XmlDataLoader
+class TestableYamlDataLoader extends YamlDataLoader
 {
     public function __construct()
     {
