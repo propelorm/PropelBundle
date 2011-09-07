@@ -65,11 +65,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     {
         $nbFiles = 0;
 
-        // load map classes
-        $this->loadMapBuilders();
-        $this->dbMap = Propel::getDatabaseMap($connectionName);
-
-        // wrap all database operations in a single transaction
+        $this->loadMapBuilders($connectionName);
         $this->con = Propel::getConnection($connectionName);
 
         try {
