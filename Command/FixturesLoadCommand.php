@@ -22,11 +22,11 @@ use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 
 /**
- * LoadFixturesCommand
+ * FixturesLoadCommand
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class LoadFixturesCommand extends AbstractPropelCommand
+class FixturesLoadCommand extends AbstractPropelCommand
 {
     /**
      * Default fixtures directory.
@@ -61,9 +61,9 @@ class LoadFixturesCommand extends AbstractPropelCommand
             ->addOption('yml', '', InputOption::VALUE_NONE, 'Load YAML fixtures')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:load-fixtures</info> loads <info>XML</info>, <info>SQL</info> and/or <info>YAML</info> fixtures.
+The <info>propel:fixtures:load</info> loads <info>XML</info>, <info>SQL</info> and/or <info>YAML</info> fixtures.
 
-  <info>php app/console propel:load-fixtures</info>
+  <info>php app/console propel:fixtures:load</info>
 
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
@@ -103,7 +103,7 @@ YAML fixtures are:
 </comment>
 EOT
             )
-            ->setName('propel:load-fixtures')
+            ->setName('propel:fixtures:load')
         ;
     }
 
@@ -114,7 +114,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:load-fixtures');
+        $this->writeSection($output, '[Propel] You are running the command: propel:fixtures:load');
 
         $this->filesystem = new Filesystem();
         $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
