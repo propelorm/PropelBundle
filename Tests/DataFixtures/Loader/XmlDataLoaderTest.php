@@ -34,6 +34,11 @@ XML;
         file_put_contents($this->tmpfile, $fixtures);
     }
 
+    public function tearDown()
+    {
+        unlink($this->tmpfile);
+    }
+
     public function testTransformDataToArray()
     {
         $loader = new TestableXmlDataLoader();
