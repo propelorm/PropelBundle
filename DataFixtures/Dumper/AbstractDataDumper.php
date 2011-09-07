@@ -53,13 +53,6 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
     abstract protected function transformArrayToData($data);
 
     /**
-     * Returns the file extension depending on the specialized dumper.
-     *
-     * @return string
-     */
-    abstract protected function getFileExtension();
-
-    /**
      * Dumps data to fixture from a given connection and
      * returns an array.
      *
