@@ -63,12 +63,12 @@ EOT
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $this->defaultFixturesDir);
-        $filename = $path . '/fixtures_' . time();
+        $filename = $path . '/fixtures_' . time() . '.yml';
 
         $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());
 
         try {
-            $file = $dumper->dump($filename, $name);
+            $dumper->dump($filename, $name);
         } catch (\Exception $e) {
             $this->writeSection($output, array(
                 '[Propel] Exception',
@@ -77,7 +77,8 @@ EOT
             return false;
         }
 
-        $output->writeln(sprintf('>>  <info>File+</info>    %s', $file));
+        $output->writeln('');
+        $output->writeln(sprintf('>>  <info>File+</info>    %s', $filename));
 
         return true;
     }
