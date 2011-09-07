@@ -24,6 +24,6 @@ class YamlDataDumper extends AbstractDataDumper
      */
     protected function transformArrayToData($data)
     {
-        return Yaml::dump($data);
+        return Yaml::dump($data, 3);
     }
 }
