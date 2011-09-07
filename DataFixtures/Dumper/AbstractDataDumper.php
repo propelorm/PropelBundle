@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\DataFixtures\Dumper;
 
+use \PDO;
 use \Propel;
 use \BaseObject;
 
@@ -25,26 +26,21 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
     /**
      * {@inheritdoc}
      */
-    public function dump($filename = null, $connectionName)
+    public function dump($filename, $connectionName = null)
     {
-        $this->loadMapBuilders();
-        $this->con   = Propel::getConnection($connectionName);
-        $this->dbMap = Propel::getDatabaseMap($connectionName);
-
-        $array = $this->getDataAsArray($connectionName);
-
-        if (null === $filename) {
-            $filename = 'fixture_' . time();
+        if (null === $filename || '' === $filename) {
+            throw new \Exception('Invalid filename provided.');
         }
 
-        $filename .= '.' . $this->getFileExtension();
-        $data = $this->transformArrayToData($array);
+        $this->loadMapBuilders($connectionName);
+        $this->con = Propel::getConnection($connectionName);
+
+        $array = $this->getDataAsArray($connectionName);
+        $data  = $this->transformArrayToData($array);
 
         if (false === file_put_contents($filename, $data)) {
             throw new \Exception(sprintf('Cannot write file: %s', $filename));
         }
-
-        return $filename;
     }
 
     /**
@@ -74,7 +70,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
     {
         $tables = array();
         foreach ($this->dbMap->getTables() as $table) {
-            $tables[] = $table->getPhpName();
+            $tables[] = $table->getClassname();
         }
 
         $tables = $this->fixOrderingOfForeignKeyData($tables);
@@ -85,6 +81,8 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
             $hasParent   = false;
             $haveParents = false;
             $fixColumn   = null;
+
+            $shortTableName = substr($tableName, strrpos($tableName, '\\') + 1, strlen($tableName));
 
             foreach ($tableMap->getColumns() as $column) {
                 $col = strtolower($column->getName());
@@ -129,7 +127,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                     $dumpData[$tableName] = array();
 
                     foreach ($rows as $row) {
-                        $pk          = $tableName;
+                        $pk          = $shortTableName;
                         $values      = array();
                         $primaryKeys = array();
                         $foreignKeys = array();

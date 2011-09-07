@@ -23,5 +23,5 @@ interface DataDumperInterface
      * @param string $filename          The file name to write data.
      * @param string $connectionName    The Propel connection name.
      */
-    function dump($filename = null, $connectionName);
+    function dump($filename, $connectionName = null);
 }
