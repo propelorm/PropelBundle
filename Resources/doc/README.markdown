@@ -12,9 +12,9 @@ Currently supports:
  * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
  * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
  * Integration to the Symfony2 Profiler.
- * Load SQL and XML fixtures.
+ * Load SQL, YAML and XML fixtures.
  * Create/Drop databases.
- * Dump data into XML and SQL.
+ * Dump data into YAML fixtures.
 
 Installation
 ------------
@@ -216,22 +216,12 @@ You can define which connection to use:
 
     > php app/console propel:reverse --connection=default
 
-You can dump data from your database in XML to `app/propel/dump/xml/`:
-
-    > php app/console propel:data-dump [--connection[="..."]]
-
-Once you ran `propel:data-dump` you can generate SQL statements from dumped data:
-
-    > php app/console propl:data-sql
-
-SQL will be write in `app/propel/sql/`.
-
 
 ### Fixtures
 
 You can load your own fixtures by using the following command:
 
-    > php app/console propel:load-fixtures [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]]
+    > php app/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]]
 
 As usual, `--connection` allows to specify a connection.
 
@@ -272,6 +262,14 @@ A valid _YAML fixtures file_ is:
          Description: Hello world !
 ```
 
+You can dump data into YAML fixtures file by using this command:
+
+    > php app/console propel:fixtures:dump [--connection[="..."]]
+
+Dumped files will be written in the fixtures directory: `app/propel/fixtures/` with the following name: `fixtures_99999.yml` where `99999`
+is a timestamp.
+Once done, you will be able to load this files by using the `propel:fixtures:load` command.
+
 
 ### Graphviz
 
@@ -298,9 +296,3 @@ You can drop a **database**:
 As usual, `--connection` allows to specify a connection.
 
 Note that the `--force` option is needed to actually execute the SQL statements.
-
-
-Known Problems
---------------
-
-Your application must not be in a path including dots in directory names (i.e. '/Users/me/symfony/2.0/sandbox/' fails).
