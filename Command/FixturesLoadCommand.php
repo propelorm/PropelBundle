@@ -124,7 +124,9 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $output->writeln('<info>The fixtures directory does not exist.</info>');
+            return $this->writeSection($output, array(
+                'The fixtures directory does not exist.'
+            ), 'fg=white;bg=red');
         }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
