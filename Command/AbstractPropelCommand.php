@@ -191,7 +191,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                 $prefix = implode('/', array_slice($parts, 1, $length));
 
                 foreach ($schemas as $schema) {
-                    $tempSchema = md5($schema).'_'.$schema->getBaseName();
+                    $tempSchema = $bundle->getName().'-'.$schema->getBaseName();
                     $this->tempSchemas[$tempSchema] = array(
                         'bundle'    => $bundle->getName(),
                         'basename'  => $schema->getBaseName(),
