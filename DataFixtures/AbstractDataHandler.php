@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\DataFixtures;
 
 use \Propel;
+
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -23,9 +24,11 @@ abstract class AbstractDataHandler
      */
     protected $rootDir;
     /**
+     * @var \PDO
      */
     protected $con;
     /**
+     * @var \DatabaseMap
      */
     protected $dbMap;
 
@@ -48,21 +51,57 @@ abstract class AbstractDataHandler
     }
 
     /**
-     * Loads all map builders.
+     * Load Map builders.
+     *
+     * @param string $connectionName    A connection name.
      */
-    protected function loadMapBuilders()
+    protected function loadMapBuilders($connectionName = null)
     {
-        $dbMap  = Propel::getDatabaseMap();
+        if (null !== $this->dbMap) {
+            return;
+        }
+
+        $this->dbMap = Propel::getDatabaseMap($connectionName);
 
         $finder = new Finder();
-        $files  = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../');
+        $files = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../');
 
         foreach ($files as $file) {
-            $omClass = basename($file, 'TableMap.php');
-            if (class_exists($omClass) && is_subclass_of($omClass, 'BaseObject')) {
-                $tableMapClass = basename($file, '.php');
-                $dbMap->addTableFromMapClass($tableMapClass);
+            $class = $this->guessFullClassName($file->getRelativePath(), basename($file, '.php'));
+
+            if (null !== $class) {
+                $this->dbMap->addTableFromMapClass($class);
             }
         }
+    }
+
+    /**
+     * Try to find a valid class with its namespace based on the filename.
+     * Based on the PSR-0 standard, the namespace should be the directory structure.
+     *
+     * @param string $path  The relative path of the file.
+     * @param string $shortClassName    The short class name aka the filename without extension.
+     */
+    private function guessFullClassName($path, $shortClassName)
+    {
+        $array = array();
+        $path  = str_replace('/', '\\', $path);
+
+        $array[] = $path;
+        while ($pos = strpos($path, '\\')) {
+            $path = substr($path, $pos + 1, strlen($path));
+            $array[] = $path;
+        }
+
+        $array = array_reverse($array);
+        while ($ns = array_pop($array)) {
+
+            $class = $ns . '\\' . $shortClassName;
+            if (class_exists($class)) {
+                return $class;
+            }
+        }
+
+        return null;
     }
 }
