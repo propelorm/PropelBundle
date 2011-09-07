@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Propel\PropelBundle\DataFixtures\Dumper\YamlDumpFixtureser;
+use Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
 
 /**
  * FixturesDumpCommand.
@@ -62,7 +62,7 @@ EOT
 
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $this->defaultFixturesDir);
+        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $this->defaultFixturesDir;
         $filename = $path . '/fixtures_' . time() . '.yml';
 
         $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());
