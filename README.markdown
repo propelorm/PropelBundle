@@ -91,13 +91,20 @@ propel:
 #        default_connection:       default
 #        connections:
 #           default:
-#               driver:               mysql
-#               user:                 root
-#               password:             null
-#               dsn:                  mysql:host=localhost;dbname=test
-#               options:              {}
-#               attributes:           {}
+#               driver:             mysql
+#               user:               root
+#               password:           null
+#               dsn:                mysql:host=localhost;dbname=test
+#               options:
+#                   ATTR_PERSISTENT: false
+#               attributes:
+#                   ATTR_EMULATE_PREPARES: true
+#               settings:
+#                   charset:        { value: UTF8 }
+#                   queries:        { query: 'INSERT INTO BAR ('hey', 'there')' }
 ```
+
+`options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://propelorm.github.com/propel-docs/reference/runtime-configuration.html) documentation for more explanation.
 
 
 ### Build properties
