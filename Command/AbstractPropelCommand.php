@@ -155,8 +155,8 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
         // Adding user defined properties from the configuration
         $properties = array_merge(
-            $this->getContainer()->get('propel.build_properties')->getProperties(),
-            $properties
+            $properties,
+            $this->getContainer()->get('propel.build_properties')->getProperties()
         );
 
         foreach ($properties as $key => $value) {
