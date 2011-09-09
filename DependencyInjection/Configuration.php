@@ -88,6 +88,7 @@ class Configuration implements ConfigurationInterface
      *         dsn:         xxxxxxxx
      *         options:     {}
      *         attributes:  {}
+     *         settings:    {}
      *         default_connection:  xxxxxx
      */
    private function addDbalSection(ArrayNodeDefinition $node)
@@ -122,10 +123,13 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->fixXmlConfig('setting')
-                ->children()
-                    ->arrayNode('settings')
-                    ->useAttributeAsKey('key')
-                    ->prototype('scalar')->end()
+                    ->children()
+                        ->arrayNode('settings')
+                        ->useAttributeAsKey('key')
+                        ->prototype('array')
+                            ->useAttributeAsKey('key')
+                            ->prototype('scalar')
+                        ->end()
                     ->end()
                 ->end()
                 ->fixXmlConfig('connection')
@@ -146,6 +150,7 @@ class Configuration implements ConfigurationInterface
      *         classname:   PropelPDO
      *         options:     {}
      *         attributes:  {}
+     *         settings:    {}
      *
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder
      */
