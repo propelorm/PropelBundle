@@ -78,7 +78,7 @@ EOT
             foreach ($files as $file) {
                 $this->writeNewFile($output, (string) $file);
 
-                if ('sql' === $file->getExtension()) {
+                if ('sql' === pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
                     $nbFiles++;
                 }
             }
