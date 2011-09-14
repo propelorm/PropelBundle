@@ -1,7 +1,7 @@
-Propel Bundle
-=============
+PropelBundle
+============
 
-This is the implementation of Propel in Symfony2.
+This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
 Currently supports:
 
@@ -9,12 +9,14 @@ Currently supports:
  * Insertion of SQL statements.
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
- * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
+ * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html).
  * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
  * Integration to the Symfony2 Profiler.
  * Load SQL, YAML and XML fixtures.
  * Create/Drop databases.
- * Dump data into YAML fixtures.
+ * Integration with the Form component.
+ * Integration with the Security component.
+
 
 Installation
 ------------
@@ -104,12 +106,12 @@ propel:
 #                   queries:        { query: 'INSERT INTO BAR ('hey', 'there')' }
 ```
 
-`options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://propelorm.github.com/propel-docs/reference/runtime-configuration.html) documentation for more explanation.
+`options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://www.propelorm.org/reference/runtime-configuration.html) documentation for more explanation.
 
 
 ### Build properties
 
-You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/wiki/Documentation/1.6/BuildConfiguration)).
+You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/reference/buildtime-configuration.html)).
 
     # in app/config/propel.ini
     xxxx.xxxx.xxxx = XXXX
