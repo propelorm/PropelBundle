@@ -28,7 +28,6 @@
         <service id="propel.data_collector" class="%propel.data_collector.class%" public="false">
             <tag name="data_collector" template="PropelBundle:Collector:propel" id="propel" />
             <argument type="service" id="propel.logger" />
-            <argument>%propel.dbal.default_connection%</argument>
             <argument type="service" id="propel.configuration" />
         </service>
 
