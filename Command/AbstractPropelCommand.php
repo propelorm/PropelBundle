@@ -212,7 +212,8 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                         $database['package'] = $prefix . '/' . str_replace('\\', '/', $database['namespace']);
                     } else {
                         throw new \RuntimeException(
-                            sprintf('Please define a `package` attribute or a `namespace` attribute for schema `%s`', $schema->getBaseName())
+                            sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
+                                $bundle->getName(), $schema->getBaseName())
                         );
                     }
 
