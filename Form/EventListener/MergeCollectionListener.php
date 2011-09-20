@@ -32,11 +32,11 @@ class MergeCollectionListener implements EventSubscriberInterface
             $collection->clear();
         } else {
             // merge $data into $collection
-            foreach ($collection as $model) {
-                if ($data->search($model) === false) {
-                    $collection->remove($model);
+            foreach ($collection as $i => $model) {
+                if (false === $key = $data->search($model)) {
+                    $collection->remove($i);
                 } else {
-                    $data->remove($model);
+                    $data->remove($key);
                 }
             }
 
