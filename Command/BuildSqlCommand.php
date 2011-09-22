@@ -67,8 +67,8 @@ EOT
         $filesystem->mkdir($sqlDir);
 
         // Execute the task
-        $ret = $this->callPhing('sql', array(
-            'propel.packageObjectModel' => true,
+        $ret = $this->callPhing('build-sql', array(
+            'propel.sql.dir' => $sqlDir
         ));
 
         if (true === $ret) {
