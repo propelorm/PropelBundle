@@ -52,6 +52,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Bad require but needed :(
+        require $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
+
         $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
 
         if ($input->getOption('force')) {
@@ -59,22 +62,72 @@ EOT
                 $this->additionalPhingArgs[] = 'verbose';
             }
 
-            list($name, $defaultConfig) = $this->getConnection($input, $output);
+            $connections = $this->getConnections();
+            $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
 
-            $ret = $this->callPhing('insert-sql', array(
-                'propel.database.url'       => $defaultConfig['connection']['dsn'],
-                'propel.database.database'  => $defaultConfig['adapter'],
-                'propel.database.user'      => $defaultConfig['connection']['user'],
-                'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
-            ));
+            $manager = new \PropelSqlManager();
+            $manager->setWorkingDirectory($sqlDir);
+            $manager->setConnections($connections);
 
-            if (true === $ret) {
-                $output->writeln('<info>All SQL statements have been executed.</info>');
+            if ($input->getOption('connection')) {
+                list($name, $config) = $this->getConnection($input, $output);
+                $this->doInsertSql($manager, $output, $name);
             } else {
-                $this->writeTaskError($output, 'insert-sql');
+                foreach ($connections as $name => $config) {
+                    $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
+                        $name, $this->getApplication()->getKernel()->getEnvironment()));
+                    $this->doInsertSql($manager, $output, $name);
+                }
             }
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
         }
+    }
+
+    /**
+     * @param \PropelSqlManager $manager
+     * @param OutputInterface $output
+     * @param string $connectionName
+     */
+    protected function doInsertSql(\PropelSqlManager $manager, OutputInterface $output, $connectionName)
+    {
+        try {
+            $statusCode = $manager->insertSql($connectionName);
+        } catch (\Exception $e) {
+            return $this->writeSection(
+                $output,
+                array('[Propel] Exception', '', $e),
+                'fg=white;bg=red'
+            );
+        }
+
+        if (true === $statusCode) {
+            $this->writeSection(
+                $output,
+                '<info>All SQL statements have been generated.</info>',
+                'bg=black'
+            );
+        } else {
+            $this->writeSection(
+                $output,
+                '<comment>No SQL statements found.</comment>',
+                'bg=black'
+            );
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getConnections()
+    {
+        $propelConfiguration = $this->getContainer()->get('propel.configuration');
+
+        $connections = array();
+        foreach ($propelConfiguration['datasources'] as $name => $config) {
+            $connections[$name] = $config['connection'];
+        }
+
+        return $connections;
     }
 }
