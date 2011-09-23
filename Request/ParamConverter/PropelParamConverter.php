@@ -19,7 +19,6 @@ class PropelParamConverter implements ParamConverterInterface
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
-        $options = $configuration->getOptions();
 
         if (!class_exists($classQuery)) {
             throw new \Exception(sprintf('The %s Query class does not exist', $classQuery));
@@ -27,9 +26,8 @@ class PropelParamConverter implements ParamConverterInterface
 
         // find by Pk
         if (false === $object = $this->findPk($classQuery, $request)) {
-            throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
             // find by criteria
-            if (false === $object = $this->findOneBy($classQuery, $request, $options)) {
+            if (false === $object = $this->findOneBy($classQuery, $request)) {
                 throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
             }
         }
@@ -50,7 +48,7 @@ class PropelParamConverter implements ParamConverterInterface
         return $classQuery::create()->findPk($request->attributes->get('id'));
     }
 
-    protected function findOneBy($classQuery, Request $request, $options)
+    protected function findOneBy($classQuery, Request $request)
     {
         $query = $classQuery::create();
         $hasCriteria = false;
@@ -73,7 +71,6 @@ class PropelParamConverter implements ParamConverterInterface
         if (null === ($classname = $configuration->getClass())) {
             return false;
         }
-        $options = $configuration->getOptions();
         if (!class_exists($classname)) {
             return false;
         }
