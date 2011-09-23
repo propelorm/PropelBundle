@@ -55,7 +55,7 @@ EOT
         if (true === $this->callPhing('om')) {
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
                 $output->writeln(sprintf(
-                    '>>  <info>%s</info>    Generated model classes from <comment>%s</comment>',
+                    '>>  <info>%20s</info>    Generated model classes from <comment>%s</comment>',
                     $schemaDetails['bundle'],
                     $schemaDetails['basename']
                 ));
