@@ -16,6 +16,7 @@ Currently supports:
  * Create/Drop databases.
  * Integration with the Form component.
  * Integration with the Security component.
+ * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
 
 
 Installation
@@ -305,3 +306,21 @@ You can drop a **database**:
 As usual, `--connection` allows to specify a connection.
 
 Note that the `--force` option is needed to actually execute the SQL statements.
+
+
+Propel ParamConverter
+---------------------
+
+You can use the Propel ParamConverter with the SensioFrameworkExtraBundle.
+You just need to put the right Annotation on top of your controller:
+
+``` php
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post")
+ */
+public function myControler(Post $post)
+{
+}
+```
+
+your request need to have an Id parameter or any field as parameter (slug, title, ...)
