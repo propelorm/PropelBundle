@@ -16,6 +16,7 @@ Currently supports:
  * Create/Drop databases.
  * Integration with the Form component.
  * Integration with the Security component.
+ * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
 
 For documentation, see:
 

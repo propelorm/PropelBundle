@@ -65,6 +65,7 @@ class PropelExtension extends Extension
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
+            $loader->load('converters.xml');
         }
 
         if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
