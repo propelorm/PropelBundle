@@ -20,7 +20,7 @@ Currently supports:
 
 For documentation, see:
 
-    Resources/doc
+    Resources/doc/
 
 For license, see:
 

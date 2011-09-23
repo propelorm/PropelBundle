@@ -312,15 +312,15 @@ Propel ParamConverter
 ---------------------
 
 You can use the Propel ParamConverter with the SensioFrameworkExtraBundle.
-You just need to put the right Annotation on top of your controller:
+You just need to put the right _Annotation_ on top of your controller:
 
 ``` php
 /**
  * @ParamConverter("post", class="BlogBundle\Model\Post")
  */
-public function myControler(Post $post)
+public function myAction(Post $post)
 {
 }
 ```
 
-your request need to have an Id parameter or any field as parameter (slug, title, ...)
+Your request need to have an `id` parameter or any field as parameter (slug, title, ...).
