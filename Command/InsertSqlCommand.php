@@ -53,7 +53,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Bad require but needed :(
-        require $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
+        require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
 
         $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
 
