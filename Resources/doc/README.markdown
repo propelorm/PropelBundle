@@ -10,7 +10,7 @@ Currently supports:
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
  * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html).
- * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
+ * Reverse engineering from [existing database](http://www.propelorm.org/cookbook/working-with-existing-databases.html).
  * Integration to the Symfony2 Profiler.
  * Load SQL, YAML and XML fixtures.
  * Create/Drop databases.
