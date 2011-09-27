@@ -307,6 +307,8 @@ As usual, `--connection` allows to specify a connection.
 
 Note that the `--force` option is needed to actually execute the SQL statements.
 
+### .
+
 
 Propel ParamConverter
 ---------------------
@@ -324,3 +326,10 @@ public function myAction(Post $post)
 ```
 
 Your request need to have an `id` parameter or any field as parameter (slug, title, ...).
+
+The _Annotation_ is optional if your parameter is typed you could only have this :
+``` php
+public function myAction(Post $post)
+{
+}
+```
