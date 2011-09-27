@@ -13,6 +13,7 @@ namespace Propel\PropelBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
 use \PropelCollection;
+use \PropelObjectCollection;
 
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
@@ -53,7 +54,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     public function reverseTransform($keys)
     {
-        $collection = new PropelCollection();
+        $collection = new PropelObjectCollection();
 
         if ('' === $keys || null === $keys) {
             return $collection;

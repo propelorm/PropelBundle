@@ -23,8 +23,7 @@ class ModelType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         if ($options['multiple']) {
-            $builder->addEventSubscriber(new MergeCollectionListener())
-                ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
+            $builder->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($options['choice_list']));
         }
