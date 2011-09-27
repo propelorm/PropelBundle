@@ -1,5 +1,4 @@
-PropelBundle
-============
+# PropelBundle #
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
@@ -18,9 +17,7 @@ Currently supports:
  * Integration with the Security component.
  * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
 
-
-Installation
-------------
+## Installation ##
 
  * Clone this bundle in the `vendor/bundles/Propel` directory:
 
@@ -67,10 +64,9 @@ $loader->registerNamespaces(array(
 ```
 
 
-Sample Configuration
---------------------
+## Sample Configuration ##
 
-### Project configuration
+### Project configuration ###
 
 ``` yaml
 # in app/config/config.yml
@@ -110,12 +106,14 @@ propel:
 `options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://www.propelorm.org/reference/runtime-configuration.html) documentation for more explanation.
 
 
-### Build properties
+### Build properties ###
 
 You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/reference/buildtime-configuration.html)).
 
-    # in app/config/propel.ini
-    xxxx.xxxx.xxxx = XXXX
+``` ini
+# in app/config/propel.ini
+xxxx.xxxx.xxxx = XXXX
+```` 
 
 But you can follow the Symfony2 way by adding build properties in `app/config/config.yml`:
 
@@ -129,7 +127,7 @@ propel:
 ```
 
 
-### Sample Schema
+### Sample Schema ###
 
 Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xml` :
 
@@ -160,14 +158,14 @@ Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xm
 Commands
 --------
 
-### Build Process
+### Build Process ###
 
 Call the application console with the `propel:build` command:
 
     > php app/console propel:build [--classes] [--sql] [--insert-sql]
 
 
-### Insert SQL
+### Insert SQL ###
 
 Call the application console with the `propel:insert-sql` command:
 
@@ -176,7 +174,7 @@ Call the application console with the `propel:insert-sql` command:
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-### Use The Model Classes
+### Use The Model Classes ###
 
 Use the Model classes as any other class in Symfony2. Just use the correct namespace, and Symfony2 will autoload them:
 
@@ -193,7 +191,7 @@ Use the Model classes as any other class in Symfony2. Just use the correct names
     }
 
 
-### Migrations
+### Migrations ###
 
 Generates SQL diff between the XML schemas and the current database structure:
 
@@ -216,7 +214,7 @@ Lists the migrations yet to be executed:
     > php app/console propel:migration:status
 
 
-### Working with existing databases
+### Working with existing databases ###
 
 Run the following command to generate an XML schema from your `default` database:
 
@@ -227,7 +225,7 @@ You can define which connection to use:
     > php app/console propel:reverse --connection=default
 
 
-### Fixtures
+### Fixtures ###
 
 You can load your own fixtures by using the following command:
 
@@ -281,7 +279,7 @@ is a timestamp.
 Once done, you will be able to load this files by using the `propel:fixtures:load` command.
 
 
-### Graphviz
+### Graphviz ###
 
 You can generate **Graphviz** file for your project by using the following command line:
 
@@ -290,7 +288,7 @@ You can generate **Graphviz** file for your project by using the following comma
 It will write files in `app/propel/graph/`.
 
 
-### Database
+### Database ###
 
 You can create a **database**:
 
@@ -308,13 +306,14 @@ As usual, `--connection` allows to specify a connection.
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-Propel ParamConverter
----------------------
+## PropelParamConverter ##
 
 You can use the Propel ParamConverter with the SensioFrameworkExtraBundle.
 You just need to put the right _Annotation_ on top of your controller:
 
 ``` php
+<?php
+
 /**
  * @ParamConverter("post", class="BlogBundle\Model\Post")
  */
@@ -324,3 +323,13 @@ public function myAction(Post $post)
 ```
 
 Your request need to have an `id` parameter or any field as parameter (slug, title, ...).
+
+The _Annotation_ is optional if your parameter is typed you could only have this:
+
+``` php
+<?php
+
+public function myAction(Post $post)
+{
+}
+```
