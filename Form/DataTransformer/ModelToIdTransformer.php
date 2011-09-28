@@ -10,15 +10,25 @@
 
 namespace Propel\PropelBundle\Form\DataTransformer;
 
-use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\DataTransformerInterface;
 
+use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
+
+/**
+ * @author William Durand <william.durand1@gmail.com>
+ */
 class ModelToIdTransformer implements DataTransformerInterface
 {
+    /**
+     * @var \Propel\PropelBundle\Form\ChoiceList\ModelChoiceList
+     */
     private $choiceList;
 
+    /**
+     * @param \Propel\PropelBundle\Form\ChoiceList\ModelChoiceList $choiceList
+     */
     public function __construct(ModelChoiceList $choiceList)
     {
         $this->choiceList = $choiceList;
