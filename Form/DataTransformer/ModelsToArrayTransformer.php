@@ -11,6 +11,8 @@
 namespace Propel\PropelBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
 use \PropelCollection;
 use \PropelObjectCollection;
