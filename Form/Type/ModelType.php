@@ -10,14 +10,20 @@
 
 namespace Propel\PropelBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
+
 use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Propel\PropelBundle\Form\EventListener\MergeCollectionListener;
 use Propel\PropelBundle\Form\DataTransformer\ModelToIdTransformer;
 use Propel\PropelBundle\Form\DataTransformer\ModelsToArrayTransformer;
-use Symfony\Component\Form\AbstractType;
+use Propel\PropelBundle\Form\EventListener\MergeCollectionListener;
 
+/**
+ * ModelType class.
+ *
+ * @author William Durand <william.durand1@gmail.com>
+ */
 class ModelType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
@@ -32,13 +38,13 @@ class ModelType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'template'      => 'choice',
-            'multiple'      => false,
-            'expanded'      => false,
-            'class'         => null,
-            'property'      => null,
-            'query'         => null,
-            'choices'       => array(),
+            'template'          => 'choice',
+            'multiple'          => false,
+            'expanded'          => false,
+            'class'             => null,
+            'property'          => null,
+            'query'             => null,
+            'choices'           => array(),
             'preferred_choices' => array(),
         );
 
