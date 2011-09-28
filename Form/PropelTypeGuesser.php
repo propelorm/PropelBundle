@@ -33,7 +33,7 @@ class PropelTypeGuesser implements FormTypeGuesserInterface
                         'multiple' => \RelationMap::MANY_TO_ONE === $relation->getType() ? false : true,
                     ), Guess::HIGH_CONFIDENCE);
                 }
-            } elseif ($relation->getType() == \RelationMap::MANY_TO_MANY) {
+            } elseif ($relation->getType() === \RelationMap::MANY_TO_MANY) {
                 if (strtolower($property) == strtolower($relation->getPluralName())) {
                     return new TypeGuess('model', array(
                         'class'     => $relation->getLocalTable()->getClassName(),
