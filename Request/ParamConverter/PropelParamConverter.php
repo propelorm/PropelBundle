@@ -23,11 +23,13 @@ class PropelParamConverter implements ParamConverterInterface
         if (!class_exists($classQuery)) {
             throw new \Exception(sprintf('The %s Query class does not exist', $classQuery));
         }
+        $options = $configuration->getOptions();
+        $exclude = isset($options['exclude'])? $options['exclude'] : array();
 
         // find by Pk
-        if (false === $object = $this->findPk($classQuery, $request)) {
+        if (in_array('id', $exclude) || false === $object = $this->findPk($classQuery, $request)) {
             // find by criteria
-            if (false === $object = $this->findOneBy($classQuery, $request)) {
+            if (false === $object = $this->findOneBy($classQuery, $request, $exclude)) {
                 throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
             }
         }
@@ -48,15 +50,17 @@ class PropelParamConverter implements ParamConverterInterface
         return $classQuery::create()->findPk($request->attributes->get('id'));
     }
 
-    protected function findOneBy($classQuery, Request $request)
+    protected function findOneBy($classQuery, Request $request, $exclude)
     {
         $query = $classQuery::create();
         $hasCriteria = false;
         foreach ($request->attributes->all() as $key => $value) {
-            try {
-                $query->{'filterBy' . ucfirst($key)}($value);
-                $hasCriteria = true;
-            } catch (\PropelException $e) { }
+            if (!in_array($key, $exclude)) {
+                try {
+                    $query->{'filterBy' . ucfirst($key)}($value);
+                    $hasCriteria = true;
+                } catch (\PropelException $e) { }
+            }
         }
 
         if (!$hasCriteria) {

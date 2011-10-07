@@ -45,7 +45,7 @@ class PropelParamConverterTest extends TestCase
     }
 
     /**
-     * @@expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function testParamConverterFindPkNotFound()
     {
@@ -66,7 +66,7 @@ class PropelParamConverterTest extends TestCase
     }
 
     /**
-     * @@expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function testParamConverterFindSlugNotFound()
     {
@@ -76,8 +76,50 @@ class PropelParamConverterTest extends TestCase
         $paramConverter->apply($request, $configuration);
     }
 
+    public function testParamConverterFindBySlugNotByName()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('slug' => 'my-book', 'name' => 'foo', 'book' => null));
+        $configuration = new ParamConverter(array(
+                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+                'options' => array('exclude' => array('name'))));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
     /**
-     * @@expectedException LogicException
+     * @expectedException LogicException
+     */
+    public function testParamConverterFindByAllParamExcluded()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('slug' => 'my-book', 'name' => 'foo', 'book' => null));
+        $configuration = new ParamConverter(array(
+                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+                'options' => array('exclude' => array('name', 'slug'))));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testParamConverterFindByIdExcluded()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('id' => '1234', 'book' => null));
+        $configuration = new ParamConverter(array(
+                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+                'options' => array('exclude' => array('id'))));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
+    /**
+     * @expectedException LogicException
      */
     public function testParamConverterFindLogicError()
     {

@@ -113,7 +113,7 @@ You can define _build properties_ by creating a `propel.ini` file in `app/config
 ``` ini
 # in app/config/propel.ini
 xxxx.xxxx.xxxx = XXXX
-```` 
+````
 
 But you can follow the Symfony2 way by adding build properties in `app/config/config.yml`:
 
@@ -333,3 +333,22 @@ public function myAction(Post $post)
 {
 }
 ```
+
+Exclude some parameters:
+
+You can exclude some attributes from being used by the converter:
+
+If you have a route like /my-route/{slug}/{name}/edit/{id}
+You can exclude "name" and "slug" by setting the option "exclude" :
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post", options={"exclude"={"name", "slug"}})
+ */
+public function myAction(Post $post)
+{
+}
+```
+
+

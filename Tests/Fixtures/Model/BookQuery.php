@@ -18,6 +18,7 @@ use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookQuery;
 class BookQuery extends BaseBookQuery {
 
     private $bySlug = false;
+
     /**
      * fake for test
      */
@@ -45,9 +46,17 @@ class BookQuery extends BaseBookQuery {
     /**
      * fake for test
      */
+    public function filterByName($name = null, $comparison = null)
+    {
+        throw new \Exception('Test should never call this method');
+    }
+
+    /**
+     * fake for test
+     */
     public function findOne($con = null)
     {
-        if ($this->bySlug) {
+        if (true === $this->bySlug) {
             $book = new Book();
             $book->setId(1);
             $book->setName('My Book');
