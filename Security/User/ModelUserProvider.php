@@ -59,7 +59,7 @@ class ModelUserProvider implements UserProviderInterface
     {
         $queryClass = $this->queryClass;
 
-        $query = $queryClass::create()
+        $query = $queryClass::create();
 
         if (null !== $property) {
             $filter = 'filterBy' . ucfirst($property);
