@@ -39,7 +39,7 @@ class PropelExtension extends Extension
 
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
-                throw new \InvalidArgumentException('The "path" parameter is mandatory.');
+                throw new \InvalidArgumentException('PropelBundle expects a "path" parameter that must contain the absolute path to the Propel ORM vendor library. The "path" parameter must be defined under the "propel" root node in your configuration.');
             } else {
                 $container->setParameter('propel.path', $config['path']);
             }
@@ -47,7 +47,7 @@ class PropelExtension extends Extension
 
         if (!$container->hasParameter('propel.phing_path')) {
             if (!isset($config['phing_path'])) {
-                throw new \InvalidArgumentException('The "phing_path" parameter is mandatory.');
+                throw new \InvalidArgumentException('PropelBundle expects a "phing_path" parameter that must contain the absolute path to the Phing vendor library. The "phing_path" parameter must be defined under the "propel" root node in your configuration.');
             } else {
                 $container->setParameter('propel.phing_path', $config['phing_path']);
             }
