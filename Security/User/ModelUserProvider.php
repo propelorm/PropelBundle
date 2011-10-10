@@ -35,6 +35,7 @@ class ModelUserProvider implements UserProviderInterface
      */
     protected $queryClass;
     /**
+     * A property to use to retrieve the user.
      * @var string
      */
     protected $property;
@@ -61,8 +62,8 @@ class ModelUserProvider implements UserProviderInterface
 
         $query = $queryClass::create();
 
-        if (null !== $property) {
-            $filter = 'filterBy' . ucfirst($property);
+        if (null !== $this->property) {
+            $filter = 'filterBy' . ucfirst($this->property);
             $query->$filter($username);
         } else {
             $query->filterByUsername($username);
@@ -82,7 +83,7 @@ class ModelUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        if ($user instanceof $this->class) {
+        if (!$user instanceof $this->class) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
