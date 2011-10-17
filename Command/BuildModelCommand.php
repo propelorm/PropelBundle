@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildModelCommand extends PhingCommand
+class BuildModelCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -38,22 +46,22 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
+
         if ($input->getOption('verbose')) {
            $this->additionalPhingArgs[] = 'verbose';
         }
 
         if (true === $this->callPhing('om')) {
-            $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
-
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
                 $output->writeln(sprintf(
-                    'Built Model classes for bundle <info>%s</info> from <comment>%s</comment>.',
+                    '>>  <info>%20s</info>    Generated model classes from <comment>%s</comment>',
                     $schemaDetails['bundle'],
-                    $schemaDetails['path']
+                    $schemaDetails['basename']
                 ));
             }
         } else {
-            $output->writeln('<error>WARNING ! An error has occured.</error>');
+            $this->writeTaskError($output, 'om');
         }
     }
 }

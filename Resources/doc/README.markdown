@@ -1,7 +1,6 @@
-Propel Bundle
-=============
+# PropelBundle #
 
-This is a (work in progress) implementation of Propel in Symfony2.
+This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
 Currently supports:
 
@@ -9,29 +8,32 @@ Currently supports:
  * Insertion of SQL statements.
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
- * Migrations [Propel 1.6](http://www.propelorm.org/wiki/Documentation/1.6/Migrations).
- * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database).
+ * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html).
+ * Reverse engineering from [existing database](http://www.propelorm.org/cookbook/working-with-existing-databases.html).
  * Integration to the Symfony2 Profiler.
- * Load XML fixtures.
+ * Load SQL, YAML and XML fixtures.
+ * Create/Drop databases.
+ * Integration with the Form component.
+ * Integration with the Security component.
+ * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
 
-Installation
-------------
+## Installation ##
 
  * Clone this bundle in the `vendor/bundles/Propel` directory:
 
-    > git submodule add https://github.com/willdurand/PropelBundle.git vendor/bundles/Propel/PropelBundle
+    > git submodule add https://github.com/propelorm/PropelBundle.git vendor/bundles/Propel/PropelBundle
 
  * Checkout Propel and Phing in the `vendor` directory:
 
-    > svn checkout http://svn.propelorm.org/branches/1.6 vendor/propel
+    > svn checkout http://svn.github.com/propelorm/Propel.git vendor/propel
 
-    > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3 vendor/phing
+    > svn checkout http://svn.phing.info/tags/2.4.6/ vendor/phing
 
  * Instead of using svn, you can clone the unofficial Git repositories:
 
-    > git submodule add https://github.com/Xosofox/phing vendor/phing
+    > git submodule add https://github.com/Xosofox/phing.git vendor/phing
 
-    > git submodule add https://github.com/Xosofox/propel1.6 vendor/propel
+    > git submodule add https://github.com/propelorm/Propel.git vendor/propel
 
  * Register this bundle in the `AppKernel` class:
 
@@ -62,17 +64,15 @@ $loader->registerNamespaces(array(
 ```
 
 
-Sample Configuration
---------------------
+## Sample Configuration ##
 
-### Project configuration
+### Project configuration ###
 
 ``` yaml
 # in app/config/config.yml
 propel:
     path:       "%kernel.root_dir%/../vendor/propel"
     phing_path: "%kernel.root_dir%/../vendor/phing"
-#    charset:   "UTF8"
 #    logging:   %kernel.debug%
 #    build_properties:
 #        xxxxx.xxxxx: xxxxxx
@@ -84,27 +84,36 @@ propel:
         driver:               mysql
         user:                 root
         password:             null
-        dsn:                  mysql:host=localhost;dbname=test
+        dsn:                  mysql:host=localhost;dbname=test;charset=UTF8
         options:              {}
         attributes:           {}
 #        default_connection:       default
 #        connections:
 #           default:
-#               driver:               mysql
-#               user:                 root
-#               password:             null
-#               dsn:                  mysql:host=localhost;dbname=test
-#               options:              {}
-#               attributes:           {}
+#               driver:             mysql
+#               user:               root
+#               password:           null
+#               dsn:                mysql:host=localhost;dbname=test
+#               options:
+#                   ATTR_PERSISTENT: false
+#               attributes:
+#                   ATTR_EMULATE_PREPARES: true
+#               settings:
+#                   charset:        { value: UTF8 }
+#                   queries:        { query: 'INSERT INTO BAR ('hey', 'there')' }
 ```
 
+`options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://www.propelorm.org/reference/runtime-configuration.html) documentation for more explanation.
 
-### Build properties
 
-You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/wiki/Documentation/1.6/BuildConfiguration)).
+### Build properties ###
 
-    # in app/config/propel.ini
-    xxxx.xxxx.xxxx = XXXX
+You can define _build properties_ by creating a `propel.ini` file in `app/config` and put build properties (see [Build properties Reference](http://www.propelorm.org/reference/buildtime-configuration.html)).
+
+``` ini
+# in app/config/propel.ini
+xxxx.xxxx.xxxx = XXXX
+````
 
 But you can follow the Symfony2 way by adding build properties in `app/config/config.yml`:
 
@@ -118,7 +127,7 @@ propel:
 ```
 
 
-### Sample Schema
+### Sample Schema ###
 
 Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xml` :
 
@@ -149,14 +158,14 @@ Place the following schema in `src/Sensio/HelloBundle/Resources/config/schema.xm
 Commands
 --------
 
-### Build Process
+### Build Process ###
 
 Call the application console with the `propel:build` command:
 
     > php app/console propel:build [--classes] [--sql] [--insert-sql]
 
 
-### Insert SQL
+### Insert SQL ###
 
 Call the application console with the `propel:insert-sql` command:
 
@@ -165,7 +174,7 @@ Call the application console with the `propel:insert-sql` command:
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-### Use The Model Classes
+### Use The Model Classes ###
 
 Use the Model classes as any other class in Symfony2. Just use the correct namespace, and Symfony2 will autoload them:
 
@@ -182,7 +191,7 @@ Use the Model classes as any other class in Symfony2. Just use the correct names
     }
 
 
-### Migrations
+### Migrations ###
 
 Generates SQL diff between the XML schemas and the current database structure:
 
@@ -205,7 +214,7 @@ Lists the migrations yet to be executed:
     > php app/console propel:migration:status
 
 
-### Working with existing databases
+### Working with existing databases ###
 
 Run the following command to generate an XML schema from your `default` database:
 
@@ -215,44 +224,62 @@ You can define which connection to use:
 
     > php app/console propel:reverse --connection=default
 
-You can dump data from your database in XML to `app/propel/dump/xml/`:
 
-    > php app/console propel:data-dump [--connection[="..."]]
-
-Once you ran `propel:data-dump` you can generate SQL statements from dumped data:
-
-    > php app/console propl:data-sql
-
-SQL will be write in `app/propel/sql/`.
-
-
-### Fixtures
+### Fixtures ###
 
 You can load your own fixtures by using the following command:
 
-    > php app/console propel:load-fixtures [-d|--dir[="..."]] [--xml] [--sql] [--connection[="..."]]
+    > php app/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]]
 
 As usual, `--connection` allows to specify a connection.
 
 The `--dir` option allows to specify a directory containing the fixtures (default is: `app/propel/fixtures/`).
 Note that the `--dir` expects a relative path from the root dir (which is `app/`).
 
-The --xml parameter allows you to load only XML fixtures.
-The --sql parameter allows you to load only SQL fixtures.
-You can mix --xml parameter and --sql parameter to load XML and SQL fixtures.
-If none of this parameter are set all files, XML and SQL, in the directory will be load.
+The `--xml` parameter allows you to load only XML fixtures.
+The `--sql` parameter allows you to load only SQL fixtures.
+The `--yml` parameter allows you to load only YAML fixtures.
+
+You can mix `--xml`, `--yml` and `--sql` parameters to load XML, YAML and SQL fixtures.
+If none of this parameter are set all files YAML, XML and SQL in the directory will be load.
 
 A valid _XML fixtures file_ is:
 
 ``` xml
-<?xml version="1.0" encoding="utf-8"?>
-<dataset name="all">
-    <Object Id="..." />
-</dataset>
+<Fixtures>
+    <Object Namespace="Awesome">
+        <o1 Title="My title" MyFoo="bar" />
+    </Object>
+    <Related Namespace="Awesome">
+        <r1 ObjectId="o1" Description="Hello world !" />
+    </Related>
+</Fixtures>
 ```
 
+A valid _YAML fixtures file_ is:
 
-### Graphviz
+``` yaml
+\Awesome\Object:
+     o1:
+         Title: My title
+         MyFoo: bar
+
+ \Awesome\Related:
+     r1:
+         ObjectId: o1
+         Description: Hello world !
+```
+
+You can dump data into YAML fixtures file by using this command:
+
+    > php app/console propel:fixtures:dump [--connection[="..."]]
+
+Dumped files will be written in the fixtures directory: `app/propel/fixtures/` with the following name: `fixtures_99999.yml` where `99999`
+is a timestamp.
+Once done, you will be able to load this files by using the `propel:fixtures:load` command.
+
+
+### Graphviz ###
 
 You can generate **Graphviz** file for your project by using the following command line:
 
@@ -261,7 +288,7 @@ You can generate **Graphviz** file for your project by using the following comma
 It will write files in `app/propel/graph/`.
 
 
-### Database
+### Database ###
 
 You can create a **database**:
 
@@ -279,7 +306,49 @@ As usual, `--connection` allows to specify a connection.
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-Known Problems
---------------
+## PropelParamConverter ##
 
-Your application must not be in a path including dots in directory names (i.e. '/Users/me/symfony/2.0/sandbox/' fails).
+You can use the Propel ParamConverter with the SensioFrameworkExtraBundle.
+You just need to put the right _Annotation_ on top of your controller:
+
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post")
+ */
+public function myAction(Post $post)
+{
+}
+```
+
+Your request need to have an `id` parameter or any field as parameter (slug, title, ...).
+
+The _Annotation_ is optional if your parameter is typed you could only have this:
+
+``` php
+<?php
+
+public function myAction(Post $post)
+{
+}
+```
+
+Exclude some parameters:
+
+You can exclude some attributes from being used by the converter:
+
+If you have a route like /my-route/{slug}/{name}/edit/{id}
+You can exclude "name" and "slug" by setting the option "exclude" :
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post", options={"exclude"={"name", "slug"}})
+ */
+public function myAction(Post $post)
+{
+}
+```
+
+

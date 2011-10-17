@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Form\ChoiceList;
 
 use Symfony\Component\Form\Util\PropertyPath;
@@ -7,6 +15,11 @@ use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
+/**
+ * Widely inspirated by the EntityChoiceList (Symfony2).
+ *
+ * @author William Durand <william.durand1@gmail.com>
+ */
 class ModelChoiceList extends ArrayChoiceList
 {
     /**
@@ -21,7 +34,6 @@ class ModelChoiceList extends ArrayChoiceList
      * @var Collection
      */
     private $models = array();
-
     /**
      * The fields of which the identifier of the underlying class consists
      *
@@ -47,6 +59,12 @@ class ModelChoiceList extends ArrayChoiceList
      */
     private $query = null;
 
+    /**
+     * @param string $class
+     * @param string $property
+     * @param array $choices
+     * @param \ModelCriteria $queryObject
+     */
     public function __construct($class, $property = null, $choices = array(), $queryObject = null)
     {
         $this->class        = $class;
@@ -75,10 +93,9 @@ class ModelChoiceList extends ArrayChoiceList
      * Otherwise the identifiers are used as indices.
      *
      * If the models were passed in the "choices" option, this method
-     * does not have any significant overhead. Otherwise, if a query builder
-     * was passed in the "query_builder" option, this builder is now used
-     * to construct a query which is executed. In the last case, all models
-     * for the underlying class are fetched from the repository.
+     * does not have any significant overhead. Otherwise, if a query object
+     * was passed in the "query" option, this query is now used and executed.
+     * In the last case, all models for the underlying class are fetched.
      *
      * If the option "property" was passed, the property path in that option
      * is used as option values. Otherwise this method tries to convert
@@ -186,13 +203,12 @@ class ModelChoiceList extends ArrayChoiceList
     /**
      * Returns the values of the identifier fields of an model
      *
-     * Doctrine must know about this model, that is, the model must already
+     * Propel must know about this model, that is, the model must already
      * be persisted or added to the idmodel map before. Otherwise an
      * exception is thrown.
      *
      * @param  object $model  The model for which to get the identifier
-     * @throws FormException   If the model does not exist in Doctrine's
-     *                         idmodel map
+     * @throws FormException   If the model does not exist
      */
     public function getIdentifierValues($model)
     {

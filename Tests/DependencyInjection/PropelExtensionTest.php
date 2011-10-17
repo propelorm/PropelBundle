@@ -1,12 +1,11 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
+/**
+ * This file is part of the PropelBundle package.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @license    MIT License
  */
 
 namespace Propel\PropelBundle\Tests\DependencyInjection;
@@ -148,7 +147,7 @@ class PropelExtensionTest extends TestCase
             'driver'    => 'mysql',
         );
 
-         $config_sqlite = array(
+        $config_sqlite = array(
             'user'      => 'sqlite_usr',
             'password'  => 'sqlite_pwd',
             'dsn'       => 'sqlite_dsn',
@@ -189,4 +188,87 @@ class PropelExtensionTest extends TestCase
         $this->assertEquals('mysql_dsn',  $config['datasources']['mysql']['connection']['dsn']);
         $this->assertEquals('mysql',      $config['datasources']['mysql']['adapter']);
     }
+
+    public function testDbalWithMultipleConnectionsAndSettings()
+    {
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+        );
+
+        $config_mysql = array(
+            'user'      => 'mysql_usr',
+            'password'  => 'mysql_pwd',
+            'dsn'       => 'mysql_dsn',
+            'driver'    => 'mysql',
+            'settings'  => array(
+                'charset' => array('value' => 'UTF8'),
+            ),
+        );
+
+        $config_connections = array(
+            'default_connection'    => 'mysql',
+            'connections'           => array(
+                'mysql' => $config_mysql,
+        ));
+
+        $configs = array($config_base, array('dbal' => $config_connections));
+
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+        $this->assertEquals('mysql', $container->getParameter('propel.dbal.default_connection'));
+        $this->assertEquals('mysql_usr',  $config['datasources']['mysql']['connection']['user']);
+        $this->assertEquals('mysql_pwd',  $config['datasources']['mysql']['connection']['password']);
+        $this->assertEquals('mysql_dsn',  $config['datasources']['mysql']['connection']['dsn']);
+
+        $this->assertArrayHasKey('settings', $config['datasources']['mysql']['connection']);
+        $this->assertArrayHasKey('charset',  $config['datasources']['mysql']['connection']['settings']);
+        $this->assertArrayHasKey('value',    $config['datasources']['mysql']['connection']['settings']['charset']);
+        $this->assertEquals('UTF8', $config['datasources']['mysql']['connection']['settings']['charset']['value']);
+    }
+
+    public function testDbalWithSettings()
+    {
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+        );
+
+        $config_mysql = array(
+            'user'      => 'mysql_usr',
+            'password'  => 'mysql_pwd',
+            'dsn'       => 'mysql_dsn',
+            'driver'    => 'mysql',
+            'settings'  => array(
+                'charset' => array('value' => 'UTF8'),
+                'queries' => array('query' => 'SET NAMES UTF8')
+            ),
+        );
+
+        $configs = array($config_base, array('dbal' => $config_mysql));
+
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+
+        $this->assertArrayHasKey('settings', $config['datasources']['default']['connection']);
+        $this->assertArrayHasKey('charset',  $config['datasources']['default']['connection']['settings']);
+        $this->assertArrayHasKey('value',    $config['datasources']['default']['connection']['settings']['charset']);
+        $this->assertEquals('UTF8', $config['datasources']['default']['connection']['settings']['charset']['value']);
+
+        $this->assertArrayHasKey('settings', $config['datasources']['default']['connection']);
+        $this->assertArrayHasKey('queries',  $config['datasources']['default']['connection']['settings']);
+        $this->assertArrayHasKey('query',    $config['datasources']['default']['connection']['settings']['queries']);
+        $this->assertEquals('SET NAMES UTF8', $config['datasources']['default']['connection']['settings']['queries']['query']);
+    }
+
 }

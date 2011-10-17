@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,7 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @author William DURAND
  */
-class DatabaseDropCommand extends PhingCommand
+class DatabaseDropCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -44,6 +52,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
+
         if ($input->getOption('force')) {
             if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
                 $this->writeSection($output, 'WARNING: you are about to drop a database in production !', 'bg=red;fg=white');
@@ -54,8 +64,6 @@ EOT
                 }
             }
 
-            $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
-
             list($name, $config) = $this->getConnection($input, $output);
             $dbName = $this->parseDbName($config['connection']['dsn']);
             $query  = 'DROP DATABASE '. $dbName .';';
@@ -65,12 +73,16 @@ EOT
                 $statement  = $connection->prepare($query);
                 $statement->execute();
 
-                $output->writeln(sprintf('<info><comment>%s</comment> has been dropped.</info>', $dbName));
+                $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (\Exception $e) {
-                $output->writeln(sprintf('<error>An error has occured: %s</error>', $e->getMessage()));
+                $this->writeSection($output, array(
+                    '[Propel] Exception catched',
+                    '',
+                    $e->getMessage()
+                ), 'fg=white;bg=red');
             }
         } else {
-            $output->writeln('<error>You have to use --force to drop the database.</error>');
+            $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
         }
     }
 }

@@ -1,22 +1,35 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
+
 use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Propel\PropelBundle\Form\EventListener\MergeCollectionListener;
 use Propel\PropelBundle\Form\DataTransformer\ModelToIdTransformer;
 use Propel\PropelBundle\Form\DataTransformer\ModelsToArrayTransformer;
-use Symfony\Component\Form\AbstractType;
+use Propel\PropelBundle\Form\EventListener\MergeCollectionListener;
 
+/**
+ * ModelType class.
+ *
+ * @author William Durand <william.durand1@gmail.com>
+ */
 class ModelType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
         if ($options['multiple']) {
-            $builder->addEventSubscriber(new MergeCollectionListener())
-                ->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
+            $builder->prependClientTransformer(new ModelsToArrayTransformer($options['choice_list']));
         } else {
             $builder->prependClientTransformer(new ModelToIdTransformer($options['choice_list']));
         }
@@ -25,16 +38,14 @@ class ModelType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         $defaultOptions = array(
-            'template'      => 'choice',
-            'multiple'      => false,
-            'expanded'      => false,
-            'class'         => null,
-            'property'      => null,
-            'query'         => null,
-            'choices'       => array(),
+            'template'          => 'choice',
+            'multiple'          => false,
+            'expanded'          => false,
+            'class'             => null,
+            'property'          => null,
+            'query'             => null,
+            'choices'           => array(),
             'preferred_choices' => array(),
-            'multiple'      => false,
-            'expanded'      => false,
         );
 
         $options = array_replace($defaultOptions, $options);

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -31,7 +39,7 @@ class PropelExtension extends Extension
 
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
-                throw new \InvalidArgumentException('The "path" parameter is mandatory.');
+                throw new \InvalidArgumentException('PropelBundle expects a "path" parameter that must contain the absolute path to the Propel ORM vendor library. The "path" parameter must be defined under the "propel" root node in your configuration.');
             } else {
                 $container->setParameter('propel.path', $config['path']);
             }
@@ -39,19 +47,11 @@ class PropelExtension extends Extension
 
         if (!$container->hasParameter('propel.phing_path')) {
             if (!isset($config['phing_path'])) {
-                throw new \InvalidArgumentException('The "phing_path" parameter is mandatory.');
+                throw new \InvalidArgumentException('PropelBundle expects a "phing_path" parameter that must contain the absolute path to the Phing vendor library. The "phing_path" parameter must be defined under the "propel" root node in your configuration.');
             } else {
                 $container->setParameter('propel.phing_path', $config['phing_path']);
             }
         }
-
-        if (isset($config['charset'])) {
-            $charset = $config['charset'];
-        } else {
-            $charset = 'UTF8';
-        }
-
-        $container->setParameter('propel.charset', $charset);
 
         if (isset($config['logging']) && $config['logging']) {
             $logging = $config['logging'];
@@ -65,6 +65,7 @@ class PropelExtension extends Extension
         if (!$container->hasDefinition('propel')) {
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
+            $loader->load('converters.xml');
         }
 
         if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
@@ -111,8 +112,6 @@ class PropelExtension extends Extension
                     $c['datasources'][$name]['connection'][$att] = $conf[$att];
                 }
             }
-
-            $c['datasources'][$name]['connection']['settings']['charset'] = array('value' => $container->getParameter('propel.charset'));
         }
 
         // Alias the default connection if not defined

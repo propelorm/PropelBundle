@@ -1,15 +1,39 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Form\DataTransformer;
 
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\DataTransformerInterface;
-use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use \PropelCollection;
 
+use \PropelCollection;
+use \PropelObjectCollection;
+use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
+
+/**
+ * ModelsToArrayTransformer class.
+ *
+ * @author William Durand <william.durand1@gmail.com>
+ * @author Pierre-Yves Lebecq <py.lebecq@gmail.com>
+ */
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
+    /**
+     * @var \Propel\PropelBundle\Form\ChoiceList\ModelChoiceList
+     */
     private $choiceList;
 
+    /**
+     * @param \Propel\PropelBundle\Form\ChoiceList\ModelChoiceList $choiceList
+     */
     public function __construct(ModelChoiceList $choiceList)
     {
         $this->choiceList = $choiceList;
@@ -21,7 +45,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
             return array();
         }
 
-        if (!($collection instanceof PropelCollection)) {
+        if (!$collection instanceof PropelCollection) {
             throw new UnexpectedTypeException($collection, '\PropelCollection');
         }
 
@@ -45,7 +69,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     public function reverseTransform($keys)
     {
-        $collection = new PropelCollection();
+        $collection = new PropelObjectCollection();
 
         if ('' === $keys || null === $keys) {
             return $collection;

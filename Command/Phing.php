@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
 require_once 'phing/Phing.php';
@@ -15,8 +23,8 @@ class Phing extends \Phing
     }
 
     /**
-    * @see Phing
-    */
+     * @see Phing
+     */
     public function runBuild()
     {
         // workaround for included phing 2.3 which by default loads many tasks

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Twig\Extension;
 
 /**
@@ -14,7 +22,7 @@ class SyntaxExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'formatSQL'    => new \Twig_Filter_Method($this, 'formatSQL', array('is_safe' => array('html'))),
+            'format_sql'    => new \Twig_Filter_Method($this, 'formatSQL', array('is_safe' => array('html'))),
         );
     }
 

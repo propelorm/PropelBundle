@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class GraphvizCommand extends PhingCommand
+class GraphvizCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -38,12 +46,14 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:graphviz');
+
         $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/graph/';
 
         $this->callPhing('graphviz', array(
             'propel.graph.dir'    => $dest,
         ));
 
-        $output->writeln(sprintf('Graphviz file is in "<info>%s</info>".', $dest));
+        $output->writeln(sprintf('Graphviz file is in <info>%s</info>.', $dest));
     }
 }

@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Util\Filesystem;
+
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 
 /**
  * BuildCommand.
@@ -16,7 +26,7 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildSqlCommand extends PhingCommand
+class BuildSqlCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -42,35 +52,50 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }
 
-        if (true === $this->callPhing('sql', array('propel.packageObjectModel' => false))) {
-            $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+        $finder = new Finder();
+        $filesystem = new Filesystem();
 
-            $filesystem = new Filesystem();
-            $basePath = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
-            $sqlMap = file_get_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map');
+        $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
 
-            foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
-                $sqlFile = str_replace('.xml', '.sql', $schemaFile);
-                $targetSqlFile = $schemaDetails['bundle'] . '-' . str_replace('.xml', '.sql', $schemaDetails['basename']);
-                $targetSqlFilePath = $basePath . DIRECTORY_SEPARATOR . $targetSqlFile;
-                $sqlMap = str_replace($sqlFile, $targetSqlFile, $sqlMap);
-                $filesystem->remove($targetSqlFilePath);
-                $filesystem->rename($basePath . DIRECTORY_SEPARATOR . $sqlFile, $targetSqlFilePath);
+        $filesystem->remove($sqlDir);
+        $filesystem->mkdir($sqlDir);
 
-                $output->writeln(sprintf(
-                    'Wrote SQL file for bundle <info>%s</info> in <comment>%s</comment>.',
-                    $schemaDetails['bundle'],
-                    $targetSqlFilePath)
-                );
+        // Execute the task
+        $ret = $this->callPhing('build-sql', array(
+            'propel.sql.dir' => $sqlDir
+        ));
+
+        if (true === $ret) {
+            $files = $finder->name('*')->in($sqlDir);
+
+            $nbFiles = 0;
+            foreach ($files as $file) {
+                $this->writeNewFile($output, (string) $file);
+
+                if ('sql' === pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
+                    $nbFiles++;
+                }
             }
 
-            file_put_contents($basePath . DIRECTORY_SEPARATOR . 'sqldb.map', $sqlMap);
+            $this->writeSection(
+                $output,
+                sprintf('<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
+                    $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
+                ),
+                'bg=black'
+            );
         } else {
-            $output->writeln('<error>WARNING ! An error has occured.</error>');
+            $this->writeSection($output, array(
+                '[Propel] Error',
+                '',
+                'An error has occured during the "build-sql" task process. To get more details, run the command with the "--verbose" option.'
+            ), 'fg=white;bg=red');
         }
     }
 }

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Logger;
 
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
@@ -39,7 +47,9 @@ class PropelLogger
      */
     public function alert($message)
     {
-        $this->logger->alert($message);
+        if (null !== $this->logger) {
+            $this->logger->alert($message);
+        }
     }
 
     /**
@@ -49,7 +59,9 @@ class PropelLogger
      */
     public function crit($message)
     {
-        $this->logger->crit($message);
+        if (null !== $this->logger) {
+            $this->logger->crit($message);
+        }
     }
 
     /**
@@ -59,7 +71,9 @@ class PropelLogger
      */
     public function err($message)
     {
-        $this->logger->err($message);
+        if (null !== $this->logger) {
+            $this->logger->err($message);
+        }
     }
 
     /**
@@ -69,7 +83,9 @@ class PropelLogger
      */
     public function warning($message)
     {
-        $this->logger->warn($message);
+        if (null !== $this->logger) {
+            $this->logger->warn($message);
+        }
     }
 
     /**
@@ -79,7 +95,9 @@ class PropelLogger
      */
     public function notice($message)
     {
-        $this->logger->notice($message);
+        if (null !== $this->logger) {
+            $this->logger->notice($message);
+        }
     }
 
     /**
@@ -89,7 +107,9 @@ class PropelLogger
      */
     public function info($message)
     {
-        $this->logger->info($message);
+        if (null !== $this->logger) {
+            $this->logger->info($message);
+        }
     }
 
     /**
@@ -100,7 +120,9 @@ class PropelLogger
     public function debug($message)
     {
         $this->queries[] = $message;
-        $this->logger->debug($message);
+        if (null !== $this->logger) {
+            $this->logger->debug($message);
+        }
     }
 
     /**

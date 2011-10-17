@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\DataCollector;
 
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -20,12 +28,6 @@ class PropelDataCollector extends DataCollector
      */
     private $logger;
     /**
-     * Connection name
-     *
-     * @var string
-     */
-    private $connectionName;
-    /**
      * Propel configuration
      *
      * @var \PropelConfiguration
@@ -36,12 +38,10 @@ class PropelDataCollector extends DataCollector
      * Constructor
      *
      * @param \Propel\PropelBundle\Logger\PropelLogger $logger  A PropelLogger
-     * @param string $connectionName    A connection name
      */
-    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, $connectionName, \PropelConfiguration $propelConfiguration)
+    public function __construct(\Propel\PropelBundle\Logger\PropelLogger $logger, \PropelConfiguration $propelConfiguration)
     {
         $this->logger = $logger;
-        $this->connectionName = $connectionName;
         $this->propelConfiguration = $propelConfiguration;
     }
 
@@ -54,7 +54,6 @@ class PropelDataCollector extends DataCollector
         $this->data = array(
             'queries'        => $this->buildQueries(),
             'querycount'     => $this->countQueries(),
-            'connectionName' => $this->connectionName,
         );
     }
 
@@ -124,15 +123,5 @@ class PropelDataCollector extends DataCollector
     public function getQueryCount()
     {
         return $this->data['querycount'];
-    }
-
-    /**
-     * Returns the connection name.
-     *
-     * @return string   The connection name
-     */
-    public function getConnectionName()
-    {
-        return $this->data['connectionName'];
     }
 }

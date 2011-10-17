@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * This file is part of the PropelBundle package.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT License
+ */
+
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\PhingCommand;
+use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +22,7 @@ use Symfony\Component\HttpKernel\Util\Filesystem;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class ReverseCommand extends PhingCommand
+class ReverseCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -44,20 +52,39 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->writeSection($output, '[Propel] You are running the command: propel:reverse');
+
+        if ($input->getOption('verbose')) {
+            $this->additionalPhingArgs[] = 'verbose';
+        }
+
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
-        $this->callPhing('reverse', array(
+        $ret = $this->callPhing('reverse', array(
             'propel.project'            => $name,
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
             'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
-            'propel.database.password'  => $defaultConfig['connection']['password'],
+            'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
         ));
 
-        $filesystem = new Filesystem();
-        $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/' . $name . '_reversed_schema.xml';
-        $filesystem->copy($this->getTmpDir().'/schema.xml', $dest);
+        if (true === $ret) {
+            $filesystem = new Filesystem();
+            $generated  = $this->getCacheDir().'/schema.xml';
+            $filename   = $name . '_reversed_schema.xml';
+            $destFile   = $this->getApplication()->getKernel()->getRootDir() . '/propel/generated-schemas/' . $filename;
 
-        $output->writeln(sprintf('New generated schema is <comment>%s</comment>.', $dest));
+            if (file_exists($generated)) {
+                $filesystem->copy($generated, $destFile);
+                $output->writeln(array(
+                    '',
+                    sprintf('>>  <info>File+</info>    %s', $destFile),
+                ));
+            } else {
+                $output->writeln(array('', 'No generated files.'));
+            }
+        } else {
+            $this->writeTaskError($output, 'reverse');
+        }
     }
 }
