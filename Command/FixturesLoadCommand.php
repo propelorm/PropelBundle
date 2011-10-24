@@ -125,7 +125,7 @@ EOT
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
             return $this->writeSection($output, array(
-                'The fixtures directory does not exist.'
+                'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
             ), 'fg=white;bg=red');
         }
 

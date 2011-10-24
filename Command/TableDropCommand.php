@@ -100,10 +100,10 @@ EOT
 
                 $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
 
-                $tablesToDelete = join(', ', $tablesToDelete);
+                $tablesToDelete = join('`, `', $tablesToDelete);
 
                 if ('' !== $tablesToDelete) {
-                    $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
+                    $connection->exec('DROP TABLE `' . $tablesToDelete . '` ;');
 
                     $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
                 }
