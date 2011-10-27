@@ -338,8 +338,9 @@ Exclude some parameters:
 
 You can exclude some attributes from being used by the converter:
 
-If you have a route like /my-route/{slug}/{name}/edit/{id}
-You can exclude "name" and "slug" by setting the option "exclude" :
+If you have a route like `/my-route/{slug}/{name}/edit/{id}`
+you can exclude `name` and `slug` by setting the option "exclude":
+
 ``` php
 <?php
 
