@@ -10,9 +10,8 @@
 
 namespace Propel\PropelBundle\Controller;
 
+use Symfony\Bridge\Propel1\DataCollector\PropelDataCollector;
 use Symfony\Component\DependencyInjection\ContainerAware;
-
-use Propel\PropelBundle\DataCollector\PropelDataCollector;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
