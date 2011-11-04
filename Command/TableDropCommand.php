@@ -81,6 +81,7 @@ EOT
             try {
                 list($name, $config) = $this->getConnection($input, $output);
                 $connection = \Propel::getConnection($name);
+                $adapter = \Propel::getDB($name);
 
                 $showStatement = $connection->prepare('SHOW TABLES;');
                 $showStatement->execute();
@@ -100,10 +101,12 @@ EOT
 
                 $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
 
-                $tablesToDelete = join('`, `', $tablesToDelete);
+                array_walk($tablesToDelete, function(&$table, $key, $dbAdapter) { $table = $dbAdapter->quoteIdentifierTable($table); }, $adapter);
+
+                $tablesToDelete = join(', ', $tablesToDelete);
 
                 if ('' !== $tablesToDelete) {
-                    $connection->exec('DROP TABLE `' . $tablesToDelete . '` ;');
+                    $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
 
                     $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
                 }
