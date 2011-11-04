@@ -305,6 +305,18 @@ As usual, `--connection` allows to specify a connection.
 
 Note that the `--force` option is needed to actually execute the SQL statements.
 
+### Table ###
+
+You can drop one or several **table**:
+
+    > php app/console propel:table:drop [--force] [--connection[="..."]] [table1] ... [tableN]
+
+As usual, `--connection` allows to specify a connection.
+
+The table arguments define which table will be delete, by default all table.
+
+Note that the `--force` option is needed to actually execute the deletion.
+
 
 ## PropelParamConverter ##
 
