@@ -11,9 +11,9 @@
 namespace Propel\PropelBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Unique Object Validator checks if one or a set of fields contain unique values.
@@ -35,7 +35,7 @@ class UniqueObjectValidator extends ConstraintValidator
 
         $fields = (array)$constraint->fields;
 
-        if (count($fields) == 0) {
+        if (0 === count($fields)) {
             throw new ConstraintDefinitionException("At least one field must be specified.");
         }
 
@@ -63,14 +63,14 @@ class UniqueObjectValidator extends ConstraintValidator
             $constraintMessage .= ' with';
 
             foreach ($fields as $fieldName) {
-              $constraintMessage .=  ' ' . $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME) . ' "' . $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME) . '" and';
+              $constraintMessage .= sprintf(' %s "%s" and', $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME), $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME));
             }
           
             $constraintMessage = substr($constraintMessage, 0, -4) . '.';
             $this->setMessage($constraintMessage);
+          
             return false;
         }
-
 
         return true;
     }
