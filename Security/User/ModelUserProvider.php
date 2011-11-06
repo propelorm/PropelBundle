@@ -24,16 +24,25 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
  */
 class ModelUserProvider implements UserProviderInterface
 {
+
     /**
      * A Model class name.
      * @var string
      */
     protected $class;
+
+    /**
+     * A Proxy class name for the model class.
+     * @var string
+     */
+    protected $proxyClass;
+
     /**
      * A Query class name.
      * @var string
      */
     protected $queryClass;
+
     /**
      * A property to use to retrieve the user.
      * @var string
@@ -44,12 +53,14 @@ class ModelUserProvider implements UserProviderInterface
      * Default constructor
      *
      * @param $class    The User model class.
+     * @param $proxyClass   The Proxy class name for the model class.
      * @param $property The property to use to retrieve a user.
      */
-    public function __construct($class, $property = null)
+    public function __construct($class, $proxyClass, $property = null)
     {
         $this->class = $class;
-        $this->queryClass = $class.'Query';
+        $this->proxyClass = $proxyClass;
+        $this->queryClass = $class . 'Query';
         $this->property = $property;
     }
 
@@ -74,8 +85,8 @@ class ModelUserProvider implements UserProviderInterface
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
         }
-
-        return $user;
+        $proxyClass = $this->proxyClass;
+        return new $proxyClass($user);
     }
 
     /**
@@ -83,7 +94,7 @@ class ModelUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof $this->class) {
+        if (!$user instanceof $this->proxyClass) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
@@ -95,6 +106,7 @@ class ModelUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return $class === $this->class;
+        return $class === $this->proxyClass;
     }
+
 }
