@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
  */
 class ModelUserProvider implements UserProviderInterface
 {
-
     /**
      * A Model class name.
      * @var string
@@ -52,9 +51,9 @@ class ModelUserProvider implements UserProviderInterface
     /**
      * Default constructor
      *
-     * @param $class    The User model class.
+     * @param $class        The User model class.
      * @param $proxyClass   The Proxy class name for the model class.
-     * @param $property The property to use to retrieve a user.
+     * @param $property     The property to use to retrieve a user.
      */
     public function __construct($class, $proxyClass, $property = null)
     {
@@ -70,8 +69,7 @@ class ModelUserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $queryClass = $this->queryClass;
-
-        $query = $queryClass::create();
+        $query      = $queryClass::create();
 
         if (null !== $this->property) {
             $filter = 'filterBy' . ucfirst($this->property);
@@ -85,6 +83,7 @@ class ModelUserProvider implements UserProviderInterface
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
         }
+
         $proxyClass = $this->proxyClass;
         return new $proxyClass($user);
     }
@@ -108,5 +107,4 @@ class ModelUserProvider implements UserProviderInterface
     {
         return $class === $this->proxyClass;
     }
-
 }
