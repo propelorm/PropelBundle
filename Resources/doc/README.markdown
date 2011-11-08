@@ -334,7 +334,7 @@ public function myAction(Post $post)
 }
 ```
 
-Your request need to have an `id` parameter or any field as parameter (slug, title, ...).
+Your request needs to have an `id` parameter or any field as parameter (slug, title, ...).
 
 The _Annotation_ is optional if your parameter is typed you could only have this:
 
@@ -366,7 +366,7 @@ public function myAction(Post $post)
 
 ## UniqueObjectValidator ##
 
-In a form, if you want to validate the unicity of a field in a table you have to use the uniqueObjectValidator.
+In a form, if you want to validate the unicity of a field in a table you have to use the UniqueObjectValidator.
 The only way to use it is in a validation.yml file, like this:
 
 ``` yaml
