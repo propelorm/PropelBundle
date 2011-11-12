@@ -1,0 +1,20 @@
+{
+  "name": "propel/propel-bundle",
+  "description": "Integration of Propel in Symfony2",
+  "keywords": ["propel", "orm", "persistence"],
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "William Durand",
+      "email": "william.durand1@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/framework-bundle": "2.*"
+  },
+  "autoload": {
+    "psr-0": { "Propel\\PropelBundle": "" }
+  },
+  "target-dir": "Propel/PropelBundle"
+}
