@@ -1,6 +1,8 @@
 PropelBundle
 ============
 
+[![Build Status](https://secure.travis-ci.org/propelorm/PropelBundle.png)](http://travis-ci.org/propelorm/PropelBundle)
+
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
 Currently supports:
