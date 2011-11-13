@@ -9,10 +9,6 @@ $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Symfony'           => array($vendorDir.'/symfony/src'),
 ));
-$loader->registerPrefixes(array(
-    'Twig_Extensions_'  => $vendorDir.'/twig-extensions/lib',
-    'Twig_'             => $vendorDir.'/twig/lib',
-));
 $loader->register();
 
 spl_autoload_register(function($class) {
