@@ -22,7 +22,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!file_exists($file = $this->getContainer()->getParameter('kernel.root_dir').'/../vendor/propel/runtime/lib/Propel.php')) {
+        if (!file_exists($file = __DIR__.'/../vendor/propel/runtime/lib/Propel.php')) {
             $this->markTestSkipped('Propel is not available.');
         }
 
@@ -32,8 +32,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function getContainer()
     {
         return new ContainerBuilder(new ParameterBag(array(
-            'kernel.debug'  => false,
-            'kernel.root_dir' => __DIR__.'/../../../../',
+            'kernel.debug'      => false,
         )));
     }
 }

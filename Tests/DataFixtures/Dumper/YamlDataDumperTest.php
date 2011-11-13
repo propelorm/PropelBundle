@@ -22,12 +22,12 @@ class YamlDataDumperTest extends TestCase
     {
         $expected = <<<YML
 \Foo\Bar:
-  fb1:
-    Id: 10
-    Title: Hello
-  fb2:
-    Id: 20
-    Title: World
+    fb1:
+        Id: 10
+        Title: Hello
+    fb2:
+        Id: 20
+        Title: World
 
 YML;
 
