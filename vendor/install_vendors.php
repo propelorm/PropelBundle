@@ -8,6 +8,7 @@ $deps = array(
     array('symfony', 'http://github.com/symfony/symfony', isset($_SERVER['SYMFONY_VERSION']) ? $_SERVER['SYMFONY_VERSION'] : 'origin/master'),
     array('propel', 'http://github.com/propelorm/Propel', isset($_SERVER['PROPEL_VERSION']) ? $_SERVER['PROPEL_VERSION'] : 'origin/master'),
     array('phing', 'http://github.com/Xosofox/phing.git', 'origin/master'),
+    array('Sensio/Bundle/FrameworkExtraBundle', 'http://github.com/sensio/SensioFrameworkExtraBundle.git', 'origin/master'),
 );
 
 foreach ($deps as $dep) {
