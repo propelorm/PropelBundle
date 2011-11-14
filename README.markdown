@@ -24,6 +24,8 @@ For documentation, see:
 
     Resources/doc/
 
+[Read the documentation](https://github.com/propelorm/PropelBundle/blob/master/Resources/doc/README.markdown)
+
 For license, see:
 
     Resources/meta/LICENSE
