@@ -189,7 +189,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                 $finder  = new Finder();
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
-                if (empty($schemas)) {
+                if (!iterator_count($schemas)) {
                     continue;
                 }
 
