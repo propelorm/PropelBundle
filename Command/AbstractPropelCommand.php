@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Util\Filesystem;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Wrapper for Propel commands.
@@ -149,7 +150,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
             'propel.database'           => 'mysql',
             'project.dir'               => $workingDirectory,
             'propel.output.dir'         => $kernel->getRootDir().'/propel',
-            'propel.php.dir'            => '/',
+            'propel.php.dir'            => $kernel->getRootDir().'/..',
             'propel.packageObjectModel' => true,
         ), $properties);
 
@@ -181,14 +182,18 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
             $filesystem->mkdir($cacheDir);
         }
 
+        $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
+
         foreach ($kernel->getBundles() as $bundle) {
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder  = new Finder();
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
-                $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-                $length = count(explode('\\', $bundle->getNamespace())) * (-1);
-                $prefix = implode('/', array_slice($parts, 1, $length));
+                if (empty($schemas)) {
+                    continue;
+                }
+
+                $packagePrefix = self::getPackagePrefix($bundle, $base);
 
                 foreach ($schemas as $schema) {
                     $tempSchema = $bundle->getName().'-'.$schema->getBaseName();
@@ -207,9 +212,11 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                     $database = simplexml_load_file($file);
 
                     if (isset($database['package'])) {
-                        $database['package'] = $prefix . '/' . $database['package'];
+                        // Do not use the prefix!
+                        // This is used to override the package resulting from namespace conversion.
+                        $database['package'] = $database['package'];
                     } elseif (isset($database['namespace'])) {
-                        $database['package'] = $prefix . '/' . str_replace('\\', '/', $database['namespace']);
+                        $database['package'] = $packagePrefix . str_replace('\\', '.', $database['namespace']);
                     } else {
                         throw new \RuntimeException(
                             sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
@@ -219,9 +226,9 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
                     foreach ($database->table as $table) {
                         if (isset($table['package'])) {
-                            $table['package'] = $prefix . '/' . $table['package'];
+                            $table['package'] = $table['package'];
                         } elseif (isset($table['namespace'])) {
-                            $table['package'] = $prefix . '/' . str_replace('\\', '/', $table['namespace']);
+                            $table['package'] = $packagePrefix . str_replace('\\', '.', $table['namespace']);
                         } else {
                             $table['package'] = $database['package'];
                         }
@@ -231,6 +238,29 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                 }
             }
         }
+    }
+
+    /**
+     * Return the package prefix for a given bundle.
+     *
+     * @param Bundle $bundle
+     * @param string $baseDirectory The base directory to exclude from prefix.
+     *
+     * @return string
+     */
+    public static function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
+    {
+        $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
+        $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+
+        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 1, $length));
+        $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
+
+        if (!empty($prefix)) {
+            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
+        }
+
+        return $prefix;
     }
 
     /**
