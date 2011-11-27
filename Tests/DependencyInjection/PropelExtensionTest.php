@@ -270,5 +270,60 @@ class PropelExtensionTest extends TestCase
         $this->assertArrayHasKey('query',    $config['datasources']['default']['connection']['settings']['queries']);
         $this->assertEquals('SET NAMES UTF8', $config['datasources']['default']['connection']['settings']['queries']['query']);
     }
+    
+    public function testDbalWithSlaves()
+    {
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+        );
+
+        $config_mysql = array(
+            'user'      => 'mysql_usr',
+            'password'  => 'mysql_pwd',
+            'dsn'       => 'mysql_dsn',
+            'driver'    => 'mysql',
+            'slaves'  => array(
+                'mysql_slave1' => array(
+                    'user' => 'mysql_usrs1',
+                    'password' => 'mysql_pwds1',
+                    'dsn' => 'mysql_dsns1',
+                ),
+                'mysql_slave2' => array(
+                    'user' => 'mysql_usrs2',
+                    'password' => 'mysql_pwds2',
+                    'dsn' => 'mysql_dsns2',
+                ),
+            ),
+        );
+        
+        $configs = array($config_base, array('dbal' => $config_mysql));
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+        
+        $this->assertArrayHasKey('slaves', $config['datasources']['default']);
+        $this->assertArrayHasKey('connection', $config['datasources']['default']['slaves']);
+        $this->assertArrayHasKey('mysql_slave1', $config['datasources']['default']['slaves']['connection']);
+        $this->assertArrayHasKey('user', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('password', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('dsn', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('mysql_slave2', $config['datasources']['default']['slaves']['connection']);
+        $this->assertArrayHasKey('user', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
+        $this->assertArrayHasKey('password', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
+        $this->assertArrayHasKey('dsn', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
+        
+        $this->assertEquals("mysql_usrs1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['user']);
+        $this->assertEquals("mysql_pwds1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['password']);
+        $this->assertEquals("mysql_dsns1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['dsn']);
+        
+        $this->assertEquals("mysql_usrs2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['user']);
+        $this->assertEquals("mysql_pwds2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['password']);
+        $this->assertEquals("mysql_dsns2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['dsn']);
+    }
 
 }
