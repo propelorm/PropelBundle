@@ -81,6 +81,7 @@ EOT
             try {
                 list($name, $config) = $this->getConnection($input, $output);
                 $connection = \Propel::getConnection($name);
+                $adapter = \Propel::getDB($name);
 
                 $showStatement = $connection->prepare('SHOW TABLES;');
                 $showStatement->execute();
@@ -99,6 +100,8 @@ EOT
                 }
 
                 $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
+
+                array_walk($tablesToDelete, function(&$table, $key, $dbAdapter) { $table = $dbAdapter->quoteIdentifierTable($table); }, $adapter);
 
                 $tablesToDelete = join(', ', $tablesToDelete);
 
