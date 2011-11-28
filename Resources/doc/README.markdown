@@ -16,6 +16,7 @@ Currently supports:
  * Integration with the Form component.
  * Integration with the Security component.
  * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
+ * Schema Inheritance
 
 ## Installation ##
 
@@ -385,3 +386,15 @@ BundleNamespace\Model\User:
 
 As many validator of this type as you want can be used.
 
+## Bundle Inheritance ##
+
+The `PropelBundle` makes use of the bundle inheritance.
+Currently only schema inheritance is provided.
+
+### Schema Inheritance ###
+
+You can override the defined schema of a bundle from within its child bundle.
+The child's schema will *completely* override the parent's one.
+To make use of the inheritance you only need to drop a schema file in the `Resources/config` folder of the child bundle.
+
+**IMPORTANT**: If there is *at least one* schema file in the child bundle, *none* of the parent's schema files will be used.
