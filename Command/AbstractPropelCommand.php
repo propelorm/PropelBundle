@@ -184,17 +184,41 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
         $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
+        $cacheFiles = array();
+        $bundleSchemas = array();
+        $ignoredBundles = array();
+
         foreach ($kernel->getBundles() as $bundle) {
+            if (in_array($bundle->getName(), $ignoredBundles)) {
+                continue;
+            }
+
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder  = new Finder();
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
-                if (empty($schemas)) {
+                if (!iterator_count($schemas)) {
                     continue;
+                }
+
+                // In case this is a child bundle, we ignore the parent.
+                if (null !== $bundle->getParent()) {
+                    $ignoredBundles[] = $bundle->getParent();
+
+                    // The parent schema has been added before.
+                    // Remove the deprecated schema files.
+                    if (!empty($bundleSchemas[$bundle->getParent()])) {
+                        foreach ($bundleSchemas[$bundle->getParent()] as $schemaFile) {
+                            $filesystem->remove($schemaFile);
+                            unset($cacheFiles[$schemaFile]);
+                            unset($this->tempSchemas[basename($schemaFile)]);
+                        }
+                    }
                 }
 
                 $packagePrefix = self::getPackagePrefix($bundle, $base);
 
+                $bundleSchemas[$bundle->getName()] = array();
                 foreach ($schemas as $schema) {
                     $tempSchema = $bundle->getName().'-'.$schema->getBaseName();
                     $this->tempSchemas[$tempSchema] = array(
@@ -205,6 +229,9 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
                     $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
                     $filesystem->copy((string) $schema, $file, true);
+
+                    $cacheFiles[$file] = $file;
+                    $bundleSchemas[$bundle->getName()][] = $file;
 
                     // the package needs to be set absolute
                     // besides, the automated namespace to package conversion has
