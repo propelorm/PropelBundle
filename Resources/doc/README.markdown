@@ -4,7 +4,7 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 Currently supports:
 
- * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/*schema.xml`.
+ * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/config/*schema.xml`.
  * Insertion of SQL statements.
  * Runtime autoloading of Propel and generated classes.
  * Propel runtime initialization through the XML configuration.
