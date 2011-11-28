@@ -316,14 +316,40 @@ class PropelExtensionTest extends TestCase
         $this->assertArrayHasKey('user', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
         $this->assertArrayHasKey('password', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
         $this->assertArrayHasKey('dsn', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
-        
+
         $this->assertEquals("mysql_usrs1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['user']);
         $this->assertEquals("mysql_pwds1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['password']);
         $this->assertEquals("mysql_dsns1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['dsn']);
-        
+
         $this->assertEquals("mysql_usrs2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['user']);
         $this->assertEquals("mysql_pwds2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['password']);
         $this->assertEquals("mysql_dsns2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['dsn']);
+    }
+
+    public function testDbalWithNoSlaves()
+    {
+        $container = $this->getContainer();
+        $loader = new PropelExtension();
+
+        $config_base = array(
+            'path'       => '/propel',
+            'phing_path' => '/phing',
+        );
+
+        $config_mysql = array(
+            'user'      => 'mysql_usr',
+            'password'  => 'mysql_pwd',
+            'dsn'       => 'mysql_dsn',
+            'driver'    => 'mysql'
+        );
+
+        $configs = array($config_base, array('dbal' => $config_mysql));
+        $loader->load($configs, $container);
+
+        $arguments = $container->getDefinition('propel.configuration')->getArguments();
+        $config = $arguments[0];
+
+        $this->assertArrayNotHasKey('slaves', $config['datasources']['default']);
     }
 
 }
