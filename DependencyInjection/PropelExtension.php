@@ -106,7 +106,9 @@ class PropelExtension extends Extension
         $c = array();
         foreach ($config['connections'] as $name => $conf) {
             $c['datasources'][$name]['adapter'] = $conf['driver'];
-            $c['datasources'][$name]['slaves']['connection'] = $conf['slaves'];
+            if (!empty($conf['slaves'])) {
+                $c['datasources'][$name]['slaves']['connection'] = $conf['slaves'];
+            }
 
             foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
                 if (isset($conf[$att])) {
