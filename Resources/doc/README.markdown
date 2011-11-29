@@ -395,6 +395,5 @@ Currently only schema inheritance is provided.
 
 You can override the defined schema of a bundle from within its child bundle.
 The child's schema will *completely* override the parent's one.
-To make use of the inheritance you only need to drop a schema file in the `Resources/config` folder of the child bundle.
+To make use of the inheritance you only need to drop a schema file in the `Resources/config` folder of the child bundle at [the same location](http://symfony.com/doc/2.0/cookbook/bundles/inheritance.html#overriding-resources-templates-routing-translations-validation-etc).
 
-**IMPORTANT**: If there is *at least one* schema file in the child bundle, *none* of the parent's schema files will be used.
