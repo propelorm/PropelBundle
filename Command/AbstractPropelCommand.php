@@ -17,6 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Util\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * Wrapper for Propel commands.
@@ -184,14 +185,9 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
         $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
-        $cacheFiles = array();
-        $bundleSchemas = array();
-        $ignoredBundles = array();
+        $finalSchemas = array();
 
         foreach ($kernel->getBundles() as $bundle) {
-            if (in_array($bundle->getName(), $ignoredBundles)) {
-                continue;
-            }
 
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder  = new Finder();
@@ -201,70 +197,70 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                // In case this is a child bundle, we ignore the parent.
-                if (null !== $bundle->getParent()) {
-                    $ignoredBundles[] = $bundle->getParent();
-
-                    // The parent schema has been added before.
-                    // Remove the deprecated schema files.
-                    if (!empty($bundleSchemas[$bundle->getParent()])) {
-                        foreach ($bundleSchemas[$bundle->getParent()] as $schemaFile) {
-                            $filesystem->remove($schemaFile);
-                            unset($cacheFiles[$schemaFile]);
-                            unset($this->tempSchemas[basename($schemaFile)]);
-                        }
-                    }
-                }
-
                 $packagePrefix = self::getPackagePrefix($bundle, $base);
 
-                $bundleSchemas[$bundle->getName()] = array();
                 foreach ($schemas as $schema) {
-                    $tempSchema = $bundle->getName().'-'.$schema->getBaseName();
-                    $this->tempSchemas[$tempSchema] = array(
-                        'bundle'    => $bundle->getName(),
-                        'basename'  => $schema->getBaseName(),
-                        'path'      => $schema->getPathname(),
-                    );
 
-                    $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
-                    $filesystem->copy((string) $schema, $file, true);
+                    $logicalName = $this->transformToLogicalName($schema, $bundle);
+                    $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
 
-                    $cacheFiles[$file] = $file;
-                    $bundleSchemas[$bundle->getName()][] = $file;
-
-                    // the package needs to be set absolute
-                    // besides, the automated namespace to package conversion has
-                    // not taken place yet so it needs to be done manually
-                    $database = simplexml_load_file($file);
-
-                    if (isset($database['package'])) {
-                        // Do not use the prefix!
-                        // This is used to override the package resulting from namespace conversion.
-                        $database['package'] = $database['package'];
-                    } elseif (isset($database['namespace'])) {
-                        $database['package'] = $packagePrefix . str_replace('\\', '.', $database['namespace']);
-                    } else {
-                        throw new \RuntimeException(
-                            sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
-                                $bundle->getName(), $schema->getBaseName())
-                        );
-                    }
-
-                    foreach ($database->table as $table) {
-                        if (isset($table['package'])) {
-                            $table['package'] = $table['package'];
-                        } elseif (isset($table['namespace'])) {
-                            $table['package'] = $packagePrefix . str_replace('\\', '.', $table['namespace']);
-                        } else {
-                            $table['package'] = $database['package'];
-                        }
-                    }
-
-                    file_put_contents($file, $database->asXML());
+                    $finalSchemas[(string)$finalSchema] = $finalSchema;
                 }
             }
         }
+        foreach ($finalSchemas as $finalSchema) {
+
+            $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
+            $this->tempSchemas[$tempSchema] = array(
+                'bundle'    => $bundle->getName(),
+                'basename'  => $finalSchema->getBaseName(),
+                'path'      => $finalSchema->getPathname(),
+            );
+
+            $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
+            $filesystem->copy((string) $finalSchema, $file, true);
+
+
+            // the package needs to be set absolute
+            // besides, the automated namespace to package conversion has
+            // not taken place yet so it needs to be done manually
+            $database = simplexml_load_file($file);
+
+            if (isset($database['package'])) {
+                // Do not use the prefix!
+                // This is used to override the package resulting from namespace conversion.
+                $database['package'] = $database['package'];
+            } elseif (isset($database['namespace'])) {
+                $database['package'] = $packagePrefix . str_replace('\\', '.', $database['namespace']);
+            } else {
+                throw new \RuntimeException(
+                    sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
+                        $bundle->getName(), $finalSchema->getBaseName())
+                );
+            }
+
+            foreach ($database->table as $table) {
+                if (isset($table['package'])) {
+                    $table['package'] = $table['package'];
+                } elseif (isset($table['namespace'])) {
+                    $table['package'] = $packagePrefix . str_replace('\\', '.', $table['namespace']);
+                } else {
+                    $table['package'] = $database['package'];
+                }
+            }
+
+            file_put_contents($file, $database->asXML());
+        }
+    }
+
+    private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
+    {
+        return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schema->getBasename());
+    }
+
+    private function getFileLocator()
+    {
+        return $this->getContainer()->get('file_locator');
     }
 
     /**
