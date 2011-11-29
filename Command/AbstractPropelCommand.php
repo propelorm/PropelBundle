@@ -196,19 +196,19 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
                 if (!iterator_count($schemas)) {
                     continue;
                 }
-
-                $packagePrefix = self::getPackagePrefix($bundle, $base);
-
                 foreach ($schemas as $schema) {
 
                     $logicalName = $this->transformToLogicalName($schema, $bundle);
                     $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
 
-                    $finalSchemas[(string)$finalSchema] = $finalSchema;
+                    $finalSchemas[(string)$finalSchema] = array($bundle, $finalSchema);
                 }
             }
         }
-        foreach ($finalSchemas as $finalSchema) {
+
+        foreach ($finalSchemas as $schema) {
+            list($bundle, $finalSchema) = $schema;
+            $packagePrefix = self::getPackagePrefix($bundle, $base);
 
             $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
             $this->tempSchemas[$tempSchema] = array(
