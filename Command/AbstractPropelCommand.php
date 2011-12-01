@@ -255,7 +255,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
     private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
     {
-        $schemaPath = str_replace($bundle->getPath().'/Resources/config/', '', $schema->getPathname());
+        $schemaPath = str_replace($bundle->getPath().'/Resources/config/', '', str_replace(DIRECTORY_SEPARATOR, '/', $schema->getPathname()));
 
         return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
     }
