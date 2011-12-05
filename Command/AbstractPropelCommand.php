@@ -63,7 +63,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
         $length = count(explode('\\', $bundle->getNamespace())) * (-1);
 
-        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 1, $length));
+        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length));
         $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
 
         if (!empty($prefix)) {
