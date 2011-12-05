@@ -188,6 +188,7 @@ EOT
                 '[Propel] Exception',
                 '',
                 $e->getMessage()), 'fg=white;bg=red');
+
             return false;
         }
 
@@ -279,8 +280,10 @@ EOT
             ), 'fg=green;bg=black');
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
+
             return false;
         }
+
         return true;
     }
 }

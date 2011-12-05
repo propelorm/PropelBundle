@@ -202,6 +202,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                 }
             }
         }
+
         return $classes;
     }
 

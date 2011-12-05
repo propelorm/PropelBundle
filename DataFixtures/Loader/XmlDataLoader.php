@@ -23,6 +23,7 @@ class XmlDataLoader extends AbstractDataLoader
     protected function transformDataToArray($file)
     {
         $xml = simplexml_load_file($file);
+
         return $this->simpleXmlToArray($xml);
     }
 
@@ -54,6 +55,7 @@ class XmlDataLoader extends AbstractDataLoader
                 }
             }
         }
+
         return $array;
     }
 }

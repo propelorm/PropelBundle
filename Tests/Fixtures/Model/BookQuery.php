@@ -27,8 +27,10 @@ class BookQuery extends BaseBookQuery {
         if (1 === $key) {
             $book = new Book();
             $book->setId(1);
+
             return $book;
         }
+
         return null;
     }
 
@@ -40,6 +42,7 @@ class BookQuery extends BaseBookQuery {
         if ('my-book' == $slug) {
             $this->bySlug = true;
         }
+
         return $this;
     }
 
@@ -61,8 +64,10 @@ class BookQuery extends BaseBookQuery {
             $book->setId(1);
             $book->setName('My Book');
             $book->setSlug('my-book');
+
             return $book;
         }
+
         return null;
     }
 } // BookQuery

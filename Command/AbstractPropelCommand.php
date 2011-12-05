@@ -32,20 +32,46 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
      * @var array
      */
     protected $additionalPhingArgs = array();
+
     /**
      * Temporary XML schemas used on command execution.
      * @var array
      */
     protected $tempSchemas = array();
+
     /**
      * @var string
      */
     protected $cacheDir = null;
+
     /**
      * The Phing output.
      * @string
      */
     protected $buffer = null;
+
+    /**
+     * Return the package prefix for a given bundle.
+     *
+     * @param Bundle $bundle
+     * @param string $baseDirectory The base directory to exclude from prefix.
+     *
+     * @return string
+     */
+    static public function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
+    {
+        $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
+        $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+
+        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 1, $length));
+        $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
+
+        if (!empty($prefix)) {
+            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
+        }
+
+        return $prefix;
+    }
 
     /**
      * {@inheritdoc}
@@ -139,40 +165,6 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
     }
 
     /**
-     * Compiles arguments/properties for the Phing process.
-     * @return array
-     */
-    private function getPhingArguments(KernelInterface $kernel, $workingDirectory, $properties)
-    {
-        $args = array();
-
-        // Default properties
-        $properties = array_merge(array(
-            'propel.database'           => 'mysql',
-            'project.dir'               => $workingDirectory,
-            'propel.output.dir'         => $kernel->getRootDir().'/propel',
-            'propel.php.dir'            => $kernel->getRootDir().'/..',
-            'propel.packageObjectModel' => true,
-        ), $properties);
-
-        // Adding user defined properties from the configuration
-        $properties = array_merge(
-            $properties,
-            $this->getContainer()->get('propel.build_properties')->getProperties()
-        );
-
-        foreach ($properties as $key => $value) {
-            $args[] = "-D$key=$value";
-        }
-
-        // Build file
-        $args[] = '-f';
-        $args[] = realpath($this->getContainer()->getParameter('propel.path').'/generator/build.xml');
-
-        return $args;
-    }
-
-    /**
      * @param KernelInterface $kernel   The application kernel.
      */
     protected function copySchemas(KernelInterface $kernel, $cacheDir)
@@ -188,7 +180,6 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         $finalSchemas = array();
 
         foreach ($kernel->getBundles() as $bundle) {
-
             if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
                 $finder  = new Finder();
                 $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
@@ -220,7 +211,6 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
             $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
             $filesystem->copy((string) $finalSchema, $file, true);
 
-
             // the package needs to be set absolute
             // besides, the automated namespace to package conversion has
             // not taken place yet so it needs to be done manually
@@ -251,41 +241,6 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
             file_put_contents($file, $database->asXML());
         }
-    }
-
-    private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
-    {
-        $schemaPath = str_replace($bundle->getPath().'/Resources/config/', '', $schema->getPathname());
-
-        return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
-    }
-
-    private function getFileLocator()
-    {
-        return $this->getContainer()->get('file_locator');
-    }
-
-    /**
-     * Return the package prefix for a given bundle.
-     *
-     * @param Bundle $bundle
-     * @param string $baseDirectory The base directory to exclude from prefix.
-     *
-     * @return string
-     */
-    public static function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
-    {
-        $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-        $length = count(explode('\\', $bundle->getNamespace())) * (-1);
-
-        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 1, $length));
-        $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
-
-        if (!empty($prefix)) {
-            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
-        }
-
-        return $prefix;
     }
 
     /**
@@ -391,7 +346,8 @@ EOT;
      * Return the current Propel cache directory.
      * @return string   The current Propel cache directory.
      */
-    protected function getCacheDir() {
+    protected function getCacheDir()
+    {
         return $this->cacheDir;
     }
 
@@ -405,7 +361,8 @@ EOT;
      * @throw \InvalidArgumentException If the connection does not exist.
      * @return array
      */
-    protected function getConnection(InputInterface $input, OutputInterface $output) {
+    protected function getConnection(InputInterface $input, OutputInterface $output)
+    {
         $propelConfiguration = $this->getContainer()->get('propel.configuration');
         $name = $input->getOption('connection') ?: $this->getContainer()->getParameter('propel.dbal.default_connection');
 
@@ -427,8 +384,10 @@ EOT;
      * @param string $dsn   A DSN
      * @return string       The database name extracted from the given DSN
      */
-    protected function parseDbName($dsn) {
+    protected function parseDbName($dsn)
+    {
         preg_match('#dbname=([a-zA-Z0-9\_]+)#', $dsn, $matches);
+
         return $matches[1];
     }
 
@@ -488,7 +447,7 @@ EOT;
      *
      * @param OutputInterface $output   The output.
      * @param string $taskName  A task name.
-	 * @param Boolean $more		Whether to add a 'more details' message or not.
+     * @param Boolean $more		Whether to add a 'more details' message or not.
      */
     protected function writeTaskError($output, $taskName, $more = true)
     {
@@ -501,14 +460,14 @@ EOT;
         ), 'fg=white;bg=red');
     }
 
-	/**
+    /**
      * @param OutputInterface $output   The output.
-	 * @param string $filename	The filename.
-	 */
+     * @param string $filename	The filename.
+     */
     protected function writeNewFile($output, $filename)
-	{
-		return $output->writeln('>>  <info>File+</info>    ' . $filename);
-	}
+    {
+        return $output->writeln('>>  <info>File+</info>    ' . $filename);
+    }
 
     /**
      * Ask confirmation from the user.
@@ -520,5 +479,51 @@ EOT;
     protected function askConfirmation(OutputInterface $output, $question, $default = null)
     {
         return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
+    }
+
+    private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
+    {
+        $schemaPath = str_replace($bundle->getPath().'/Resources/config/', '', $schema->getPathname());
+
+        return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
+    }
+
+    private function getFileLocator()
+    {
+        return $this->getContainer()->get('file_locator');
+    }
+
+    /**
+     * Compiles arguments/properties for the Phing process.
+     * @return array
+     */
+    private function getPhingArguments(KernelInterface $kernel, $workingDirectory, $properties)
+    {
+        $args = array();
+
+        // Default properties
+        $properties = array_merge(array(
+            'propel.database'           => 'mysql',
+            'project.dir'               => $workingDirectory,
+            'propel.output.dir'         => $kernel->getRootDir().'/propel',
+            'propel.php.dir'            => $kernel->getRootDir().'/..',
+            'propel.packageObjectModel' => true,
+        ), $properties);
+
+        // Adding user defined properties from the configuration
+        $properties = array_merge(
+            $properties,
+            $this->getContainer()->get('propel.build_properties')->getProperties()
+        );
+
+        foreach ($properties as $key => $value) {
+            $args[] = "-D$key=$value";
+        }
+
+        // Build file
+        $args[] = '-f';
+        $args[] = realpath($this->getContainer()->getParameter('propel.path').'/generator/build.xml');
+
+        return $args;
     }
 }
