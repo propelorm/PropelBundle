@@ -74,6 +74,7 @@ EOT
                 '[Propel] Exception',
                 '',
                 $e->getMessage()), 'fg=white;bg=red');
+
             return false;
         }
 

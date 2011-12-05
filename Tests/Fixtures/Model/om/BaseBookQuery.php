@@ -73,6 +73,7 @@ abstract class BaseBookQuery extends ModelCriteria
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
         }
+
         return $query;
     }
 
@@ -98,6 +99,7 @@ abstract class BaseBookQuery extends ModelCriteria
             $stmt = $criteria
                 ->filterByPrimaryKey($key)
                 ->getSelectStatement($con);
+
             return $criteria->getFormatter()->init($criteria)->formatOne($stmt);
         }
     }
@@ -115,6 +117,7 @@ abstract class BaseBookQuery extends ModelCriteria
     public function findPks($keys, $con = null)
     {
         $criteria = $this->isKeepQuery() ? clone $this : $this;
+
         return $this
             ->filterByPrimaryKeys($keys)
             ->find($con);
@@ -167,6 +170,7 @@ abstract class BaseBookQuery extends ModelCriteria
         if (is_array($id) && null === $comparison) {
             $comparison = Criteria::IN;
         }
+
         return $this->addUsingAlias(BookPeer::ID, $id, $comparison);
     }
 
@@ -195,6 +199,7 @@ abstract class BaseBookQuery extends ModelCriteria
                 $comparison = Criteria::LIKE;
             }
         }
+
         return $this->addUsingAlias(BookPeer::NAME, $name, $comparison);
     }
 
@@ -223,6 +228,7 @@ abstract class BaseBookQuery extends ModelCriteria
                 $comparison = Criteria::LIKE;
             }
         }
+
         return $this->addUsingAlias(BookPeer::SLUG, $slug, $comparison);
     }
 

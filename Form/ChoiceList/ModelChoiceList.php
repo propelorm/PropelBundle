@@ -188,12 +188,14 @@ class ModelChoiceList extends ArrayChoiceList
             if (count($this->identifier) > 1) {
                 // $key is a collection index
                 $models = $this->getModels();
+
                 return isset($models[$key]) ? $models[$key] : null;
             } else if ($this->models) {
                 return isset($this->models[$key]) ? $this->models[$key] : null;
             }
 
             $queryClass = $this->class . 'Query';
+
             return $queryClass::create()->findPk($key);
         } catch (NoResultException $e) {
             return null;

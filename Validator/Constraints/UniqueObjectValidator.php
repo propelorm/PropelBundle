@@ -65,10 +65,10 @@ class UniqueObjectValidator extends ConstraintValidator
             foreach ($fields as $fieldName) {
               $constraintMessage .= sprintf(' %s "%s" and', $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME), $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME));
             }
-          
+
             $constraintMessage = substr($constraintMessage, 0, -4) . '.';
             $this->setMessage($constraintMessage);
-          
+
             return false;
         }
 

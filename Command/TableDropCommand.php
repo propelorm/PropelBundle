@@ -74,6 +74,7 @@ EOT
 
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('<info>Aborted, nice decision !</info>');
+
                     return -2;
                 }
             }

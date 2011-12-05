@@ -20,38 +20,38 @@ use \TableMap;
 class BookTableMap extends TableMap
 {
 
-	/**
-	 * The (dot-path) name of this class
-	 */
-	const CLASS_NAME = 'vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model.map.BookTableMap';
+    /**
+     * The (dot-path) name of this class
+     */
+    const CLASS_NAME = 'vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model.map.BookTableMap';
 
-	/**
-	 * Initialize the table attributes, columns and validators
-	 * Relations are not initialized by this method since they are lazy loaded
-	 *
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function initialize()
-	{
-		// attributes
-		$this->setName('book');
-		$this->setPhpName('Book');
-		$this->setClassname('Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
-		$this->setPackage('vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model');
-		$this->setUseIdGenerator(true);
-		// columns
-		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
-		$this->addColumn('SLUG', 'Slug', 'VARCHAR', false, 255, null);
-		// validators
-	} // initialize()
+    /**
+     * Initialize the table attributes, columns and validators
+     * Relations are not initialized by this method since they are lazy loaded
+     *
+     * @return     void
+     * @throws     PropelException
+     */
+    public function initialize()
+    {
+        // attributes
+        $this->setName('book');
+        $this->setPhpName('Book');
+        $this->setClassname('Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
+        $this->setPackage('vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model');
+        $this->setUseIdGenerator(true);
+        // columns
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
+        $this->addColumn('SLUG', 'Slug', 'VARCHAR', false, 255, null);
+        // validators
+    } // initialize()
 
-	/**
-	 * Build the RelationMap objects for this table relationships
-	 */
-	public function buildRelations()
-	{
-	} // buildRelations()
+    /**
+     * Build the RelationMap objects for this table relationships
+     */
+    public function buildRelations()
+    {
+    } // buildRelations()
 
 } // BookTableMap

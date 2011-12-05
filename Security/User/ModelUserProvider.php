@@ -85,6 +85,7 @@ class ModelUserProvider implements UserProviderInterface
         }
 
         $proxyClass = $this->proxyClass;
+
         return new $proxyClass($user);
     }
 
