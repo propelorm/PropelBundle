@@ -206,9 +206,6 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                 // save the object for future reference
                 if (method_exists($obj, 'getPrimaryKey')) {
                     $class_default = constant(constant($class.'::PEER').'::CLASS_DEFAULT');
-                    if ('/' !== substr($class_default, 0, 1)) {
-                        $class_default = '/' . $class_default;
-                    }
                     $this->object_references[Propel::importClass($class_default).'_'.$key] = $obj;
                 }
             }
