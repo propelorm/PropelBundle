@@ -483,7 +483,7 @@ EOT;
 
     private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
     {
-        $schemaPath = str_replace($bundle->getPath().'/Resources/config/', '', $schema->getPathname());
+        $schemaPath = str_replace($bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR, '', $schema->getRealPath());
 
         return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
     }
