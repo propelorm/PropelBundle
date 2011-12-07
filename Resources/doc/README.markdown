@@ -35,6 +35,13 @@ Currently supports:
     > git submodule add https://github.com/Xosofox/phing.git vendor/phing
 
     > git submodule add https://github.com/propelorm/Propel.git vendor/propel
+    
+ * Instead of doing this manually, you can use the Symfony vendor management via the deps file:
+ 
+   See http://www.propelorm.org/cookbook/symfony2/working-with-symfony2.html#via_symfony2_vendor_management
+
+   If you are using Symfony 2.0.6, be sure to deps.lock the PropelBundle to a commit on the 2.0 branch, 
+   which does not use the Bridge  
 
  * Register this bundle in the `AppKernel` class:
 
