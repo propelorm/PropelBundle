@@ -6,7 +6,7 @@ PropelBundle
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
 **Important:** The `master` branch follows the **Symfony2 master** branch, and uses the **Propel Bridge**.
-If you want to use the bundle with a **Symfony2 version under 2.0.7**, please use the `2.0` branch.
+If you want to use the bundle with a **Symfony2 version 2.x.x** (actually, a version which is not _2.1_ or above), please use the `2.0` branch.
 
 
 Currently supports:
