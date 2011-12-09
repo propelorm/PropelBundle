@@ -40,7 +40,7 @@ Currently supports:
  
    See http://www.propelorm.org/cookbook/symfony2/working-with-symfony2.html#via_symfony2_vendor_management
 
-   If you are using Symfony 2.0.6, be sure to deps.lock the PropelBundle to a commit on the 2.0 branch, 
+   If you are using a Symfony2 2.x.x version (actually, a version which is not 2.1 or above), be sure to deps.lock the PropelBundle to a commit on the 2.0 branch, 
    which does not use the Bridge  
 
  * Register this bundle in the `AppKernel` class:
