@@ -12,6 +12,8 @@ $loader->registerNamespaces(array(
 ));
 $loader->register();
 
+set_include_path(get_include_path() . PATH_SEPARATOR . $vendorDir.'/phing/classes');
+
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'Propel\\PropelBundle\\')) {
         $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
