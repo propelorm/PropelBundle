@@ -98,7 +98,11 @@ class ModelUserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        $queryClass = $this->queryClass;
+        $user       = $queryClass::create()->findPk($user->getPrimaryKey());
+        $proxyClass = $this->proxyClass;
+
+        return new $proxyClass($user);
     }
 
     /**
