@@ -388,7 +388,12 @@ EOT;
     {
         preg_match('#dbname=([a-zA-Z0-9\_]+)#', $dsn, $matches);
 
-        return $matches[1];
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+
+        // e.g. SQLite
+        return null;
     }
 
     /**

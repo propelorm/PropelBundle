@@ -45,7 +45,12 @@ class DatabaseCreateCommand extends AbstractPropelCommand
 
         list($name, $config) = $this->getConnection($input, $output);
         $dbName = $this->parseDbName($config['connection']['dsn']);
-        $query  = 'CREATE DATABASE '. $dbName .';';
+
+        if (null === $dbName) {
+            return $output->writeln('<error>No database name found.</error>');
+        } else {
+            $query  = 'CREATE DATABASE '. $dbName .';';
+        }
 
         try {
             \Propel::setConfiguration($this->getTemporaryConfiguration($name, $config));
