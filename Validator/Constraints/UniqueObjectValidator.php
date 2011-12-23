@@ -45,7 +45,7 @@ class UniqueObjectValidator extends ConstraintValidator
         $classFields = $peerClass::getFieldNames(\BasePeer::TYPE_FIELDNAME);
 
         foreach ($fields as $fieldName) {
-            if(!array_search($fieldName, $classFields)) {
+            if(false === array_search($fieldName, $classFields)) {
                 throw new ConstraintDefinitionException('The field "' . $fieldName .'" doesn\'t exist in the "' . $class . '" class.');
             }
         }
