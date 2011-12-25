@@ -14,8 +14,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Util\Filesystem;
 
 use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
@@ -40,7 +40,7 @@ class FixturesLoadCommand extends AbstractPropelCommand
     private $absoluteFixturesPath = '';
     /**
      * Filesystem for manipulating files
-     * @var \Symfony\Component\HttpKernel\Util\Filesystem
+     * @var \Symfony\Component\Filesystem\Filesystem
      */
     private $filesystem = null;
 
