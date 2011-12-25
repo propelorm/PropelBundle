@@ -67,7 +67,12 @@ EOT
 
             list($name, $config) = $this->getConnection($input, $output);
             $dbName = $this->parseDbName($config['connection']['dsn']);
-            $query  = 'DROP DATABASE '. $dbName .';';
+
+            if (null === $dbName) {
+                return $output->writeln('<error>No database name found.</error>');
+            } else {
+                $query  = 'DROP DATABASE '. $dbName .';';
+            }
 
             try {
                 $connection = \Propel::getConnection($name);
