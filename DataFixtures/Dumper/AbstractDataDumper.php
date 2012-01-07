@@ -185,7 +185,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
             foreach ($tableMap->getColumns() as $column) {
                 if ($column->isForeignKey()) {
                     $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
-                    $relatedTablePos = array_search($relatedTable->getPhpName(), $classes);
+                    $relatedTablePos = array_search($relatedTable->getClassname(), $classes);
 
                     // check if relatedTable is after the current table
                     if ($relatedTablePos > $i) {
