@@ -128,6 +128,10 @@ EOT
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
             ), 'fg=white;bg=red');
         }
+        if ($input->getOption('verbose')) {
+            $output->writeln('<info>Reading from "' .
+              $this->absoluteFixturesPath . '"</info>');
+        }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
