@@ -10,6 +10,9 @@ $loader->registerNamespaces(array(
     'Symfony'                               => array($vendorDir.'/symfony/src'),
     'Sensio\\Bundle\\FrameworkExtraBundle'  => array($vendorDir),
 ));
+$loader->registerPrefixes(array(
+    'Twig_' => $vendorDir.'/symfony/vendor/twig/lib',
+));
 $loader->register();
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $vendorDir.'/phing/classes');
