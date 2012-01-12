@@ -22,10 +22,8 @@ class PanelController extends ContainerAware
 {
     /**
      * This method renders the global Propel configuration.
-     *
-     * @param PropelDataCollector $collector  A PropelDataCollector collector
      */
-    public function configurationAction(PropelDataCollector $collector)
+    public function configurationAction()
     {
         $templating = $this->container->get('templating');
 
