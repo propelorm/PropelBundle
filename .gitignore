@@ -1,3 +1,5 @@
+/Model/*/map
+/Model/*/om
 vendor/phing/
 vendor/propel/
 vendor/symfony/
