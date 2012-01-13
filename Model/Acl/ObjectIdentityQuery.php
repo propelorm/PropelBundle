@@ -10,9 +10,29 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
+use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentityQuery;
+
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 class ObjectIdentityQuery extends BaseObjectIdentityQuery
 {
+    /**
+     * Return an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
+     *
+     * @param ObjectIdentityInterface $objectIdentity
+     *
+     * @return ObjectIdentity
+     */
+    public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity)
+    {
+        $this
+            ->useAclClassQuery()
+                ->filterByType($objectIdentity->getType())
+            ->endUse()
+            ->filterByIdentifier($objectIdentity->getIdentifier())
+        ;
 
+        return $this;
+    }
 }
