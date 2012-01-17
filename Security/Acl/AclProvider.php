@@ -116,7 +116,13 @@ class AclProvider implements AclProviderInterface
         $collection = EntryQuery::create()->findByAclIdentity($objectIdentity, $securityIdentities);
 
         if (0 === count($collection)) {
-            throw new AclNotFoundException();
+            if (empty($securityIdentities)) {
+                $errorMessage = 'There is no ACL available for this object identity. Please create one using the MutableAclProvider.';
+            } else {
+                $errorMessage = 'There is at least no ACL for this object identity and the given security identities. Try retrieving the ACL without security identity filter and add ACEs for the security identities.';
+            }
+
+            throw new AclNotFoundException($errorMessage);
         }
 
         $loadedSecurityIdentities = array();
