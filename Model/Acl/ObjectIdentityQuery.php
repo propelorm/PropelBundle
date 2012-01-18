@@ -10,6 +10,8 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
+use PropelPDO;
+
 use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentityQuery;
 
@@ -18,21 +20,40 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 class ObjectIdentityQuery extends BaseObjectIdentityQuery
 {
     /**
-     * Return an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
+     * Filter by an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
      *
      * @param ObjectIdentityInterface $objectIdentity
      *
-     * @return ObjectIdentity
+     * @return ObjectIdentityQuery $this
      */
     public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity)
     {
+        /*
+         * Not using a JOIN here, because the filter may be applied on 'findOneOrCreate',
+         * which is currently (Propel 1.6.4-dev) not working.
+         */
+        $aclClass = AclClass::fromAclObjectIdentity($objectIdentity);
         $this
-            ->useAclClassQuery()
-                ->filterByType($objectIdentity->getType())
-            ->endUse()
+            ->filterByClassId($aclClass->getId())
             ->filterByIdentifier($objectIdentity->getIdentifier())
         ;
 
         return $this;
+    }
+
+    /**
+     * Return an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
+     *
+     * @param ObjectIdentityInterface $objectIdentity
+     * @param PropelPDO $con
+     *
+     * @return ObjectIdentity
+     */
+    public function findOneByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
+    {
+        return $this
+            ->filterByAclObjectIdentity($objectIdentity)
+            ->findOne($con)
+        ;
     }
 }

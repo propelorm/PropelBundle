@@ -49,7 +49,14 @@ class Entry implements AuditableEntryInterface
         $this->acl = $acl;
         $this->securityIdentity = SecurityIdentity::toAclIdentity($entry->getSecurityIdentity());
 
-        $this->id = $entry->getId();
+        /*
+         * A new ACE (from a MutableAcl) does not have an ID,
+         * but will be persisted by the MutableAclProvider afterwards, if issued.
+         */
+        if ($entry->getId()) {
+            $this->id = $entry->getId();
+        }
+
         $this->mask = $entry->getMask();
         $this->isGranting = $entry->getGranting();
         $this->strategy = $entry->getGrantingStrategy();

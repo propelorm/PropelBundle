@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\Security\Acl;
 
 use PropelPDO;
+use PropelCollection;
 
 use Propel\PropelBundle\Model\Acl\EntryQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
@@ -69,16 +70,10 @@ class AclProvider implements AclProviderInterface
      */
     public function findChildren(ObjectIdentityInterface $parentObjectIdentity, $directChildrenOnly = false)
     {
-        $modelIdentity = ObjectIdentityQuery::create()
-            ->filterByAclObjectIdentity($parentObjectIdentity)
-            ->findOne($this->connection)
-        ;
-
+        $modelIdentity = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($parentObjectIdentity, $this->connection);
         if (empty($modelIdentity)) {
             return array();
         }
-
-        $children = array();
 
         if ($directChildrenOnly) {
             $collection = ObjectIdentityQuery::create()
@@ -94,6 +89,7 @@ class AclProvider implements AclProviderInterface
             ;
         }
 
+        $children = array();
         foreach ($collection as $eachChild) {
             $children[] = new ObjectIdentity($eachChild->getIdentifier(), $eachChild->getAclClass()->getType());
         }
@@ -132,7 +128,7 @@ class AclProvider implements AclProviderInterface
             }
         }
 
-        return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities);
+        return $this->getAcl($collection, $objectIdentity, $loadedSecurityIdentities);
     }
 
     /**
@@ -153,5 +149,19 @@ class AclProvider implements AclProviderInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Create an ACL.
+     *
+     * @param PropelCollection $collection
+     * @param ObjectIdentityInterface $objectIdentity
+     * @param array $loadedSecurityIdentities
+     *
+     * @return Acl
+     */
+    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array())
+    {
+        return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities);
     }
 }
