@@ -10,9 +10,21 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
+use PropelPDO;
+
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentity;
 
 class ObjectIdentity extends BaseObjectIdentity
 {
+    public function preInsert(PropelPDO $con = null)
+    {
+        // Compatibility with default implementation.
+        $ancestor = new ObjectIdentityAncestor();
+        $ancestor->setObjectIdentityRelatedByObjectIdentityId($this);
+        $ancestor->setObjectIdentityRelatedByAncestorId($this);
 
+        $this->addObjectIdentityAncestorRelatedByAncestorId($ancestor);
+
+        return true;
+    }
 }

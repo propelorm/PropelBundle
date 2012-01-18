@@ -45,6 +45,13 @@ class Acl implements AclInterface
     protected $loadedSecurityIdentities = array();
 
     /**
+     * A list of known associated fields on this ACL.
+     *
+     * @var array
+     */
+    protected $fields = array();
+
+    /**
      * Constructor.
      *
      * @param PropelCollection $entries
@@ -68,6 +75,7 @@ class Acl implements AclInterface
             if (null !== $eachEntry->getFieldName() and null === $eachEntry->getObjectIdentityId()) {
                 if (empty($this->classFieldAces[$eachEntry->getFieldName()])) {
                     $this->classFieldAces[$eachEntry->getFieldName()] = array();
+                    $this->updateFields($eachEntry->getFieldName());
                 }
 
                 $this->classFieldAces[$eachEntry->getFieldName()][] = new FieldEntry($eachEntry, $this);
@@ -80,6 +88,7 @@ class Acl implements AclInterface
             if (null !== $eachEntry->getFieldName() and null !== $eachEntry->getObjectIdentityId()) {
                 if (empty($this->objectFieldAces[$eachEntry->getFieldName()])) {
                     $this->objectFieldAces[$eachEntry->getFieldName()] = array();
+                    $this->updateFields($eachEntry->getFieldName());
                 }
 
                 $this->objectFieldAces[$eachEntry->getFieldName()][] = new FieldEntry($eachEntry, $this);
@@ -91,6 +100,8 @@ class Acl implements AclInterface
         $this->parentAcl = $parentAcl;
         $this->inherited = $inherited;
         $this->loadedSecurityIdentities = $loadedSecurityIdentities;
+
+        $this->fields = array_unique($this->fields);
     }
 
     /**
@@ -279,6 +290,32 @@ class Acl implements AclInterface
             $this->inherited,
             $this->loadedSecurityIdentities,
         ) = unserialize($serialized);
+
+        return $this;
+    }
+
+    /**
+     * Returns a list of associated fields on this ACL.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Update the internal list of associated fields on this ACL.
+     *
+     * @param string $field
+     *
+     * @return MutableAcl $this
+     */
+    protected function updateFields($field)
+    {
+        if (!in_array($field, $this->fields)) {
+            $this->fields[] = $field;
+        }
 
         return $this;
     }

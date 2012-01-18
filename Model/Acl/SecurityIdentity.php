@@ -64,7 +64,7 @@ class SecurityIdentity extends BaseSecurityIdentity
             $identifier = $aclIdentity->getRole();
             $username = false;
         } else {
-            throw new InvalidArgumentException('The ACL identity must either be an instance of UserSecurityIdentity, or RoleSecurityIdentity.');
+            throw new InvalidArgumentException('The ACL identity must either be an instance of UserSecurityIdentity or RoleSecurityIdentity.');
         }
 
         $obj = SecurityIdentityQuery::create()
