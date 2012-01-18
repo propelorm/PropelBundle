@@ -49,11 +49,11 @@ class EntryQuery extends BaseEntryQuery
 
         $this
             ->useAclClassQuery(null, Criteria::INNER_JOIN)
-                ->filterByType($objectIdentity->getType())
+                ->filterByType((string) $objectIdentity->getType())
             ->endUse()
-            ->useObjectIdentityQuery(null, Criteria::INNER_JOIN)
-                ->filterByIdentifier($objectIdentity->getIdentifier())
-            ->endUse()
+            ->leftJoinObjectIdentity()
+            ->add(ObjectIdentityPeer::OBJECT_IDENTIFIER, (string) $objectIdentity->getIdentifier(), Criteria::EQUAL)
+            ->addOr(EntryPeer::OBJECT_IDENTITY_ID, null, Criteria::ISNULL)
         ;
 
         if (!empty($securityIdentities)) {
