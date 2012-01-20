@@ -129,8 +129,6 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * Changes to parent ACLs are not persisted.
      *
-     * @todo Add handling of parent ACL changes (tree changes).
-     *
      * @throws AclException
      *
      * @param MutableAclInterface $acl
@@ -165,6 +163,18 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
                 if (!in_array($eachEntry->getId(), $keepEntries)) {
                     $eachEntry->delete($this->connection);
                 }
+            }
+
+            if (null === $acl->getParentAcl()) {
+                $objectIdentity
+                    ->setParentObjectIdentityId(null)
+                    ->save($this->connection)
+                ;
+            } else {
+                $objectIdentity
+                    ->setParentObjectIdentityId($acl->getParentAcl()->getId())
+                    ->save($this->connection)
+                ;
             }
 
             $this->connection->commit();
@@ -246,7 +256,6 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
 
         return $entry;
     }
-
 
     /**
      * Get an ACL for this provider.

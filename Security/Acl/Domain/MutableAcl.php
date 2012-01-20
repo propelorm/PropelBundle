@@ -120,9 +120,9 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Sets the parent ACL
      *
-     * @param AclInterface $acl
+     * @param AclInterface|null $acl
      */
-    public function setParentAcl(AclInterface $acl)
+    public function setParentAcl(AclInterface $acl = null)
     {
         $this->parentAcl = $acl;
     }
