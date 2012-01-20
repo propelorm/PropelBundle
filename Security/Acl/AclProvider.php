@@ -76,17 +76,9 @@ class AclProvider implements AclProviderInterface
         }
 
         if ($directChildrenOnly) {
-            $collection = ObjectIdentityQuery::create()
-                ->filterByObjectIdentityRelatedByParentObjectIdentityId($modelIdentity)
-                ->find($this->connection)
-            ;
+            $collection = ObjectIdentityQuery::create()->findChildren($modelIdentity, $this->connection);
         } else {
-            $collection = ObjectIdentityQuery::create()
-                ->useObjectIdentityAncestorRelatedByAncestorIdQuery()
-                    ->filterByObjectIdentityRelatedByAncestorId($modelIdentity)
-                ->endUse()
-                ->find($this->connection)
-            ;
+            $collection = ObjectIdentityQuery::create()->findGrandChildren($modelIdentity, $this->connection);
         }
 
         $children = array();

@@ -10,7 +10,9 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
+use Criteria;
 use PropelPDO;
+use PropelCollection;
 
 use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentityQuery;
@@ -54,6 +56,41 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
         return $this
             ->filterByAclObjectIdentity($objectIdentity)
             ->findOne($con)
+        ;
+    }
+
+    /**
+     * Return all children of the given object identity.
+     *
+     * @param ObjectIdentity $objectIdentity
+     * @param PropelPDO $con
+     *
+     * @return PropelCollection
+     */
+    public function findChildren(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    {
+        return $this
+            ->filterByObjectIdentityRelatedByParentObjectIdentityId($objectIdentity)
+            ->find($con)
+        ;
+    }
+
+    /**
+     * Return all children and grand-children of the given object identity.
+     *
+     * @param ObjectIdentity $objectIdentity
+     * @param PropelPDO $con
+     *
+     * @return PropelCollection
+     */
+    public function findGrandChildren(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    {
+        return $this
+            ->useObjectIdentityAncestorRelatedByObjectIdentityIdQuery()
+                ->filterByObjectIdentityRelatedByAncestorId($objectIdentity)
+                ->filterByObjectIdentityRelatedByObjectIdentityId($objectIdentity, Criteria::NOT_EQUAL)
+            ->endUse()
+            ->find($con)
         ;
     }
 }
