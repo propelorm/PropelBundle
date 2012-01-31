@@ -120,7 +120,21 @@ class AclProvider implements AclProviderInterface
             }
         }
 
-        return $this->getAcl($collection, $objectIdentity, $loadedSecurityIdentities);
+        $parentAcl = null;
+        $modelObj = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, $this->connection);
+        if (null !== $modelObj->getParentObjectIdentityId()) {
+            $parentObj = $modelObj->getObjectIdentityRelatedByParentObjectIdentityId($this->connection);
+            try {
+                $parentAcl = $this->findAcl(new ObjectIdentity($parentObj->getIdentifier(), $parentObj->getAclClass($this->connection)->getType()));
+            } catch (AclNotFoundException $e) {
+                /*
+                 *  This happens e.g. if the parent ACL is created, but does not contain any ACE by now.
+                 *  The ACEs may be applied later on.
+                 */
+            }
+        }
+
+        return $this->getAcl($collection, $objectIdentity, $loadedSecurityIdentities, $parentAcl, $modelObj->getEntriesInheriting());
     }
 
     /**
@@ -149,11 +163,13 @@ class AclProvider implements AclProviderInterface
      * @param PropelCollection $collection
      * @param ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
+     * @param AclInterface $parentAcl
+     * @param bool $inherited
      *
      * @return Acl
      */
-    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array())
+    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
-        return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities);
+        return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
     }
 }

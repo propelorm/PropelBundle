@@ -31,6 +31,7 @@ use Propel\PropelBundle\Security\Acl\Domain\Entry;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
+use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\FieldEntryInterface;
 use Symfony\Component\Security\Acl\Model\AclCacheInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
@@ -263,11 +264,13 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * @param PropelCollection $collection
      * @param ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
+     * @param AclInterface $parentAcl
+     * @param bool $inherited
      *
      * @return MutableAcl
      */
-    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array())
+    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
-        return new MutableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities);
+        return new MutableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited, $this->connection);
     }
 }

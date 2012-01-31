@@ -61,7 +61,7 @@ class Acl implements AclInterface
      * @param AclInterface $parentAcl
      * @param boolean $inherited
      */
-    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = false)
+    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         if ($entries->getModel() !== $this->model) {
             throw new AclException(sprintf('The given collection does not contain models of class "%s" but of class "%s".', $this->model, $entries->getModel()));
