@@ -39,7 +39,7 @@
         <foreign-key foreignTable="acl_classes" onDelete="RESTRICT" onUpdate="CASCADE">
             <reference local="class_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="acl_object_identities" onDelete="RESTRICT" onUpdate="RESTRICT">
+        <foreign-key foreignTable="acl_object_identities" onDelete="RESTRICT" onUpdate="CASCADE">
             <reference local="parent_object_identity_id" foreign="id" />
         </foreign-key>
     </table>
