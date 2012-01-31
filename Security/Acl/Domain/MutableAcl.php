@@ -84,7 +84,7 @@ class MutableAcl extends Acl implements MutableAclInterface
         $this->entries = $entries;
 
         $this->modelObjectIdentity = ObjectIdentityQuery::create()
-            ->filterByAclObjectIdentity($objectIdentity)
+            ->filterByAclObjectIdentity($objectIdentity, $con)
             ->findOneOrCreate($con)
         ;
 

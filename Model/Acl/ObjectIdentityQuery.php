@@ -25,16 +25,17 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
      * Filter by an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
      *
      * @param ObjectIdentityInterface $objectIdentity
+     * @param PropelPDO $con
      *
      * @return ObjectIdentityQuery $this
      */
-    public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity)
+    public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
     {
         /*
          * Not using a JOIN here, because the filter may be applied on 'findOneOrCreate',
          * which is currently (Propel 1.6.4-dev) not working.
          */
-        $aclClass = AclClass::fromAclObjectIdentity($objectIdentity);
+        $aclClass = AclClass::fromAclObjectIdentity($objectIdentity, $con);
         $this
             ->filterByClassId($aclClass->getId())
             ->filterByIdentifier($objectIdentity->getIdentifier())
@@ -54,7 +55,7 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     public function findOneByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
     {
         return $this
-            ->filterByAclObjectIdentity($objectIdentity)
+            ->filterByAclObjectIdentity($objectIdentity, $con)
             ->findOne($con)
         ;
     }

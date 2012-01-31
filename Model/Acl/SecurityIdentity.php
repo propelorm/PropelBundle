@@ -74,7 +74,7 @@ class SecurityIdentity extends BaseSecurityIdentity
         ;
 
         if ($obj->isNew()) {
-            $obj->save();
+            $obj->save($con);
         }
 
         return $obj;

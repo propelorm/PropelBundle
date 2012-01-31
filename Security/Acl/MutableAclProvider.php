@@ -80,7 +80,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
         }
 
         $objIdentity = ObjectIdentityQuery::create()
-            ->filterByAclObjectIdentity($objectIdentity)
+            ->filterByAclObjectIdentity($objectIdentity, $this->connection)
             ->findOneOrCreate($this->connection)
         ;
 
