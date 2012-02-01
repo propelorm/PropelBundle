@@ -94,4 +94,23 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
             ->find($con)
         ;
     }
+
+    /**
+     * Return all ancestors of the given object identity.
+     *
+     * @param ObjectIdentity $objectIdentity
+     * @param PropelPDO $con
+     *
+     * @return PropelCollection
+     */
+    public function findAncestors(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    {
+        return $this
+            ->useObjectIdentityAncestorRelatedByAncestorIdQuery()
+                ->filterByObjectIdentityRelatedByObjectIdentityId($objectIdentity)
+                ->filterByObjectIdentityRelatedByAncestorId($objectIdentity, Criteria::NOT_EQUAL)
+            ->endUse()
+            ->find($con)
+        ;
+    }
 }
