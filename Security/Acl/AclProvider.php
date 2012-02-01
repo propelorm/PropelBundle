@@ -121,20 +121,25 @@ class AclProvider implements AclProviderInterface
         }
 
         $parentAcl = null;
+        $entriesInherited = true;
+
         $modelObj = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, $this->connection);
-        if (null !== $modelObj->getParentObjectIdentityId()) {
-            $parentObj = $modelObj->getObjectIdentityRelatedByParentObjectIdentityId($this->connection);
-            try {
-                $parentAcl = $this->findAcl(new ObjectIdentity($parentObj->getIdentifier(), $parentObj->getAclClass($this->connection)->getType()));
-            } catch (AclNotFoundException $e) {
-                /*
-                 *  This happens e.g. if the parent ACL is created, but does not contain any ACE by now.
-                 *  The ACEs may be applied later on.
-                 */
+        if (null !== $modelObj) {
+            $entriesInherited = $modelObj->getEntriesInheriting();
+            if (null !== $modelObj->getParentObjectIdentityId()) {
+                $parentObj = $modelObj->getObjectIdentityRelatedByParentObjectIdentityId($this->connection);
+                try {
+                    $parentAcl = $this->findAcl(new ObjectIdentity($parentObj->getIdentifier(), $parentObj->getAclClass($this->connection)->getType()));
+                } catch (AclNotFoundException $e) {
+                    /*
+                     *  This happens e.g. if the parent ACL is created, but does not contain any ACE by now.
+                     *  The ACEs may be applied later on.
+                     */
+                }
             }
         }
 
-        return $this->getAcl($collection, $objectIdentity, $loadedSecurityIdentities, $parentAcl, $modelObj->getEntriesInheriting());
+        return $this->getAcl($collection, $objectIdentity, $loadedSecurityIdentities, $parentAcl, $entriesInherited);
     }
 
     /**

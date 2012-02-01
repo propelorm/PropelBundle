@@ -17,13 +17,6 @@ use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentity;
 
 class ObjectIdentity extends BaseObjectIdentity
 {
-    /**
-     * A temporary collection used on deletion.
-     *
-     * @var PropelCollection
-     */
-    protected $oldAncestors;
-
     public function preInsert(PropelPDO $con = null)
     {
         // Compatibility with default implementation.
@@ -51,18 +44,10 @@ class ObjectIdentity extends BaseObjectIdentity
 
     public function preDelete(PropelPDO $con = null)
     {
-        /*
-         * Save the ancestors prior deletion.
-         * The ancestors entries will be deleted due to CASCADE.
-         */
-        $this->oldAncestors = ObjectIdentityQuery::create()->findAncestors($this, $con);
-
-        return true;
-    }
-
-    public function postDelete(PropelPDO $con = null)
-    {
-        $this->updateAncestorsTree($con);
+        $children = ObjectIdentityQuery::create()->findGrandChildren($this, $con);
+        foreach ($children as $eachChild) {
+            $eachChild->delete($con);
+        }
 
         return true;
     }
@@ -76,11 +61,7 @@ class ObjectIdentity extends BaseObjectIdentity
      */
     protected function updateAncestorsTree(PropelPDO $con = null)
     {
-        if ($this->isDeleted()) {
-            $oldAncestors = $this->oldAncestors;
-        } else {
-            $oldAncestors = ObjectIdentityQuery::create()->findAncestors($this, $con);
-        }
+        $oldAncestors = ObjectIdentityQuery::create()->findAncestors($this, $con);
 
         $children = ObjectIdentityQuery::create()->findGrandChildren($this, $con);
         $children->append($this);
@@ -102,11 +83,6 @@ class ObjectIdentity extends BaseObjectIdentity
             }
 
             $query->delete($con);
-        }
-
-        // A deleted object identity does not have a parent anymore.
-        if ($this->isDeleted()) {
-            return $this;
         }
 
         // This is the new parent object identity!

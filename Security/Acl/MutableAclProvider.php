@@ -108,16 +108,32 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     public function deleteAcl(ObjectIdentityInterface $objectIdentity)
     {
         try {
-            $objIdentity = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, array(), $this->connection);
+            $objIdentity = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, $this->connection);
             if (null === $objIdentity) {
                 // No object identity, no ACL, so deletion is successful (expected result is given).
                 return true;
             }
 
-            EntryQuery::create()
-                ->filterByObjectIdentity($objIdentity)
-                ->delete($this->connection)
-            ;
+            $classId = $objIdentity->getClassId();
+
+            $this->connection->beginTransaction();
+
+            // This deletes all object and object-field ACEs, too.
+            $objIdentity->delete($this->connection);
+
+            // Retrieve all class and class-field ACEs, if any.
+            $aces = EntryQuery::create()->findByAclIdentity($objectIdentity);
+            if (count($aces)) {
+                // In case this has been the last of its kind, delete the class and class-field ACEs.
+                $objs = ObjectIdentityQuery::create()->findByClassId($classId);
+                if (0 === count($objs)) {
+                    foreach ($aces as $eachAce) {
+                        $eachAce->delete($this->connection);
+                    }
+                }
+            }
+
+            $this->connection->commit();
 
             return true;
         } catch (Exception $e) {
