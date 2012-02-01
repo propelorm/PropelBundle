@@ -30,14 +30,20 @@ class SecurityIdentity extends BaseSecurityIdentity
      */
     public static function toAclIdentity(SecurityIdentity $securityIdentity)
     {
+        $identifier = $securityIdentity->getIdentifier();
+
         if ($securityIdentity->getUsername()) {
-            list($class, $username) = explode('-', $securityIdentity->getIdentifier());
+            if (false === strpos($identifier, '-')) {
+                throw new InvalidArgumentException('The given identifier does not resolve to a UserSecurityIdentity.');
+            }
+
+            list($class, $username) = explode('-', $identifier);
 
             return new UserSecurityIdentity($username, $class);
         }
 
-        if (0 === strpos($securityIdentity->getIdentifier(), 'ROLE_') or 0 === strpos($securityIdentity->getIdentifier(), 'IS_AUTHENTICATED_')) {
-            return new RoleSecurityIdentity($securityIdentity->getIdentifier());
+        if (0 === strpos($identifier, 'ROLE_') or 0 === strpos($identifier, 'IS_AUTHENTICATED_')) {
+            return new RoleSecurityIdentity($identifier);
         }
 
         throw new InvalidArgumentException('The security identity does not resolve to either UserSecurityIdentity or RoleSecurityIdentity.');

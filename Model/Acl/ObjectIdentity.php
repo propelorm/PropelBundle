@@ -44,10 +44,21 @@ class ObjectIdentity extends BaseObjectIdentity
 
     public function preDelete(PropelPDO $con = null)
     {
-        $children = ObjectIdentityQuery::create()->findGrandChildren($this, $con);
+        $objIds = array($this->getId());
+
+        // Only retrieve direct children, it's faster and grand children will be retrieved recursively.
+        $children = ObjectIdentityQuery::create()->findChildren($this, $con);
         foreach ($children as $eachChild) {
+            $objIds[] = $eachChild->getId();
+
             $eachChild->delete($con);
         }
+
+        // Manually delete those for DBAdapter not capable of cascading the DELETE.
+        ObjectIdentityAncestorQuery::create()
+            ->filterByObjectIdentityId($objIds, Criteria::IN)
+            ->delete($con)
+        ;
 
         return true;
     }
@@ -61,28 +72,32 @@ class ObjectIdentity extends BaseObjectIdentity
      */
     protected function updateAncestorsTree(PropelPDO $con = null)
     {
+        $con->beginTransaction();
+
         $oldAncestors = ObjectIdentityQuery::create()->findAncestors($this, $con);
 
         $children = ObjectIdentityQuery::create()->findGrandChildren($this, $con);
         $children->append($this);
-        foreach ($children as $eachChild) {
-            /*
-             * Delete only those entries, that are ancestors based on the parent relation.
-             * Ancestors of grand children up to the current node will be kept.
-             */
-            $query = ObjectIdentityAncestorQuery::create()->filterByObjectIdentityId($eachChild->getId());
 
-            if (count($oldAncestors)) {
-                $query->filterByObjectIdentityRelatedByAncestorId($oldAncestors, Criteria::IN);
+        if (count($oldAncestors)) {
+            foreach ($children as $eachChild) {
+                /*
+                 * Delete only those entries, that are ancestors based on the parent relation.
+                 * Ancestors of grand children up to the current node will be kept.
+                 */
+                $query = ObjectIdentityAncestorQuery::create()
+                    ->filterByObjectIdentityId($eachChild->getId())
+                    ->filterByObjectIdentityRelatedByAncestorId($oldAncestors, Criteria::IN)
+                ;
+
+                if ($eachChild->getId() !== $this->getId()) {
+                    $query->filterByAncestorId(array($eachChild->getId(), $this->getId()), Criteria::NOT_IN);
+                } else {
+                    $query->filterByAncestorId($this->getId(), Criteria::NOT_EQUAL);
+                }
+
+                $query->delete($con);
             }
-
-            if ($eachChild->getId() !== $this->getId()) {
-                $query->filterByAncestorId(array($eachChild->getId(), $this->getId()), Criteria::NOT_IN);
-            } else {
-                $query->filterByAncestorId($this->getId(), Criteria::NOT_EQUAL);
-            }
-
-            $query->delete($con);
         }
 
         // This is the new parent object identity!
@@ -104,6 +119,9 @@ class ObjectIdentity extends BaseObjectIdentity
                         continue;
                     }
 
+                    // Save the new ancestor to avoid integrity constraint violation.
+                    $ancestor->save($con);
+
                     if ($eachChild->getId() === $this->getId()) {
                         // Do not save() here, as it would result in an infinite recursion loop!
                         $this->addObjectIdentityAncestorRelatedByObjectIdentityId($ancestor);
@@ -116,6 +134,8 @@ class ObjectIdentity extends BaseObjectIdentity
                 }
             }
         }
+
+        $con->commit();
 
         return $this;
     }
