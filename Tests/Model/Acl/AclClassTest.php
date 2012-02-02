@@ -17,10 +17,12 @@ use Propel\PropelBundle\Model\Acl\AclClassPeer;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
+use Propel\PropelBundle\Tests\AclTestCase;
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class AclClassTest extends TestCase
+class AclClassTest extends AclTestCase
 {
     public function testFromAclObjectIdentity()
     {

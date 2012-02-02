@@ -17,10 +17,12 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
+use Propel\PropelBundle\Tests\AclTestCase;
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class SecurityIdentityTest extends TestCase
+class SecurityIdentityTest extends AclTestCase
 {
     public function testToAclIdentityUserWithInvalidIdentifier()
     {

@@ -201,7 +201,11 @@ class MutableAcl extends Acl implements MutableAclInterface
      */
     public function insertClassFieldAce($field, SecurityIdentityInterface $securityIdentity, $mask, $index = 0, $granting = true, $strategy = null)
     {
-        $this->insertToList($this->classFieldAces, $index, $this->createAce($mask, $index, $securityIdentity, $strategy, $granting, $field));
+        if (!isset($this->classFieldAces[$field])) {
+            $this->classFieldAces[$field] = array();
+        }
+
+        $this->insertToList($this->classFieldAces[$field], $index, $this->createAce($mask, $index, $securityIdentity, $strategy, $granting, $field));
     }
 
     /**
@@ -230,7 +234,11 @@ class MutableAcl extends Acl implements MutableAclInterface
      */
     public function insertObjectFieldAce($field, SecurityIdentityInterface $securityIdentity, $mask, $index = 0, $granting = true, $strategy = null)
     {
-        $this->insertToList($this->objectFieldAces, $index, $this->createAce($mask, $index, $securityIdentity, $strategy, $granting, $field));
+        if (!isset($this->objectFieldAces[$field])) {
+            $this->objectFieldAces[$field] = array();
+        }
+
+        $this->insertToList($this->objectFieldAces[$field], $index, $this->createAce($mask, $index, $securityIdentity, $strategy, $granting, $field));
     }
 
     /**

@@ -39,7 +39,13 @@ class EntryQuery extends BaseEntryQuery
         $securityIds = array();
         foreach ($securityIdentities as $eachIdentity) {
             if (!$eachIdentity instanceof SecurityIdentityInterface) {
-                throw new InvalidArgumentException(sprintf('The list of security identities contains at least one invalid entry of class "%s". Please provide objects of classes implementing "Symfony\Component\Security\Acl\Model\SecurityIdentityInterface" only.', get_class($eachIdentity)));
+                if (is_object($eachIdentity)) {
+                    $errorMessage = sprintf('The list of security identities contains at least one invalid entry of class "%s". Please provide objects of classes implementing "Symfony\Component\Security\Acl\Model\SecurityIdentityInterface" only.', get_class($eachIdentity));
+                } else {
+                    $errorMessage = sprintf('The list of security identities contains at least one invalid entry "%s". Please provide objects of classes implementing "Symfony\Component\Security\Acl\Model\SecurityIdentityInterface" only.', $eachIdentity);
+                }
+
+                throw new InvalidArgumentException($errorMessage);
             }
 
             if ($securityIdentity = SecurityIdentity::fromAclIdentity($eachIdentity)) {

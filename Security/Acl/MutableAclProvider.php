@@ -13,6 +13,7 @@ namespace Propel\PropelBundle\Security\Acl;
 use Exception;
 use InvalidArgumentException;
 
+use Criteria;
 use Propel;
 use PropelPDO;
 use PropelCollection;
@@ -114,24 +115,22 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
                 return true;
             }
 
-            $classId = $objIdentity->getClassId();
-
             $this->connection->beginTransaction();
 
-            // This deletes all object and object-field ACEs, too.
-            $objIdentity->delete($this->connection);
-
             // Retrieve all class and class-field ACEs, if any.
-            $aces = EntryQuery::create()->findByAclIdentity($objectIdentity);
+            $aces = EntryQuery::create()->findByAclIdentity($objectIdentity, array(), $this->connection);
             if (count($aces)) {
-                // In case this has been the last of its kind, delete the class and class-field ACEs.
-                $objs = ObjectIdentityQuery::create()->findByClassId($classId);
-                if (0 === count($objs)) {
+                // In case this is the last of its kind, delete the class and class-field ACEs.
+                $count = ObjectIdentityQuery::create()->filterByClassId($objIdentity->getClassId())->count($this->connection);
+                if (1 === $count) {
                     foreach ($aces as $eachAce) {
                         $eachAce->delete($this->connection);
                     }
                 }
             }
+
+            // This deletes all object and object-field ACEs, too.
+            $objIdentity->delete($this->connection);
 
             $this->connection->commit();
 

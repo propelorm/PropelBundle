@@ -15,10 +15,12 @@ use Criteria;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityAncestorQuery;
 
+use Propel\PropelBundle\Tests\AclTestCase;
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class ObjectIdentityTest extends TestCase
+class ObjectIdentityTest extends AclTestCase
 {
     public function testCompatibleDefaultImplementation()
     {

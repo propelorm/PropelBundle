@@ -15,10 +15,12 @@ use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
+use Propel\PropelBundle\Tests\AclTestCase;
+
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class ObjectIdentityQueryTest extends TestCase
+class ObjectIdentityQueryTest extends AclTestCase
 {
     public function testFilterByAclObjectIdentity()
     {

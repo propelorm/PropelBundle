@@ -8,21 +8,26 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\PropelBundle\Tests;
 
 use PropelQuickBuilder;
 
 use Propel\PropelBundle\Model\Acl\AclClass;
+use Propel\PropelBundle\Model\Acl\Entry;
 use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
+use Propel\PropelBundle\Security\Acl\MutableAclProvider;
 
-use Propel\PropelBundle\Tests\TestCase as BaseTestCase;
-
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
 /**
+ * AclTestCase
+ *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class TestCase extends BaseTestCase
+class AclTestCase extends TestCase
 {
     protected $con = null;
 
@@ -32,7 +37,7 @@ class TestCase extends BaseTestCase
 
         $this->loadPropelQuickBuilder();
 
-        $schema = file_get_contents(__DIR__.'/../../../Resources/config/acl_schema.xml');
+        $schema = file_get_contents(__DIR__.'/../Resources/config/acl_schema.xml');
 
         $builder = new PropelQuickBuilder();
         $builder->setSchema($schema);
@@ -62,8 +67,38 @@ class TestCase extends BaseTestCase
         return $objIdentity;
     }
 
+    protected function createEntry()
+    {
+        $entry = new Entry();
+        $entry
+            ->setAuditSuccess(false)
+            ->setAuditFailure(false)
+            ->setMask(64)
+            ->setGranting(true)
+            ->setGrantingStrategy('all')
+            ->setAceOrder(0)
+        ;
+
+        return $entry;
+    }
+
     protected function getAclClass()
     {
-        return AclClass::fromAclObjectIdentity(new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book'), $this->con);
+        return AclClass::fromAclObjectIdentity($this->getAclObjectIdentity(), $this->con);
+    }
+
+    protected function getAclProvider()
+    {
+        return new MutableAclProvider(new PermissionGrantingStrategy(), $this->con);
+    }
+
+    protected function getAclObjectIdentity($identifier = 1)
+    {
+        return new ObjectIdentity($identifier, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
+    }
+
+    protected function getRoleSecurityIdentity($role = 'ROLE_USER')
+    {
+        return new RoleSecurityIdentity(new Role($role));
     }
 }
