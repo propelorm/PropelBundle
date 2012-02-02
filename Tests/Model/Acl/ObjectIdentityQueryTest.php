@@ -11,10 +11,7 @@
 namespace Propel\PropelBundle\Tests\Model\Acl;
 
 use Propel\PropelBundle\Model\Acl\AclClass;
-use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
-
-use Propel\PropelBundle\Tests\Fixtures\Model\Book;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -34,12 +31,7 @@ class ObjectIdentityQueryTest extends TestCase
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
         $this->assertEquals(0, count($result));
 
-        $objIdentity = new ModelObjectIdentity();
-        $this->assertTrue((bool) $objIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier(1)
-            ->save($this->con)
-        );
+        $this->createModelObjectIdentity(1);
 
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
         $this->assertEquals(1, count($result));
@@ -59,52 +51,20 @@ class ObjectIdentityQueryTest extends TestCase
     public function testFindOneByAclObjectIdentity()
     {
         $aclObj = new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
-        $aclClass = AclClass::fromAclObjectIdentity($aclObj, $this->con);
 
         $result = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($aclObj, $this->con);
         $this->assertEmpty($result);
 
-        $objIdentity = new ModelObjectIdentity();
-        $this->assertTrue((bool) $objIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier(1)
-            ->save($this->con)
-        );
+        $objIdentity = $this->createModelObjectIdentity(1);
 
         $result = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($aclObj, $this->con);
         $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\ObjectIdentity', $result);
         $this->assertSame($objIdentity, $result);
     }
 
-    protected function createObjectIdentities()
-    {
-        $aclObj = new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
-        $aclClass = AclClass::fromAclObjectIdentity($aclObj, $this->con);
-
-        $objIdentity = new ModelObjectIdentity();
-        $this->assertTrue((bool) $objIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier(1)
-            ->save($this->con)
-        );
-
-        $childObjIdentity = new ModelObjectIdentity();
-        $this->assertTrue((bool) $childObjIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier(2)
-            ->save($this->con)
-        );
-
-        $grandChildObjIdentity = new ModelObjectIdentity();
-        $this->assertTrue((bool) $grandChildObjIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier(3)
-            ->save($this->con)
-        );
-
-        return array($objIdentity, $childObjIdentity, $grandChildObjIdentity);
-    }
-
+    /**
+     * @depends testFindOneByAclObjectIdentity
+     */
     public function testFindChildren()
     {
         list($objIdentity, $childObjIdentity) = $this->createObjectIdentities();
@@ -122,6 +82,9 @@ class ObjectIdentityQueryTest extends TestCase
         $this->assertSame($objIdentity, $result->getFirst()->getObjectIdentityRelatedByParentObjectIdentityId());
     }
 
+    /**
+     * @depends testFindOneByAclObjectIdentity
+     */
     public function testFindGrandChildren()
     {
         list($objIdentity, $childObjIdentity, $grandChildObjIdentity) = $this->createObjectIdentities();
@@ -141,6 +104,9 @@ class ObjectIdentityQueryTest extends TestCase
         $this->assertEquals(2, count($result));
     }
 
+    /**
+     * @depends testFindOneByAclObjectIdentity
+     */
     public function testFindAncestors()
     {
         list($objIdentity, $childObjIdentity) = $this->createObjectIdentities();
@@ -153,5 +119,14 @@ class ObjectIdentityQueryTest extends TestCase
 
         $result = ObjectIdentityQuery::create()->findAncestors($childObjIdentity, $this->con);
         $this->assertEquals(1, count($result));
+    }
+
+    protected function createObjectIdentities()
+    {
+        return array(
+            $this->createModelObjectIdentity(1),
+            $this->createModelObjectIdentity(2),
+            $this->createModelObjectIdentity(3),
+        );
     }
 }

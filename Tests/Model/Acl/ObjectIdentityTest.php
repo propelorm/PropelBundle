@@ -12,14 +12,8 @@ namespace Propel\PropelBundle\Tests\Model\Acl;
 
 use Criteria;
 
-use Propel\PropelBundle\Model\Acl\AclClass;
-use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityAncestorQuery;
-
-use Propel\PropelBundle\Tests\Fixtures\Model\Book;
-
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -282,27 +276,5 @@ class ObjectIdentityTest extends TestCase
         $parent->delete($this->con);
         $this->assertEquals(0, count(ObjectIdentityQuery::create()->find($this->con)));
         $this->assertEquals(0, count(ObjectIdentityAncestorQuery::create()->find($this->con)));
-    }
-
-    /**
-     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity
-     */
-    protected function createModelObjectIdentity($identifier)
-    {
-        $aclClass = $this->getAclClass();
-        $objIdentity = new ModelObjectIdentity();
-
-        $this->assertTrue((bool) $objIdentity
-            ->setAclClass($aclClass)
-            ->setIdentifier($identifier)
-            ->save($this->con)
-        );
-
-        return $objIdentity;
-    }
-
-    protected function getAclClass()
-    {
-        return AclClass::fromAclObjectIdentity(new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book'), $this->con);
     }
 }

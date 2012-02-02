@@ -12,7 +12,12 @@ namespace Propel\PropelBundle\Tests\Model\Acl;
 
 use PropelQuickBuilder;
 
+use Propel\PropelBundle\Model\Acl\AclClass;
+use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
+
 use Propel\PropelBundle\Tests\TestCase as BaseTestCase;
+
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -38,5 +43,27 @@ class TestCase extends BaseTestCase
         }
 
         $this->con = $builder->build();
+    }
+
+    /**
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity
+     */
+    protected function createModelObjectIdentity($identifier)
+    {
+        $aclClass = $this->getAclClass();
+        $objIdentity = new ModelObjectIdentity();
+
+        $this->assertTrue((bool) $objIdentity
+            ->setAclClass($aclClass)
+            ->setIdentifier($identifier)
+            ->save($this->con)
+        );
+
+        return $objIdentity;
+    }
+
+    protected function getAclClass()
+    {
+        return AclClass::fromAclObjectIdentity(new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book'), $this->con);
     }
 }
