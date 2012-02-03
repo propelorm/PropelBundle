@@ -265,7 +265,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     {
         $this
             ->validateField($this->classFieldAces, $field)
-            ->updateAce($this->classFieldAces[$field], $index, $mask, $strategy, $field)
+            ->updateAce($this->classFieldAces[$field], $index, $mask, $strategy)
         ;
     }
 
@@ -292,7 +292,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     public function updateObjectFieldAce($index, $field, $mask, $strategy = null)
     {
         $this->validateField($this->objectFieldAces, $field);
-        $this->updateAce($this->objectFieldAces[$field], $index, $mask, $strategy, $field);
+        $this->updateAce($this->objectFieldAces[$field], $index, $mask, $strategy);
     }
 
     /**
@@ -388,40 +388,19 @@ class MutableAcl extends Acl implements MutableAclInterface
      *
      * @return MutableAcl $this
      */
-    protected function updateAce(array &$list, $index, $mask, $strategy = null, $field = null)
+    protected function updateAce(array &$list, $index, $mask, $strategy = null)
     {
         $this->validateIndex($list, $index);
 
-        $beforeAce = $list[$index];
-        /* @var $beforeAce Entry */
-        $entry = new ModelEntry();
+        $entry = ModelEntry::fromAclEntry($list[$index]);
 
-        // Already persisted before?
-        if ($beforeAce->getId()) {
-            $entry->setId($beforeAce->getId());
+        // Apply updates
+        $entry->setMask($mask);
+        if (null !== $strategy) {
+            $entry->setGrantingStrategy($strategy);
         }
 
-        if (null === $strategy) {
-            $strategy = $beforeAce->getStrategy();
-        }
-
-        $entry
-            ->setMask($mask)
-            ->setGranting($beforeAce->isGranting())
-            ->setGrantingStrategy($strategy)
-            ->setSecurityIdentity(SecurityIdentity::fromAclIdentity($beforeAce->getSecurityIdentity()))
-        ;
-
-        if (null !== $field) {
-            $this->updateFields($field);
-
-            $entry->setFieldName($field);
-            $newAce = new FieldEntry($entry, $this);
-        } else {
-            $newAce = new Entry($entry, $this);
-        }
-
-        $list[$index] = $newAce;
+        $list[$index] = ModelEntry::toAclEntry($entry, $this);
 
         return $this;
     }

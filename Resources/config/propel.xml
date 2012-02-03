@@ -13,7 +13,7 @@
         <parameter key="propel.form.type.model.class">Symfony\Bridge\Propel1\Form\Type\ModelType</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Symfony\Bridge\Propel1\Form\PropelTypeGuesser</parameter>
-        <parameter key="propel.security.acl.provider.model.class">Propel\PropelBundle\Security\Acl\MutableAclProvider</parameter>
+        <parameter key="propel.security.acl.provider.model.class">Propel\PropelBundle\Security\Acl\AuditableAclProvider</parameter>
     </parameters>
 
     <services>

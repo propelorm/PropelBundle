@@ -66,7 +66,7 @@
         <column name="mask" type="integer" required="true" />
         <column name="granting" type="boolean" required="true" />
         <column name="granting_strategy" type="varchar" size="30" required="true" />
-        <column name="audit_success" type="boolean" required="true" defaultValue="true" />
+        <column name="audit_success" type="boolean" required="true" defaultValue="false" />
         <column name="audit_failure" type="boolean" required="true" defaultValue="true" />
 
         <unique>

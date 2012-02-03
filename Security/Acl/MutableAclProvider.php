@@ -37,6 +37,7 @@ use Symfony\Component\Security\Acl\Domain\FieldEntry;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\FieldEntryInterface;
+use Symfony\Component\Security\Acl\Model\AuditableEntryInterface;
 use Symfony\Component\Security\Acl\Model\AclCacheInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
@@ -96,7 +97,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
             $objIdentity->save($this->connection);
         }
 
-        return new MutableAcl($entries, $objectIdentity, $this->permissionGrantingStrategy, array(), null, false, $this->connection);
+        return $this->getAcl($entries, $objectIdentity, array(), null, false);
     }
 
     /**
@@ -230,25 +231,29 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
         foreach ($accessControlEntries as $order => $eachAce) {
             // If the given ACE has never been persisted, create a new one.
             if (null === $entry = $this->getPersistedAce($eachAce, $objectIdentity, $object)) {
-                $entry = new ModelEntry();
+                $entry = ModelEntry::fromAclEntry($eachAce);
             }
 
             if (in_array($entry->getId(), $entries)) {
-                $entry = new ModelEntry();
+                $entry = ModelEntry::fromAclEntry($eachAce);
             }
 
-            if ($eachAce instanceof FieldEntryInterface) {
-                $entry->setFieldName($eachAce->getField());
-            }
-
+            // Apply possible changes from local ACE.
             $entry
                 ->setAceOrder($order)
                 ->setAclClass($objectIdentity->getAclClass())
                 ->setMask($eachAce->getMask())
-                ->setGranting($eachAce->isGranting())
-                ->setGrantingStrategy($eachAce->getStrategy())
-                ->setSecurityIdentity(SecurityIdentity::fromAclIdentity($eachAce->getSecurityIdentity()))
             ;
+
+            if ($eachAce instanceof AuditableEntryInterface) {
+                if (is_bool($eachAce->isAuditSuccess())) {
+                    $entry->setAuditSuccess($eachAce->isAuditSuccess());
+                }
+
+                if (is_bool($eachAce->isAuditFailure())) {
+                    $entry->setAuditFailure($eachAce->isAuditFailure());
+                }
+            }
 
             if (true === $object) {
                 $entry->setObjectIdentity($objectIdentity);
