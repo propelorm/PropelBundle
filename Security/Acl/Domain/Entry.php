@@ -80,6 +80,8 @@ class Entry implements AuditableEntryInterface
             $this->mask,
             $this->isGranting,
             $this->strategy,
+            $this->auditFailure,
+            $this->auditSuccess,
         ));
     }
 
@@ -101,6 +103,8 @@ class Entry implements AuditableEntryInterface
             $this->mask,
             $this->isGranting,
             $this->strategy,
+            $this->auditFailure,
+            $this->auditSuccess,
         ) = unserialize($serialized);
 
         return $this;

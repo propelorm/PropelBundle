@@ -51,4 +51,52 @@ class FieldEntry extends Entry implements FieldEntryInterface
     {
         return $this->field;
     }
+
+    /**
+     * String representation of object
+     *
+     * @link http://php.net/manual/en/serializable.serialize.php
+     *
+     * @return string the string representation of the object or &null;
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->acl,
+            $this->securityIdentity,
+            $this->id,
+            $this->mask,
+            $this->isGranting,
+            $this->strategy,
+            $this->auditFailure,
+            $this->auditSuccess,
+            $this->field,
+        ));
+    }
+
+    /**
+     * Constructs the object
+     *
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     *
+     * @param string $serialized
+     *
+     * @return mixed the original value unserialized.
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->acl,
+            $this->securityIdentity,
+            $this->id,
+            $this->mask,
+            $this->isGranting,
+            $this->strategy,
+            $this->auditFailure,
+            $this->auditSuccess,
+            $this->field,
+        ) = unserialize($serialized);
+
+        return $this;
+    }
 }
