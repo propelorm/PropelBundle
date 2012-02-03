@@ -27,14 +27,14 @@ class ObjectIdentityTest extends AclTestCase
         $objIdenity = $this->createModelObjectIdentity(1);
 
         $ancestorEntries = ObjectIdentityAncestorQuery::create()->find($this->con);
-        $this->assertEquals(1, count($ancestorEntries));
+        $this->assertCount(1, $ancestorEntries);
         $this->assertEquals($objIdenity->getId(), $ancestorEntries->getFirst()->getAncestorId());
         $this->assertEquals($objIdenity->getId(), $ancestorEntries->getFirst()->getObjectIdentityId());
 
         $anotherIdenity = $this->createModelObjectIdentity(2);
 
         $ancestorEntries = ObjectIdentityAncestorQuery::create()->orderByAncestorId(Criteria::ASC)->find($this->con);
-        $this->assertEquals(2, count($ancestorEntries));
+        $this->assertCount(2, $ancestorEntries);
         $this->assertEquals($objIdenity->getId(), $ancestorEntries[0]->getAncestorId());
         $this->assertEquals($objIdenity->getId(), $ancestorEntries[0]->getObjectIdentityId());
         $this->assertEquals($anotherIdenity->getId(), $ancestorEntries[1]->getAncestorId());
@@ -53,7 +53,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(2, count($entries));
+        $this->assertCount(2, $entries);
         $this->assertEquals($obj->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($parent->getId(), $entries[0]->getAncestorId());
         $this->assertEquals($obj->getId(), $entries[1]->getObjectIdentityId());
@@ -66,7 +66,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(1, count($entries));
+        $this->assertCount(1, $entries);
         $this->assertEquals($obj->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($obj->getId(), $entries[0]->getAncestorId());
     }
@@ -88,7 +88,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(6, count($entries));
+        $this->assertCount(6, $entries);
 
         $this->assertEquals($parent->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($parent->getId(), $entries[0]->getAncestorId());
@@ -141,7 +141,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(9, count($entries));
+        $this->assertCount(9, $entries);
 
         $this->assertEquals($grandParent->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($grandParent->getId(), $entries[0]->getAncestorId());
@@ -178,7 +178,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(15, count($entries));
+        $this->assertCount(15, $entries);
 
         $this->assertEquals($grandParent->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($grandParent->getId(), $entries[0]->getAncestorId());
@@ -233,7 +233,7 @@ class ObjectIdentityTest extends AclTestCase
             ->orderByAncestorId(Criteria::ASC)
             ->find($this->con)
         ;
-        $this->assertEquals(9, count($entries));
+        $this->assertCount(9, $entries);
 
         $this->assertEquals($grandParent->getId(), $entries[0]->getObjectIdentityId());
         $this->assertEquals($grandParent->getId(), $entries[0]->getAncestorId());
@@ -276,7 +276,7 @@ class ObjectIdentityTest extends AclTestCase
         $obj->setObjectIdentityRelatedByParentObjectIdentityId($parent)->save($this->con);
 
         $parent->delete($this->con);
-        $this->assertEquals(0, count(ObjectIdentityQuery::create()->find($this->con)));
-        $this->assertEquals(0, count(ObjectIdentityAncestorQuery::create()->find($this->con)));
+        $this->assertEquals(0, ObjectIdentityQuery::create()->count($this->con));
+        $this->assertEquals(0, ObjectIdentityAncestorQuery::create()->count($this->con));
     }
 }

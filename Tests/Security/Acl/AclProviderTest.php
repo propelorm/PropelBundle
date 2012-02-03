@@ -59,7 +59,7 @@ class AclProviderTest extends AclTestCase
         $this->assertEmpty($acl->getFields());
         $this->assertEmpty($acl->getClassAces());
         $this->assertNotEmpty($acl->getObjectAces());
-        $this->assertEquals(1, count($acl->getObjectAces()));
+        $this->assertCount(1, $acl->getObjectAces());
 
         $this->assertNull($acl->getParentAcl());
         $this->assertTrue($acl->isEntriesInheriting());
@@ -92,7 +92,7 @@ class AclProviderTest extends AclTestCase
         $acl = $this->getAclProvider()->findAcl($aclObj, array($this->getRoleSecurityIdentity('ROLE_USER')));
 
         $this->assertNotEmpty($acls);
-        $this->assertEquals(1, count($acls));
+        $this->assertCount(1, $acls);
         $this->assertTrue($acls->contains($aclObj));
         $this->assertEquals($acl, $acls[$aclObj]);
     }
@@ -130,7 +130,7 @@ class AclProviderTest extends AclTestCase
         $children = $this->getAclProvider()->findChildren($this->getAclObjectIdentity(1), true);
 
         $this->assertNotEmpty($children);
-        $this->assertEquals(1, count($children));
+        $this->assertCount(1, $children);
         $this->assertEquals(2, $children[0]->getIdentifier());
     }
 
@@ -144,7 +144,7 @@ class AclProviderTest extends AclTestCase
         $children = $this->getAclProvider()->findChildren($this->getAclObjectIdentity(1));
 
         $this->assertNotEmpty($children);
-        $this->assertEquals(2, count($children));
+        $this->assertCount(2, $children);
         $this->assertEquals(2, $children[0]->getIdentifier());
         $this->assertEquals(3, $children[1]->getIdentifier());
     }

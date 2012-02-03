@@ -45,12 +45,12 @@ class EntryQueryTest extends AclTestCase
 
     public function testFindByAclIdentityNotExists()
     {
-        $this->assertEquals(0, count(EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(2), array(), $this->con)));
+        $this->assertCount(0, EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(2), array(), $this->con));
     }
 
     public function testFindByAclIdentitySecurityIdentityNotFound()
     {
-        $this->assertEquals(0, count(EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_ADMIN')), $this->con)));
+        $this->assertCount(0, EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_ADMIN')), $this->con));
     }
 
     public function testFindByAclIdentity()
@@ -66,7 +66,7 @@ class EntryQueryTest extends AclTestCase
         $obj->addEntry($entry)->save($this->con);
 
         $entries = EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array(), $this->con);
-        $this->assertEquals(1, count($entries));
+        $this->assertCount(1, $entries);
         $this->assertEquals(1, $entries[0]->getObjectIdentityId());
 
         // A class based entry for the wrong ObjectIdentity.
@@ -92,7 +92,7 @@ class EntryQueryTest extends AclTestCase
         $this->assertEquals(4, EntryQuery::create()->count($this->con));
 
         $entries = EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array(), $this->con);
-        $this->assertEquals(2, count($entries));
+        $this->assertCount(2, $entries);
         $this->assertEquals($obj->getClassId(), $entries[0]->getClassId());
         $this->assertEquals($obj->getClassId(), $entries[1]->getClassId());
     }
@@ -112,7 +112,7 @@ class EntryQueryTest extends AclTestCase
         $this->assertEquals(2, EntryQuery::create()->count($this->con));
 
         $entries = EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_USER')), $this->con);
-        $this->assertEquals(1, count($entries));
+        $this->assertCount(1, $entries);
         $this->assertEquals(SecurityIdentity::fromAclIdentity($this->getRoleSecurityIdentity('ROLE_USER'))->getId(), $entries[0]->getSecurityIdentityId());
     }
 
@@ -124,6 +124,6 @@ class EntryQueryTest extends AclTestCase
             ->save($this->con);
 
         $entries = EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(1), array(), $this->con);
-        $this->assertEquals(1, count($entries));
+        $this->assertCount(1, $entries);
     }
 }

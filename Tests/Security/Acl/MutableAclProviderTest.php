@@ -42,9 +42,9 @@ class MutableAclProviderTest extends AclTestCase
         $acl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
         $acl->insertClassFieldAce('name', $this->getRoleSecurityIdentity('ROLE_ADMIN'), 128);
 
-        $this->assertEquals(1, count($acl->getObjectAces()));
+        $this->assertCount(1, $acl->getObjectAces());
         $this->assertEquals(array('name'), $acl->getFields());
-        $this->assertEquals(1, count($acl->getClassFieldAces('name')));
+        $this->assertCount(1, $acl->getClassFieldAces('name'));
 
         $this->assertEquals(0, EntryQuery::create()->count($this->con));
         $this->assertTrue($this->getAclProvider()->updateAcl($acl));
@@ -54,7 +54,7 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\MutableAcl', $acl);
 
         $objAces = $acl->getObjectAces();
-        $this->assertEquals(1, count($objAces));
+        $this->assertCount(1, $objAces);
 
         $entry = $objAces[0];
         $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $entry);
@@ -62,7 +62,7 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertEquals($this->getRoleSecurityIdentity(), $entry->getSecurityIdentity());
 
         $classFieldAces = $acl->getClassFieldAces('name');
-        $this->assertEquals(1, count($classFieldAces));
+        $this->assertCount(1, $classFieldAces);
 
         $entry = $classFieldAces[0];
         $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\FieldEntry', $entry);

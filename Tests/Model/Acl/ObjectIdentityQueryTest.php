@@ -31,12 +31,12 @@ class ObjectIdentityQueryTest extends AclTestCase
 
         // None given.
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
 
         $this->createModelObjectIdentity(1);
 
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
-        $this->assertEquals(1, count($result));
+        $this->assertCount(1, $result);
 
         $this->assertEquals($aclClass->getId(), $result->getFirst()->getClassId());
         $this->assertEquals(1, $result->getFirst()->getIdentifier());
@@ -44,7 +44,7 @@ class ObjectIdentityQueryTest extends AclTestCase
         // Change the entity.
         $aclObj = new ObjectIdentity(2, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
     }
 
     /**
@@ -73,12 +73,12 @@ class ObjectIdentityQueryTest extends AclTestCase
 
         // Parent not set, yet.
         $result = ObjectIdentityQuery::create()->findChildren($objIdentity, $this->con);
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
 
         $childObjIdentity->setObjectIdentityRelatedByParentObjectIdentityId($objIdentity)->save($this->con);
 
         $result = ObjectIdentityQuery::create()->findChildren($objIdentity, $this->con);
-        $this->assertEquals(1, count($result));
+        $this->assertCount(1, $result);
         $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\ObjectIdentity', $result->getFirst());
         $this->assertSame($childObjIdentity, $result->getFirst());
         $this->assertSame($objIdentity, $result->getFirst()->getObjectIdentityRelatedByParentObjectIdentityId());
@@ -93,17 +93,17 @@ class ObjectIdentityQueryTest extends AclTestCase
 
         // Parents not set, yet.
         $result = ObjectIdentityQuery::create()->findGrandChildren($objIdentity, $this->con);
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
 
         $childObjIdentity->setObjectIdentityRelatedByParentObjectIdentityId($objIdentity)->save($this->con);
 
         $result = ObjectIdentityQuery::create()->findGrandChildren($objIdentity, $this->con);
-        $this->assertEquals(1, count($result));
+        $this->assertCount(1, $result);
 
         $grandChildObjIdentity->setObjectIdentityRelatedByParentObjectIdentityId($childObjIdentity)->save($this->con);
 
         $result = ObjectIdentityQuery::create()->findGrandChildren($objIdentity, $this->con);
-        $this->assertEquals(2, count($result));
+        $this->assertCount(2, $result);
     }
 
     /**
@@ -115,12 +115,12 @@ class ObjectIdentityQueryTest extends AclTestCase
 
         // Parents not set, yet.
         $result = ObjectIdentityQuery::create()->findAncestors($childObjIdentity, $this->con);
-        $this->assertEquals(0, count($result));
+        $this->assertCount(0, $result);
 
         $childObjIdentity->setObjectIdentityRelatedByParentObjectIdentityId($objIdentity)->save($this->con);
 
         $result = ObjectIdentityQuery::create()->findAncestors($childObjIdentity, $this->con);
-        $this->assertEquals(1, count($result));
+        $this->assertCount(1, $result);
     }
 
     protected function createObjectIdentities()
