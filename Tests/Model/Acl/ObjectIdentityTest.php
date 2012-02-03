@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\Tests\Model\Acl;
 
 use Criteria;
 
+use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityAncestorQuery;
 
@@ -278,5 +279,24 @@ class ObjectIdentityTest extends AclTestCase
         $parent->delete($this->con);
         $this->assertEquals(0, ObjectIdentityQuery::create()->count($this->con));
         $this->assertEquals(0, ObjectIdentityAncestorQuery::create()->count($this->con));
+    }
+
+    public function testInsertWithAssignedParent()
+    {
+        $parent = $this->createModelObjectIdentity(1);
+
+        $obj = new ObjectIdentity();
+        $obj
+            ->setAclClass($this->getAclClass())
+            ->setIdentifier(2)
+            ->setObjectIdentityRelatedByParentObjectIdentityId($parent)
+            ->save($this->con)
+        ;
+
+        $entries = ObjectIdentityQuery::create()->orderByParentObjectIdentityId(Criteria::ASC)->find($this->con);
+
+        $this->assertCount(2, $entries);
+        $this->assertNull($entries[0]->getParentObjectIdentityId());
+        $this->assertEquals($entries[0]->getId(), $entries[1]->getParentObjectIdentityId());
     }
 }

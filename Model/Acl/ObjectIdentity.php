@@ -119,13 +119,13 @@ class ObjectIdentity extends BaseObjectIdentity
                         continue;
                     }
 
-                    // Save the new ancestor to avoid integrity constraint violation.
-                    $ancestor->save($con);
-
                     if ($eachChild->getId() === $this->getId()) {
                         // Do not save() here, as it would result in an infinite recursion loop!
                         $this->addObjectIdentityAncestorRelatedByObjectIdentityId($ancestor);
                     } else {
+                        // Save the new ancestor to avoid integrity constraint violation.
+                        $ancestor->save($con);
+
                         $eachChild
                             ->addObjectIdentityAncestorRelatedByObjectIdentityId($ancestor)
                             ->save($con)
