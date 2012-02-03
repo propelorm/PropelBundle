@@ -77,7 +77,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param boolean $inherited
      * @param PropelPDO $con
      */
-    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = false, PropelPDO $con = null)
+    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, PropelPDO $con = null)
     {
         parent::__construct($entries, $objectIdentity, $permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
 
