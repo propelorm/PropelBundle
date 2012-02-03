@@ -10,6 +10,8 @@
 
 namespace Propel\PropelBundle\Tests\Security\Acl;
 
+use Criteria;
+
 use Propel\PropelBundle\Model\Acl\EntryQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
@@ -71,6 +73,125 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertEquals($this->getRoleSecurityIdentity('ROLE_ADMIN'), $entry->getSecurityIdentity());
     }
 
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testCreateAclAlreadyExists()
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+        $acl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException');
+        $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+    }
+
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testCreateAclWithParent()
+    {
+        $parentAcl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+        $parentAcl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
+        $this->getAclProvider()->updateAcl($parentAcl);
+
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(2));
+        $acl->insertObjectAce($this->getRoleSecurityIdentity(), 128);
+        $acl->setParentAcl($parentAcl);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $entries = ObjectIdentityQuery::create()->orderById(Criteria::ASC)->find($this->con);
+        $this->assertCount(2, $entries);
+        $this->assertNull($entries[0]->getParentObjectIdentityId());
+        $this->assertEquals($entries[0]->getId(), $entries[1]->getParentObjectIdentityId());
+    }
+
+    public function testUpdateAclInvalidAcl()
+    {
+        $acl = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
+
+        $this->setExpectedException('InvalidArgumentException');
+        $this->getAclProvider()->updateAcl($acl);
+    }
+
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testUpdateAclRemovesDeletedEntries()
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+
+        $acl->insertObjectFieldAce('name', $this->getRoleSecurityIdentity(), 4);
+        $acl->insertObjectFieldAce('slug', $this->getRoleSecurityIdentity(), 1);
+        $this->getAclProvider()->updateAcl($acl);
+        $this->assertEquals(2, EntryQuery::create()->count($this->con));
+
+        $acl->deleteObjectFieldAce(0, 'slug');
+        $this->getAclProvider()->updateAcl($acl);
+        $this->assertEquals(1, EntryQuery::create()->count($this->con));
+
+        $entry = EntryQuery::create()->findOne($this->con);
+        $this->assertEquals('name', $entry->getFieldName());
+        $this->assertEquals(4, $entry->getMask());
+    }
+
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testUpdateAclCreatesMultipleAces()
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+
+        $acl->insertObjectFieldAce('name', $this->getRoleSecurityIdentity(), 16, 0, true, 'all');
+        $acl->insertObjectFieldAce('name', $this->getRoleSecurityIdentity(), 4);
+        $acl->insertObjectFieldAce('slug', $this->getRoleSecurityIdentity(), 1);
+        $this->assertCount(2, $acl->getObjectFieldAces('name'));
+
+        $this->getAclProvider()->updateAcl($acl);
+
+        $entries = EntryQuery::create()->orderByMask(Criteria::ASC)->find($this->con);
+        $this->assertCount(3, $entries);
+
+        $slugAce = $entries[0];
+
+        $this->assertEquals('slug', $slugAce->getFieldName());
+        $this->assertEquals(1, $slugAce->getMask());
+
+        $nameRead = $entries[1];
+        $this->assertEquals('name', $nameRead->getFieldName());
+        $this->assertEquals(0, $nameRead->getAceOrder());
+        $this->assertEquals(4, $nameRead->getMask());
+        $this->assertEquals('all', $nameRead->getGrantingStrategy());
+
+        $nameUndelete = $entries[2];
+        $this->assertEquals('name', $nameUndelete->getFieldName());
+        $this->assertEquals(1, $nameUndelete->getAceOrder());
+        $this->assertEquals(16, $nameUndelete->getMask());
+        $this->assertEquals('all', $nameUndelete->getGrantingStrategy());
+    }
+
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testUpdateAclReadsExistingAce()
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+        $acl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $entry = EntryQuery::create()->findOne($this->con);
+
+        $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(1));
+        $acl->updateObjectAce(0, 128);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $updatedEntry = clone $entry;
+        $updatedEntry->reload(false, $this->con);
+
+        $this->assertEquals($entry->getId(), $updatedEntry->getId());
+        $this->assertEquals(128, $updatedEntry->getMask());
+    }
+
     public function testDeleteAclNotExisting()
     {
         $this->assertTrue($this->getAclProvider()->deleteAcl($this->getAclObjectIdentity()));
@@ -91,11 +212,35 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertEquals(0, EntryQuery::create()->count($this->con));
     }
 
-    public function testUpdateAclInvalidAcl()
+    /**
+     * @depends testCreateAclWithParent
+     */
+    public function testDeleteAclRemovesChildAcl()
     {
-        $acl = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
+        $parentAcl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+        $parentAcl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
+        $this->getAclProvider()->updateAcl($parentAcl);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(2));
+        $acl->insertObjectAce($this->getRoleSecurityIdentity(), 128);
+        $acl->setParentAcl($parentAcl);
         $this->getAclProvider()->updateAcl($acl);
+
+        $this->getAclProvider()->deleteAcl($this->getAclObjectIdentity(1));
+
+        $this->assertEquals(0, ObjectIdentityQuery::create()->count($this->con));
+    }
+
+    /**
+     * @depends testDeleteAcl
+     */
+    public function testDeleteAclRemovesClassEntriesIfLastObject()
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
+        $acl->insertClassAce($this->getRoleSecurityIdentity(), 128);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $this->getAclProvider()->deleteAcl($this->getAclObjectIdentity(1));
+        $this->assertEquals(0, EntryQuery::create()->count($this->con));
     }
 }

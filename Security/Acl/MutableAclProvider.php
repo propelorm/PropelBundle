@@ -32,7 +32,10 @@ use Propel\PropelBundle\Security\Acl\Domain\Entry;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
+use Symfony\Component\Security\Acl\Domain\FieldEntry;
+
 use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\FieldEntryInterface;
 use Symfony\Component\Security\Acl\Model\AclCacheInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
@@ -58,9 +61,11 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      */
     public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, PropelPDO $connection = null, AclCacheInterface $cache = null)
     {
+        // @codeCoverageIgnoreStart
         if (null === $connection) {
             $connection = Propel::getConnection(EntryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
+        // @codeCoverageIgnoreEnd
 
         parent::__construct($permissionGrantingStrategy, $connection, $cache);
     }
@@ -135,9 +140,11 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
             $this->connection->commit();
 
             return true;
+        // @codeCoverageIgnoreStart
         } catch (Exception $e) {
             throw new AclException('An error occurred while deleting the ACL.', 1, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -159,6 +166,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
 
         try {
             $modelEntries = EntryQuery::create()->findByAclIdentity($acl->getObjectIdentity(), array(), $this->connection);
+
             $objectIdentity = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($acl->getObjectIdentity(), $this->connection);
 
             $this->connection->beginTransaction();
@@ -196,11 +204,13 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
             $this->connection->commit();
 
             return true;
+        // @codeCoverageIgnoreStart
         } catch (Exception $e) {
             $this->connection->rollBack();
 
             throw new AclException('An error occurred while updating the ACL.', 0, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -219,7 +229,11 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
         /* @var $eachAce \Symfony\Component\Security\Acl\Model\EntryInterface */
         foreach ($accessControlEntries as $order => $eachAce) {
             // If the given ACE has never been persisted, create a new one.
-            if (null === $entry = $this->getPersistedAce($eachAce)) {
+            if (null === $entry = $this->getPersistedAce($eachAce, $objectIdentity, $object)) {
+                $entry = new ModelEntry();
+            }
+
+            if (in_array($entry->getId(), $entries)) {
                 $entry = new ModelEntry();
             }
 
@@ -253,24 +267,42 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * If none is given, null is returned.
      *
-     * @param Entry $ace
+     * @param EntryInterface $ace
      *
      * @return ModelEntry|null
      */
-    protected function getPersistedAce(Entry $ace)
+    protected function getPersistedAce(EntryInterface $ace, ObjectIdentity $objectIdentity, $object = false)
     {
-        if (null === $ace->getId()) {
-            return null;
+        if (null !== $ace->getId() and null !== $entry = EntryQuery::create()->findPk($ace->getId(), $this->connection)) {
+            $entry->reload(true, $this->connection);
+
+            return $entry;
         }
 
-        if (null === $entry = EntryQuery::create()->findPk($ace->getId(), $this->connection)) {
-            return null;
+        /*
+         * The id is not set, but there may be an ACE in the database.
+         *
+         * This happens if the ACL has created new ACEs, but was not reloaded.
+         * We try to retrieve one by the unique key.
+         */
+        $ukQuery = EntryQuery::create()
+            ->filterByAclClass($objectIdentity->getAclClass($this->connection))
+            ->filterBySecurityIdentity(SecurityIdentity::fromAclIdentity($ace->getSecurityIdentity(), $this->connection))
+        ;
+
+        if (true === $object) {
+            $ukQuery->filterByObjectIdentity($objectIdentity);
+        } else {
+            $ukQuery->filterByObjectIdentityId(null, Criteria::ISNULL);
         }
 
-        // Retrieve fresh data from the database not from any caching.
-        $entry->reload(false, $this->connection);
+        if ($ace instanceof FieldEntryInterface) {
+            $ukQuery->filterByFieldName($ace->getField());
+        } else {
+            $ukQuery->filterByFieldName(null, Criteria::ISNULL);
+        }
 
-        return $entry;
+        return $ukQuery->findOne($this->connection);
     }
 
     /**

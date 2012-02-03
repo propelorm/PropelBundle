@@ -76,6 +76,43 @@ class AclProviderTest extends AclTestCase
     /**
      * @depends testFindAclWithEntries
      */
+    public function testFindAclWithParent()
+    {
+        $parent = $this->createModelObjectIdentity(1);
+        $entry = $this->createEntry();
+        $entry
+            ->setSecurityIdentity(SecurityIdentity::fromAclIdentity($this->getRoleSecurityIdentity('ROLE_USER')))
+            ->setAclClass($parent->getAclClass())
+            ->setMask(128)
+        ;
+        $parent->addEntry($entry)->save($this->con);
+
+        $obj = $this->createModelObjectIdentity(2);
+        $obj->setObjectIdentityRelatedByParentObjectIdentityId($parent);
+
+        $entry = $this->createEntry();
+        $entry
+            ->setSecurityIdentity(SecurityIdentity::fromAclIdentity($this->getRoleSecurityIdentity('ROLE_USER')))
+            ->setAclClass($obj->getAclClass())
+            ->setMask(64)
+        ;
+        $obj->addEntry($entry)->save($this->con);
+
+        $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(2), array($this->getRoleSecurityIdentity('ROLE_USER')));
+        $parent = $acl->getParentAcl();
+
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $acl);
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $parent);
+
+        $aces = $acl->getObjectAces();
+        $parentAces = $parent->getObjectAces();
+        $this->assertEquals(64, $aces[0]->getMask());
+        $this->assertEquals(128, $parentAces[0]->getMask());
+    }
+
+    /**
+     * @depends testFindAclWithEntries
+     */
     public function testFindAcls()
     {
         $obj = $this->createModelObjectIdentity(1);
