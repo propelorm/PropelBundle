@@ -43,6 +43,12 @@ class EntryQueryTest extends AclTestCase
         EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(), array('foo'), $this->con);
     }
 
+    public function testFindByAclIdentityInvalidSecurityIdentityObject()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(), array(new \stdClass()), $this->con);
+    }
+
     public function testFindByAclIdentityNotExists()
     {
         $this->assertCount(0, EntryQuery::create()->findByAclIdentity($this->getAclObjectIdentity(2), array(), $this->con));

@@ -70,5 +70,7 @@ class FieldEntryTest extends AclTestCase
         $this->assertEquals($entry->isAuditSuccess(), $unserialized->isAuditSuccess());
         $this->assertEquals($entry->getSecurityIdentity(), $unserialized->getSecurityIdentity());
         $this->assertEquals($entry->getField(), $unserialized->getField());
+
+        $this->assertEquals($serialized, serialize($unserialized));
     }
 }

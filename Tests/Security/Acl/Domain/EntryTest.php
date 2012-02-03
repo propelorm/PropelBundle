@@ -67,5 +67,7 @@ class EntryTest extends AclTestCase
         $this->assertEquals($entry->isAuditFailure(), $unserialized->isAuditFailure());
         $this->assertEquals($entry->isAuditSuccess(), $unserialized->isAuditSuccess());
         $this->assertEquals($entry->getSecurityIdentity(), $unserialized->getSecurityIdentity());
+
+        $this->assertEquals($serialized, serialize($unserialized));
     }
 }
