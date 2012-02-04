@@ -27,7 +27,7 @@ class EntryTest extends AclTestCase
 {
     public function testConstruct()
     {
-        $collection = new \PropelCollection();
+        $collection = new \PropelObjectCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 

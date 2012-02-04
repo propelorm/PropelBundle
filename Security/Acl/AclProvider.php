@@ -162,7 +162,7 @@ class AclProvider implements AclProviderInterface
     /**
      * Create an ACL.
      *
-     * @param \PropelCollection $collection
+     * @param \PropelObjectCollection $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
@@ -170,7 +170,7 @@ class AclProvider implements AclProviderInterface
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\Acl
      */
-    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
     }

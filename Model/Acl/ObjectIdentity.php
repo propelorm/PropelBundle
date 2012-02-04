@@ -41,15 +41,13 @@ class ObjectIdentity extends BaseObjectIdentity
 
     public function preDelete(\PropelPDO $con = null)
     {
-        $objIds = array($this->getId());
-
         // Only retrieve direct children, it's faster and grand children will be retrieved recursively.
         $children = ObjectIdentityQuery::create()->findChildren($this, $con);
-        foreach ($children as $eachChild) {
-            $objIds[] = $eachChild->getId();
 
-            $eachChild->delete($con);
-        }
+        $objIds = $children->getPrimaryKeys(false);
+        $objIds[] = $this->getId();
+
+        $children->delete($con);
 
         // Manually delete those for DBAdapter not capable of cascading the DELETE.
         ObjectIdentityAncestorQuery::create()

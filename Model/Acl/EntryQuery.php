@@ -27,7 +27,7 @@ class EntryQuery extends BaseEntryQuery
      * @param array $securityIdentities A list of SecurityIdentity to filter by.
      * @param \PropelPDO $con
      *
-     * @return \PropelCollection
+     * @return \PropelObjectCollection
      */
     public function findByAclIdentity(ObjectIdentityInterface $objectIdentity, array $securityIdentities = array(), \PropelPDO $con = null)
     {

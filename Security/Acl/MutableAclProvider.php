@@ -121,9 +121,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
                 // In case this is the last of its kind, delete the class and class-field ACEs.
                 $count = ObjectIdentityQuery::create()->filterByClassId($objIdentity->getClassId())->count($this->connection);
                 if (1 === $count) {
-                    foreach ($aces as $eachAce) {
-                        $eachAce->delete($this->connection);
-                    }
+                    $aces->delete($this->connection);
                 }
             }
 
@@ -305,7 +303,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Get an ACL for this provider.
      *
-     * @param \PropelCollection $collection
+     * @param \PropelObjectCollection $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
@@ -313,7 +311,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */
-    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new MutableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited, $this->connection);
     }

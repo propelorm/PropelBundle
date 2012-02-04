@@ -23,7 +23,7 @@ class AuditableAclProvider extends MutableAclProvider
     /**
      * Get an ACL for this provider.
      *
-     * @param \PropelCollection $collection
+     * @param \PropelObjectCollection $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
@@ -31,7 +31,7 @@ class AuditableAclProvider extends MutableAclProvider
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl
      */
-    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new AuditableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited, $this->connection);
     }

@@ -21,7 +21,7 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
- * An ACL implementation that is immutable based on data from a PropelCollection of Propel\PropelBundle\Model\Acl\Entry.
+ * An ACL implementation that is immutable based on data from a PropelObjectCollection of Propel\PropelBundle\Model\Acl\Entry.
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
@@ -51,14 +51,14 @@ class Acl implements AclInterface
     /**
      * Constructor.
      *
-     * @param \PropelCollection $entries
+     * @param \PropelObjectCollection $entries
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
      * @param bool $inherited
      */
-    public function __construct(\PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    public function __construct(\PropelObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         if ($entries->getModel() !== $this->model) {
             throw new AclException(sprintf('The given collection does not contain models of class "%s" but of class "%s".', $this->model, $entries->getModel()));
@@ -222,6 +222,7 @@ class Acl implements AclInterface
         }
 
         $found = 0;
+        $loadedSecurityIds = array_keys($this->loadedSecurityIdentities);
 
         foreach ($securityIdentities as $eachSecurityIdentity) {
             if (!$eachSecurityIdentity instanceof SecurityIdentityInterface) {
@@ -229,12 +230,8 @@ class Acl implements AclInterface
             }
 
             $modelIdentity = SecurityIdentity::fromAclIdentity($eachSecurityIdentity);
-            foreach ($this->loadedSecurityIdentities as $id => $eachLoadedIdentity) {
-                if ($id === $modelIdentity->getId()) {
-                    $found++;
-
-                    break;
-                }
+            if (in_array($modelIdentity->getId(), $loadedSecurityIds)) {
+                $found++;
             }
         }
 

@@ -43,7 +43,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      *
      * Contains instances of \Propel\PropelBundle\Model\Acl\Entry.
      *
-     * @var \PropelCollection
+     * @var \PropelObjectCollection
      */
     protected $entries;
 
@@ -64,7 +64,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Constructor.
      *
-     * @param \PropelCollection $entries
+     * @param \PropelObjectCollection $entries
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array $loadedSecurityIdentities
@@ -72,7 +72,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param bool $inherited
      * @param \PropelPDO $con
      */
-    public function __construct(\PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, \PropelPDO $con = null)
+    public function __construct(\PropelObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, \PropelPDO $con = null)
     {
         parent::__construct($entries, $objectIdentity, $permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
 
