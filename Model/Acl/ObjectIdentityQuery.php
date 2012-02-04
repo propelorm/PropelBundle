@@ -10,10 +10,6 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use Criteria;
-use PropelPDO;
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentityQuery;
 
@@ -24,12 +20,12 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Filter by an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
      *
-     * @param ObjectIdentityInterface $objectIdentity
-     * @param PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \PropelPDO $con
      *
-     * @return ObjectIdentityQuery $this
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentityQuery $this
      */
-    public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
+    public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, \PropelPDO $con = null)
     {
         /*
          * Not using a JOIN here, because the filter may be applied on 'findOneOrCreate',
@@ -47,12 +43,12 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Return an ObjectIdentity object belonging to the given ACL related ObjectIdentity.
      *
-     * @param ObjectIdentityInterface $objectIdentity
-     * @param PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \PropelPDO $con
      *
-     * @return ObjectIdentity
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity
      */
-    public function findOneByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
+    public function findOneByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, \PropelPDO $con = null)
     {
         return $this
             ->filterByAclObjectIdentity($objectIdentity, $con)
@@ -63,12 +59,12 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Return all children of the given object identity.
      *
-     * @param ObjectIdentity $objectIdentity
-     * @param PropelPDO $con
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
+     * @param \PropelPDO $con
      *
-     * @return PropelCollection
+     * @return \PropelObjectCollection
      */
-    public function findChildren(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    public function findChildren(ObjectIdentity $objectIdentity, \PropelPDO $con = null)
     {
         return $this
             ->filterByObjectIdentityRelatedByParentObjectIdentityId($objectIdentity)
@@ -79,17 +75,17 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Return all children and grand-children of the given object identity.
      *
-     * @param ObjectIdentity $objectIdentity
-     * @param PropelPDO $con
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
+     * @param \PropelPDO $con
      *
-     * @return PropelCollection
+     * @return \PropelObjectCollection
      */
-    public function findGrandChildren(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    public function findGrandChildren(ObjectIdentity $objectIdentity, \PropelPDO $con = null)
     {
         return $this
             ->useObjectIdentityAncestorRelatedByObjectIdentityIdQuery()
                 ->filterByObjectIdentityRelatedByAncestorId($objectIdentity)
-                ->filterByObjectIdentityRelatedByObjectIdentityId($objectIdentity, Criteria::NOT_EQUAL)
+                ->filterByObjectIdentityRelatedByObjectIdentityId($objectIdentity, \Criteria::NOT_EQUAL)
             ->endUse()
             ->find($con)
         ;
@@ -99,16 +95,16 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
      * Return all ancestors of the given object identity.
      *
      * @param ObjectIdentity $objectIdentity
-     * @param PropelPDO $con
+     * @param \PropelPDO $con
      *
-     * @return PropelCollection
+     * @return \PropelObjectCollection
      */
-    public function findAncestors(ObjectIdentity $objectIdentity, PropelPDO $con = null)
+    public function findAncestors(ObjectIdentity $objectIdentity, \PropelPDO $con = null)
     {
         return $this
             ->useObjectIdentityAncestorRelatedByAncestorIdQuery()
                 ->filterByObjectIdentityRelatedByObjectIdentityId($objectIdentity)
-                ->filterByObjectIdentityRelatedByAncestorId($objectIdentity, Criteria::NOT_EQUAL)
+                ->filterByObjectIdentityRelatedByAncestorId($objectIdentity, \Criteria::NOT_EQUAL)
             ->endUse()
             ->find($con)
         ;

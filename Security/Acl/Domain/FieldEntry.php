@@ -14,14 +14,13 @@ use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\FieldEntryInterface;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
- * An ACE implementation retrieving data from a given Propel\PropelBundle\Model\Acl\Entry.
+ * An ACE implementation retrieving data from a given \Propel\PropelBundle\Model\Acl\Entry.
  *
- * The entry is only used to grab a "snapshot" of its data as an EntryInterface is immutable!
+ * The entry is only used to grab a "snapshot" of its data as an \Symfony\Component\Security\Acl\Model\EntryInterface is immutable!
  *
- * @see Symfony\Component\Security\Acl\Model\EntryInterface
+ * @see \Symfony\Component\Security\Acl\Model\EntryInterface
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
@@ -32,8 +31,8 @@ class FieldEntry extends Entry implements FieldEntryInterface
     /**
      * Constructor.
      *
-     * @param ModelEntry $entry
-     * @param AclInterface $acl
+     * @param \Propel\PropelBundle\Model\Acl\Entry $entry
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      */
     public function __construct(ModelEntry $entry, AclInterface $acl)
     {

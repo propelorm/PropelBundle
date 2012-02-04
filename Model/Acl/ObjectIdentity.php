@@ -10,14 +10,11 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use Criteria;
-use PropelPDO;
-
 use Propel\PropelBundle\Model\Acl\om\BaseObjectIdentity;
 
 class ObjectIdentity extends BaseObjectIdentity
 {
-    public function preInsert(PropelPDO $con = null)
+    public function preInsert(\PropelPDO $con = null)
     {
         // Compatibility with default implementation.
         $ancestor = new ObjectIdentityAncestor();
@@ -33,7 +30,7 @@ class ObjectIdentity extends BaseObjectIdentity
         return true;
     }
 
-    public function preUpdate(PropelPDO $con = null)
+    public function preUpdate(\PropelPDO $con = null)
     {
         if ($this->isColumnModified(ObjectIdentityPeer::PARENT_OBJECT_IDENTITY_ID)) {
             $this->updateAncestorsTree($con);
@@ -42,7 +39,7 @@ class ObjectIdentity extends BaseObjectIdentity
         return true;
     }
 
-    public function preDelete(PropelPDO $con = null)
+    public function preDelete(\PropelPDO $con = null)
     {
         $objIds = array($this->getId());
 
@@ -56,7 +53,7 @@ class ObjectIdentity extends BaseObjectIdentity
 
         // Manually delete those for DBAdapter not capable of cascading the DELETE.
         ObjectIdentityAncestorQuery::create()
-            ->filterByObjectIdentityId($objIds, Criteria::IN)
+            ->filterByObjectIdentityId($objIds, \Criteria::IN)
             ->delete($con)
         ;
 
@@ -66,11 +63,11 @@ class ObjectIdentity extends BaseObjectIdentity
     /**
      * Update all ancestor entries to reflect changes on this instance.
      *
-     * @param PropelPDO $con
+     * @param \PropelPDO $con
      *
-     * @return ObjectIdentity $this
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity $this
      */
-    protected function updateAncestorsTree(PropelPDO $con = null)
+    protected function updateAncestorsTree(\PropelPDO $con = null)
     {
         $con->beginTransaction();
 
@@ -87,13 +84,13 @@ class ObjectIdentity extends BaseObjectIdentity
                  */
                 $query = ObjectIdentityAncestorQuery::create()
                     ->filterByObjectIdentityId($eachChild->getId())
-                    ->filterByObjectIdentityRelatedByAncestorId($oldAncestors, Criteria::IN)
+                    ->filterByObjectIdentityRelatedByAncestorId($oldAncestors, \Criteria::IN)
                 ;
 
                 if ($eachChild->getId() !== $this->getId()) {
-                    $query->filterByAncestorId(array($eachChild->getId(), $this->getId()), Criteria::NOT_IN);
+                    $query->filterByAncestorId(array($eachChild->getId(), $this->getId()), \Criteria::NOT_IN);
                 } else {
-                    $query->filterByAncestorId($this->getId(), Criteria::NOT_EQUAL);
+                    $query->filterByAncestorId($this->getId(), \Criteria::NOT_EQUAL);
                 }
 
                 $query->delete($con);

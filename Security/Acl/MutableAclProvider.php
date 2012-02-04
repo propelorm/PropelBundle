@@ -10,14 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl;
 
-use Exception;
-use InvalidArgumentException;
-
-use Criteria;
-use Propel;
-use PropelPDO;
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 use Propel\PropelBundle\Model\Acl\EntryPeer;
 use Propel\PropelBundle\Model\Acl\EntryQuery;
@@ -56,15 +48,15 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Constructor.
      *
-     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param PropelPDO $connection
-     * @param AclCacheInterface $cache
+     * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
+     * @param \PropelPDO $connection
+     * @param \Symfony\Component\Security\Acl\Model\AclCacheInterface $cache
      */
-    public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, PropelPDO $connection = null, AclCacheInterface $cache = null)
+    public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, \PropelPDO $connection = null, AclCacheInterface $cache = null)
     {
         // @codeCoverageIgnoreStart
         if (null === $connection) {
-            $connection = Propel::getConnection(EntryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $connection = \Propel::getConnection(EntryPeer::DATABASE_NAME, \Propel::CONNECTION_WRITE);
         }
         // @codeCoverageIgnoreEnd
 
@@ -74,11 +66,11 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Creates a new ACL for the given object identity.
      *
-     * @throws AclAlreadyExistsException When there already is an ACL for the given object identity.
+     * @throws \Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException When there already is an ACL for the given object identity.
      *
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      *
-     * @return MutableAclInterface
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */
     public function createAcl(ObjectIdentityInterface $objectIdentity)
     {
@@ -106,9 +98,9 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * This will automatically trigger a delete for any child ACLs. If you don't
      * want child ACLs to be deleted, you will have to set their parent ACL to null.
      *
-     * @throws AclException
+     * @throws \Symfony\Component\Security\Acl\Exception\Exception
      *
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      *
      * @return bool
      */
@@ -153,16 +145,16 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * Changes to parent ACLs are not persisted.
      *
-     * @throws AclException
+     * @throws \Symfony\Component\Security\Acl\Exception\Exception
      *
-     * @param MutableAclInterface $acl
+     * @param \Symfony\Component\Security\Acl\Model\MutableAclInterface $acl
      *
      * @return bool
      */
     public function updateAcl(MutableAclInterface $acl)
     {
         if (!$acl instanceof Acl) {
-            throw new InvalidArgumentException('The given ACL is not tracked by this provider. Please provide Propel\PropelBundle\Security\Acl\Domain\Acl only.');
+            throw new \InvalidArgumentException('The given ACL is not tracked by this provider. Please provide \Propel\PropelBundle\Security\Acl\Domain\Acl only.');
         }
 
         try {
@@ -218,7 +210,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * Persist the given ACEs.
      *
      * @param array $accessControlEntries
-     * @param ObjectIdentity $objectIdentity
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
      * @param bool $object
      *
      * @return array The IDs of the persisted ACEs.
@@ -272,9 +264,9 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * If none is given, null is returned.
      *
-     * @param EntryInterface $ace
+     * @param \Symfony\Component\Security\Acl\Model\EntryInterface $ace
      *
-     * @return ModelEntry|null
+     * @return \Propel\PropelBundle\Model\Acl\Entry|null
      */
     protected function getPersistedAce(EntryInterface $ace, ObjectIdentity $objectIdentity, $object = false)
     {
@@ -298,13 +290,13 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
         if (true === $object) {
             $ukQuery->filterByObjectIdentity($objectIdentity);
         } else {
-            $ukQuery->filterByObjectIdentityId(null, Criteria::ISNULL);
+            $ukQuery->filterByObjectIdentityId(null, \Criteria::ISNULL);
         }
 
         if ($ace instanceof FieldEntryInterface) {
             $ukQuery->filterByFieldName($ace->getField());
         } else {
-            $ukQuery->filterByFieldName(null, Criteria::ISNULL);
+            $ukQuery->filterByFieldName(null, \Criteria::ISNULL);
         }
 
         return $ukQuery->findOne($this->connection);
@@ -313,15 +305,15 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Get an ACL for this provider.
      *
-     * @param PropelCollection $collection
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \PropelCollection $collection
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
-     * @param AclInterface $parentAcl
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
      * @param bool $inherited
      *
-     * @return MutableAcl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */
-    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new MutableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited, $this->connection);
     }

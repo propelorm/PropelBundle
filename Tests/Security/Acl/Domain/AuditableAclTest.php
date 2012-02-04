@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
 
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\Entry;
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
@@ -28,7 +26,7 @@ class AuditableAclTest extends AclTestCase
 {
     public function testUpdateAuditingInvalidIndex()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $acl = new AuditableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
@@ -39,7 +37,7 @@ class AuditableAclTest extends AclTestCase
 
     public function testUpdateAuditingInvalidField()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $obj = $this->createModelObjectIdentity(1);
@@ -59,7 +57,7 @@ class AuditableAclTest extends AclTestCase
 
     public function testUpdateAuditingInvalidFlag()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $obj = $this->createModelObjectIdentity(1);
@@ -78,7 +76,7 @@ class AuditableAclTest extends AclTestCase
 
     public function testUpdateObjectAuditing()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $obj = $this->createModelObjectIdentity(1);
@@ -120,7 +118,7 @@ class AuditableAclTest extends AclTestCase
      */
     public function testUpdateObjectFieldAuditing()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $obj = $this->createModelObjectIdentity(1);
@@ -154,7 +152,7 @@ class AuditableAclTest extends AclTestCase
      */
     public function testUpdateClassAuditing()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();
@@ -185,7 +183,7 @@ class AuditableAclTest extends AclTestCase
      */
     public function testUpdateClassFieldAuditing()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();

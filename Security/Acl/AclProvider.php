@@ -10,9 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl;
 
-use PropelPDO;
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\EntryQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
@@ -49,11 +46,11 @@ class AclProvider implements AclProviderInterface
     /**
      * Constructor.
      *
-     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param PropelPDO $con
-     * @param AclCacheInterface $cache
+     * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
+     * @param \PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\AclCacheInterface $cache
      */
-    public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, PropelPDO $connection = null, AclCacheInterface $cache = null)
+    public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, \PropelPDO $connection = null, AclCacheInterface $cache = null)
     {
         $this->permissionGrantingStrategy = $permissionGrantingStrategy;
         $this->connection = $connection;
@@ -63,8 +60,8 @@ class AclProvider implements AclProviderInterface
     /**
      * Retrieves all child object identities from the database.
      *
-     * @param ObjectIdentityInterface $parentObjectIdentity
-     * @param boolean $directChildrenOnly
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $parentObjectIdentity
+     * @param bool $directChildrenOnly
      *
      * @return array
      */
@@ -92,12 +89,12 @@ class AclProvider implements AclProviderInterface
     /**
      * Returns the ACL that belongs to the given object identity
      *
-     * @throws AclNotFoundException
+     * @throws \Symfony\Component\Security\Acl\Exception\AclNotFoundException
      *
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $securityIdentities
      *
-     * @return AclInterface
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface
      */
     public function findAcl(ObjectIdentityInterface $objectIdentity, array $securityIdentities = array())
     {
@@ -145,7 +142,7 @@ class AclProvider implements AclProviderInterface
     /**
      * Returns the ACLs that belong to the given object identities
      *
-     * @throws AclNotFoundException When at least one object identity is missing its ACL.
+     * @throws \Symfony\Component\Security\Acl\Exception\AclNotFoundException When at least one object identity is missing its ACL.
      *
      * @param array $objectIdentities an array of ObjectIdentityInterface implementations
      * @param array $securityIdentities an array of SecurityIdentityInterface implementations
@@ -165,15 +162,15 @@ class AclProvider implements AclProviderInterface
     /**
      * Create an ACL.
      *
-     * @param PropelCollection $collection
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \PropelCollection $collection
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
-     * @param AclInterface $parentAcl
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
      * @param bool $inherited
      *
-     * @return Acl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\Acl
      */
-    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new Acl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
     }

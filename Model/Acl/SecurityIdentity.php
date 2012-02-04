@@ -10,9 +10,6 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use InvalidArgumentException;
-use PropelPDO;
-
 use Propel\PropelBundle\Model\Acl\om\BaseSecurityIdentity;
 
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
@@ -24,17 +21,17 @@ class SecurityIdentity extends BaseSecurityIdentity
     /**
      * Transform a given mode security identity into an ACL related SecurityIdentity.
      *
-     * @param SecurityIdentity $securityIdentity
+     * @param \Propel\PropelBundle\Model\Acl\SecurityIdentity $securityIdentity
      *
-     * @return SecurityIdentityInterface
+     * @return \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface
      */
-    public static function toAclIdentity(SecurityIdentity $securityIdentity)
+    static public function toAclIdentity(SecurityIdentity $securityIdentity)
     {
         $identifier = $securityIdentity->getIdentifier();
 
         if ($securityIdentity->getUsername()) {
             if (false === strpos($identifier, '-')) {
-                throw new InvalidArgumentException('The given identifier does not resolve to a UserSecurityIdentity.');
+                throw new \InvalidArgumentException('The given identifier does not resolve to a UserSecurityIdentity.');
             }
 
             list($class, $username) = explode('-', $identifier);
@@ -46,7 +43,7 @@ class SecurityIdentity extends BaseSecurityIdentity
             return new RoleSecurityIdentity($identifier);
         }
 
-        throw new InvalidArgumentException('The security identity does not resolve to either UserSecurityIdentity or RoleSecurityIdentity.');
+        throw new \InvalidArgumentException('The security identity does not resolve to either UserSecurityIdentity or RoleSecurityIdentity.');
     }
 
     /**
@@ -56,12 +53,12 @@ class SecurityIdentity extends BaseSecurityIdentity
      *
      * @throws \InvalidArgumentException
      *
-     * @param SecurityIdentityInterface $aclIdentity
-     * @param PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $aclIdentity
+     * @param \PropelPDO $con
      *
-     * @return SecurityIdentity
+     * @return \Propel\PropelBundle\Model\Acl\SecurityIdentity
      */
-    public static function fromAclIdentity(SecurityIdentityInterface $aclIdentity, PropelPDO $con = null)
+    static public function fromAclIdentity(SecurityIdentityInterface $aclIdentity, \PropelPDO $con = null)
     {
         if ($aclIdentity instanceof UserSecurityIdentity) {
             $identifier = $aclIdentity->getClass().'-'.$aclIdentity->getUsername();
@@ -70,7 +67,7 @@ class SecurityIdentity extends BaseSecurityIdentity
             $identifier = $aclIdentity->getRole();
             $username = false;
         } else {
-            throw new InvalidArgumentException('The ACL identity must either be an instance of UserSecurityIdentity or RoleSecurityIdentity.');
+            throw new \InvalidArgumentException('The ACL identity must either be an instance of UserSecurityIdentity or RoleSecurityIdentity.');
         }
 
         $obj = SecurityIdentityQuery::create()

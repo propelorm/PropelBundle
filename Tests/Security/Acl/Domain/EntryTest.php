@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
 
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
@@ -29,7 +27,7 @@ class EntryTest extends AclTestCase
 {
     public function testConstruct()
     {
-        $collection = new PropelCollection();
+        $collection = new \PropelCollection();
         $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 

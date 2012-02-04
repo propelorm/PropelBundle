@@ -22,7 +22,7 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
  *
  * The entry is only used to grab a "snapshot" of its data as an EntryInterface is immutable!
  *
- * @see Symfony\Component\Security\Acl\Model\EntryInterface
+ * @see \Symfony\Component\Security\Acl\Model\EntryInterface
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
@@ -41,8 +41,8 @@ class Entry implements AuditableEntryInterface
     /**
      * Constructor.
      *
-     * @param ModelEntry $entry
-     * @param AclInterface $acl
+     * @param \Propel\PropelBundle\Model\Acl\Entry $entry
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      */
     public function __construct(ModelEntry $entry, AclInterface $acl)
     {
@@ -113,7 +113,7 @@ class Entry implements AuditableEntryInterface
     /**
      * The ACL this ACE is associated with.
      *
-     * @return AclInterface
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface
      */
     public function getAcl()
     {
@@ -123,7 +123,7 @@ class Entry implements AuditableEntryInterface
     /**
      * The security identity associated with this ACE
      *
-     * @return SecurityIdentityInterface
+     * @return \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface
      */
     public function getSecurityIdentity()
     {
@@ -163,7 +163,7 @@ class Entry implements AuditableEntryInterface
     /**
      * Returns whether this ACE is granting, or denying
      *
-     * @return boolean
+     * @return bool
      */
     public function isGranting()
     {
@@ -173,7 +173,7 @@ class Entry implements AuditableEntryInterface
     /**
      * Whether auditing for successful grants is turned on
      *
-     * @return boolean
+     * @return bool
      */
     public function isAuditFailure()
     {
@@ -183,7 +183,7 @@ class Entry implements AuditableEntryInterface
     /**
      * Whether auditing for successful denies is turned on
      *
-     * @return boolean
+     * @return bool
      */
     public function isAuditSuccess()
     {

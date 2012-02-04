@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Tests;
 
-use PropelQuickBuilder;
-
 use Propel\PropelBundle\Model\Acl\AclClass;
 use Propel\PropelBundle\Model\Acl\Entry;
 use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
@@ -39,7 +37,7 @@ class AclTestCase extends TestCase
 
         $schema = file_get_contents(__DIR__.'/../Resources/config/acl_schema.xml');
 
-        $builder = new PropelQuickBuilder();
+        $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
         if (!class_exists('Propel\PropelBundle\Model\Acl\map\AclClassTableMap')) {
             $builder->setClassTargets(array('tablemap', 'peer', 'object', 'query'));

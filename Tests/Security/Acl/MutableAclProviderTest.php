@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Tests\Security\Acl;
 
-use Criteria;
-
 use Propel\PropelBundle\Model\Acl\EntryQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
@@ -100,7 +98,7 @@ class MutableAclProviderTest extends AclTestCase
         $acl->setParentAcl($parentAcl);
         $this->getAclProvider()->updateAcl($acl);
 
-        $entries = ObjectIdentityQuery::create()->orderById(Criteria::ASC)->find($this->con);
+        $entries = ObjectIdentityQuery::create()->orderById(\Criteria::ASC)->find($this->con);
         $this->assertCount(2, $entries);
         $this->assertNull($entries[0]->getParentObjectIdentityId());
         $this->assertEquals($entries[0]->getId(), $entries[1]->getParentObjectIdentityId());
@@ -149,7 +147,7 @@ class MutableAclProviderTest extends AclTestCase
 
         $this->getAclProvider()->updateAcl($acl);
 
-        $entries = EntryQuery::create()->orderByMask(Criteria::ASC)->find($this->con);
+        $entries = EntryQuery::create()->orderByMask(\Criteria::ASC)->find($this->con);
         $this->assertCount(3, $entries);
 
         $slugAce = $entries[0];

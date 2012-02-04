@@ -10,9 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl\Domain;
 
-use InvalidArgumentException;
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
@@ -54,14 +51,14 @@ class Acl implements AclInterface
     /**
      * Constructor.
      *
-     * @param PropelCollection $entries
-     * @param ObjectIdentityInterface $objectIdentity
-     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
+     * @param \PropelCollection $entries
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array $loadedSecurityIdentities
-     * @param AclInterface $parentAcl
-     * @param boolean $inherited
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
+     * @param bool $inherited
      */
-    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    public function __construct(\PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         if ($entries->getModel() !== $this->model) {
             throw new AclException(sprintf('The given collection does not contain models of class "%s" but of class "%s".', $this->model, $entries->getModel()));
@@ -151,7 +148,7 @@ class Acl implements AclInterface
     /**
      * Returns the object identity associated with this ACL
      *
-     * @return ObjectIdentityInterface
+     * @return \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface
      */
     public function getObjectIdentity()
     {
@@ -161,7 +158,7 @@ class Acl implements AclInterface
     /**
      * Returns the parent ACL, or null if there is none.
      *
-     * @return AclInterface|null
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface|null
      */
     public function getParentAcl()
     {
@@ -171,7 +168,7 @@ class Acl implements AclInterface
     /**
      * Whether this ACL is inheriting ACEs from a parent ACL.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEntriesInheriting()
     {
@@ -184,9 +181,9 @@ class Acl implements AclInterface
      * @param string  $field
      * @param array   $masks
      * @param array   $securityIdentities
-     * @param boolean $administrativeMode
+     * @param bool    $administrativeMode
      *
-     * @return boolean
+     * @return bool
      */
     public function isFieldGranted($field, array $masks, array $securityIdentities, $administrativeMode = false)
     {
@@ -196,13 +193,13 @@ class Acl implements AclInterface
     /**
      * Determines whether access is granted
      *
-     * @throws NoAceFoundException when no ACE was applicable for this request
+     * @throws \Symfony\Component\Security\Acl\Exception\NoAceFoundException when no ACE was applicable for this request
      *
      * @param array   $masks
      * @param array   $securityIdentities
-     * @param boolean $administrativeMode
+     * @param bool    $administrativeMode
      *
-     * @return boolean
+     * @return bool
      */
     public function isGranted(array $masks, array $securityIdentities, $administrativeMode = false)
     {
@@ -212,11 +209,11 @@ class Acl implements AclInterface
     /**
      * Whether the ACL has loaded ACEs for all of the passed security identities
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @param mixed $securityIdentities an implementation of SecurityIdentityInterface, or an array thereof
      *
-     * @return boolean
+     * @return bool
      */
     public function isSidLoaded($securityIdentities)
     {
@@ -228,7 +225,7 @@ class Acl implements AclInterface
 
         foreach ($securityIdentities as $eachSecurityIdentity) {
             if (!$eachSecurityIdentity instanceof SecurityIdentityInterface) {
-                throw new InvalidArgumentException('At least one entry of the given list is not implementing the "SecurityIdentityInterface".');
+                throw new \InvalidArgumentException('At least one entry of the given list is not implementing the "SecurityIdentityInterface".');
             }
 
             $modelIdentity = SecurityIdentity::fromAclIdentity($eachSecurityIdentity);
@@ -309,7 +306,7 @@ class Acl implements AclInterface
      *
      * @param string $field
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\Acl $this
      */
     protected function updateFields($field)
     {

@@ -10,11 +10,6 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use Criteria;
-use PropelPDO;
-use PropelCollection;
-use InvalidArgumentException;
-
 use Propel\PropelBundle\Model\Acl\om\BaseEntryQuery;
 use Propel\PropelBundle\Model\Acl\EntryPeer;
 
@@ -28,13 +23,13 @@ class EntryQuery extends BaseEntryQuery
      *
      * @see find()
      *
-     * @param ObjectIdentityInterface $objectIdentity A list of ObjectIdentityInterface to retrieve the ACL for.
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity An ACL related ObjectIdentity.
      * @param array $securityIdentities A list of SecurityIdentity to filter by.
-     * @param PropelPDO $con
+     * @param \PropelPDO $con
      *
-     * @return PropelCollection
+     * @return \PropelCollection
      */
-    public function findByAclIdentity(ObjectIdentityInterface $objectIdentity, array $securityIdentities = array(), PropelPDO $con = null)
+    public function findByAclIdentity(ObjectIdentityInterface $objectIdentity, array $securityIdentities = array(), \PropelPDO $con = null)
     {
         $securityIds = array();
         foreach ($securityIdentities as $eachIdentity) {
@@ -45,7 +40,7 @@ class EntryQuery extends BaseEntryQuery
                     $errorMessage = sprintf('The list of security identities contains at least one invalid entry "%s". Please provide objects of classes implementing "Symfony\Component\Security\Acl\Model\SecurityIdentityInterface" only.', $eachIdentity);
                 }
 
-                throw new InvalidArgumentException($errorMessage);
+                throw new \InvalidArgumentException($errorMessage);
             }
 
             if ($securityIdentity = SecurityIdentity::fromAclIdentity($eachIdentity)) {
@@ -54,12 +49,12 @@ class EntryQuery extends BaseEntryQuery
         }
 
         $this
-            ->useAclClassQuery(null, Criteria::INNER_JOIN)
+            ->useAclClassQuery(null, \Criteria::INNER_JOIN)
                 ->filterByType((string) $objectIdentity->getType())
             ->endUse()
             ->leftJoinObjectIdentity()
-            ->add(ObjectIdentityPeer::OBJECT_IDENTIFIER, (string) $objectIdentity->getIdentifier(), Criteria::EQUAL)
-            ->addOr(EntryPeer::OBJECT_IDENTITY_ID, null, Criteria::ISNULL)
+            ->add(ObjectIdentityPeer::OBJECT_IDENTIFIER, (string) $objectIdentity->getIdentifier(), \Criteria::EQUAL)
+            ->addOr(EntryPeer::OBJECT_IDENTITY_ID, null, \Criteria::ISNULL)
         ;
 
         if (!empty($securityIdentities)) {

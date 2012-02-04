@@ -10,11 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl\Domain;
 
-use InvalidArgumentException;
-
-use PropelPDO;
-use PropelCollection;
-
 use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
@@ -83,19 +78,19 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
     /**
      * Update auditing on a single ACE.
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @param array $list
      * @param int $index
      * @param bool $auditSuccess
      * @param bool $auditFailure
      *
-     * @return AuditableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl $this
      */
     protected function updateAuditing(array &$list, $index, $auditSuccess, $auditFailure)
     {
         if (!is_bool($auditSuccess) or !is_bool($auditFailure)) {
-            throw new InvalidArgumentException('The given auditing flags are invalid. Please provide boolean only.');
+            throw new \InvalidArgumentException('The given auditing flags are invalid. Please provide boolean only.');
         }
 
         $this->validateIndex($list, $index);

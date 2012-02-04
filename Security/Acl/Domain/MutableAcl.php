@@ -10,11 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl\Domain;
 
-use PropelPDO;
-use PropelCollection;
-use OutOfBoundsException;
-use InvalidArgumentException;
-
 use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 use Propel\PropelBundle\Model\Acl\ObjectIdentity;
@@ -46,38 +41,38 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * A list of all ACL entries from the database.
      *
-     * Contains instances of Propel\PropelBundle\Model\Acl\Entry.
+     * Contains instances of \Propel\PropelBundle\Model\Acl\Entry.
      *
-     * @var PropelCollection
+     * @var \PropelCollection
      */
     protected $entries;
 
     /**
      * A reference to the ObjectIdentity this ACL is mapped to.
      *
-     * @var ObjectIdentity
+     * @var \Propel\PropelBundle\Model\Acl\ObjectIdentity
      */
     protected $modelObjectIdentity;
 
     /**
      * A connection to be used for all changes on the ACL.
      *
-     * @var PropelPDO
+     * @var \PropelPDO
      */
     protected $con;
 
     /**
      * Constructor.
      *
-     * @param PropelCollection $entries
-     * @param ObjectIdentityInterface $objectIdentity
-     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
+     * @param \PropelCollection $entries
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array $loadedSecurityIdentities
-     * @param AclInterface $parentAcl
-     * @param boolean $inherited
-     * @param PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
+     * @param bool $inherited
+     * @param \PropelPDO $con
      */
-    public function __construct(PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, PropelPDO $con = null)
+    public function __construct(\PropelCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, \PropelPDO $con = null)
     {
         parent::__construct($entries, $objectIdentity, $permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
 
@@ -110,7 +105,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Sets whether entries are inherited
      *
-     * @param boolean $boolean
+     * @param bool $boolean
      */
     public function setEntriesInheriting($boolean)
     {
@@ -120,7 +115,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Sets the parent ACL
      *
-     * @param AclInterface|null $acl
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface|null $acl
      */
     public function setParentAcl(AclInterface $acl = null)
     {
@@ -178,10 +173,10 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Inserts a class-based ACE
      *
-     * @param SecurityIdentityInterface $securityIdentity
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $securityIdentity
      * @param integer                   $mask
      * @param integer                   $index
-     * @param boolean                   $granting
+     * @param bool                      $granting
      * @param string                    $strategy
      */
     public function insertClassAce(SecurityIdentityInterface $securityIdentity, $mask, $index = 0, $granting = true, $strategy = null)
@@ -193,7 +188,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * Inserts a class-field-based ACE
      *
      * @param string                    $field
-     * @param SecurityIdentityInterface $securityIdentity
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $securityIdentity
      * @param integer                   $mask
      * @param integer                   $index
      * @param boolean                   $granting
@@ -211,7 +206,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Inserts an object-based ACE
      *
-     * @param SecurityIdentityInterface $securityIdentity
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $securityIdentity
      * @param integer                   $mask
      * @param integer                   $index
      * @param boolean                   $granting
@@ -226,7 +221,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * Inserts an object-field-based ACE
      *
      * @param string                    $field
-     * @param SecurityIdentityInterface $securityIdentity
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $securityIdentity
      * @param integer                   $mask
      * @param integer                   $index
      * @param boolean                   $granting
@@ -356,9 +351,9 @@ class MutableAcl extends Acl implements MutableAclInterface
      *
      * @param array $list
      * @param int $index
-     * @param Entry $entry
+     * @param \Propel\PropelBundle\Model\Acl\Entry\Entry $entry
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function insertToList(array &$list, $index, Entry $entry)
     {
@@ -386,7 +381,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param string $strategy
      * @param string $field
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function updateAce(array &$list, $index, $mask, $strategy = null)
     {
@@ -413,7 +408,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param $index
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function deleteIndex(array &$list, $index)
     {
@@ -427,18 +422,18 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Validate the index on the given list of ACEs.
      *
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      *
      * @param array $list
      * @param int $index
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function isWithinBounds(array &$list, $index)
     {
         // No count()-1, the count is one ahead of index, and could create the next valid entry!
         if ($index < 0 or $index > count($list)) {
-            throw new OutOfBoundsException(sprintf('The index must be in the interval [0, %d].', count($list)));
+            throw new \OutOfBoundsException(sprintf('The index must be in the interval [0, %d].', count($list)));
         }
 
         return $this;
@@ -447,17 +442,17 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Check the index for existence in the given list.
      *
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      *
      * @param array $list
      * @param $index
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function validateIndex(array &$list, $index)
     {
         if (!isset($list[$index])) {
-            throw new OutOfBoundsException(sprintf('The index "%d" does not exist.', $index));
+            throw new \OutOfBoundsException(sprintf('The index "%d" does not exist.', $index));
         }
 
         return $this;
@@ -466,17 +461,17 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Validate the given field to be present.
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @param array $list
      * @param string $field
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function validateField(array &$list, $field)
     {
         if (!isset($list[$field])) {
-            throw new InvalidArgumentException(sprintf('The given field "%s" does not exist.', $field));
+            throw new \InvalidArgumentException(sprintf('The given field "%s" does not exist.', $field));
         }
 
         return $this;
@@ -488,7 +483,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param int $index The right boundary to which the list is valid.
      *
-     * @return MutableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function reorderList(array &$list, $index)
     {
@@ -505,17 +500,17 @@ class MutableAcl extends Acl implements MutableAclInterface
      *
      * @param int $mask
      * @param int $index
-     * @param SecurityIdentityInterface $securityIdentity
+     * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $securityIdentity
      * @param string $strategy
      * @param bool $granting
      * @param string $field
      *
-     * @return Entry|FieldEntry
+     * @return \Propel\PropelBundle\Security\Acl\Domain\Entry|\Propel\PropelBundle\Security\Acl\Domain\FieldEntry
      */
     protected function createAce($mask, $index, SecurityIdentityInterface $securityIdentity, $strategy = null, $granting = true, $field = null)
     {
         if (!is_int($mask)) {
-            throw new InvalidArgumentException('The given mask is not valid. Please provide an integer.');
+            throw new \InvalidArgumentException('The given mask is not valid. Please provide an integer.');
         }
 
         // Compatibility with default implementation

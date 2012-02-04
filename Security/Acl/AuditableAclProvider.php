@@ -10,9 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl;
 
-use PropelPDO;
-use PropelCollection;
-
 use Propel\PropelBundle\Security\Acl\Domain\AuditableAcl;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
@@ -26,15 +23,15 @@ class AuditableAclProvider extends MutableAclProvider
     /**
      * Get an ACL for this provider.
      *
-     * @param PropelCollection $collection
-     * @param ObjectIdentityInterface $objectIdentity
+     * @param \PropelCollection $collection
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array $loadedSecurityIdentities
-     * @param AclInterface $parentAcl
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
      * @param bool $inherited
      *
-     * @return AuditableAcl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl
      */
-    protected function getAcl(PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
+    protected function getAcl(\PropelCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
         return new AuditableAcl($collection, $objectIdentity, $this->permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited, $this->connection);
     }

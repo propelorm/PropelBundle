@@ -27,11 +27,11 @@ class Entry extends BaseEntry
      *
      * The entry will not be persisted!
      *
-     * @param EntryInterface $aclEntry
+     * @param \Symfony\Component\Security\Acl\Model\EntryInterface $aclEntry
      *
-     * @return Entry
+     * @return \Propel\PropelBundle\Model\Acl\Entry
      */
-    public static function fromAclEntry(EntryInterface $aclEntry)
+    static public function fromAclEntry(EntryInterface $aclEntry)
     {
         $entry = new self();
 
@@ -64,12 +64,12 @@ class Entry extends BaseEntry
     /**
      * Transform a given model entry into an ACL related Entry (ACE).
      *
-     * @param Entry $modelEntry
-     * @param AclInterface $acl
+     * @param \Propel\PropelBundle\Model\Acl\Entry $modelEntry
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      *
-     * @return EntryInterface
+     * @return \Symfony\Component\Security\Acl\Model\EntryInterface
      */
-    public static function toAclEntry(Entry $modelEntry, AclInterface $acl)
+    static public function toAclEntry(Entry $modelEntry, AclInterface $acl)
     {
         if (null === $modelEntry->getFieldName()) {
             return new AclEntry($modelEntry, $acl);

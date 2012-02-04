@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use PropelPDO;
-
 use Propel\PropelBundle\Model\Acl\om\BaseAclClass;
 
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -23,12 +21,12 @@ class AclClass extends BaseAclClass
      *
      * If none can be found, a new one will be saved.
      *
-     * @param ObjectIdentityInterface $objectIdentity
-     * @param PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \PropelPDO $con
      *
-     * @return AclClass
+     * @return \Propel\PropelBundle\Model\Acl\AclClass
      */
-    public static function fromAclObjectIdentity(ObjectIdentityInterface $objectIdentity, PropelPDO $con = null)
+    static public function fromAclObjectIdentity(ObjectIdentityInterface $objectIdentity, \PropelPDO $con = null)
     {
         $obj = AclClassQuery::create()
             ->filterByType($objectIdentity->getType())
