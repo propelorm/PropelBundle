@@ -222,16 +222,17 @@ class Acl implements AclInterface
         }
 
         $found = 0;
-        $loadedSecurityIds = array_keys($this->loadedSecurityIdentities);
-
         foreach ($securityIdentities as $eachSecurityIdentity) {
             if (!$eachSecurityIdentity instanceof SecurityIdentityInterface) {
                 throw new \InvalidArgumentException('At least one entry of the given list is not implementing the "SecurityIdentityInterface".');
             }
 
-            $modelIdentity = SecurityIdentity::fromAclIdentity($eachSecurityIdentity);
-            if (in_array($modelIdentity->getId(), $loadedSecurityIds)) {
-                $found++;
+            foreach ($this->loadedSecurityIdentities as $eachLoadedIdentity) {
+                if ($eachSecurityIdentity->equals($eachLoadedIdentity)) {
+                    $found++;
+
+                    break;
+                }
             }
         }
 

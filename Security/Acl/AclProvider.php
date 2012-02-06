@@ -78,7 +78,7 @@ class AclProvider implements AclProviderInterface
 
         $children = array();
         foreach ($collection as $eachChild) {
-            $children[] = new ObjectIdentity($eachChild->getIdentifier(), $eachChild->getAclClass()->getType());
+            $children[] = new ObjectIdentity($eachChild->getIdentifier(), $eachChild->getAclClass($this->connection)->getType());
         }
 
         return $children;
@@ -104,7 +104,7 @@ class AclProvider implements AclProviderInterface
             }
         }
 
-        $collection = EntryQuery::create()->findByAclIdentity($objectIdentity, $securityIdentities);
+        $collection = EntryQuery::create()->findByAclIdentity($objectIdentity, $securityIdentities, $this->connection);
 
         if (0 === count($collection)) {
             if (empty($securityIdentities)) {
