@@ -39,15 +39,6 @@ class MutableAcl extends Acl implements MutableAclInterface
     protected $id;
 
     /**
-     * A list of all ACL entries from the database.
-     *
-     * Contains instances of \Propel\PropelBundle\Model\Acl\Entry.
-     *
-     * @var \PropelObjectCollection
-     */
-    protected $entries;
-
-    /**
      * A reference to the ObjectIdentity this ACL is mapped to.
      *
      * @var \Propel\PropelBundle\Model\Acl\ObjectIdentity
@@ -75,8 +66,6 @@ class MutableAcl extends Acl implements MutableAclInterface
     public function __construct(\PropelObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, \PropelPDO $con = null)
     {
         parent::__construct($entries, $objectIdentity, $permissionGrantingStrategy, $loadedSecurityIdentities, $parentAcl, $inherited);
-
-        $this->entries = $entries;
 
         $this->modelObjectIdentity = ObjectIdentityQuery::create()
             ->filterByAclObjectIdentity($objectIdentity, $con)
@@ -301,7 +290,6 @@ class MutableAcl extends Acl implements MutableAclInterface
     {
         return serialize(array(
             $this->id,
-            $this->entries,
             $this->modelObjectIdentity,
             $this->model,
             $this->classAces,
@@ -329,7 +317,6 @@ class MutableAcl extends Acl implements MutableAclInterface
     {
         list(
             $this->id,
-            $this->entries,
             $this->modelObjectIdentity,
             $this->model,
             $this->classAces,
