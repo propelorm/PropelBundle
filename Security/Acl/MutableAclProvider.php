@@ -39,8 +39,6 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 /**
  * An implementation of the MutableAclProviderInterface using Propel ORM.
  *
- * @todo Add handling of AclCacheInterface.
- *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class MutableAclProvider extends AclProvider implements MutableAclProviderInterface
@@ -125,10 +123,25 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
                 }
             }
 
+            /*
+             * If caching is enabled, retrieve the (grand-)children of this ACL.
+             * Those will be removed from the cache as well, as their parents do not exist anymore.
+             */
+            if (null !== $this->cache) {
+                $children = ObjectIdentityQuery::create()->findGrandChildren($objIdentity, $this->connection);
+            }
+
             // This deletes all object and object-field ACEs, too.
             $objIdentity->delete($this->connection);
 
             $this->connection->commit();
+
+            if (null !== $this->cache) {
+                $this->cache->evictFromCacheById($objIdentity->getId());
+                foreach ($children as $eachChild) {
+                    $this->cache->evictFromCacheById($eachChild->getId());
+                }
+            }
 
             return true;
         // @codeCoverageIgnoreStart
@@ -151,13 +164,12 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      */
     public function updateAcl(MutableAclInterface $acl)
     {
-        if (!$acl instanceof Acl) {
-            throw new \InvalidArgumentException('The given ACL is not tracked by this provider. Please provide \Propel\PropelBundle\Security\Acl\Domain\Acl only.');
+        if (!$acl instanceof MutableAcl) {
+            throw new \InvalidArgumentException('The given ACL is not tracked by this provider. Please provide \Propel\PropelBundle\Security\Acl\Domain\MutableAcl only.');
         }
 
         try {
             $modelEntries = EntryQuery::create()->findByAclIdentity($acl->getObjectIdentity(), array(), $this->connection);
-
             $objectIdentity = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($acl->getObjectIdentity(), $this->connection);
 
             $this->connection->beginTransaction();
@@ -193,6 +205,12 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
             }
 
             $this->connection->commit();
+
+            // After successfully committing the transaction, we are good to update the cache.
+            if (null !== $this->cache) {
+                $this->cache->evictFromCacheById($objectIdentity->getId());
+                $this->cache->putInCache($acl);
+            }
 
             return true;
         // @codeCoverageIgnoreStart

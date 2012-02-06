@@ -33,8 +33,6 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 /**
  * An implementation of the AclProviderInterface using Propel ORM.
  *
- * @todo Add handling of AclCacheInterface.
- *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class AclProvider implements AclProviderInterface
@@ -98,6 +96,14 @@ class AclProvider implements AclProviderInterface
      */
     public function findAcl(ObjectIdentityInterface $objectIdentity, array $securityIdentities = array())
     {
+        $modelObj = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, $this->connection);
+        if (null !== $this->cache and null !== $modelObj) {
+            $cachedAcl = $this->cache->getFromCacheById($modelObj->getId());
+            if ($cachedAcl instanceof AclInterface) {
+                return $cachedAcl;
+            }
+        }
+
         $collection = EntryQuery::create()->findByAclIdentity($objectIdentity, $securityIdentities);
 
         if (0 === count($collection)) {
@@ -120,7 +126,6 @@ class AclProvider implements AclProviderInterface
         $parentAcl = null;
         $entriesInherited = true;
 
-        $modelObj = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($objectIdentity, $this->connection);
         if (null !== $modelObj) {
             $entriesInherited = $modelObj->getEntriesInheriting();
             if (null !== $modelObj->getParentObjectIdentityId()) {

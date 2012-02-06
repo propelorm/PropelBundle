@@ -11,6 +11,8 @@
 namespace Propel\PropelBundle\Tests\Security\Acl;
 
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\PropelBundle\Model\Acl\EntryQuery;
+use Propel\PropelBundle\Model\Acl\EntryPeer;
 
 use Propel\PropelBundle\Security\Acl\AclProvider;
 
@@ -18,6 +20,7 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
 use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -218,8 +221,39 @@ class AclProviderTest extends AclTestCase
         return array($parentObj, $obj, $childObj);
     }
 
+    /**
+     * @depends testFindAclWithEntries
+     */
+    public function testFindAclReadsFromCache()
+    {
+        $this->cache = new AclCache();
+
+        $obj = $this->createModelObjectIdentity(1);
+        $entry = $this->createEntry();
+        $entry
+            ->setSecurityIdentity(SecurityIdentity::fromAclIdentity($this->getRoleSecurityIdentity('ROLE_USER')))
+            ->setAclClass($obj->getAclClass())
+            ->setMask(64)
+        ;
+        $obj->addEntry($entry)->save($this->con);
+
+        // Read and put into cache
+        $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_USER')));
+        $this->cache->content[1] = $acl;
+
+        // Change database
+        EntryQuery::create()->update(array(EntryPeer::translateFieldName(EntryPeer::MASK, \BasePeer::TYPE_COLNAME, \BasePeer::TYPE_PHPNAME) => 128), $this->con);
+        $this->assertEquals(0, EntryQuery::create()->filterByMask(64)->count($this->con));
+
+        // Verify cache has been read
+        $cachedAcl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_USER')));
+        $cachedObjectAces = $cachedAcl->getObjectAces();
+        $this->assertSame($acl, $cachedAcl);
+        $this->assertEquals(64, $cachedObjectAces[0]->getMask());
+    }
+
     protected function getAclProvider()
     {
-        return new AclProvider(new PermissionGrantingStrategy(), $this->con);
+        return new AclProvider(new PermissionGrantingStrategy(), $this->con, $this->cache);
     }
 }

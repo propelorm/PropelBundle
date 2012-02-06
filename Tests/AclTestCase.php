@@ -28,6 +28,7 @@ use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 class AclTestCase extends TestCase
 {
     protected $con = null;
+    protected $cache = null;
 
     public function setUp()
     {
@@ -87,7 +88,7 @@ class AclTestCase extends TestCase
 
     protected function getAclProvider()
     {
-        return new MutableAclProvider(new PermissionGrantingStrategy(), $this->con);
+        return new MutableAclProvider(new PermissionGrantingStrategy(), $this->con, $this->cache);
     }
 
     protected function getAclObjectIdentity($identifier = 1)

@@ -14,6 +14,7 @@ use Propel\PropelBundle\Model\Acl\EntryQuery;
 use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
 use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -240,5 +241,79 @@ class MutableAclProviderTest extends AclTestCase
 
         $this->getAclProvider()->deleteAcl($this->getAclObjectIdentity(1));
         $this->assertEquals(0, EntryQuery::create()->count($this->con));
+    }
+
+    /**
+     * @depends testUpdateAclCreatesInsertedAces
+     */
+    public function testUpdateAclWritesCacheOfNewAcl()
+    {
+        $this->cache = new AclCache();
+        $this->assertEmpty($this->cache->content);
+
+        $acl = $this->getAcl();
+
+        $this->assertNotEmpty($this->cache->content);
+        $this->assertSame($acl, $this->cache->content[$acl->getId()]);
+    }
+
+    /**
+     * @depends testUpdateAclWritesCacheOfNewAcl
+     */
+    public function testUpdateAclUpdatesCacheOfAcl()
+    {
+        $this->cache = new AclCache();
+        $acl = $this->getAcl(1);
+
+        $acl->updateObjectAce(0, 128);
+        $this->getAclProvider()->updateAcl($acl);
+
+        $objectAces = $this->cache->content[$acl->getId()]->getObjectAces();
+        $this->assertEquals(128, $objectAces[0]->getMask());
+    }
+
+    /**
+     * @depends testUpdateAclWritesCacheOfNewAcl
+     */
+    public function testDeleteAclEvictsFromCache()
+    {
+        $this->cache = new AclCache();
+
+        $this->getAcl();
+        $this->getAclProvider()->deleteAcl($this->getAclObjectIdentity(1));
+
+        $this->assertEmpty($this->cache->content);
+    }
+
+    /**
+     * @depends testCreateAclWithParent
+     * @depends testDeleteAclEvictsFromCache
+     */
+    public function testDeleteAclEvictsChildrenFromCache()
+    {
+        $this->cache = new AclCache();
+
+        $parentAcl = $this->getAcl(1);
+        $childAcl = $this->getAcl(2);
+        $grandChildAcl = $this->getAcl(3);
+        $grandChildAcl->setParentAcl($childAcl);
+        $childAcl->setParentAcl($parentAcl);
+
+        $this->getAclProvider()->updateAcl($grandChildAcl);
+        $this->getAclProvider()->updateAcl($childAcl);
+
+        $this->assertCount(3, $this->cache->content);
+
+        $this->getAclProvider()->deleteAcl($this->getAclObjectIdentity(1));
+        $this->assertEmpty($this->cache->content);
+    }
+
+    protected function getAcl($identifier = 1)
+    {
+        $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity($identifier));
+        $acl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
+        $this->getAclProvider()->updateAcl($acl);
+
+        return $acl;
     }
 }
