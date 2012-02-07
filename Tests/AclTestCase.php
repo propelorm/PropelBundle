@@ -36,7 +36,7 @@ class AclTestCase extends TestCase
 
         $this->loadPropelQuickBuilder();
 
-        $schema = file_get_contents(__DIR__.'/../Resources/config/acl_schema.xml');
+        $schema = file_get_contents(__DIR__.'/../Resources/acl_schema.xml');
 
         $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
