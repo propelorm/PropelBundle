@@ -163,9 +163,7 @@ EOT
             return;
         }
 
-        $finder = new Finder();
-        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
-        $datas  = $finder->name('*.' . $type)->in($this->absoluteFixturesPath);
+        $datas = $this->getFixtureFiles($type);
 
         if (count(iterator_to_array($datas)) === 0) {
             return -1;
@@ -210,9 +208,8 @@ EOT
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $finder = new Finder();
         $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
-        $datas  = $finder->name('*.sql')->in($this->absoluteFixturesPath);
+        $datas  = $this->getFixtureFiles('sql');
 
         $this->prepareCache($tmpdir);
 
@@ -285,5 +282,22 @@ EOT
         }
 
         return true;
+    }
+
+    /**
+     * Returns the fixtures files to load.
+     *
+     * @param string $type  The extension of the files.
+     * @param string $in    The directory in which we search the files. If null,
+     *                      we'll use the absoluteFixturesPath property.
+     *
+     * @return \Iterator An iterator through the files.
+     */
+    protected function getFixtureFiles($type = 'sql', $in = null)
+    {
+        $finder = new Finder();
+        $finder->sortByName()->name('*.' . $type);
+
+        return $finder->in(null !== $in ? $in : $this->absoluteFixturesPath);
     }
 }
