@@ -33,9 +33,62 @@ class SyntaxExtension extends \Twig_Extension
 
     public function formatSQL($sql)
     {
-        $sql = preg_replace('/\b(UPDATE|SET|SELECT|FROM|AS|LIMIT|ASC|COUNT|DESC|WHERE|LEFT JOIN|INNER JOIN|RIGHT JOIN|ORDER BY|GROUP BY|IN|LIKE|DISTINCT|DELETE|INSERT|INTO|VALUES|ON|AND|OR)\b/', '<span class="SQLKeyword">\\1</span>', $sql);
+        // list of keywords to prepend a newline in output
+        $newlines = array(
+            'FROM',
+            '(((FULL|LEFT|RIGHT)? ?(OUTER|INNER)?|CROSS|NATURAL)? JOIN)',
+            'VALUES',
+            'WHERE',
+            'ORDER BY',
+            'GROUP BY',
+            'HAVING',
+            'LIMIT',
+        );
 
-        $sql = preg_replace('/\b(FROM|WHERE|INNER JOIN|LEFT JOIN|RIGHT JOIN|ORDER BY|GROUP BY)\b/', '<br />\\1', $sql);
+        // list of keywords to highlight
+        $keywords = array_merge($newlines, array(
+            // base
+            'SELECT', 'UPDATE', 'DELETE', 'INSERT', 'REPLACE',
+            'SET',
+            'INTO',
+            'AS',
+            'DISTINCT',
+
+            // most used methods
+            'COUNT',
+            'AVG',
+            'MIN',
+            'MAX',
+
+            // joins
+            'ON', 'USING',
+
+            // where clause
+            '(IS (NOT)?)?NULL',
+            '(NOT )?IN',
+            '(NOT )?I?LIKE',
+            'AND', 'OR', 'XOR',
+            'BETWEEN',
+
+            // order, group, limit ..
+            'ASC',
+            'DESC',
+            'OFFSET',
+        ));
+
+        $sql = preg_replace(array(
+            '/\b('.implode('|', $newlines).')\b/',
+            '/\b('.implode('|', $keywords).')\b/',
+            '/(\/\*.*\*\/)/',
+            '/(`[^`.]*`)/',
+            '/(([0-9a-zA-Z$_]+)\.([0-9a-zA-Z$_]+))/',
+        ), array(
+            '<br />\\1',
+            '<span class="SQLKeyword">\\1</span>',
+            '<span class="SQLComment">\\1</span>',
+            '<span class="SQLName">\\1</span>',
+            '<span class="SQLName">\\1</span>',
+        ), $sql);
 
         return $sql;
     }
