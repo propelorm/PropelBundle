@@ -23,7 +23,8 @@ Currently supports:
  * Integration with the Form component.
  * Integration with the Security component.
  * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
- * Schema Inheritance
+ * Schema Inheritance.
+ * Symfony2 ACL.
 
 For documentation, see:
 
