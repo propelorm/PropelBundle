@@ -63,7 +63,7 @@ EOT
             }
 
             $connections = $this->getConnections();
-            $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+            $sqlDir = $this->getSqlDir();
 
             $manager = new \PropelSqlManager();
             $manager->setWorkingDirectory($sqlDir);
@@ -82,6 +82,11 @@ EOT
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
         }
+    }
+
+    protected function getSqlDir()
+    {
+        return $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
     }
 
     /**

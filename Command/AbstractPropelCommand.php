@@ -177,26 +177,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
         $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
-        $finalSchemas = array();
-
-        foreach ($kernel->getBundles() as $bundle) {
-            if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
-                $finder  = new Finder();
-                $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
-
-                if (!iterator_count($schemas)) {
-                    continue;
-                }
-                foreach ($schemas as $schema) {
-
-                    $logicalName = $this->transformToLogicalName($schema, $bundle);
-                    $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
-
-                    $finalSchemas[(string)$finalSchema] = array($bundle, $finalSchema);
-                }
-            }
-        }
-
+        $finalSchemas = $this->getFinalSchemas($kernel);
         foreach ($finalSchemas as $schema) {
             list($bundle, $finalSchema) = $schema;
             $packagePrefix = self::getPackagePrefix($bundle, $base);
@@ -241,6 +222,37 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
             file_put_contents($file, $database->asXML());
         }
+    }
+
+    /**
+     * Return a list of final schema files that will be processed.
+     *
+     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
+     *
+     * @return array
+     */
+    protected function getFinalSchemas(KernelInterface $kernel)
+    {
+        $finalSchemas = array();
+        foreach ($kernel->getBundles() as $bundle) {
+            if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
+                $finder  = new Finder();
+                $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
+
+                if (!iterator_count($schemas)) {
+                    continue;
+                }
+                foreach ($schemas as $schema) {
+
+                    $logicalName = $this->transformToLogicalName($schema, $bundle);
+                    $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
+
+                    $finalSchemas[(string)$finalSchema] = array($bundle, $finalSchema);
+                }
+            }
+        }
+
+        return $finalSchemas;
     }
 
     /**
