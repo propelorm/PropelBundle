@@ -23,3 +23,5 @@ foreach ($deps as $dep) {
 
     system(sprintf('cd %s && git fetch -q origin && git reset --hard %s', escapeshellarg($installDir), escapeshellarg($rev)));
 }
+
+system(sprintf('cd %s && php vendors.php', escapeshellarg($vendorDir.'/symfony')));

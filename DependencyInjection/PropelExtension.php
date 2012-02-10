@@ -68,15 +68,13 @@ class PropelExtension extends Extension
             $loader->load('converters.xml');
         }
 
-        if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
-            if (isset($config['build_properties']) && is_array($config['build_properties'])) {
-                $buildProperties = $config['build_properties'];
-            } else {
-                $buildProperties = array();
-            }
-
-            $container->getDefinition('propel.build_properties')->setArguments(array($buildProperties));
+        if (isset($config['build_properties']) && is_array($config['build_properties'])) {
+            $buildProperties = $config['build_properties'];
+        } else {
+            $buildProperties = array();
         }
+
+        $container->getDefinition('propel.build_properties')->setArguments(array($buildProperties));
 
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);

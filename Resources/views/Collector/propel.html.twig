@@ -29,6 +29,17 @@
     <style type="text/css">
     .SQLKeyword {
         color: blue;
+        white-space: nowrap;
+    }
+    .SQLName {
+        color: #464646;
+        white-space: nowrap;
+    }
+    .SQLInfo, .SQLComment {
+        color: gray;
+        display: block;
+        font-size: 0.9em;
+        margin: 3px 0;
     }
     </style>
 
@@ -47,7 +58,7 @@
             <tr>
                 <td>
                     <code>{{ query.sql|format_sql }}</code>
-                    <div style="color: gray;font-size: 0.9em;">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
+                    <div class="SQLInfo">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
                 </td>
             </tr>
             {% endfor %}
