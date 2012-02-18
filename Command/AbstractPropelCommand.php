@@ -96,7 +96,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         if (isset($properties['propel.schema.dir'])) {
             $this->cacheDir = $properties['propel.schema.dir'];
         } else {
-            $this->cacheDir = $kernel->getRootDir().'/cache/' . $kernel->getEnvironment() . '/propel';
+            $this->cacheDir = $kernel->getCacheDir().'/propel';
 
             $filesystem = new Filesystem();
             $filesystem->remove($this->cacheDir);
