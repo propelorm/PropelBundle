@@ -62,8 +62,8 @@ EOT
 
         $ret = $this->callPhing('reverse', array(
             'propel.project'            => $name,
+            'propel.database'           => $defaultConfig['adapter'],
             'propel.database.url'       => $defaultConfig['connection']['dsn'],
-            'propel.database.database'  => $defaultConfig['adapter'],
             'propel.database.user'      => $defaultConfig['connection']['user'],
             'propel.database.password'  => isset($defaultConfig['connection']['password']) ? $defaultConfig['connection']['password'] : '',
         ));
