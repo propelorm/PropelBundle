@@ -27,9 +27,11 @@ class YamlDataLoaderTest extends TestCase
     fb1:
         Id: 10
         Title: Hello
+        Tags: null
     fb2:
         Id: 20
         Title: World
+        Tags: [foo, bar, baz]
 YML;
         $this->tmpfile = (string) tmpfile();
         file_put_contents($this->tmpfile, $fixtures);
@@ -54,6 +56,8 @@ YML;
         $this->assertEquals(2, count($subarray), 'There is two fixtures objects');
         $this->assertArrayHasKey('fb1', $subarray);
         $this->assertArrayHasKey('fb2', $subarray);
+        $this->assertTrue(is_array($subarray['fb2']['Tags']));
+        $this->assertEquals(array('foo', 'bar', 'baz'), $subarray['fb2']['Tags']);
     }
 }
 

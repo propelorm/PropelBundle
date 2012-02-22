@@ -25,16 +25,18 @@ class YamlDataDumperTest extends TestCase
     fb1:
         Id: 10
         Title: Hello
+        Tags: null
     fb2:
         Id: 20
         Title: World
+        Tags: [foo, bar, baz]
 
 YML;
 
         $array = array(
             '\Foo\Bar' => array(
-                'fb1' => array('Id' => 10, 'Title' => 'Hello'),
-                'fb2' => array('Id' => 20, 'Title' => 'World')
+                'fb1' => array('Id' => 10, 'Title' => 'Hello', 'Tags' => null),
+                'fb2' => array('Id' => 20, 'Title' => 'World', 'Tags' => array('foo', 'bar', 'baz'))
             )
         );
 
