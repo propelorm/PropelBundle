@@ -150,6 +150,11 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                 }
                             }
                             elseif (!$isPrimaryKey || ($isPrimaryKey && !$tableMap->isUseIdGenerator())) {
+                                if (!empty($row[$col]) && 'ARRAY' === $column->getType()) {
+                                    $serialized = substr($row[$col], 2, -2);
+                                    $row[$col] = $serialized ? explode(' | ', $serialized) : array();
+                                }
+
                                 // We did not want auto incremented primary keys
                                 $values[$col] = $row[$col];
                             }
