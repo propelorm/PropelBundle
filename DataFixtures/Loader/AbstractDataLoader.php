@@ -162,7 +162,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                 foreach ($data as $name => $value) {
                     try {
-                        if (is_array($value) && 's' == substr($name, -1)) {
+                        if (is_array($value) && 's' === substr($name, -1)) {
                             // many to many relationship
                             $this->loadManyToMany($obj, substr($name, 0, -1), $value);
                             continue;
@@ -170,7 +170,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                     } catch (\PropelException $e) {
                         // Check whether this is actually an array stored in the object.
                         if ('Cannot fetch TableMap for undefined table: '.substr($name, 0, -1) === $e->getMessage()) {
-                            if ($tableMap->getColumn($name)->getType() !== 'ARRAY') {
+                            if ('ARRAY' !== $tableMap->getColumn($name)->getType()) {
                                 throw $e;
                             }
                         }
