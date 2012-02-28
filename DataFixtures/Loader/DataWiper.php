@@ -29,6 +29,9 @@ class DataWiper extends AbstractDataLoader
 
         try {
             $this->con->beginTransaction();
+            if ('mysql' === $this->con->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+                $this->con->exec('SET FOREIGN_KEY_CHECKS = 0;');
+            }
 
             $tables = array();
             foreach ($this->dbMap->getTables() as $eachTable) {
@@ -38,6 +41,9 @@ class DataWiper extends AbstractDataLoader
 
             $this->deleteCurrentData($tables);
 
+            if ('mysql' === $this->con->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+                $this->con->exec('SET FOREIGN_KEY_CHECKS = 1;');
+            }
             $this->con->commit();
         } catch (\Exception $e) {
             $this->con->rollBack();
