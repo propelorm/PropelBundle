@@ -108,7 +108,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                 }
                 $stmt = $this
                     ->con
-                    ->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
+                    ->query(sprintf('SELECT `%s` FROM `%s`', implode('`,`', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
 
                 $resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $stmt->closeCursor();
@@ -185,7 +185,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
             foreach ($tableMap->getColumns() as $column) {
                 if ($column->isForeignKey()) {
                     $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
-                    $relatedTablePos = array_search($relatedTable->getPhpName(), $classes);
+                    $relatedTablePos = array_search($relatedTable->getClassname(), $classes);
 
                     // check if relatedTable is after the current table
                     if ($relatedTablePos > $i) {
