@@ -13,7 +13,7 @@ namespace Propel\PropelBundle\DataFixtures\Loader;
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class WipeDataLoader extends AbstractDataLoader
+class DataWiper extends AbstractDataLoader
 {
     /**
      * Clears the database completely.

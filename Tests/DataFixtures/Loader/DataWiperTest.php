@@ -15,7 +15,7 @@ use Propel\PropelBundle\Tests\TestCase;
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class WipeDataLoaderTest extends TestCase
+class DataWiperTest extends TestCase
 {
     protected $con = null;
 
@@ -50,7 +50,7 @@ SCHEMA;
         $savedBook = \WipeTestBookPeer::doSelectOne(new \Criteria(), $this->con);
         $this->assertInstanceOf('WipeTestBook', $savedBook, 'The fixture has been saved correctly.');
 
-        $builder = $this->getMockBuilder('Propel\PropelBundle\DataFixtures\Loader\WipeDataLoader');
+        $builder = $this->getMockBuilder('Propel\PropelBundle\DataFixtures\Loader\DataWiper');
         $wipeout = $builder
             ->setMethods(array('loadMapBuilders'))
             ->disableOriginalConstructor()
