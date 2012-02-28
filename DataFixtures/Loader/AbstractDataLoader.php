@@ -31,24 +31,11 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * @var array
      */
-    private $deletedClasses;
+    private $deletedClasses = array();
     /**
      * @var array
      */
-    private $object_references;
-
-    /**
-     * Default constructor
-     *
-     * @param string $rootDir   The root directory.
-     */
-    public function __construct($rootDir)
-    {
-        parent::__construct($rootDir);
-
-        $this->deletedClasses = array();
-        $this->object_references = array();
-    }
+    private $object_references = array();
 
     /**
      * Transforms a file containing data in an array.
