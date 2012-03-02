@@ -167,6 +167,15 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                     // foreign key?
                     if ($isARealColumn) {
+                        // self referencing entry
+                        if ($column->isPrimaryKey() && null !== $value) {
+                            if (isset($this->object_references[$class.'_'.$value])) {
+                                $obj = $this->object_references[$class.'_'.$value];
+
+                                continue;
+                            }
+                        }
+
                         if ($column->isForeignKey() && null !== $value) {
                             $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
                             if (!isset($this->object_references[$relatedTable->getClassname().'_'.$value])) {
