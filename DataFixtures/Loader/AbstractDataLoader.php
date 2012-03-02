@@ -31,11 +31,12 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * @var array
      */
-    private $deletedClasses = array();
+    protected $deletedClasses = array();
+
     /**
      * @var array
      */
-    private $object_references = array();
+    protected $object_references = array();
 
     /**
      * Transforms a file containing data in an array.
@@ -51,6 +52,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     public function load($files = array(), $connectionName)
     {
         $nbFiles = 0;
+        $this->deletedClasses = array();
 
         $this->loadMapBuilders($connectionName);
         $this->con = Propel::getConnection($connectionName);
