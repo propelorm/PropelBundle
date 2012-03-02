@@ -23,6 +23,7 @@ class DataWiper extends AbstractDataLoader
      */
     public function load($files = array(), $connectionName)
     {
+        $this->deletedClasses = array();
         $this->loadMapBuilders($connectionName);
 
         $this->con = \Propel::getConnection($connectionName);
