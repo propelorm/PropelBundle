@@ -63,14 +63,16 @@ abstract class AbstractDataHandler
 
         $this->dbMap = Propel::getDatabaseMap($connectionName);
 
-        $finder = new Finder();
-        $files = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../')->exclude('Tests');
+        if (0 === count($this->dbMap->getTables())) {
+            $finder = new Finder();
+            $files = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../')->exclude('Tests');
 
-        foreach ($files as $file) {
-            $class = $this->guessFullClassName($file->getRelativePath(), basename($file, '.php'));
+            foreach ($files as $file) {
+                $class = $this->guessFullClassName($file->getRelativePath(), basename($file, '.php'));
 
-            if (null !== $class) {
-                $this->dbMap->addTableFromMapClass($class);
+                if (null !== $class) {
+                    $this->dbMap->addTableFromMapClass($class);
+                }
             }
         }
     }
