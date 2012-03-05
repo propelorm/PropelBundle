@@ -31,8 +31,7 @@ class YamlDataDumperTest extends TestCase
             ->save($this->con)
         ;
 
-        $filename = tempnam(sys_get_temp_dir(), 'yaml_datadumper_test');
-        @unlink($filename);
+        $filename = $this->getTempFile();
 
         $loader = new YamlDataDumper(__DIR__.'/../../Fixtures/DataFixtures/Loader');
         $loader->dump($filename);
@@ -52,7 +51,5 @@ YAML;
 
         $result = file_get_contents($filename);
         $this->assertEquals($expected, $result);
-
-        @unlink($filename);
     }
 }
