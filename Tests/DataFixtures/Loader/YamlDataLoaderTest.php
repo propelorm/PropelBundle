@@ -10,61 +10,51 @@
 
 namespace Propel\PropelBundle\Tests\DataFixtures\Loader;
 
-use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\Tests\DataFixtures\TestCase;
 use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
+ * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class YamlDataLoaderTest extends TestCase
 {
     protected $tmpfile;
 
-    public function setUp()
+    protected function setUp()
     {
-        $fixtures = <<<YML
-\Foo\Bar:
-    fb1:
-        Id: 10
-        Title: Hello
-    fb2:
-        Id: 20
-        Title: World
-YML;
+        parent::setUp();
+
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+    BookAuthor_1:
+        id: '1'
+        name: 'A famous one'
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+    Book_1:
+        id: '1'
+        name: 'An important one'
+        author_id: BookAuthor_1
+
+YAML;
         $this->tmpfile = (string) tmpfile();
         file_put_contents($this->tmpfile, $fixtures);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         unlink($this->tmpfile);
     }
 
-    public function testTransformDataToArray()
+    public function testYamlLoad()
     {
-        $loader = new TestableYamlDataLoader();
-        $array  = $loader->transformDataToArray($this->tmpfile);
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($this->tmpfile), 'default');
 
-        $this->assertTrue(is_array($array), 'Result is an array');
-        $this->assertEquals(1, count($array), 'There is one class');
-        $this->assertArrayHasKey('\Foo\Bar', $array);
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(1, $books);
 
-        $subarray = $array['\Foo\Bar'];
-        $this->assertTrue(is_array($subarray), 'Result contains a sub-array');
-        $this->assertEquals(2, count($subarray), 'There is two fixtures objects');
-        $this->assertArrayHasKey('fb1', $subarray);
-        $this->assertArrayHasKey('fb2', $subarray);
-    }
-}
-
-class TestableYamlDataLoader extends YamlDataLoader
-{
-    public function __construct()
-    {
-    }
-
-    public function transformDataToArray($data)
-    {
-        return parent::transformDataToArray($data);
+        $book = $books[0];
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor', $book->getBookAuthor());
     }
 }
