@@ -19,12 +19,8 @@ use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
  */
 class XmlDataLoaderTest extends TestCase
 {
-    protected $tmpfile;
-
-    protected function setUp()
+    public function testXmlLoad()
     {
-        parent::setUp();
-
         $fixtures = <<<XML
 <Fixtures>
     <BookAuthor Namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
@@ -35,19 +31,11 @@ class XmlDataLoaderTest extends TestCase
     </Book>
 </Fixtures>
 XML;
-        $this->tmpfile = (string) tmpfile();
-        file_put_contents($this->tmpfile, $fixtures);
-    }
 
-    protected function tearDown()
-    {
-        unlink($this->tmpfile);
-    }
+        $filename = $this->getTempFile($fixtures);
 
-    public function testXmlLoad()
-    {
         $loader = new XmlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
-        $loader->load(array($this->tmpfile), 'default');
+        $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
         $this->assertCount(1, $books);

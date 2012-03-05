@@ -22,6 +22,13 @@ class TestCase extends BaseTestCase
      */
     protected $con;
 
+    /**
+     * The list of created temp files to be removed.
+     *
+     * @var array
+     */
+    protected $tmpFiles = array();
+
     protected function setUp()
     {
         parent::setUp();
@@ -56,5 +63,33 @@ XML;
         }
 
         $this->con = $builder->build();
+    }
+
+    protected function tearDown()
+    {
+        foreach ($this->tmpFiles as $eachFile) {
+            @unlink($eachFile);
+        }
+
+        $this->tmpFiles = array();
+    }
+
+    /**
+     * Return the name of a created temporary file containing the given content.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function getTempFile($content = '')
+    {
+        $filename = tempnam(sys_get_temp_dir(), 'propelbundle-datafixtures-test');
+        @unlink($filename);
+
+        file_put_contents($filename, $content);
+
+        $this->tmpFiles[] = $filename;
+
+        return $filename;
     }
 }
