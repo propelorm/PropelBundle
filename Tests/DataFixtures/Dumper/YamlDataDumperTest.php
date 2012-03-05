@@ -10,56 +10,21 @@
 
 namespace Propel\PropelBundle\Tests\DataFixtures\Dumper;
 
-use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\Tests\DataFixtures\TestCase;
 use Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
+ * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class YamlDataDumperTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->loadPropelQuickBuilder();
-
-        $schema = <<<XML
-<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
-    <table name="book">
-        <column name="id" type="integer" primaryKey="true" />
-        <column name="name" type="varchar" size="255" />
-        <column name="author_id" type="integer" required="false" defaultValue="null" />
-
-        <foreign-key foreignTable="book_author" onDelete="RESTRICT" onUpdate="CASCADE">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-    </table>
-
-    <table name="book_author">
-        <column name="id" type="integer" primaryKey="true" />
-        <column name="name" type="varchar" size="255" />
-    </table>
-</database>
-XML;
-
-        $builder = new \PropelQuickBuilder();
-        $builder->setSchema($schema);
-        if (!class_exists('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book')) {
-            $builder->setClassTargets(array('peer', 'object', 'query', 'peerstub', 'objectstub', 'querystub'));
-        } else {
-            $builder->setClassTargets(array());
-        }
-
-        $this->con = $builder->build();
-    }
-
     public function testYamlDump()
     {
         $author = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor();
         $author->setName('A famous one')->save($this->con);
 
-        $book = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book;
+        $book = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book();
         $book
             ->setName('An important one')
             ->setAuthorId(1)
