@@ -20,7 +20,7 @@
         <strong>Propel</strong>
         <span class="count">
             <span>{{ collector.querycount }}</span>
-            <span>{{ '%0.0f'|format(collector.queriesduration * 1000) }} ms</span>
+            <span>{{ '%0.0f'|format(collector.time * 1000) }} ms</span>
         </span>
     </span>
 {% endblock %}
