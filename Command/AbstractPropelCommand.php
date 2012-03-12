@@ -108,7 +108,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         // build.properties
         $this->createBuildPropertiesFile($kernel, $this->cacheDir.'/build.properties');
 
-        // buidtime-conf.xml
+        // buildtime-conf.xml
         $this->createBuildTimeFile($this->cacheDir.'/buildtime-conf.xml');
 
         // Verbosity
