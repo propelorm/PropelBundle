@@ -189,13 +189,13 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                     if ($isARealColumn) {
                         if ($column->isForeignKey() && null !== $value) {
                             $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
-                            if (!isset($this->object_references[$relatedTable->getPhpName().'_'.$value])) {
+                            if (!isset($this->object_references[$relatedTable->getClassname().'_'.$value])) {
                                 throw new \InvalidArgumentException(
-                                    sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getPhpName())
+                                    sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getClassname())
                                 );
                             }
                             $value = $this
-                                ->object_references[$relatedTable->getPhpName().'_'.$value]
+                                ->object_references[$relatedTable->getClassname().'_'.$value]
                                 ->getByName($column->getRelatedName(), BasePeer::TYPE_COLNAME);
                         }
                     }
