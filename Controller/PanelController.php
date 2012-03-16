@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\Controller;
 
 use Symfony\Bridge\Propel1\DataCollector\PropelDataCollector;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
@@ -39,4 +40,44 @@ class PanelController extends ContainerAware
         );
     }
 
+    /**
+     * Renders the profiler panel for the given token.
+     *
+     * @param string $token The profiler token
+     * @param string $connection The connection name
+     * @param integer $query
+     *
+     * @return Response A Response instance
+     */
+    public function explainAction($token, $connection, $query)
+    {
+        $profiler = $this->container->get('profiler');
+        $profiler->disable();
+
+        $profile = $profiler->loadProfile($token);
+        $queries = $profile->getCollector('propel')->getQueries();
+
+        if (!isset($queries[$query])) {
+            return new Response('This query does not exist.');
+        }
+
+        // Open the connection
+        $con = \Propel::getConnection($connection);
+
+        // Get the adapter
+        $db = \Propel::getDB($connection);
+
+        try {
+            $stmt = $db->doExplainPlan($con, $queries[$query]['sql']);
+            $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return new Response('<div class="error">This query cannot be explained.</div>');
+        }
+
+        return $this->container->get('templating')->renderResponse('PropelBundle:Panel:explain.html.twig', array(
+            'data' => $results,
+            'query' => $query,
+        ));
+
+    }
 }

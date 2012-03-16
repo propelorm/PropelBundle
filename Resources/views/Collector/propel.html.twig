@@ -41,6 +41,23 @@
         font-size: 0.9em;
         margin: 3px 0;
     }
+
+    .SQLExplain {
+       margin: 5px;
+    }
+
+    .SQLExplain .error {
+        background-color: #F2DEDE;
+        border-color: #EED3D7;
+        color: #B94A48;
+        padding: 8px 35px 8px 14px;
+        font-weight: bold;
+    }
+
+    #content .SQLExplain h2 {
+        font-size: 17px;
+        margin-bottom: 0;
+    }
     </style>
 
     <h2>Queries</h2>
@@ -54,11 +71,27 @@
         {% if not collector.querycount %}
             <tr><td>No queries.</td></tr>
         {% else %}
-            {% for query in collector.queries %}
+            {% for i, query in collector.queries %}
             <tr>
                 <td>
                     <code>{{ query.sql|format_sql }}</code>
-                    <div class="SQLInfo">Time: {{ query.time }} - Memory: {{ query.memory }}</div>
+                    {% if app.request.query.has('query') and app.request.query.get('query') == i %}
+                        <div class="SQLExplain">
+                        {% render 'PropelBundle:Panel:explain' with {
+                            'token': token,
+                            'panel': 'propel',
+                            'query': app.request.query.get('query'),
+                            'connection': app.request.query.get('connection')
+                        } %}
+                        </div>
+                    {% endif %}
+                    <div class="SQLInfo">
+                        Time: {{ query.time }} - Memory: {{ query.memory }} - Connection: {{ query.connection }}
+
+                        {% if app.request.query.get('query', -1) != i %}
+                            - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}">Explain the query</a>
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
             {% endfor %}
