@@ -47,7 +47,7 @@ class PanelController extends ContainerAware
      * @param string $connection The connection name
      * @param integer $query
      *
-     * @return Response A Response instance
+     * @return Symfony\Component\HttpFoundation\Response A Response instance
      */
     public function explainAction($token, $connection, $query)
     {
