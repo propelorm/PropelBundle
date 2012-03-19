@@ -74,6 +74,7 @@
             {% for i, query in collector.queries %}
             <tr>
                 <td>
+                    <a name="propel-query-{{ i }}" ></a>
                     <code>{{ query.sql|format_sql }}</code>
                     {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                         <div class="SQLExplain">
@@ -89,7 +90,7 @@
                         Time: {{ query.time }} - Memory: {{ query.memory }} - Connection: {{ query.connection }}
 
                         {% if app.request.query.get('query', -1) != i %}
-                            - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}">Explain the query</a>
+                            - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}#propel-query-{{ i }}">Explain the query</a>
                         {% endif %}
                     </div>
                 </td>
