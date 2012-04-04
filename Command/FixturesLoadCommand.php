@@ -51,6 +51,7 @@ class FixturesLoadCommand extends AbstractPropelCommand
     {
         $this
             ->setDescription('Load XML, SQL and/or YAML fixtures')
+            ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle to load fixtures from')
             ->addOption(
                 'dir', 'd', InputOption::VALUE_OPTIONAL,
                 'The directory where XML, SQL and/or YAML fixtures files are located',
@@ -117,7 +118,17 @@ EOT
         $this->writeSection($output, '[Propel] You are running the command: propel:fixtures:load');
 
         $this->filesystem = new Filesystem();
-        $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
+    
+        if ('@' === substr($bundle = $input->getArgument('bundle'), 0, 1)) {
+            $bundleName = substr($bundle, 1);
+            $this->absoluteFixturesPath = $this
+                ->getContainer()
+                ->get('kernel')
+                ->getBundle($bundleName)
+                ->getPath().DIRECTORY_SEPARATOR.'/Resources/fixtures';
+        } else {
+            $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
+        }
 
         if ($input->getOption('verbose')) {
            $this->additionalPhingArgs[] = 'verbose';
