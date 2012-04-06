@@ -43,7 +43,11 @@ class FixturesLoadCommand extends AbstractPropelCommand
      * @var \Symfony\Component\Filesystem\Filesystem
      */
     private $filesystem = null;
-
+    /**
+     * Bundle the fixtures are being loaded from
+     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
+     */
+    private $bundle;
     /**
      * @see Command
      */
@@ -119,13 +123,12 @@ EOT
 
         $this->filesystem = new Filesystem();
     
-        if ('@' === substr($bundle = $input->getArgument('bundle'), 0, 1)) {
-            $bundleName = substr($bundle, 1);
-            $this->absoluteFixturesPath = $this
+        if ('@' === substr($input->getArgument('bundle'), 0, 1)) {
+            $this->bundle = $this
                 ->getContainer()
                 ->get('kernel')
-                ->getBundle($bundleName)
-                ->getPath().DIRECTORY_SEPARATOR.'/Resources/fixtures';
+                ->getBundle(substr($input->getArgument('bundle'), 1));
+            $this->absoluteFixturesPath = $this->bundle->getPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures';
         } else {
             $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
         }
@@ -309,6 +312,21 @@ EOT
         $finder = new Finder();
         $finder->sortByName()->name('*.' . $type);
 
-        return $finder->in(null !== $in ? $in : $this->absoluteFixturesPath);
+        $files = $finder->in(null !== $in ? $in : $this->absoluteFixturesPath);
+
+        if (null === $this->bundle) {
+             
+            return $files;
+        }
+        
+        $finalFixtureFiles = array();
+
+        foreach ($files as $file) {
+            $fixtureFilePath = str_replace($this->bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+            $logicalName = sprintf('@%s/Resources/fixtures/%s', $this->bundle->getName(), $fixtureFilePath);
+            $finalFixtureFiles[] = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
+        }
+
+        return new \ArrayIterator($finalFixtureFiles);
     }
 }
