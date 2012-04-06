@@ -315,7 +315,6 @@ EOT
         $files = $finder->in(null !== $in ? $in : $this->absoluteFixturesPath);
 
         if (null === $this->bundle) {
-             
             return $files;
         }
         
