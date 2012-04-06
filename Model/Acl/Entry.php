@@ -73,8 +73,8 @@ class Entry extends BaseEntry
     {
         if (null === $modelEntry->getFieldName()) {
             return new AclEntry($modelEntry, $acl);
-        } else {
-            return new AclFieldEntry($modelEntry, $acl);
         }
+
+        return new AclFieldEntry($modelEntry, $acl);
     }
 }
