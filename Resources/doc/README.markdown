@@ -35,13 +35,13 @@ Currently supports:
     > git submodule add https://github.com/Xosofox/phing.git vendor/phing
 
     > git submodule add https://github.com/propelorm/Propel.git vendor/propel
-    
+
  * Instead of doing this manually, you can use the Symfony vendor management via the deps file:
- 
+
    See http://www.propelorm.org/cookbook/symfony2/working-with-symfony2.html#via_symfony2_vendor_management
 
-   If you are using a Symfony2 2.x.x version (actually, a version which is not 2.1 or above), be sure to deps.lock the PropelBundle to a commit on the 2.0 branch, 
-   which does not use the Bridge  
+   If you are using a Symfony2 2.x.x version (actually, a version which is not 2.1 or above), be sure to deps.lock the PropelBundle to a commit on the 2.0 branch,
+   which does not use the Bridge
 
  * Register this bundle in the `AppKernel` class:
 
@@ -237,7 +237,7 @@ You can define which connection to use:
 
 You can load your own fixtures by using the following command:
 
-    > php app/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]]
+    > php app/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]] [bundle]
 
 As usual, `--connection` allows to specify a connection.
 
@@ -277,6 +277,11 @@ A valid _YAML fixtures file_ is:
          ObjectId: o1
          Description: Hello world !
 ```
+
+You can load all fixtures files from a given _bundle_:
+
+    > php app/console propel:fixtures:load @MySuperBundle
+
 
 You can dump data into YAML fixtures file by using this command:
 
