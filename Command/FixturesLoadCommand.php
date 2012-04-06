@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 use Propel\PropelBundle\Command\AbstractPropelCommand;
 use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
@@ -128,7 +129,7 @@ EOT
                 ->getContainer()
                 ->get('kernel')
                 ->getBundle(substr($input->getArgument('bundle'), 1));
-            $this->absoluteFixturesPath = $this->bundle->getPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures';
+            $this->absoluteFixturesPath = $this->getFixturesPath($this->bundle);
         } else {
             $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
         }
@@ -321,11 +322,21 @@ EOT
         $finalFixtureFiles = array();
 
         foreach ($files as $file) {
-            $fixtureFilePath = str_replace($this->bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+            $fixtureFilePath = str_replace($this->getFixturesPath($this->bundle) . DIRECTORY_SEPARATOR, '', $file->getRealPath());
             $logicalName = sprintf('@%s/Resources/fixtures/%s', $this->bundle->getName(), $fixtureFilePath);
             $finalFixtureFiles[] = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
         }
 
         return new \ArrayIterator($finalFixtureFiles);
     }
+
+    /**
+     * Returns the path the command will look into to find fixture files
+     *
+     * @return String
+     */
+    protected function getFixturesPath(BundleInterface $bundle)
+    {
+        return $bundle->getPath().DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'fixtures';
+    }   
 }
