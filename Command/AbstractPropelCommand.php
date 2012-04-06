@@ -505,7 +505,7 @@ EOT;
         return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
     }
 
-    private function getFileLocator()
+    protected function getFileLocator()
     {
         return $this->getContainer()->get('file_locator');
     }
