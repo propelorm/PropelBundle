@@ -31,6 +31,7 @@ class PanelController extends ContainerAware
         return $templating->renderResponse(
             'PropelBundle:Panel:configuration.html.twig',
             array(
+                'propel_version'     => \Propel::VERSION,
                 'configuration'      => $this->container->get('propel.configuration')->getParameters(),
                 'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
                 'logging'            => $this->container->getParameter('propel.logging'),
