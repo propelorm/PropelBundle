@@ -37,6 +37,14 @@ class PropelExtension extends Extension
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
 
+        // Composer
+        if (file_exists($propelPath = $container->getParameter('kernel.root_dir') . '/../vendor/propel/propel1')) {
+            $container->setParameter('propel.path', $propelPath);
+        }
+        if (file_exists($phingPath = $container->getParameter('kernel.root_dir') . '/../vendor/phing/phing/classes')) {
+            $container->setParameter('propel.phing_path', $phingPath);
+        }
+
         if (!$container->hasParameter('propel.path')) {
             if (!isset($config['path'])) {
                 throw new \InvalidArgumentException('PropelBundle expects a "path" parameter that must contain the absolute path to the Propel ORM vendor library. The "path" parameter must be defined under the "propel" root node in your configuration.');
