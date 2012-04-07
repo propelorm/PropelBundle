@@ -33,6 +33,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         return new ContainerBuilder(new ParameterBag(array(
             'kernel.debug'      => false,
+            'kernel.root_dir'   => __DIR__ . '/../',
         )));
     }
 

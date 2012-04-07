@@ -16,11 +16,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * InsertSqlCommand.
+ * SqlInsertCommand.
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class InsertSqlCommand extends AbstractPropelCommand
+class SqlInsertCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -32,16 +32,16 @@ class InsertSqlCommand extends AbstractPropelCommand
             ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:insert-sql</info> command connects to the database and executes all SQL statements found in <comment>app/propel/sql/*schema.sql</comment>.
+The <info>%command.name%</info> command connects to the database and executes all SQL statements found in <comment>app/propel/sql/*schema.sql</comment>.
 
-  <info>php app/console propel:insert-sql</info>
+  <info>php %command.full_name%</info>
 
 The <info>--force</info> parameter has to be used to actually insert SQL.
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
 EOT
             )
-            ->setName('propel:insert-sql')
+            ->setName('propel:sql:insert')
         ;
     }
 
@@ -55,7 +55,7 @@ EOT
         // Bad require but needed :(
         require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
 
-        $this->writeSection($output, '[Propel] You are running the command: propel:insert-sql');
+        $this->writeSection($output, '[Propel] You are running the command: propel:sql:insert');
 
         if ($input->getOption('force')) {
             if ($input->getOption('verbose')) {
@@ -71,12 +71,12 @@ EOT
 
             if ($input->getOption('connection')) {
                 list($name, $config) = $this->getConnection($input, $output);
-                $this->doInsertSql($manager, $output, $name);
+                $this->doSqlInsert($manager, $output, $name);
             } else {
                 foreach ($connections as $name => $config) {
                     $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
                         $name, $this->getApplication()->getKernel()->getEnvironment()));
-                    $this->doInsertSql($manager, $output, $name);
+                    $this->doSqlInsert($manager, $output, $name);
                 }
             }
         } else {
@@ -86,7 +86,7 @@ EOT
 
     protected function getSqlDir()
     {
-        return $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+        return sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
     }
 
     /**
@@ -94,7 +94,7 @@ EOT
      * @param OutputInterface $output
      * @param string $connectionName
      */
-    protected function doInsertSql(\PropelSqlManager $manager, OutputInterface $output, $connectionName)
+    protected function doSqlInsert(\PropelSqlManager $manager, OutputInterface $output, $connectionName)
     {
         try {
             $statusCode = $manager->insertSql($connectionName);

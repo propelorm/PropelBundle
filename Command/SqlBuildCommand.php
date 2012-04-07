@@ -21,12 +21,12 @@ use Symfony\Component\Finder\Finder;
 use Propel\PropelBundle\Command\AbstractPropelCommand;
 
 /**
- * BuildCommand.
+ * SqlBuildCommand.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildSqlCommand extends AbstractPropelCommand
+class SqlBuildCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -36,12 +36,12 @@ class BuildSqlCommand extends AbstractPropelCommand
         $this
             ->setDescription('Build the SQL generation code for all tables based on Propel XML schemas')
             ->setHelp(<<<EOT
-The <info>propel:build-sql</info> command builds the SQL table generation code based on the XML schemas defined in all Bundles.
+The <info>%command.name%</info> command builds the SQL table generation code based on the XML schemas defined in all Bundles.
 
-  <info>php app/console propel:build-sql</info>
+  <info>php %command.full_name%</info>
 EOT
             )
-            ->setName('propel:build-sql')
+            ->setName('propel:sql:build')
         ;
     }
 
@@ -52,7 +52,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:build-sql');
+        $this->writeSection($output, '[Propel] You are running the command: propel:sql:build');
 
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
@@ -94,7 +94,7 @@ EOT
             $this->writeSection($output, array(
                 '[Propel] Error',
                 '',
-                'An error has occured during the "build-sql" task process. To get more details, run the command with the "--verbose" option.'
+                'An error has occured during the "%command.name%" command process. To get more details, run the command with the "--verbose" option.'
             ), 'fg=white;bg=red');
         }
     }

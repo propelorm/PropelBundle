@@ -15,12 +15,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * BuildCommand.
+ * ModelBuildCommand.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildModelCommand extends AbstractPropelCommand
+class ModelBuildCommand extends AbstractPropelCommand
 {
     /**
      * @see Command
@@ -30,12 +30,12 @@ class BuildModelCommand extends AbstractPropelCommand
         $this
             ->setDescription('Build the Propel Object Model classes based on XML schemas')
             ->setHelp(<<<EOT
-The <info>propel:build-model</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles.
+The <info>%command.name%</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles.
 
-  <info>php app/console propel:build-model</info>
+  <info>php app/console %command.full_name%</info>
 EOT
             )
-            ->setName('propel:build-model')
+            ->setName('propel:model:build')
         ;
     }
 
@@ -46,7 +46,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:build-model');
+        $this->writeSection($output, '[Propel] You are running the command: propel:model:build');
 
         if ($input->getOption('verbose')) {
            $this->additionalPhingArgs[] = 'verbose';

@@ -11,8 +11,8 @@
 namespace Propel\PropelBundle\Command;
 
 use Propel\PropelBundle\Command\AbstractPropelCommand;
-use Propel\PropelBundle\Command\BuildModelCommand;
-use Propel\PropelBundle\Command\BuildSqlCommand;
+use Propel\PropelBundle\Command\ModelBuildCommand;
+use Propel\PropelBundle\Command\SqlBuildCommand;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,7 +52,7 @@ class BuildCommand extends AbstractPropelCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$input->getOption('sql')) {
-            $modelCommand = new BuildModelCommand();
+            $modelCommand = new ModelBuildCommand();
             $modelCommand->setApplication($this->getApplication());
             $modelCommand->execute($input, $output);
         }
@@ -64,7 +64,7 @@ class BuildCommand extends AbstractPropelCommand
         }
 
         if ($input->getOption('insert-sql')) {
-            $insertCommand = new InsertSqlCommand();
+            $insertCommand = new SqlInsertCommand();
             $insertCommand->setApplication($this->getApplication());
 
             // By-pass the '--force' required option

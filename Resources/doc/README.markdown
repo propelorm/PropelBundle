@@ -2,22 +2,6 @@
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
-Currently supports:
-
- * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/config/*schema.xml`.
- * Insertion of SQL statements.
- * Runtime autoloading of Propel and generated classes.
- * Propel runtime initialization through the XML configuration.
- * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html).
- * Reverse engineering from [existing database](http://www.propelorm.org/cookbook/working-with-existing-databases.html).
- * Integration to the Symfony2 Profiler.
- * Load SQL, YAML and XML fixtures.
- * Create/Drop databases.
- * Integration with the Form component.
- * Integration with the Security component.
- * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
- * Schema Inheritance
-
 ## Installation ##
 
  * Clone this bundle in the `vendor/bundles/Propel` directory:
@@ -175,9 +159,9 @@ Call the application console with the `propel:build` command:
 
 ### Insert SQL ###
 
-Call the application console with the `propel:insert-sql` command:
+Call the application console with the `propel:sql:insert` command:
 
-    > php app/console propel:insert-sql [--force]
+    > php app/console propel:sql:insert [--force]
 
 Note that the `--force` option is needed to actually execute the SQL statements.
 
@@ -427,7 +411,7 @@ This will switch the provider to be the `AuditableAclProvider` of the `PropelBun
 The auditing of this provider is set to a sensible default. It will audit all ACL failures but no success by default.
 If you also want to audit successful authorizations, you need to update the auditing of the given ACL accordingly.
 
-After adding the provider, you only need to run the `propel:init-acl` command in order to get the model generated.
+After adding the provider, you only need to run the `propel:init:acl` command in order to get the model generated.
 If you already got an ACL database, the schema of the `PropelBundle` is compatible with the default schema of Symfony2.
 
 ### Separate database connection for ACL ###

@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\Output;
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class InitAclCommand extends InsertSqlCommand
+class InitAclCommand extends SqlInsertCommand
 {
     protected function configure()
     {
@@ -30,22 +30,22 @@ class InitAclCommand extends InsertSqlCommand
             ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:init-acl</info> command connects to the database and executes all SQL statements required to setup the ACL database, it also generates the ACL model.
+The <info>%command.name%</info> command connects to the database and executes all SQL statements required to setup the ACL database, it also generates the ACL model.
 
-  <info>php app/console propel:init-acl</info>
+  <info>php %command.full_name%</info>
 
 The <info>--force</info> parameter has to be used to actually insert SQL.
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
 EOT
         )
-            ->setName('propel:init-acl')
+            ->setName('propel:init:acl')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:init-acl');
+        $this->writeSection($output, '[Propel] You are running the command: propel:init:acl');
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }
@@ -64,7 +64,7 @@ EOT
 
         // Prepare SQL directory
         $sqlDirectory = $this->getSqlDir();
-        $filesystem = new Filesystem();
+        $filesystem   = new Filesystem();
         $filesystem->remove($sqlDirectory);
         $filesystem->mkdir($sqlDirectory);
 
@@ -91,6 +91,9 @@ EOT
 
     protected function getSqlDir()
     {
-        return $this->getApplication()->getKernel()->getRootDir() . '/cache/' . $this->getApplication()->getKernel()->getEnvironment() . '/propel/acl/sql';
+        return sprintf('%s/cache/%s/propel/acl/sql',
+            $this->getApplication()->getKernel()->getRootDir(),
+            $this->getApplication()->getKernel()->getEnvironment()
+        );
     }
 }
