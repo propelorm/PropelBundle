@@ -58,7 +58,7 @@ class BuildCommand extends AbstractPropelCommand
         }
 
         if (!$input->getOption('classes')) {
-            $sqlCommand = new BuildSQLCommand();
+            $sqlCommand = new SqlBuildCommand();
             $sqlCommand->setApplication($this->getApplication());
             $sqlCommand->execute($input, $output);
         }
