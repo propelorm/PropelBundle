@@ -319,9 +319,13 @@ Note that the `--force` option is needed to actually execute the deletion.
 
 You can generate stub classes based on your `schema.xml` in a given bundle:
 
-    > php app/console propel:form:generate [-f|--force] bundle
+    > php app/console propel:form:generate [-f|--force] bundle [models1] ... [modelsN]
 
 It will write Form Type classes in `src/YourVendor/YourBundle/Form/Type`.
+
+You can choose which Form Type to build by specifing Model names:
+
+    > php app/console propel:form:generate @MySuperBundle Book Author
 
 
 ## PropelParamConverter ##

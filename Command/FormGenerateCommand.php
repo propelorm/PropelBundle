@@ -35,6 +35,7 @@ class FormGenerateCommand extends PropelGeneratorAwareCommand
         $this
             ->setDescription('Generate Form types stubs based on the schema.xml')
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
+            ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command allows you to quickly generate Form Type stubs for a given bundle.
@@ -65,7 +66,7 @@ EOT
             if ($schemas) {
                 foreach ($schemas as $fileName => $array) {
                     foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
-                        $this->createFormTypeFromDatabase($bundle, $database, $output, $input->getOption('force'));
+                        $this->createFormTypeFromDatabase($bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
                     }
                 }
             } else {
@@ -74,11 +75,15 @@ EOT
         }
     }
 
-    private function createFormTypeFromDatabase(BundleInterface $bundle, \Database $database, OutputInterface $output, $force = false)
+    private function createFormTypeFromDatabase(BundleInterface $bundle, \Database $database, $models, OutputInterface $output, $force = false)
     {
         $dir = $this->createDirectory($bundle, $output);
 
         foreach ($database->getTables() as $table) {
+            if (0 < count($models) && !in_array($table->getPhpName(), $models)) {
+                continue;
+            }
+
             $file = new \SplFileInfo(sprintf('%s/%sType.php', $dir, $table->getPhpName()));
 
             if (!file_exists($file) || true === $force) {
