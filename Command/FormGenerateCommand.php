@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * This file is part of the PropelBundle package.
  * For the full copyright and license information, please view the LICENSE
@@ -13,14 +14,19 @@ namespace Propel\PropelBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author William DURAND <william.durand1@gmail.com>
  */
-class FormGenerateCommand extends ContainerAwareCommand
+class FormGenerateCommand extends PropelGeneratorAwareCommand
 {
+    const DEFAULT_FORM_TYPE_DIRECTORY = '/Form/Type';
+
     /**
      * @see Command
      */
@@ -29,7 +35,15 @@ class FormGenerateCommand extends ContainerAwareCommand
         $this
             ->setDescription('Generate Form types stubs based on the schema.xml')
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
-            ->setHelp('')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
+            ->setHelp(<<<EOT
+The <info>%command.name%</info> command allows you to quickly generate Form Type stubs for a given bundle.
+
+  <info>php app/console %command.full_name%</info>
+
+The <info>--force</info> parameter allows you to overwrite existing files.
+EOT
+        )
             ->setName('propel:form:generate');
     }
 
@@ -40,38 +54,77 @@ class FormGenerateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $propelPath = $this->getContainer()->getParameter('propel.path');
-        require_once sprintf('%s/generator/lib/builder/util/XmlToAppData.php', $propelPath);
-        require_once sprintf('%s/generator/lib/config/GeneratorConfig.php', $propelPath);
-        require_once sprintf('%s/generator/lib/config/QuickGeneratorConfig.php', $propelPath);
-
-        set_include_path(sprintf('%s/generator/lib', $propelPath) . PATH_SEPARATOR . get_include_path());
-
         if ('@' === substr($input->getArgument('bundle'), 0, 1)) {
             $bundle = $this
                 ->getContainer()
                 ->get('kernel')
                 ->getBundle(substr($input->getArgument('bundle'), 1));
 
-            if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
-                $finder  = new Finder();
-                $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
+            $schemas = $this->getSchemasFromBundle($bundle);
 
-                $array = array();
-                foreach ($schemas as $schema) {
-                    $array[] = $schema->getPathName();
+            if ($schemas) {
+                foreach ($schemas as $fileName => $array) {
+                    foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
+                        $this->createFormTypeFromDatabase($bundle, $database, $output, $input->getOption('force'));
+                    }
                 }
+            } else {
+                $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
             }
-
-            $transformer = new \XmlToAppData(null, null, 'UTF-8');
-            $transformer->setGeneratorConfig(new \QuickGeneratorConfig());
-
-            $appDatas = array();
-            foreach ($array as $xmlFile) {
-                $appDatas[] = $transformer->parseFile($xmlFile);
-            }
-
-            var_dump($appDatas);
         }
+    }
+
+    private function createFormTypeFromDatabase(BundleInterface $bundle, \Database $database, OutputInterface $output, $force = false)
+    {
+        $dir = $this->createDirectory($bundle, $output);
+
+        foreach ($database->getTables() as $table) {
+            $file = new \SplFileInfo(sprintf('%s/%sType.php', $dir, $table->getPhpName()));
+
+            if (!file_exists($file) || true === $force) {
+                $this->writeFormType($bundle, $table, $file, $force, $output);
+            } else {
+                $output->writeln(sprintf('File <comment>%-60s</comment> exists, skipped. Try the <info>--force</info> option.', $this->getRelativeFileName($file)));
+            }
+        }
+    }
+
+    private function createDirectory(BundleInterface $bundle, OutputInterface $output)
+    {
+        $fs = new Filesystem();
+
+        if (!is_dir($dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
+            $fs->mkdir($dir);
+            $this->writeNewDirectory($output, $dir);
+        }
+
+        return $dir;
+    }
+
+    private function writeFormType(BundleInterface $bundle, \Table $table, \SplFileInfo $file, $force, OutputInterface $output)
+    {
+        $modelName       = $table->getPhpName();
+        $formTypeContent = file_get_contents(__DIR__ . '/../Resources/skeleton/FormType.php');
+
+        $formTypeContent = str_replace('##NAMESPACE##', $bundle->getNamespace() . str_replace('/', '\\', self::DEFAULT_FORM_TYPE_DIRECTORY), $formTypeContent);
+        $formTypeContent = str_replace('##CLASS##', $modelName . 'Type', $formTypeContent);
+        $formTypeContent = str_replace('##FQCN##', sprintf('%s\%s', $table->getNamespace(), $modelName), $formTypeContent);
+        $formTypeContent = str_replace('##TYPE_NAME##', strtolower($modelName), $formTypeContent);
+        $formTypeContent = $this->addFields($table, $formTypeContent);
+
+        file_put_contents($file->getPathName(), $formTypeContent);
+        $this->writeNewFile($output, $this->getRelativeFileName($file) . ($force ? ' (forced)' : ''));
+    }
+
+    private function addFields(\Table $table, $formTypeContent)
+    {
+        $buildCode = '';
+        foreach ($table->getColumns() as $column) {
+            if (!$column->isPrimaryKey()) {
+                $buildCode .= sprintf("\n        \$builder->add('%s');", lcfirst($column->getPhpName()));
+            }
+        }
+
+        return str_replace('##BUILD_CODE##', $buildCode, $formTypeContent);
     }
 }

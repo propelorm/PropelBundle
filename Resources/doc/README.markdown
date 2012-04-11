@@ -315,6 +315,15 @@ The table arguments define which table will be delete, by default all table.
 Note that the `--force` option is needed to actually execute the deletion.
 
 
+### Form Types ###
+
+You can generate stub classes based on your `schema.xml` in a given bundle:
+
+    > php app/console propel:form:generate [-f|--force] bundle
+
+It will write Form Type classes in `src/YourVendor/YourBundle/Form/Type`.
+
+
 ## PropelParamConverter ##
 
 You can use the Propel ParamConverter with the SensioFrameworkExtraBundle.

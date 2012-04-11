@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Tests\Command;
+namespace Propel\PropelBundle\Tests\Command;
 
 use Symfony\Component\Filesystem\Filesystem;
 

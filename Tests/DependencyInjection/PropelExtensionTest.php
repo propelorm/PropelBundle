@@ -44,9 +44,9 @@ class PropelExtensionTest extends TestCase
         $container = $this->getContainer();
         $loader = new PropelExtension();
         $loader->load(array(array(
-            'path' => '/propel',
+            'path'       => '/propel',
             'phing_path' => '/phing',
-            'dbal' => array()
+            'dbal'       => array()
         )), $container);
         $this->assertEquals('/propel',  $container->getParameter('propel.path'), '->load() requires the Propel path');
         $this->assertEquals('/phing',   $container->getParameter('propel.phing_path'), '->load() requires the Phing path');
@@ -270,7 +270,7 @@ class PropelExtensionTest extends TestCase
         $this->assertArrayHasKey('query',    $config['datasources']['default']['connection']['settings']['queries']);
         $this->assertEquals('SET NAMES UTF8', $config['datasources']['default']['connection']['settings']['queries']['query']);
     }
-    
+
     public function testDbalWithSlaves()
     {
         $container = $this->getContainer();
@@ -299,13 +299,13 @@ class PropelExtensionTest extends TestCase
                 ),
             ),
         );
-        
+
         $configs = array($config_base, array('dbal' => $config_mysql));
         $loader->load($configs, $container);
 
         $arguments = $container->getDefinition('propel.configuration')->getArguments();
         $config = $arguments[0];
-        
+
         $this->assertArrayHasKey('slaves', $config['datasources']['default']);
         $this->assertArrayHasKey('connection', $config['datasources']['default']['slaves']);
         $this->assertArrayHasKey('mysql_slave1', $config['datasources']['default']['slaves']['connection']);

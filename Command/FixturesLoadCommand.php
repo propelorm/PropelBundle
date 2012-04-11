@@ -34,21 +34,25 @@ class FixturesLoadCommand extends AbstractPropelCommand
      * @var string
      */
     private $defaultFixturesDir = 'app/propel/fixtures';
+
     /**
      * Absolute path for fixtures directory
      * @var string
      */
     private $absoluteFixturesPath = '';
+
     /**
      * Filesystem for manipulating files
      * @var \Symfony\Component\Filesystem\Filesystem
      */
     private $filesystem = null;
+
     /**
      * Bundle the fixtures are being loaded from
      * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
      */
     private $bundle;
+
     /**
      * @see Command
      */
@@ -108,9 +112,9 @@ YAML fixtures are:
             Description: Hello world !
 </comment>
 EOT
-            )
+        )
             ->setName('propel:fixtures:load')
-        ;
+            ;
     }
 
     /**
@@ -123,19 +127,20 @@ EOT
         $this->writeSection($output, '[Propel] You are running the command: propel:fixtures:load');
 
         $this->filesystem = new Filesystem();
-    
+
         if ('@' === substr($input->getArgument('bundle'), 0, 1)) {
             $this->bundle = $this
                 ->getContainer()
                 ->get('kernel')
                 ->getBundle(substr($input->getArgument('bundle'), 1));
+
             $this->absoluteFixturesPath = $this->getFixturesPath($this->bundle);
         } else {
             $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
         }
 
         if ($input->getOption('verbose')) {
-           $this->additionalPhingArgs[] = 'verbose';
+            $this->additionalPhingArgs[] = 'verbose';
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
@@ -318,7 +323,7 @@ EOT
         if (null === $this->bundle) {
             return $files;
         }
-        
+
         $finalFixtureFiles = array();
 
         foreach ($files as $file) {
@@ -338,5 +343,5 @@ EOT
     protected function getFixturesPath(BundleInterface $bundle)
     {
         return $bundle->getPath().DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'fixtures';
-    }   
+    }
 }
