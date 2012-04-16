@@ -362,8 +362,17 @@ EOT;
                 continue;
             }
 
-            $pos = strpos($line, '=');
-            $properties[trim(substr($line, 0, $pos))] = trim(substr($line, $pos + 1));
+            $pos      = strpos($line, '=');
+            $property = trim(substr($line, 0, $pos));
+            $value    = trim(substr($line, $pos + 1));
+
+            if ("true" === $value) {
+                $value = true;
+            } else if ("false" === $value) {
+                $value = false;
+            }
+
+            $properties[$property] = $value;
         }
 
         return $properties;

@@ -42,7 +42,25 @@ abstract class PropelGeneratorAwareCommand extends AbstractPropelCommand
     protected function getDatabasesFromSchema(\SplFileInfo $file)
     {
         $transformer = new \XmlToAppData(null, null, 'UTF-8');
-        $transformer->setGeneratorConfig(new \QuickGeneratorConfig());
+        $config      = new \QuickGeneratorConfig();
+
+        if (file_exists($propelIni = $this->getContainer()->getParameter('kernel.root_dir') . '/config/propel.ini')) {
+            foreach ($this->getProperties($propelIni) as $key => $value) {
+                if (0 === strpos($key, 'propel.')) {
+                    $newKey = substr($key, strlen('propel.'));
+
+                    $j = strpos($newKey, '.');
+                    while (false !== $j) {
+                        $newKey = substr($newKey, 0, $j) . ucfirst(substr($newKey, $j + 1));
+                        $j = strpos($newKey, '.');
+                    }
+
+                    $config->setBuildProperty($newKey, $value);
+                }
+            }
+        }
+
+        $transformer->setGeneratorConfig($config);
 
         return $transformer->parseFile($file->getPathName())->getDatabases();
     }
