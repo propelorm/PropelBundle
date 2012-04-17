@@ -90,11 +90,17 @@ propel:
         attributes:           {}
 #        default_connection:       default
 #        connections:
-#           default:
-#               driver:             mysql
-#               user:               root
-#               password:           null
-#               dsn:                mysql:host=localhost;dbname=test
+#            default:
+#                driver:             mysql
+#                user:               root
+#                password:           null
+#                dsn:                mysql:host=localhost;dbname=test
+#                slaves:
+#                    slave_server_1:
+#                        user:       root
+#                        password:   null
+#                        dsn:        mysql:host=localhost;dbname=test_slave_1
+#
 #               options:
 #                   ATTR_PERSISTENT: false
 #               attributes:
