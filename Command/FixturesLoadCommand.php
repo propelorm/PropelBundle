@@ -18,7 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 
@@ -27,7 +27,7 @@ use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class FixturesLoadCommand extends AbstractPropelCommand
+class FixturesLoadCommand extends AbstractCommand
 {
     /**
      * Default fixtures directory.

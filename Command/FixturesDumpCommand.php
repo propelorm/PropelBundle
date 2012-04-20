@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 use Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class FixturesDumpCommand extends AbstractPropelCommand
+class FixturesDumpCommand extends AbstractCommand
 {
     /**
      * Default fixtures directory.

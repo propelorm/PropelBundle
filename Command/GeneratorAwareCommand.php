@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-abstract class PropelGeneratorAwareCommand extends AbstractPropelCommand
+abstract class GeneratorAwareCommand extends AbstractCommand
 {
     /**
      * {@inheritdoc}

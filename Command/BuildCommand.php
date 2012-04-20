@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 use Propel\PropelBundle\Command\ModelBuildCommand;
 use Propel\PropelBundle\Command\SqlBuildCommand;
 
@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\Output;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class BuildCommand extends AbstractPropelCommand
+class BuildCommand extends AbstractCommand
 {
     /**
      * @see Command

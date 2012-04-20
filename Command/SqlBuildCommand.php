@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 
 /**
  * SqlBuildCommand.
@@ -26,7 +26,7 @@ use Propel\PropelBundle\Command\AbstractPropelCommand;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-class SqlBuildCommand extends AbstractPropelCommand
+class SqlBuildCommand extends AbstractCommand
 {
     /**
      * @see Command

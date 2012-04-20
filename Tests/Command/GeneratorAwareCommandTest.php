@@ -10,14 +10,14 @@
 
 namespace Propel\PropelBundle\Tests\Command;
 
-use Propel\PropelBundle\Command\PropelGeneratorAwareCommand;
+use Propel\PropelBundle\Command\GeneratorAwareCommand;
 use Propel\PropelBundle\Tests\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class PropelGeneratorAwareCommandTest extends TestCase
+class GeneratorAwareCommandTest extends TestCase
 {
     protected $container;
 
@@ -31,7 +31,7 @@ class PropelGeneratorAwareCommandTest extends TestCase
 
     public function testGetDatabasesFromSchema()
     {
-        $command = new PropelGeneratorAwareCommandTestable('testable-command');
+        $command = new GeneratorAwareCommandTestable('testable-command');
         $command->setContainer($this->container);
         $databases = $command->getDatabasesFromSchema(new \SplFileInfo(__DIR__ . '/../Fixtures/schema.xml'));
 
@@ -50,7 +50,7 @@ class PropelGeneratorAwareCommandTest extends TestCase
     }
 }
 
-class PropelGeneratorAwareCommandTestable extends PropelGeneratorAwareCommand
+class GeneratorAwareCommandTestable extends GeneratorAwareCommand
 {
     protected $container;
 

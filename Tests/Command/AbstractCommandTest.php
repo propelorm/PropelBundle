@@ -11,7 +11,7 @@
 namespace Propel\PropelBundle\Tests\Command;
 
 use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -19,13 +19,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class AbstractPropelCommandTest extends TestCase
+class AbstractCommandTest extends TestCase
 {
     protected $command;
 
     public function setUp()
     {
-        $this->command = new TestableAbstractPropelCommand('testable-command');
+        $this->command = new TestableAbstractCommand('testable-command');
     }
 
     public function testParseDbName()
@@ -223,7 +223,7 @@ class AbstractPropelCommandTest extends TestCase
     }
 }
 
-class TestableAbstractPropelCommand extends AbstractPropelCommand
+class TestableAbstractCommand extends AbstractCommand
 {
     private $locate;
 

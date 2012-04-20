@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\PropelBundle\Command\AbstractPropelCommand;
+use Propel\PropelBundle\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class ReverseCommand extends AbstractPropelCommand
+class ReverseCommand extends AbstractCommand
 {
     /**
      * @see Command

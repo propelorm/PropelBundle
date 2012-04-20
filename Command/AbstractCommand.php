@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author William DURAND <william.durand1@gmail.com>
  */
-abstract class AbstractPropelCommand extends ContainerAwareCommand
+abstract class AbstractCommand extends ContainerAwareCommand
 {
     /**
      * Additional Phing args to add in specialized commands.

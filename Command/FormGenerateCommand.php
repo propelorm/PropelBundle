@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 /**
  * @author William DURAND <william.durand1@gmail.com>
  */
-class FormGenerateCommand extends PropelGeneratorAwareCommand
+class FormGenerateCommand extends GeneratorAwareCommand
 {
     const DEFAULT_FORM_TYPE_DIRECTORY = '/Form/Type';
 
