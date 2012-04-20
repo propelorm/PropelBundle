@@ -23,6 +23,7 @@
       <exclude>
         <directory>./Tests</directory>
         <directory>./vendor</directory>
+        <directory>./Resources</directory>
       </exclude>
     </whitelist>
   </filter>
