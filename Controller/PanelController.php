@@ -75,10 +75,12 @@ class PanelController extends ContainerAware
             return new Response('<div class="error">This query cannot be explained.</div>');
         }
 
-        return $this->container->get('templating')->renderResponse('PropelBundle:Panel:explain.html.twig', array(
-            'data' => $results,
-            'query' => $query,
-        ));
-
+        return $this->container->get('templating')->renderResponse(
+            'PropelBundle:Panel:explain.html.twig',
+            array(
+                'data' => $results,
+                'query' => $query,
+            )
+        );
     }
 }

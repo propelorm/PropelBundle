@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Command;
 
-require_once 'phing/Phing.php';
-
 /**
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  */

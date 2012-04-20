@@ -63,7 +63,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    static public function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
+    protected function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
     {
         $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
         $length = count(explode('\\', $bundle->getNamespace())) * (-1);
@@ -192,7 +192,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
         foreach ($finalSchemas as $schema) {
             list($bundle, $finalSchema) = $schema;
-            $packagePrefix = self::getPackagePrefix($bundle, $base);
+            $packagePrefix = $this->getPackagePrefix($bundle, $base);
 
             $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
             $this->tempSchemas[$tempSchema] = array(
@@ -281,6 +281,10 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         return $finalSchemas;
     }
 
+    /**
+     * @param \SplFileInfo $file
+     * @return string
+     */
     protected function getRelativeFileName(\SplFileInfo $file)
     {
         return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../'), '', $file), 1);
@@ -404,6 +408,14 @@ EOT;
     }
 
     /**
+     * @return \Symfony\Component\Config\FileLocatorInterface
+     */
+    protected function getFileLocator()
+    {
+        return $this->getContainer()->get('file_locator');
+    }
+
+    /**
      * Get connection by checking the input option named 'connection'.
      * Returns the default connection if no option specified or an exception
      * if the specified connection doesn't exist.
@@ -521,18 +533,18 @@ EOT;
      * @param OutputInterface $output   The output.
      * @param string $filename	        The filename.
      */
-    protected function writeNewFile($output, $filename)
+    protected function writeNewFile(OutputInterface $output, $filename)
     {
-        return $output->writeln('>>  <info>File+</info>    ' . $filename);
+        $output->writeln('>>  <info>File+</info>    ' . $filename);
     }
 
     /**
      * @param OutputInterface $output   The output.
      * @param string $directory	        The directory.
      */
-    protected function writeNewDirectory($output, $directory)
+    protected function writeNewDirectory(OutputInterface $output, $directory)
     {
-        return $output->writeln('>>  <info>Dir+</info>     ' . $directory);
+        $output->writeln('>>  <info>Dir+</info>     ' . $directory);
     }
 
     /**
@@ -548,14 +560,11 @@ EOT;
     }
 
     /**
-     * @return \Symfony\Component\Config\FileLocatorInterface
+     * @param \SplFileInfo $schema
+     * @param BundleInterface $bundle
+     * @return string
      */
-    protected function getFileLocator()
-    {
-        return $this->getContainer()->get('file_locator');
-    }
-
-    private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
+    protected function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
     {
         $schemaPath = str_replace(
             $bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR,
