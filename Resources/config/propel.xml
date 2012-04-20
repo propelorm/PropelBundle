@@ -14,6 +14,7 @@
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Symfony\Bridge\Propel1\Form\PropelTypeGuesser</parameter>
         <parameter key="propel.security.acl.provider.model.class">Propel\PropelBundle\Security\Acl\AuditableAclProvider</parameter>
+        <parameter key="propel.security.user.provider.class">Symfony\Bridge\Propel1\Security\User\PropelUserProvider</parameter>
     </parameters>
 
     <services>
@@ -49,6 +50,9 @@
             <argument type="service" id="security.acl.permission_granting_strategy" />
             <argument type="service" id="propel.security.acl.connection" on-invalid="null" />
             <argument type="service" id="security.acl.cache" on-invalid="null" />
+        </service>
+
+        <service id="propel.security.user.provider" class="%propel.security.user.provider.class%" abstract="true" public="false">
         </service>
     </services>
 </container>

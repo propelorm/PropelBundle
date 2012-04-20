@@ -10,24 +10,21 @@
 
 namespace Propel\PropelBundle\Tests\Security\User;
 
-use Propel\PropelBundle\Security\User\ModelUserProvider;
-
+use Propel\PropelBundle\Tests\Fixtures\Model\User;
 use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\Tests\Fixtures\UserProxy;
+use Symfony\Bridge\Propel1\Security\User\PropelUserProvider;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
  */
-class ModelUserProviderTest extends TestCase
+class PropelUserProviderTest extends TestCase
 {
-    protected $con = null;
-
     public function setUp()
     {
         $this->loadPropelQuickBuilder();
 
         $schema = <<<SCHEMA
-<database name="users" defaultIdMethod="native">
+<database name="users" defaultIdMethod="native" namespace="Propel\\PropelBundle\\Tests\\Fixtures\\Model">
     <table name="user">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="username" type="varchar" size="255" primaryString="true" />
@@ -42,25 +39,26 @@ SCHEMA;
 
         $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
-        $this->con = $builder->build();
+        $builder->setClassTargets(array('tablemap', 'peer', 'object', 'query', 'peerstub', 'querystub'));
+        $builder->build();
     }
 
     public function testRefreshUserGetsUserByPrimaryKey()
     {
-        $user1 = new \User();
+        $user1 = new User();
         $user1->setUsername('user1');
         $user1->save();
 
-        $user2 = new \User();
+        $user2 = new User();
         $user2->setUsername('user2');
         $user2->save();
 
-        $provider = new ModelUserProvider('\User', 'Propel\PropelBundle\Tests\Fixtures\UserProxy', 'username');
+        $provider = new PropelUserProvider('Propel\PropelBundle\Tests\Fixtures\Model\User', 'username');
 
         // try to change the user identity
         $user1->setUsername('user2');
 
-        $resultUser = $provider->refreshUser(new UserProxy($user1));
-        $this->assertSame($user1, $resultUser->getPropelUser());
+        $resultUser = $provider->refreshUser($user1);
+        $this->assertSame($user1, $resultUser);
     }
 }
