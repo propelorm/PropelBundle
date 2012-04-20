@@ -109,7 +109,7 @@ EOT
         if (true === $statusCode) {
             $this->writeSection(
                 $output,
-                '<info>All SQL statements have been generated.</info>',
+                '<info>All SQL statements have been inserted.</info>',
                 'bg=black'
             );
         } else {
