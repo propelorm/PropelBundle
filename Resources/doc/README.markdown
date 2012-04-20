@@ -16,7 +16,7 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
  * Instead of using svn, you can clone the unofficial Git repositories:
 
-    > git submodule add https://github.com/Xosofox/phing.git vendor/phing
+    > git submodule add https://github.com/phingofficial/phing.git vendor/phing
 
     > git submodule add https://github.com/propelorm/Propel.git vendor/propel
 
