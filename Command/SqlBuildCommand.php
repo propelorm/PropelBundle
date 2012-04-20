@@ -94,7 +94,7 @@ EOT
             $this->writeSection($output, array(
                 '[Propel] Error',
                 '',
-                'An error has occured during the "%command.name%" command process. To get more details, run the command with the "--verbose" option.'
+                'An error has occured during the "propel:sql:build" command process. To get more details, run the command with the "--verbose" option.'
             ), 'fg=white;bg=red');
         }
     }
