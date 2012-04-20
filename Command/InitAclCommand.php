@@ -10,13 +10,14 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -82,7 +83,7 @@ EOT
         return parent::execute($input, $output);
     }
 
-    protected function getFinalSchemas(KernelInterface $kernel)
+    protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
         $aclSchema = new \SplFileInfo($kernel->locateResource('@PropelBundle/Resources/acl_schema.xml'));
 

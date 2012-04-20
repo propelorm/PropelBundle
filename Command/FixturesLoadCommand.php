@@ -48,12 +48,6 @@ class FixturesLoadCommand extends AbstractPropelCommand
     private $filesystem = null;
 
     /**
-     * Bundle the fixtures are being loaded from
-     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
-     */
-    private $bundle;
-
-    /**
      * @see Command
      */
     protected function configure()
@@ -128,12 +122,7 @@ EOT
 
         $this->filesystem = new Filesystem();
 
-        if ('@' === substr($input->getArgument('bundle'), 0, 1)) {
-            $this->bundle = $this
-                ->getContainer()
-                ->get('kernel')
-                ->getBundle(substr($input->getArgument('bundle'), 1));
-
+        if (null !== $this->bundle) {
             $this->absoluteFixturesPath = $this->getFixturesPath($this->bundle);
         } else {
             $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
@@ -293,7 +282,7 @@ EOT
 
         if (true === $ret) {
             $this->writeSection($output, array(
-                '', 'All SQL statements have been executed.'
+                '', 'All SQL statements have been inserted.'
             ), 'fg=green;bg=black');
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
@@ -325,7 +314,6 @@ EOT
         }
 
         $finalFixtureFiles = array();
-
         foreach ($files as $file) {
             $fixtureFilePath = str_replace($this->getFixturesPath($this->bundle) . DIRECTORY_SEPARATOR, '', $file->getRealPath());
             $logicalName = sprintf('@%s/Resources/fixtures/%s', $this->bundle->getName(), $fixtureFilePath);
@@ -342,6 +330,6 @@ EOT
      */
     protected function getFixturesPath(BundleInterface $bundle)
     {
-        return $bundle->getPath().DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'fixtures';
+        return $bundle->getPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures';
     }
 }

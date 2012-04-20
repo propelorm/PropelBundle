@@ -51,6 +51,11 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
     protected $buffer = null;
 
     /**
+     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
+     */
+    protected $bundle = null;
+
+    /**
      * Return the package prefix for a given bundle.
      *
      * @param Bundle $bundle
@@ -81,6 +86,13 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
         parent::initialize($input, $output);
 
         $this->checkConfiguration();
+
+        if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
+            $this->bundle = $this
+                ->getContainer()
+                ->get('kernel')
+                ->getBundle(substr($input->getArgument('bundle'), 1));
+        }
     }
 
     /**
@@ -177,7 +189,7 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
 
         $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
-        $finalSchemas = $this->getFinalSchemas($kernel);
+        $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
         foreach ($finalSchemas as $schema) {
             list($bundle, $finalSchema) = $schema;
             $packagePrefix = self::getPackagePrefix($bundle, $base);
@@ -231,8 +243,12 @@ abstract class AbstractPropelCommand extends ContainerAwareCommand
      *
      * @return array
      */
-    protected function getFinalSchemas(KernelInterface $kernel)
+    protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
+        if (null !== $bundle) {
+            return $this->getSchemasFromBundle($bundle);
+        }
+
         $finalSchemas = array();
         foreach ($kernel->getBundles() as $bundle) {
             $finalSchemas = array_merge($finalSchemas, $this->getSchemasFromBundle($bundle));
@@ -541,7 +557,11 @@ EOT;
 
     private function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
     {
-        $schemaPath = str_replace($bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR, '', $schema->getRealPath());
+        $schemaPath = str_replace(
+            $bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR,
+            '',
+            $schema->getRealPath()
+        );
 
         return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
     }

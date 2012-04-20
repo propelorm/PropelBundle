@@ -55,23 +55,14 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ('@' === substr($input->getArgument('bundle'), 0, 1)) {
-            $bundle = $this
-                ->getContainer()
-                ->get('kernel')
-                ->getBundle(substr($input->getArgument('bundle'), 1));
-
-            $schemas = $this->getSchemasFromBundle($bundle);
-
-            if ($schemas) {
-                foreach ($schemas as $fileName => $array) {
-                    foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
-                        $this->createFormTypeFromDatabase($bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
-                    }
+        if ($schemas = $this->getSchemasFromBundle($this->bundle)) {
+            foreach ($schemas as $fileName => $array) {
+                foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
+                    $this->createFormTypeFromDatabase($this->bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
                 }
-            } else {
-                $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
             }
+        } else {
+            $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $this->bundle->getName()));
         }
     }
 
