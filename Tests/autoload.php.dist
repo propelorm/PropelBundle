@@ -1,30 +1,5 @@
 <?php
 
-$vendorDir = __DIR__.'/../vendor';
-require_once $vendorDir.'/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-$loader->registerNamespaces(array(
-    'Symfony'                               => array($vendorDir.'/symfony/src'),
-    'Sensio\\Bundle\\FrameworkExtraBundle'  => array($vendorDir),
-));
-$loader->registerPrefixes(array(
-    'Twig_' => $vendorDir.'/symfony/vendor/twig/lib',
-));
-$loader->register();
-
-set_include_path(get_include_path() . PATH_SEPARATOR . $vendorDir.'/phing/classes');
-
-spl_autoload_register(function($class) {
-    if (0 === strpos($class, 'Propel\\PropelBundle\\')) {
-        $path = __DIR__.'/../'.implode('/', array_slice(explode('\\', $class), 2)).'.php';
-        if (!stream_resolve_include_path($path)) {
-            return false;
-        }
-        require_once $path;
-
-        return true;
-    }
-});
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . '/../vendor/phing/phing/classes');

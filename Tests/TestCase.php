@@ -22,7 +22,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        if (!file_exists($file = __DIR__.'/../vendor/propel/runtime/lib/Propel.php')) {
+        if (!file_exists($file = __DIR__ . '/../vendor/propel/propel1/runtime/lib/Propel.php')) {
             $this->markTestSkipped('Propel is not available.');
         }
 
@@ -39,10 +39,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function loadPropelQuickBuilder()
     {
-        require_once __DIR__.'/../vendor/propel/runtime/lib/Propel.php';
-        require_once __DIR__.'/../vendor/propel/runtime/lib/adapter/DBAdapter.php';
-        require_once __DIR__.'/../vendor/propel/runtime/lib/adapter/DBSQLite.php';
-        require_once __DIR__.'/../vendor/propel/runtime/lib/connection/PropelPDO.php';
-        require_once __DIR__.'/../vendor/propel/generator/lib/util/PropelQuickBuilder.php';
+        require_once __DIR__ . '/../vendor/propel/propel1/runtime/lib/Propel.php';
+        require_once __DIR__ . '/../vendor/propel/propel1/runtime/lib/adapter/DBAdapter.php';
+        require_once __DIR__ . '/../vendor/propel/propel1/runtime/lib/adapter/DBSQLite.php';
+        require_once __DIR__ . '/../vendor/propel/propel1/runtime/lib/connection/PropelPDO.php';
+        require_once __DIR__ . '/../vendor/propel/propel1/generator/lib/util/PropelQuickBuilder.php';
     }
 }

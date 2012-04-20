@@ -1,6 +1,4 @@
-/Model/*/map
-/Model/*/om
-vendor/phing/
-vendor/propel/
-vendor/symfony/
-vendor/Sensio/
+Model/*/map
+Model/*/om
+vendor
+composer.lock

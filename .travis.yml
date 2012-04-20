@@ -7,6 +7,8 @@ php:
 env:
     - SYMFONY_VERSION=origin/master
 
-before_script: php vendor/install_vendors.php
+before_script:
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar --dev install
 
 script: phpunit --coverage-text

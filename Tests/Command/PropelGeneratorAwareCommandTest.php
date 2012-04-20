@@ -26,7 +26,7 @@ class PropelGeneratorAwareCommandTest extends TestCase
         parent::setUp();
 
         $this->container = $this->getContainer();
-        $this->container->setParameter('propel.path',  __DIR__ . '/../../vendor/propel');
+        $this->container->setParameter('propel.path',  __DIR__ . '/../../vendor/propel/propel1');
     }
 
     public function testGetDatabasesFromSchema()
