@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle;
 
+use Symfony\Bridge\Propel1\DependencyInjection\Security\UserProvider\PropelFactory;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -58,6 +59,18 @@ class PropelBundle extends Bundle
             }
 
             \Propel::initialize();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        if ($container->hasExtension('security')) {
+            $container->getExtension('security')->addUserProviderFactory(new PropelFactory('propel', 'propel.security.user.provider'));
         }
     }
 }
