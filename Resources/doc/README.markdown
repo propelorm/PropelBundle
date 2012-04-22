@@ -45,7 +45,7 @@ public function registerBundles()
 }
 ```
 
-  * Don't forget to register the PropelBundle namespace in `app/autoload.php`:
+  * Don't forget to register the PropelBundle namespace in `app/autoload.php` if you are not using Composer:
 
 ``` php
 $loader->registerNamespaces(array(
