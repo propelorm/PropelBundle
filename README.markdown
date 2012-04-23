@@ -5,11 +5,24 @@ PropelBundle
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
-**Important:** The `master` branch follows the **Symfony2 master** branch, and uses the **Propel Bridge**.
-If you want to use the bundle with a **Symfony2 version 2.x.x** (actually, a version which is not _2.1_ or above), please use the `2.0` branch.
+## Branching model
 
+As `Propel2` will be released in the near future, we are migrating the branching model of this bundle in advance!
 
-Currently supports:
+* The `1.0` branch will contain Propel *1.6* integration for Symfony *2.0* (*currently 2.0 branch*).
+* The `1.1` branch will contain Propel *1.6* integration for Symfony *2.1* (*currently master branch*).
+* The `2.0` branch will contain `Propel2` integration for Symfony *2.1*.
+  We are still considering to integrate `Propel2` with Symfony *2.0*.
+  In case, we will do so, there will be a `2.1` and `2.0` branch integrating the respective Symfony version!
+
+**The 1.x branches are already available and you are encouraged to migrate your dependencies according to the listings!**
+
+* If you depend on the `master` branch, switch to the `1.1` branch.
+* If you depend on the `2.0` branch, switch to the `1.0` branch.
+
+We will keep all branches in sync until `Propel2` will be released.
+
+## Features
 
  * Generation of model classes based on an XML schema (not YAML) placed under `BundleName/Resources/config/*schema.xml`.
  * Insertion of SQL statements.
