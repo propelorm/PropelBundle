@@ -9,12 +9,10 @@
     "email": "william.durand1@gmail.com"
   }],
   "require": {
-    "symfony/framework-bundle": "2.*",
+    "symfony/symfony": "2.1.*",
     "propel/propel1": "1.6.*"
   },
   "require-dev": {
-    "symfony/symfony": "2.1.*",
-    "phing/phing": "2.4.*",
     "sensio/framework-extra-bundle": "*",
     "twig/twig": "1.7.*"
   },
