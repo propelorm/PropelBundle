@@ -52,6 +52,10 @@ $loader->registerNamespaces(array(
     ...
 
     'Propel' => __DIR__.'/../vendor/bundles',
+));
+$loader->registerPrefixes(array(
+    ...
+
     'Phing'  => __DIR__.'/../vendor/phing/classes/phing',
 ));
 ```
