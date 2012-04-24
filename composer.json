@@ -11,7 +11,8 @@
     }
   ],
   "require": {
-    "symfony/framework-bundle": "2.*"
+    "symfony/framework-bundle": "2.0.*",
+    "propel/propel1": "1.6.*"
   },
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }
