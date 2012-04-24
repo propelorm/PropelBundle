@@ -54,6 +54,17 @@ class SecurityIdentityTest extends AclTestCase
         $this->assertInstanceOf('Symfony\Component\Security\Acl\Domain\UserSecurityIdentity', $secIdentity);
     }
 
+    public function testToAclIdentityMultipleDashes()
+    {
+        $identity = new SecurityIdentity();
+        $identity->setIdentifier('Propel\PropelBundle\Tests\Fixtures\UserProxy-some-username@domain.com');
+        $identity->setUsername(true);
+
+        $secIdentity = SecurityIdentity::toAclIdentity($identity);
+        $this->assertInstanceOf('Symfony\Component\Security\Acl\Domain\UserSecurityIdentity', $secIdentity);
+        $this->assertEquals('some-username@domain.com', $secIdentity->getUsername());
+    }
+
     public function testToAclIdentityValidRole()
     {
         $identity = new SecurityIdentity();

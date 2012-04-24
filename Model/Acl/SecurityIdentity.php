@@ -34,7 +34,7 @@ class SecurityIdentity extends BaseSecurityIdentity
                 throw new \InvalidArgumentException('The given identifier does not resolve to a UserSecurityIdentity.');
             }
 
-            list($class, $username) = explode('-', $identifier);
+            list($class, $username) = explode('-', $identifier, 2);
 
             return new UserSecurityIdentity($username, $class);
         }
