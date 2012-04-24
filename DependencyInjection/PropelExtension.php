@@ -107,7 +107,7 @@ class PropelExtension extends Extension
 
             if (!empty($conf['slaves'])) {
                 // silently ignore misconfigured slaves
-                // this let's us have slaves in prod but not in dev environments by only altering parameters.inc
+                // this lets us have slaves in prod but not in dev environments by only altering parameters.inc
                 foreach ($conf['slaves'] as $slaveKey => $slaveData) {
                     if (empty($slaveData['user']) || empty($slaveData['dsn'])) {
                         unset($conf['slaves'][$slaveKey]);
