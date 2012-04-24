@@ -20,7 +20,7 @@ As `Propel2` will be released in the near future, we are migrating the branching
 * If you depend on the `master` branch, switch to the `1.1` branch.
 * If you depend on the `2.0` branch, switch to the `1.0` branch.
 
-We will keep all branches in sync until `Propel2` will be released.
+**Note:** the `master`, and `2.0` branches won't be updated anymore, and will trigger a `E_USER_DEPRECATED` error to notice people.
 
 ## Features
 
