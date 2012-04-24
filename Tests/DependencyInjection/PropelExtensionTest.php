@@ -300,30 +300,35 @@ class PropelExtensionTest extends TestCase
             ),
         );
 
-        $configs = array($config_base, array('dbal' => $config_mysql));
+        $configs = array($config_base, array(
+            'dbal' => array(
+                'default_connection' => 'master',
+                'connections'        => array('master' => $config_mysql)
+            )
+        ));
         $loader->load($configs, $container);
 
         $arguments = $container->getDefinition('propel.configuration')->getArguments();
         $config = $arguments[0];
 
-        $this->assertArrayHasKey('slaves', $config['datasources']['default']);
-        $this->assertArrayHasKey('connection', $config['datasources']['default']['slaves']);
-        $this->assertArrayHasKey('mysql_slave1', $config['datasources']['default']['slaves']['connection']);
-        $this->assertArrayHasKey('user', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
-        $this->assertArrayHasKey('password', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
-        $this->assertArrayHasKey('dsn', $config['datasources']['default']['slaves']['connection']['mysql_slave1']);
-        $this->assertArrayHasKey('mysql_slave2', $config['datasources']['default']['slaves']['connection']);
-        $this->assertArrayHasKey('user', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
-        $this->assertArrayHasKey('password', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
-        $this->assertArrayHasKey('dsn', $config['datasources']['default']['slaves']['connection']['mysql_slave2']);
+        $this->assertArrayHasKey('slaves', $config['datasources']['master']);
+        $this->assertArrayHasKey('connection', $config['datasources']['master']['slaves']);
+        $this->assertArrayHasKey('mysql_slave1', $config['datasources']['master']['slaves']['connection']);
+        $this->assertArrayHasKey('user', $config['datasources']['master']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('password', $config['datasources']['master']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('dsn', $config['datasources']['master']['slaves']['connection']['mysql_slave1']);
+        $this->assertArrayHasKey('mysql_slave2', $config['datasources']['master']['slaves']['connection']);
+        $this->assertArrayHasKey('user', $config['datasources']['master']['slaves']['connection']['mysql_slave2']);
+        $this->assertArrayHasKey('password', $config['datasources']['master']['slaves']['connection']['mysql_slave2']);
+        $this->assertArrayHasKey('dsn', $config['datasources']['master']['slaves']['connection']['mysql_slave2']);
 
-        $this->assertEquals("mysql_usrs1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['user']);
-        $this->assertEquals("mysql_pwds1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['password']);
-        $this->assertEquals("mysql_dsns1", $config['datasources']['default']['slaves']['connection']['mysql_slave1']['dsn']);
+        $this->assertEquals("mysql_usrs1", $config['datasources']['master']['slaves']['connection']['mysql_slave1']['user']);
+        $this->assertEquals("mysql_pwds1", $config['datasources']['master']['slaves']['connection']['mysql_slave1']['password']);
+        $this->assertEquals("mysql_dsns1", $config['datasources']['master']['slaves']['connection']['mysql_slave1']['dsn']);
 
-        $this->assertEquals("mysql_usrs2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['user']);
-        $this->assertEquals("mysql_pwds2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['password']);
-        $this->assertEquals("mysql_dsns2", $config['datasources']['default']['slaves']['connection']['mysql_slave2']['dsn']);
+        $this->assertEquals("mysql_usrs2", $config['datasources']['master']['slaves']['connection']['mysql_slave2']['user']);
+        $this->assertEquals("mysql_pwds2", $config['datasources']['master']['slaves']['connection']['mysql_slave2']['password']);
+        $this->assertEquals("mysql_dsns2", $config['datasources']['master']['slaves']['connection']['mysql_slave2']['dsn']);
     }
 
     public function testDbalWithNoSlaves()
