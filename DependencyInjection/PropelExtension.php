@@ -104,8 +104,19 @@ class PropelExtension extends Extension
         $c = array();
         foreach ($config['connections'] as $name => $conf) {
             $c['datasources'][$name]['adapter'] = $conf['driver'];
+
             if (!empty($conf['slaves'])) {
-                $c['datasources'][$name]['slaves']['connection'] = $conf['slaves'];
+                // silently ignore misconfigured slaves
+                // this let's us have slaves in prod but not in dev environments by only altering parameters.inc
+                foreach ($conf['slaves'] as $slaveKey => $slaveData) {
+                    if (empty($slaveData['user']) || empty($slaveData['dsn'])) {
+                        unset($conf['slaves'][$slaveKey]);
+                    }
+                }
+
+                if (!empty($conf['slaves'])) {
+                    $c['datasources'][$name]['slaves']['connection'] = $conf['slaves'];
+                }
             }
 
             foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
