@@ -25,6 +25,8 @@ class PropelBundle extends Bundle
      */
     public function boot()
     {
+        trigger_error("The PropelBundle uses a new branching model, you should switch to the 1.0 branch (1.0.x versions). For more information, please read: https://github.com/propelorm/PropelBundle/wiki", E_USER_DEPRECATED);
+
         require_once $this->container->getParameter('propel.path').'/runtime/lib/Propel.php';
 
         if (0 === strncasecmp(PHP_SAPI, 'cli', 3)) {
