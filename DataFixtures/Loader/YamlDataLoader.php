@@ -22,6 +22,16 @@ class YamlDataLoader extends AbstractDataLoader
     /**
      * {@inheritdoc}
      */
+    public function __construct($rootDir)
+    {
+        parent::__construct($rootDir);
+
+        Yaml::enablePhpParsing(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function transformDataToArray($file)
     {
         return Yaml::parse($file);

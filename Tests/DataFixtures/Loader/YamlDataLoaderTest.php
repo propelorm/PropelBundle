@@ -135,4 +135,28 @@ YAML;
         $author = $authors[0];
         $this->assertEquals('A famous one', $author->getName());
     }
+
+    public function testLoaderWithPhp()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+    BookAuthor_1:
+        id: '1'
+        name: <?php echo "to be announced"; ?>
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(0, $books);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthorPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $this->assertEquals('to be announced', $author->getName());
+    }
 }
