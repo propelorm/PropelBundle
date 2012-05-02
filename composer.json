@@ -13,8 +13,7 @@
     "propel/propel1": "1.6.*"
   },
   "require-dev": {
-    "sensio/framework-extra-bundle": "*",
-    "twig/twig": "1.7.*"
+    "sensio/framework-extra-bundle": "*"
   },
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }
