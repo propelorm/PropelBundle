@@ -60,15 +60,18 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
         try {
             $this->con->beginTransaction();
 
+            $datas = array();
             foreach ($files as $file) {
-                $datas = $this->transformDataToArray($file);
+                $content = $this->transformDataToArray($file);
 
-                if (count($datas) > 0) {
-                    $this->deleteCurrentData($datas);
-                    $this->loadDataFromArray($datas);
+                if (count($content) > 0) {
+                    $datas = array_merge($datas, $content);
                     $nbFiles++;
                 }
             }
+
+            $this->deleteCurrentData($datas);
+            $this->loadDataFromArray($datas);
 
             $this->con->commit();
         } catch (\Exception $e) {
