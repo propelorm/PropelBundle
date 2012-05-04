@@ -124,7 +124,10 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
         }
 
         foreach ($data as $class => $datas) {
-            $class        = trim($class);
+            $class = trim($class);
+            if ('\\' == $class[0]) {
+                $class = substr($class, 1);
+            }
             $tableMap     = $this->dbMap->getTable(constant(constant($class.'::PEER').'::TABLE_NAME'));
             $column_names = call_user_func_array(array(constant($class.'::PEER'), 'getFieldNames'), array(BasePeer::TYPE_FIELDNAME));
 
