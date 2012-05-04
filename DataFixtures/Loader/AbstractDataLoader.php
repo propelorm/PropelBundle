@@ -124,7 +124,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
         }
 
         foreach ($data as $class => $datas) {
-            $class        = trim($class);
+            $class = trim($class);
             if ('\\' == $class[0]) {
                 $class = substr($class, 1);
             }
