@@ -11,7 +11,6 @@
 namespace Propel\PropelBundle\DataFixtures;
 
 use \Propel;
-
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -65,7 +64,10 @@ abstract class AbstractDataHandler
 
         if (0 === count($this->dbMap->getTables())) {
             $finder = new Finder();
-            $files = $finder->files()->name('*TableMap.php')->in($this->getRootDir() . '/../')->exclude('Tests');
+            $files  = $finder->files()->name('*TableMap.php')
+                ->in($this->getRootDir() . '/../')
+                ->exclude('PropelBundle')
+                ->exclude('Tests');
 
             foreach ($files as $file) {
                 $class = $this->guessFullClassName($file->getRelativePath(), basename($file, '.php'));

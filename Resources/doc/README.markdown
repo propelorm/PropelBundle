@@ -262,15 +262,26 @@ A valid _XML fixtures file_ is:
 A valid _YAML fixtures file_ is:
 
 ``` yaml
-\Awesome\Object:
+Awesome\Object:
      o1:
          Title: My title
          MyFoo: bar
 
- \Awesome\Related:
+Awesome\Related:
      r1:
          ObjectId: o1
          Description: Hello world !
+
+Awesome\Tag:
+    t1:
+        name: Foo
+    t2:
+        name: Baz
+
+Awesome\Post:
+    p1:
+        title: A Post with tags (N-N relation)
+        tags: [ t1, t2 ]
 ```
 
 You can load all fixtures files from a given _bundle_:

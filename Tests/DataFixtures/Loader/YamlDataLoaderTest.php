@@ -49,24 +49,24 @@ YAML;
     {
         $schema = <<<XML
 <database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
-    <table name="book" phpName="YamlManyToManyBook">
+    <table name="table_book" phpName="YamlManyToManyBook">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
     </table>
 
-    <table name="author" phpName="YamlManyToManyAuthor">
+    <table name="table_author" phpName="YamlManyToManyAuthor">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
     </table>
 
-    <table name="book_author" phpName="YamlManyToManyBookAuthor">
+    <table name="table_book_author" phpName="YamlManyToManyBookAuthor" isCrossRef="true">
         <column name="book_id" type="integer" required="true" primaryKey="true" />
         <column name="author_id" type="integer" required="true" primaryKey="true" />
 
-        <foreign-key foreignTable="book" phpName="Book" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="table_book" phpName="Book" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="book_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="author" phpName="Author" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="table_author" phpName="Author" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
     </table>
@@ -74,17 +74,27 @@ YAML;
 XML;
 
         $fixtures = <<<YAML
-Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyAuthor:
-    Author_1:
-        name: 'A famous one'
 Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBook:
     Book_1:
+        id: 1
         name: 'An important one'
+    Book_2:
+        id: 2
+        name: 'Les misérables'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyAuthor:
+    Author_1:
+        id: 1
+        name: 'A famous one'
+    Author_2:
+        id: 2
+        name: 'Victor Hugo'
+        table_book_authors: [ Book_2 ]
+
 Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookAuthor:
     BookAuthor_1:
         book_id: Book_1
         author_id: Author_1
-
 YAML;
 
         $filename = $this->getTempFile($fixtures);
@@ -97,16 +107,23 @@ YAML;
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookPeer::doSelect(new \Criteria(), $con);
-        $this->assertCount(1, $books);
+        $this->assertCount(2, $books);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBook', $books[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBook', $books[1]);
 
         $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyAuthorPeer::doSelect(new \Criteria(), $con);
-        $this->assertCount(1, $authors);
+        $this->assertCount(2, $authors);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyAuthor', $authors[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyAuthor', $authors[1]);
 
         $bookAuthors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookAuthorPeer::doSelect(new \Criteria(), $con);
-        $this->assertCount(1, $bookAuthors);
+        $this->assertCount(2, $bookAuthors);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookAuthor', $bookAuthors[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookAuthor', $bookAuthors[1]);
+
+        $this->assertEquals('Victor Hugo', $authors[1]->getName());
+        $this->assertTrue($authors[1]->getBooks()->contains($books[1]));
+        $this->assertEquals('Les misérables', $authors[1]->getBooks()->get(0)->getName());
     }
 
     public function testLoadSelfReferencing()

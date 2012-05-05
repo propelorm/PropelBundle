@@ -10,15 +10,14 @@
 
 namespace Propel\PropelBundle\DataFixtures\Loader;
 
-use \Propel;
+
 use \BasePeer;
 use \BaseObject;
 use \ColumnMap;
+use \Propel;
 use \PropelException;
-
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\PropelBundle\Util\PropelInflector;
-
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -156,17 +155,18 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                 }
 
                 foreach ($data as $name => $value) {
-                    try {
-                        if (is_array($value) && 's' === substr($name, -1)) {
+                    if (is_array($value) && 's' === substr($name, -1)) {
+                        try {
                             // many to many relationship
                             $this->loadManyToMany($obj, substr($name, 0, -1), $value);
+
                             continue;
-                        }
-                    } catch (\PropelException $e) {
-                        // Check whether this is actually an array stored in the object.
-                        if ('Cannot fetch TableMap for undefined table: '.substr($name, 0, -1) === $e->getMessage()) {
-                            if ('ARRAY' !== $tableMap->getColumn($name)->getType()) {
-                                throw $e;
+                        } catch (PropelException $e) {
+                            // Check whether this is actually an array stored in the object.
+                            if ('Cannot fetch TableMap for undefined table: '.substr($name, 0, -1) === $e->getMessage()) {
+                                if ('ARRAY' !== $tableMap->getColumn($name)->getType()) {
+                                    throw $e;
+                                }
                             }
                         }
                     }
@@ -206,8 +206,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                     if (false !== $pos = array_search($name, $column_names)) {
                         $obj->setByPosition($pos, $value);
-                    }
-                    elseif (is_callable(array($obj, $method = 'set'.ucfirst(PropelInflector::camelize($name))))) {
+                    } elseif (is_callable(array($obj, $method = 'set'.ucfirst(PropelInflector::camelize($name))))) {
                         $obj->$method($value);
                     } else {
                         throw new \InvalidArgumentException(sprintf('Column "%s" does not exist for class "%s".', $name, $class));
@@ -234,21 +233,23 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     protected function loadManyToMany($obj, $middleTableName, $values)
     {
         $middleTable = $this->dbMap->getTable($middleTableName);
-        $middleClass = $middleTable->getPhpName();
+        $middleClass = $middleTable->getClassname();
+        $tableName   = constant(constant(get_class($obj).'::PEER').'::TABLE_NAME');
 
         foreach ($middleTable->getColumns() as $column) {
-            if ($column->isForeignKey() && constant(constant(get_class($obj).'::PEER').'::TABLE_NAME') != $column->getRelatedTableName()) {
-                $relatedClass = $this->dbMap->getTable($column->getRelatedTableName())->getPhpName();
-                break;
+            if ($column->isForeignKey()) {
+                if ($tableName !== $column->getRelatedTableName()) {
+                    $relatedClass  = $this->dbMap->getTable($column->getRelatedTableName())->getClassname();
+                    $relatedSetter = 'set' . $column->getRelation()->getName();
+                } else {
+                    $setter = 'set' . $column->getRelation()->getName();
+                }
             }
         }
 
         if (!isset($relatedClass)) {
             throw new \InvalidArgumentException(sprintf('Unable to find the many-to-many relationship for object "%s".', get_class($obj)));
         }
-
-        $setter = 'set'.get_class($obj);
-        $relatedSetter = 'set'.$relatedClass;
 
         foreach ($values as $value) {
             if (!isset($this->object_references[$relatedClass.'_'.$value])) {
