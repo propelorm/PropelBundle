@@ -30,7 +30,12 @@ class PropelParamConverter implements ParamConverterInterface
         if (in_array('id', $exclude) || false === $object = $this->findPk($classQuery, $request)) {
             // find by criteria
             if (false === $object = $this->findOneBy($classQuery, $request, $exclude)) {
-                throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
+                if ($configuration->isOptional()) {
+                    //we find nothing but the object is optional
+                    $object = null;
+                } else {
+                    throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
+                }
             }
         }
 
