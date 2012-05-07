@@ -134,7 +134,8 @@ class PropelParamConverterTest extends TestCase
     {
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('book' => null));
-        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book', 'optional' => 'true'));
+        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
+        $configuration->setIsOptional(true);
         $paramConverter->apply($request, $configuration);
 
         $this->assertNull($request->attributes->get('book'),
