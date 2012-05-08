@@ -41,6 +41,12 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected $exclude = array();
 
+    /**
+     * list of with option use to hydrate related object
+     * @var array
+     */
+    protected $withs;
+
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
@@ -75,6 +81,8 @@ class PropelParamConverter implements ParamConverterInterface
             $this->filters = $request->attributes->all();
         }
 
+        $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
+
         // find by Pk
         if (false === $object = $this->findPk($classQuery, $request)) {
             // find by criteria
@@ -97,18 +105,35 @@ class PropelParamConverter implements ParamConverterInterface
         return true;
     }
 
+    public function supports(ConfigurationInterface $configuration)
+    {
+        if (null === ($classname = $configuration->getClass())) {
+            return false;
+        }
+        if (!class_exists($classname)) {
+            return false;
+        }
+        // Propel Class?
+        $class = new \ReflectionClass($configuration->getClass());
+        if ($class->isSubclassOf('BaseObject')) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected function findPk($classQuery, Request $request)
     {
         if (in_array($this->pk, $this->exclude) || !$request->attributes->has($this->pk)) {
             return false;
         }
 
-        return $classQuery::create()->findPk($request->attributes->get($this->pk));
+        return $this->getQuery($classQuery)->findPk($request->attributes->get($this->pk));
     }
 
     protected function findOneBy($classQuery, Request $request)
     {
-        $query = $classQuery::create();
+        $query = $this->getQuery($classQuery);
         $hasCriteria = false;
         foreach ($this->filters as $column => $value) {
             if (!in_array($column, $this->exclude)) {
@@ -126,20 +151,41 @@ class PropelParamConverter implements ParamConverterInterface
         return $query->findOne();
     }
 
-    public function supports(ConfigurationInterface $configuration)
+    protected function getQuery($classQuery)
     {
-        if (null === ($classname = $configuration->getClass())) {
-            return false;
-        }
-        if (!class_exists($classname)) {
-            return false;
-        }
-        // Propel Class?
-        $class = new \ReflectionClass($configuration->getClass());
-        if ($class->isSubclassOf('BaseObject')) {
-            return true;
+        $query = $classQuery::create();
+
+        foreach ($this->withs as $with) {
+            if (is_array($with)) {
+                if (2 == count($with)) {
+                    $query->joinWith($with[0], $this->getValidJoin($with));
+                } else {
+                    throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+                            only string relation name (e.g. "Book") or an array with two keys (e.g. {"Book", "LEFT_JOIN"}) are allowed',
+                            var_export($with, true)));
+                }
+            } else {
+                $query->joinWith($with);
+            }
         }
 
-        return false;
+        return $query;
     }
+
+    protected function getValidJoin($with)
+    {
+        switch (str_replace(array('_', 'JOIN'),'', strtoupper($with[1]))) {
+            case 'LEFT':
+                return \Criteria::LEFT_JOIN;
+            case 'RIGHT':
+                return \Criteria::RIGHT_JOIN;
+            case 'INNER':
+                return \Criteria::INNER_JOIN;
+        }
+
+        throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+                only "left", "right" or "inner" are allowed for join option',
+                var_export($with, true)));
+    }
+
 }
