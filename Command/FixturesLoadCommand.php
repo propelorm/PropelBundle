@@ -181,7 +181,7 @@ EOT
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         if ('yml' === $type) {
-            $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir());
+            $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir(), $this->getContainer());
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getRootDir());
         } else {
