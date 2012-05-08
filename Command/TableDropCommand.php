@@ -55,8 +55,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:table:drop');
-
         $tablesToDelete = $input->getArgument('table');
 
         if ($input->getOption('force')) {

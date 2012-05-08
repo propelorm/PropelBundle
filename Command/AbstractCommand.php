@@ -56,6 +56,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $bundle = null;
 
     /**
+     * @var Boolean
+     */
+    private $alreadyWroteConnection = false;
+
+    /**
      * Return the package prefix for a given bundle.
      *
      * @param Bundle $bundle
@@ -436,8 +441,12 @@ EOT;
             throw new \InvalidArgumentException(sprintf('Connection named %s doesn\'t exist', $name));
         }
 
-        $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
-            $name, $this->getApplication()->getKernel()->getEnvironment()));
+        if (false === $this->alreadyWroteConnection) {
+            $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
+                $name, $this->getApplication()->getKernel()->getEnvironment())
+            );
+            $this->alreadyWroteConnection = true;
+        }
 
         return array($name, $defaultConfig);
     }

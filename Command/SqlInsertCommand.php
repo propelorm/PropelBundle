@@ -55,8 +55,6 @@ EOT
         // Bad require but needed :(
         require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
 
-        $this->writeSection($output, '[Propel] You are running the command: propel:sql:insert');
-
         if ($input->getOption('force')) {
             if ($input->getOption('verbose')) {
                 $this->additionalPhingArgs[] = 'verbose';

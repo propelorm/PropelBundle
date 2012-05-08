@@ -48,8 +48,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:model:build');
-
         if ($input->getOption('verbose')) {
            $this->additionalPhingArgs[] = 'verbose';
         }

@@ -57,8 +57,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:fixtures:dump');
-
         list($name, $defaultConfig) = $this->getConnection($input, $output);
 
         $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $this->defaultFixturesDir;
@@ -77,8 +75,7 @@ EOT
             return false;
         }
 
-        $output->writeln('');
-        $output->writeln(sprintf('>>  <info>File+</info>    %s', $filename));
+        $this->writeNewFile($output, $filename);
 
         return true;
     }

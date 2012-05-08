@@ -118,8 +118,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:fixtures:load');
-
         $this->filesystem = new Filesystem();
 
         if (null !== $this->bundle) {
@@ -142,19 +140,19 @@ EOT
 
         if ($input->getOption('sql') || $noOptions) {
             if (-1 === $this->loadSqlFixtures($input, $output)) {
-                $output->writeln('<info>No SQL fixtures found.</info>');
+                $output->writeln('No <info>SQL</info> fixtures found.');
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
             if (-1 === $this->loadFixtures($input, $output, 'xml')) {
-                $output->writeln('<info>No XML fixtures found.</info>');
+                $output->writeln('No <info>XML</info> fixtures found.');
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
             if (-1 === $this->loadFixtures($input, $output, 'yml')) {
-                $output->writeln('<info>No YAML fixtures found.</info>');
+                $output->writeln('No <info>YML</info> fixtures found.');
             }
         }
     }

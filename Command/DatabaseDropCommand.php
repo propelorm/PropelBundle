@@ -52,8 +52,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:database:drop');
-
         if ($input->getOption('force')) {
             if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
                 $this->writeSection($output, 'WARNING: you are about to drop a database in production !', 'bg=red;fg=white');

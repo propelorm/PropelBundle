@@ -16,11 +16,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * GraphvizCommand.
+ * GraphvizGenerateCommand.
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class GraphvizCommand extends AbstractCommand
+class GraphvizGenerateCommand extends AbstractCommand
 {
     /**
      * @see Command
@@ -35,7 +35,7 @@ The <info>propel:graphviz</info> generates Graphviz file for your project.
   <info>php app/console propel:graphviz</info>
 EOT
             )
-            ->setName('propel:graphviz')
+            ->setName('propel:graphviz:generate')
         ;
     }
 
@@ -46,14 +46,12 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:graphviz');
-
         $dest = $this->getApplication()->getKernel()->getRootDir() . '/propel/graph/';
 
         $this->callPhing('graphviz', array(
             'propel.graph.dir'    => $dest,
         ));
 
-        $output->writeln(sprintf('Graphviz file is in <info>%s</info>.', $dest));
+        $this->writeNewDirectory($output, $dest);
     }
 }

@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class InitAclCommand extends SqlInsertCommand
+class AclInitCommand extends SqlInsertCommand
 {
     protected function configure()
     {
@@ -40,13 +40,12 @@ The <info>--connection</info> parameter allows you to change the connection to u
 The default connection is the active connection (propel.dbal.default_connection).
 EOT
         )
-            ->setName('propel:init:acl')
+            ->setName('propel:acl:init')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:init:acl');
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }

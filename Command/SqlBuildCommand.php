@@ -52,8 +52,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->writeSection($output, '[Propel] You are running the command: propel:sql:build');
-
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }
