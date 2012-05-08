@@ -119,7 +119,7 @@ EOT
             }
             catch (\Exception $e) {
                 $this->writeSection($output, array(
-                    '[Propel] Exception catched',
+                    '[Propel] Exception caught',
                     '',
                     $e->getMessage()
                 ), 'fg=white;bg=red');

@@ -82,7 +82,7 @@ EOT
                 $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
             } catch (\Exception $e) {
                 $this->writeSection($output, array(
-                    '[Propel] Exception catched',
+                    '[Propel] Exception caught',
                     '',
                     $e->getMessage()
                 ), 'fg=white;bg=red');
