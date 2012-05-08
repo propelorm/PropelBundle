@@ -40,7 +40,7 @@ You can choose which Form Type to build by specifing Model names:
 
 You can generate **Graphviz** file for your project by using the following command line:
 
-    > php app/console propel:graphviz
+    > php app/console propel:graphviz:generate
 
 It will write files in `app/propel/graph/`.
 
