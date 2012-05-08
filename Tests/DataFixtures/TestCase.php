@@ -40,6 +40,7 @@ class TestCase extends BaseTestCase
     <table name="book">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
+        <column name="description" type="varchar" />
         <column name="author_id" type="integer" required="false" defaultValue="null" />
 
         <foreign-key foreignTable="book_author" onDelete="RESTRICT" onUpdate="CASCADE">

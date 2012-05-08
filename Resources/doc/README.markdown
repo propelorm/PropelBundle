@@ -298,6 +298,19 @@ is a timestamp.
 Once done, you will be able to load this files by using the `propel:fixtures:load` command.
 
 
+#### Use Faker in YAML fixtures ####
+
+If you use [Faker](https://github.com/fzaninotto/Faker) with its [Symfony2 integration](https://github.com/willdurand/BazingaFakerBundle),
+then the PropelBundle offers a facility to use the Faker generator in your YAML files.
+
+``` yml
+My\Bundle\Model\MyClass:
+    mc1:
+        name: "Awesome Feature"
+        description: <?php $faker('text', 500); ?>
+```
+
+
 ### Graphviz ###
 
 You can generate **Graphviz** file for your project by using the following command line:
