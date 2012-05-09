@@ -13,7 +13,8 @@
     "propel/propel1": "1.6.*"
   },
   "require-dev": {
-    "sensio/framework-extra-bundle": "dev-master"
+    "sensio/framework-extra-bundle": "dev-master",
+    "fzaninotto/faker": "dev-master"
   },
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }

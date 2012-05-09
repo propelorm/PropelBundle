@@ -176,4 +176,57 @@ YAML;
         $author = $authors[0];
         $this->assertEquals('to be announced', $author->getName());
     }
+
+    public function testLoadWithoutFaker()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+    BookAuthor_1:
+        id: '1'
+        name: <?php echo \$faker('word'); ?>
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(0, $books);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthorPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $this->assertEquals('word', $author->getName());
+    }
+
+    public function testLoadWithFaker()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+    Book_1:
+        id: '1'
+        name: <?php \$faker('word'); ?>
+        description: <?php \$faker('sentence'); ?>
+
+YAML;
+        $filename  = $this->getTempFile($fixtures);
+        $container = $this->getContainer();
+        $container->set('faker.generator', \Faker\Factory::create());
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $container);
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(1, $books);
+
+        $book = $books[0];
+        $this->assertNotNull($book->getName());
+        $this->assertNotEquals('null', strtolower($book->getName()));
+        $this->assertRegexp('#[a-z]+#', $book->getName());
+        $this->assertNotNull($book->getDescription());
+        $this->assertNotEquals('null', strtolower($book->getDescription()));
+        $this->assertRegexp('#[\w ]+#', $book->getDescription());
+    }
 }
