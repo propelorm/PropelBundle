@@ -51,4 +51,4 @@ propel:
 ```
 
 
-[Configure the bundle](configuration.markdown) | [Back to index](index.markdown)
+[Configure the bundle](configuration.markdown) | [Back to index](index.markdown) | [Write an XML Schema](schema.markdown)
