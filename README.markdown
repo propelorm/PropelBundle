@@ -41,7 +41,7 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/propelorm/PropelBundle/blob/master/Resources/doc/index.markdown)
+[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.1/Resources/doc/index.markdown)
 
 For license, see:
 
