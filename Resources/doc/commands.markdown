@@ -23,7 +23,7 @@ As usual, `--connection` allows to specify a connection.
 Note that the `--force` option is needed to actually execute the SQL statements.
 
 
-### Form Types ###
+## Form Types ##
 
 You can generate stub classes based on your `schema.xml` in a given bundle:
 
