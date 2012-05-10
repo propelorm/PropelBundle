@@ -55,6 +55,16 @@ class PropelParamConverterTest extends TestCase
         $paramConverter->apply($request, $configuration);
     }
 
+    public function testFindPkOnBook()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('book' => 1));
+        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                        'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
     public function testParamConverterFindSlug()
     {
         $paramConverter = new PropelParamConverter();

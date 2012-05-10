@@ -27,7 +27,7 @@ class PropelParamConverter implements ParamConverterInterface
         $exclude = isset($options['exclude'])? $options['exclude'] : array();
 
         // find by Pk
-        if (in_array('id', $exclude) || false === $object = $this->findPk($classQuery, $request)) {
+        if (in_array('id', $exclude) || false === $object = $this->findPk($classQuery, $request, $configuration->getName())) {
             // find by criteria
             if (false === $object = $this->findOneBy($classQuery, $request, $exclude)) {
                 throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
@@ -41,13 +41,17 @@ class PropelParamConverter implements ParamConverterInterface
         $request->attributes->set($configuration->getName(), $object);
     }
 
-    protected function findPk($classQuery, Request $request)
+    protected function findPk($classQuery, Request $request, $pk)
     {
-        if (!$request->attributes->has('id')) {
+        if (!$request->attributes->has($pk) || '' == $request->attributes->get($pk)) {
+            $pk = 'id';
+        }
+
+        if (!$request->attributes->has($pk)) {
             return false;
         }
 
-        return $classQuery::create()->findPk($request->attributes->get('id'));
+        return $classQuery::create()->findPk($request->attributes->get($pk));
     }
 
     protected function findOneBy($classQuery, Request $request, $exclude)
