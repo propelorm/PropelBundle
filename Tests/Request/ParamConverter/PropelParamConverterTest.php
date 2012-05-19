@@ -65,6 +65,17 @@ class PropelParamConverterTest extends TestCase
                         'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
+    public function testParamConverterFindCamelCasedSlug()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('author_slug' => 'my-author', 'slug' => 'my-kewl-book', 'book' => null));
+        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
+
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                        'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */

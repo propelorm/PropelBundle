@@ -18,6 +18,7 @@ use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookQuery;
 class BookQuery extends BaseBookQuery {
 
     private $bySlug = false;
+    private $byAuthorSlug = false;
 
     /**
      * fake for test
@@ -32,6 +33,18 @@ class BookQuery extends BaseBookQuery {
         }
 
         return null;
+    }
+
+    /**
+     * fake for test
+     */
+    public function filterByAuthorSlug($slug = null, $comparison = null)
+    {
+        if ('my-author' === $slug) {
+            $this->byAuthorSlug = true;
+        }
+
+        return $this;
     }
 
     /**
@@ -64,6 +77,13 @@ class BookQuery extends BaseBookQuery {
             $book->setId(1);
             $book->setName('My Book');
             $book->setSlug('my-book');
+
+            return $book;
+        } else if (true === $this->byAuthorSlug) {
+            $book = new Book();
+            $book->setId(2);
+            $book->setName('My Kewl Book');
+            $book->setSlug('my-kewl-book');
 
             return $book;
         }
