@@ -2,6 +2,7 @@
 
 namespace Propel\PropelBundle\Request\ParamConverter;
 
+use Propel\PropelBundle\Util\PropelInflector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -62,7 +63,7 @@ class PropelParamConverter implements ParamConverterInterface
         foreach ($request->attributes->all() as $key => $value) {
             if (!in_array($key, $exclude)) {
                 try {
-                    $query->{'filterBy' . ucfirst($key)}($value);
+                    $query->{'filterBy' . PropelInflector::camelize($key)}($value);
                     $hasCriteria = true;
                 } catch (\PropelException $e) { }
             }
