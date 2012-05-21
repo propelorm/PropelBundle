@@ -256,7 +256,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
             $middle = new $middleClass();
             $middle->$setter($obj);
             $middle->$relatedSetter($this->object_references[$relatedClass.'_'.$value]);
-            $middle->save();
+            $middle->save($this->con);
         }
     }
 }
