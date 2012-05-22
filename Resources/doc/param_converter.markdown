@@ -45,5 +45,23 @@ public function myAction(Post $post)
 }
 ```
 
+#### Custom mapping ####
+
+You can map route parameters directly to model column to be use for filtering.
+
+If you have a route like `/my-route/{postUniqueName}/{AuthorId}`
+Mapping option overwrite any other automatic mapping.
+
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post", options={"mapping"={"postUniqueName":"name"}})
+ * @ParamConverter("author", class="BlogBundle\Model\Author", options={"mapping"={"AuthorId":"id"}})
+ */
+public function myAction(Post $post, $author)
+{
+}
+```
 
 [Back to index](index.markdown)

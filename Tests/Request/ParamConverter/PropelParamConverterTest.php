@@ -152,4 +152,30 @@ class PropelParamConverterTest extends TestCase
         $this->assertNull($request->attributes->get('book'),
                 'param "book" should be null if book is not found and the parameter is optional');
     }
+
+    public function testParamConverterFindWithMapping()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('toto' => 1, 'book' => null));
+        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book',
+                'name' => 'book',
+                'options' => array('mapping' => array('toto' => 'id'))
+                ));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
+
+    public function testParamConverterFindSlugWithMapping()
+    {
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('slugParam_special' => 'my-book', 'book' => null));
+        $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book',
+                'name' => 'book',
+                'options' => array('mapping' => array('slugParam_special' => 'slug'))
+                ));
+        $paramConverter->apply($request, $configuration);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
+                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+    }
 }
