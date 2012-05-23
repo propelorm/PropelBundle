@@ -41,6 +41,14 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected $exclude = array();
 
+    /**
+     * list of with option use to hydrate related object
+     * @var array
+     */
+    protected $withs;
+
+    protected $hasWith = false;
+
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
@@ -75,6 +83,8 @@ class PropelParamConverter implements ParamConverterInterface
             $this->filters = $request->attributes->all();
         }
 
+        $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
+
         // find by Pk
         if (false === $object = $this->findPk($classQuery, $request)) {
             // find by criteria
@@ -97,35 +107,6 @@ class PropelParamConverter implements ParamConverterInterface
         return true;
     }
 
-    protected function findPk($classQuery, Request $request)
-    {
-        if (in_array($this->pk, $this->exclude) || !$request->attributes->has($this->pk)) {
-            return false;
-        }
-
-        return $classQuery::create()->findPk($request->attributes->get($this->pk));
-    }
-
-    protected function findOneBy($classQuery, Request $request)
-    {
-        $query = $classQuery::create();
-        $hasCriteria = false;
-        foreach ($this->filters as $column => $value) {
-            if (!in_array($column, $this->exclude)) {
-                try {
-                    $query->{'filterBy' . PropelInflector::camelize($column)}($value);
-                    $hasCriteria = true;
-                } catch (\PropelException $e) { }
-            }
-        }
-
-        if (!$hasCriteria) {
-            return false;
-        }
-
-        return $query->findOne();
-    }
-
     public function supports(ConfigurationInterface $configuration)
     {
         if (null === ($classname = $configuration->getClass())) {
@@ -142,4 +123,106 @@ class PropelParamConverter implements ParamConverterInterface
 
         return false;
     }
+
+    /**
+     * Try to find the object with the id
+     *
+     * @param string $classQuery the query class
+     * @param Request $request
+     */
+    protected function findPk($classQuery, Request $request)
+    {
+        if (in_array($this->pk, $this->exclude) || !$request->attributes->has($this->pk)) {
+            return false;
+        }
+
+        if (!$this->hasWith) {
+            return $this->getQuery($classQuery)->findPk($request->attributes->get($this->pk));
+        } else {
+            return reset($this->getQuery($classQuery)->filterByPrimaryKey($request->attributes->get($this->pk))->find());
+        }
+    }
+
+    /**
+     * Try to find the object with all params from the $request
+     *
+     * @param string $classQuery
+     * @param Request $request the query class
+     * @param array $exclude an array of param to exclude from the filter
+     */
+    protected function findOneBy($classQuery, Request $request)
+    {
+        $query = $this->getQuery($classQuery);
+        $hasCriteria = false;
+        foreach ($this->filters as $column => $value) {
+            if (!in_array($column, $this->exclude)) {
+                try {
+                    $query->{'filterBy' . PropelInflector::camelize($column)}($value);
+                    $hasCriteria = true;
+                } catch (\PropelException $e) { }
+            }
+        }
+
+        if (!$hasCriteria) {
+            return false;
+        }
+
+        if (!$this->hasWith) {
+            return $query->findOne();
+        } else {
+            return reset($query->find());
+        }
+    }
+
+    /**
+     * Init the query class with optional joinWith
+     *
+     * @param string $classQuery
+     * @throws \Exception
+     */
+    protected function getQuery($classQuery)
+    {
+        $query = $classQuery::create();
+
+        foreach ($this->withs as $with) {
+            if (is_array($with)) {
+                if (2 == count($with)) {
+                    $query->joinWith($with[0], $this->getValidJoin($with));
+                    $this->hasWith = true;
+                } else {
+                    throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+                            only string relation name (e.g. "Book") or an array with two keys (e.g. {"Book", "LEFT_JOIN"}) are allowed',
+                            var_export($with, true)));
+                }
+            } else {
+                $query->joinWith($with);
+                $this->hasWith = true;
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * Return the valid join Criteria base on the with parameter
+     *
+     * @param array $with
+     * @throws \Exception
+     */
+    protected function getValidJoin($with)
+    {
+        switch (trim(str_replace(array('_', 'JOIN'), '', strtoupper($with[1])))) {
+            case 'LEFT':
+                return \Criteria::LEFT_JOIN;
+            case 'RIGHT':
+                return \Criteria::RIGHT_JOIN;
+            case 'INNER':
+                return \Criteria::INNER_JOIN;
+        }
+
+        throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+                only "left", "right" or "inner" are allowed for join option',
+                var_export($with, true)));
+    }
+
 }
