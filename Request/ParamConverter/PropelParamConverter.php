@@ -47,6 +47,8 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected $withs;
 
+    protected $hasWith = false;
+
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
@@ -134,7 +136,11 @@ class PropelParamConverter implements ParamConverterInterface
             return false;
         }
 
-        return $this->getQuery($classQuery)->findPk($request->attributes->get($this->pk));
+        if (!$this->hasWith) {
+            return $this->getQuery($classQuery)->findPk($request->attributes->get($this->pk));
+        } else {
+            return reset($this->getQuery($classQuery)->filterByPrimaryKey($request->attributes->get($this->pk))->find());
+        }
     }
 
     /**
@@ -161,7 +167,11 @@ class PropelParamConverter implements ParamConverterInterface
             return false;
         }
 
-        return $query->findOne();
+        if (!$this->hasWith) {
+            return $query->findOne();
+        } else {
+            return reset($query->find());
+        }
     }
 
     /**
@@ -178,6 +188,7 @@ class PropelParamConverter implements ParamConverterInterface
             if (is_array($with)) {
                 if (2 == count($with)) {
                     $query->joinWith($with[0], $this->getValidJoin($with));
+                    $this->hasWith = true;
                 } else {
                     throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
                             only string relation name (e.g. "Book") or an array with two keys (e.g. {"Book", "LEFT_JOIN"}) are allowed',
@@ -185,6 +196,7 @@ class PropelParamConverter implements ParamConverterInterface
                 }
             } else {
                 $query->joinWith($with);
+                $this->hasWith = true;
             }
         }
 
@@ -199,7 +211,7 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected function getValidJoin($with)
     {
-        switch (str_replace(array('_', 'JOIN'),'', strtoupper($with[1]))) {
+        switch (trim(str_replace(array('_', 'JOIN'), '', strtoupper($with[1])))) {
             case 'LEFT':
                 return \Criteria::LEFT_JOIN;
             case 'RIGHT':

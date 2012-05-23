@@ -64,4 +64,39 @@ public function myAction(Post $post, $author)
 }
 ```
 
+#### Hydrate related object ####
+
+You could hydrate related object with the "with" option:
+
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post", options={"with"={"Comments"}})
+ */
+public function myAction(Post $post)
+{
+}
+```
+
+You can set multiple with ```"with"={"Comments", "Author", "RelatedPosts"}```.
+
+The default join is an "inner join" but you can configure it to be a left join, right join or inner join :
+
+``` php
+<?php
+
+/**
+ * @ParamConverter("post", class="BlogBundle\Model\Post", options={"with"={ {"Comments", "left join" } }})
+ */
+public function myAction(Post $post)
+{
+}
+```
+Accepted parmeters for join :
+
+  left, LEFT, left join, LEFT JOIN, left_join, LEFT_JOIN
+  right, RIGHT, right join, RIGHT JOIN, right_join, RIGHT_JOIN
+  inner, INNER, inner join, INNER JOIN, inner_join, INNER_JOIN
+
 [Back to index](index.markdown)
