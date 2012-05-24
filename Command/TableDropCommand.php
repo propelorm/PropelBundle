@@ -89,12 +89,11 @@ EOT
 
                 if ($nbTable) {
                     foreach ($tablesToDelete as $tableToDelete) {
-                        if(!array_search($tableToDelete, $allTables)) {
+                        if (!array_search($tableToDelete, $allTables)) {
                             throw new \InvalidArgumentException(sprintf('Table %s doesn\'t exist in the database.', $tableToDelete));
                         }
                     }
-                }
-                else {
+                } else {
                     $tablesToDelete = $allTables;
                 }
 
@@ -108,22 +107,19 @@ EOT
                     $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
 
                     $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
-                }
-                else {
+                } else {
                     $output->writeln('<info>No tables have been dropped</info>');
                 }
 
                 $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $this->writeSection($output, array(
                     '[Propel] Exception caught',
                     '',
                     $e->getMessage()
                 ), 'fg=white;bg=red');
             }
-        }
-        else {
+        } else {
             $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
         }
     }

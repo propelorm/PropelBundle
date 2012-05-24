@@ -20,8 +20,8 @@ interface DataDumperInterface
     /**
      * Dumps data to fixtures from a given connection.
      *
-     * @param string $filename          The file name to write data.
-     * @param string $connectionName    The Propel connection name.
+     * @param string $filename       The file name to write data.
+     * @param string $connectionName The Propel connection name.
      */
     function dump($filename, $connectionName = null);
 }

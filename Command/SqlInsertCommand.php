@@ -89,8 +89,8 @@ EOT
 
     /**
      * @param \PropelSqlManager $manager
-     * @param OutputInterface $output
-     * @param string $connectionName
+     * @param OutputInterface   $output
+     * @param string            $connectionName
      */
     protected function doSqlInsert(\PropelSqlManager $manager, OutputInterface $output, $connectionName)
     {

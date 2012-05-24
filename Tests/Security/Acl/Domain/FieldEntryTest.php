@@ -10,7 +10,6 @@
 
 namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
 
-use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
 use Propel\PropelBundle\Security\Acl\Domain\Acl;

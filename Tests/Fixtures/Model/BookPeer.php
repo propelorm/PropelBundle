@@ -15,6 +15,6 @@ use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookPeer;
  * long as it does not already exist in the output directory.
  *
  */
-class BookPeer extends BaseBookPeer {
-
+class BookPeer extends BaseBookPeer
+{
 } // BookPeer

@@ -15,8 +15,8 @@ use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class BookQuery extends BaseBookQuery {
-
+class BookQuery extends BaseBookQuery
+{
     private $bySlug = false;
     private $byAuthorSlug = false;
 
@@ -79,7 +79,7 @@ class BookQuery extends BaseBookQuery {
             $book->setSlug('my-book');
 
             return $book;
-        } else if (true === $this->byAuthorSlug) {
+        } elseif (true === $this->byAuthorSlug) {
             $book = new Book();
             $book->setId(2);
             $book->setName('My Kewl Book');

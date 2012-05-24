@@ -127,7 +127,7 @@ class PropelParamConverter implements ParamConverterInterface
     /**
      * Try to find the object with the id
      *
-     * @param string $classQuery the query class
+     * @param string  $classQuery the query class
      * @param Request $request
      */
     protected function findPk($classQuery, Request $request)
@@ -146,9 +146,9 @@ class PropelParamConverter implements ParamConverterInterface
     /**
      * Try to find the object with all params from the $request
      *
-     * @param string $classQuery
-     * @param Request $request the query class
-     * @param array $exclude an array of param to exclude from the filter
+     * @param string  $classQuery
+     * @param Request $request    the query class
+     * @param array   $exclude    an array of param to exclude from the filter
      */
     protected function findOneBy($classQuery, Request $request)
     {

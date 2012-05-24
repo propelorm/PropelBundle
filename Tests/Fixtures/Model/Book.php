@@ -15,6 +15,6 @@ use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBook;
  * long as it does not already exist in the output directory.
  *
  */
-class Book extends BaseBook {
-
+class Book extends BaseBook
+{
 } // Book

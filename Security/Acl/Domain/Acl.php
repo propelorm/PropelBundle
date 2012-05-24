@@ -10,12 +10,10 @@
 
 namespace Propel\PropelBundle\Security\Acl\Domain;
 
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
@@ -51,12 +49,12 @@ class Acl implements AclInterface
     /**
      * Constructor.
      *
-     * @param \PropelObjectCollection $entries
-     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
+     * @param \PropelObjectCollection                                                   $entries
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface             $objectIdentity
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param array $loadedSecurityIdentities
-     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
-     * @param bool $inherited
+     * @param array                                                                     $loadedSecurityIdentities
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface                        $parentAcl
+     * @param bool                                                                      $inherited
      */
     public function __construct(\PropelObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
@@ -178,10 +176,10 @@ class Acl implements AclInterface
     /**
      * Determines whether field access is granted
      *
-     * @param string  $field
-     * @param array   $masks
-     * @param array   $securityIdentities
-     * @param bool    $administrativeMode
+     * @param string $field
+     * @param array  $masks
+     * @param array  $securityIdentities
+     * @param bool   $administrativeMode
      *
      * @return bool
      */
@@ -195,9 +193,9 @@ class Acl implements AclInterface
      *
      * @throws \Symfony\Component\Security\Acl\Exception\NoAceFoundException when no ACE was applicable for this request
      *
-     * @param array   $masks
-     * @param array   $securityIdentities
-     * @param bool    $administrativeMode
+     * @param array $masks
+     * @param array $securityIdentities
+     * @param bool  $administrativeMode
      *
      * @return bool
      */

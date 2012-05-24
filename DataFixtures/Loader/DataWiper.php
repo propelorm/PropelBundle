@@ -18,8 +18,8 @@ class DataWiper extends AbstractDataLoader
     /**
      * Clears the database completely.
      *
-     * @param array $files              A set of files containing datas to load.
-     * @param string $connectionName    The Propel connection name
+     * @param array  $files          A set of files containing datas to load.
+     * @param string $connectionName The Propel connection name
      */
     public function load($files = array(), $connectionName)
     {

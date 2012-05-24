@@ -101,7 +101,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Set the value of [id] column.
      *
-     * @param      int $v new value
+     * @param int $v new value
      * @return     Book The current object (for fluent API support)
      */
     public function setId($v)
@@ -121,7 +121,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Set the value of [name] column.
      *
-     * @param      string $v new value
+     * @param string $v new value
      * @return     Book The current object (for fluent API support)
      */
     public function setName($v)
@@ -141,7 +141,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Set the value of [slug] column.
      *
-     * @param      string $v new value
+     * @param string $v new value
      * @return     Book The current object (for fluent API support)
      */
     public function setSlug($v)
@@ -180,9 +180,9 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param array   $row       The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int     $startcol  0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return     int next starting column
      * @throws     PropelException  - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -231,8 +231,8 @@ abstract class BaseBook extends BaseObject  implements Persistent
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param boolean   $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con  (optional) The PropelPDO connection to use.
      * @return     void
      * @throws     PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -269,7 +269,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return     void
      * @throws     PropelException
      * @see        BaseObject::setDeleted()
@@ -312,7 +312,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return     int The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws     PropelException
      * @see        doSave()
@@ -363,7 +363,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return     int The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws     PropelException
      * @see        save()
@@ -428,7 +428,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param      mixed $columns Column name or an array of column names.
+     * @param mixed $columns Column name or an array of column names.
      * @return     boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -454,7 +454,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param      array $columns Array of column names to validate.
+     * @param array $columns Array of column names to validate.
      * @return     mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -481,8 +481,8 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
      * @return     mixed Value of field.
@@ -499,12 +499,12 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos position in xml schema
      * @return     mixed Value of field at $pos
      */
     public function getByPosition($pos)
     {
-        switch($pos) {
+        switch ($pos) {
             case 0:
                 return $this->getId();
                 break;
@@ -526,11 +526,11 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * You can specify the key type of the array by passing one of the class
      * type constants.
      *
-     * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
+     * @param string $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
-     * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param array   $alreadyDumpedObjects   List of objects to skip to avoid recursion
      *
      * @return    array an associative array containing the field names (as keys) and field values
      */
@@ -553,9 +553,9 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param      string $name peer name
-     * @param      mixed $value field value
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name  peer name
+     * @param mixed  $value field value
+     * @param string $type  The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM
      * @return     void
@@ -571,13 +571,13 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
-     * @param      mixed $value field value
+     * @param int   $pos   position in xml schema
+     * @param mixed $value field value
      * @return     void
      */
     public function setByPosition($pos, $value)
     {
-        switch($pos) {
+        switch ($pos) {
             case 0:
                 $this->setId($value);
                 break;
@@ -603,8 +603,8 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's phpname (e.g. 'AuthorId')
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
      * @return     void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -660,7 +660,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param      int $key Primary key.
+     * @param int $key Primary key.
      * @return     void
      */
     public function setPrimaryKey($key)
@@ -683,9 +683,9 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of Book (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param object  $copyObj  An object of Book (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew  Whether to reset autoincrement PKs and make the object new.
      * @throws     PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -706,7 +706,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @return     Book Clone of current object.
      * @throws     PropelException
      */
@@ -761,7 +761,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {

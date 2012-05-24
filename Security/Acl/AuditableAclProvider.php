@@ -23,11 +23,11 @@ class AuditableAclProvider extends MutableAclProvider
     /**
      * Get an ACL for this provider.
      *
-     * @param \PropelObjectCollection $collection
+     * @param \PropelObjectCollection                                       $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
-     * @param array $loadedSecurityIdentities
-     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
-     * @param bool $inherited
+     * @param array                                                         $loadedSecurityIdentities
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
+     * @param bool                                                          $inherited
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl
      */

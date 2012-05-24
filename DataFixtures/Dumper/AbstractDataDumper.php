@@ -12,7 +12,6 @@ namespace Propel\PropelBundle\DataFixtures\Dumper;
 
 use \PDO;
 use \Propel;
-use \BaseObject;
 
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 
@@ -56,7 +55,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
      * Dumps data to fixture from a given connection and
      * returns an array.
      *
-     * @param string $connectionName    The connection name
+     * @param string $connectionName The connection name
      * @return array
      */
     protected function getDataAsArray()
@@ -116,7 +115,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
             }
 
             foreach ($resultsSets as $rows) {
-                if(count($rows) > 0 && !isset($dumpData[$tableName])) {
+                if (count($rows) > 0 && !isset($dumpData[$tableName])) {
                     $dumpData[$tableName] = array();
 
                     foreach ($rows as $row) {
@@ -148,8 +147,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                     $values[$col] = $relatedTable->getPhpName().'_'.$row[$col];
                                     $values[$col] = strlen($row[$col]) ? $relatedTable->getPhpName().'_'.$row[$col] : '';
                                 }
-                            }
-                            elseif (!$isPrimaryKey || ($isPrimaryKey && !$tableMap->isUseIdGenerator())) {
+                            } elseif (!$isPrimaryKey || ($isPrimaryKey && !$tableMap->isUseIdGenerator())) {
                                 if (!empty($row[$col]) && 'ARRAY' === $column->getType()) {
                                     $serialized = substr($row[$col], 2, -2);
                                     $row[$col] = $serialized ? explode(' | ', $serialized) : array();
@@ -177,7 +175,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
      * Fixes the ordering of foreign key data, by outputting data
      * a foreign key depends on before the table with the foreign key.
      *
-     * @param array $classes    The array with the class names
+     * @param array $classes The array with the class names
      * @return array
      */
     protected function fixOrderingOfForeignKeyData($classes)

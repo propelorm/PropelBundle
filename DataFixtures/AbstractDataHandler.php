@@ -34,7 +34,7 @@ abstract class AbstractDataHandler
     /**
      * Default constructor
      *
-     * @param string $rootDir   The root directory.
+     * @param string $rootDir The root directory.
      */
     public function __construct($rootDir)
     {
@@ -52,7 +52,7 @@ abstract class AbstractDataHandler
     /**
      * Load Map builders.
      *
-     * @param string $connectionName    A connection name.
+     * @param string $connectionName A connection name.
      */
     protected function loadMapBuilders($connectionName = null)
     {
@@ -83,8 +83,8 @@ abstract class AbstractDataHandler
      * Try to find a valid class with its namespace based on the filename.
      * Based on the PSR-0 standard, the namespace should be the directory structure.
      *
-     * @param string $path  The relative path of the file.
-     * @param string $shortClassName    The short class name aka the filename without extension.
+     * @param string $path           The relative path of the file.
+     * @param string $shortClassName The short class name aka the filename without extension.
      */
     private function guessFullClassName($path, $shortClassName)
     {

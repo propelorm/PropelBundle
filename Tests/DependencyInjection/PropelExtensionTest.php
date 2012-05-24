@@ -94,7 +94,8 @@ class PropelExtensionTest extends TestCase
 
     }
 
-    public function testDbalLoadCascade() {
+    public function testDbalLoadCascade()
+    {
         $container = $this->getContainer();
         $loader = new PropelExtension();
 
@@ -131,7 +132,8 @@ class PropelExtensionTest extends TestCase
         $this->assertEquals('o2',        $config['datasources']['default']['connection']['options'][1]);
     }
 
-    public function testDbalLoadMultipleConnections() {
+    public function testDbalLoadMultipleConnections()
+    {
         $container = $this->getContainer();
         $loader = new PropelExtension();
 

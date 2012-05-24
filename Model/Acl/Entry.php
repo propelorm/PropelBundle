@@ -64,7 +64,7 @@ class Entry extends BaseEntry
     /**
      * Transform a given model entry into an ACL related Entry (ACE).
      *
-     * @param \Propel\PropelBundle\Model\Acl\Entry $modelEntry
+     * @param \Propel\PropelBundle\Model\Acl\Entry               $modelEntry
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      *
      * @return \Symfony\Component\Security\Acl\Model\EntryInterface

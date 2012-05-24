@@ -12,7 +12,6 @@ namespace Propel\PropelBundle\Tests\Command;
 
 use Propel\PropelBundle\Tests\TestCase;
 use Propel\PropelBundle\Command\AbstractCommand;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 

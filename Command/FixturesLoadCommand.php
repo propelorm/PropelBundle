@@ -160,7 +160,7 @@ EOT
     /**
      * Load fixtures
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      */
@@ -209,7 +209,7 @@ EOT
     /**
      * Load SQL fixtures
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return void
      */
@@ -224,7 +224,7 @@ EOT
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
-        foreach($datas as $data) {
+        foreach ($datas as $data) {
             $output->writeln(sprintf('<info>Loading SQL fixtures from</info> <comment>%s</comment>.', $data));
 
             $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
@@ -250,7 +250,7 @@ EOT
     /**
      * Prepare the cache directory
      *
-     * @param string $tmpdir    The temporary directory path.
+     * @param string $tmpdir The temporary directory path.
      */
     protected function prepareCache($tmpdir)
     {
@@ -294,8 +294,8 @@ EOT
     /**
      * Returns the fixtures files to load.
      *
-     * @param string $type  The extension of the files.
-     * @param string $in    The directory in which we search the files. If null,
+     * @param string $type The extension of the files.
+     * @param string $in   The directory in which we search the files. If null,
      *                      we'll use the absoluteFixturesPath property.
      *
      * @return \Iterator An iterator through the files.

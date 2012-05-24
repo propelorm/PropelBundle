@@ -72,7 +72,7 @@ class PropelParamConverterTest extends TestCase
         $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                        'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     public function testParamConverterFindCamelCasedSlug()
@@ -83,7 +83,7 @@ class PropelParamConverterTest extends TestCase
 
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                        'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     /**
@@ -102,11 +102,11 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('slug' => 'my-book', 'name' => 'foo', 'book' => null));
         $configuration = new ParamConverter(array(
-                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
-                'options' => array('exclude' => array('name'))));
+            'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+            'options' => array('exclude' => array('name'))));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     /**
@@ -117,11 +117,11 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('slug' => 'my-book', 'name' => 'foo', 'book' => null));
         $configuration = new ParamConverter(array(
-                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
-                'options' => array('exclude' => array('name', 'slug'))));
+            'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+            'options' => array('exclude' => array('name', 'slug'))));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     /**
@@ -132,11 +132,11 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('id' => '1234', 'book' => null));
         $configuration = new ParamConverter(array(
-                'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
-                'options' => array('exclude' => array('id'))));
+            'class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book',
+            'options' => array('exclude' => array('id'))));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     /**
@@ -160,7 +160,7 @@ class PropelParamConverterTest extends TestCase
         $paramConverter->apply($request, $configuration);
 
         $this->assertNull($request->attributes->get('book'),
-                'param "book" should be null if book is not found and the parameter is optional');
+            'param "book" should be null if book is not found and the parameter is optional');
     }
 
     public function testParamConverterFindWithMapping()
@@ -168,12 +168,12 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('toto' => 1, 'book' => null));
         $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book',
-                'name' => 'book',
-                'options' => array('mapping' => array('toto' => 'id'))
-                ));
+            'name' => 'book',
+            'options' => array('mapping' => array('toto' => 'id'))
+        ));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     public function testParamConverterFindSlugWithMapping()
@@ -181,40 +181,40 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('slugParam_special' => 'my-book', 'book' => null));
         $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book',
-                'name' => 'book',
-                'options' => array('mapping' => array('slugParam_special' => 'slug'))
-                ));
+            'name' => 'book',
+            'options' => array('mapping' => array('slugParam_special' => 'slug'))
+        ));
         $paramConverter->apply($request, $configuration);
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\Model\Book',$request->attributes->get('book'),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
     public function testParamConvertWithOptionWith()
     {
-        $this->loadFixture();
+        $this->loadFixtures();
         \Propel::disableInstancePooling();
 
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('id' => 1, 'book' => null));
         $configuration = new ParamConverter(array(
-                'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyBook',
-                'name' => 'book',
-                'options' => array(
-                        'with' => 'MyAuthor'
-                        )
-                ));
+            'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyBook',
+            'name' => 'book',
+            'options' => array(
+                'with' => 'MyAuthor'
+            )
+        ));
 
         $nb = $this->con->getQueryCount();
         $paramConverter->apply($request, $configuration);
 
         $book = $request->attributes->get('book');
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyBook', $book,
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyBook"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyBook"');
 
         $this->assertEquals($nb +1, $this->con->getQueryCount(), 'only one query to get the book');
 
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor', $book->getMyAuthor(),
-                'param "book" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
+            'param "book" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
 
         $this->assertEquals($nb +1, $this->con->getQueryCount(), 'no new query to get the author');
         \Propel::enableInstancePooling();
@@ -222,46 +222,48 @@ class PropelParamConverterTest extends TestCase
 
     public function testParamConvertWithOptionWithLeftJoin()
     {
-        $this->loadFixture();
+        $this->loadFixtures();
         \Propel::disableInstancePooling();
 
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('param1' => 10, 'author' => null));
         $configuration = new ParamConverter(array(
-                'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
-                'name' => 'author',
-                'options' => array(
-                        'with' => array(array('MyBook', 'left join')),
-                        'mapping' => array('param1' => 'id'),
-                        )
-                ));
+            'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
+            'name' => 'author',
+            'options' => array(
+                'with'      => array(array('MyBook', 'left join')),
+                'mapping'   => array('param1' => 'id'),
+            )
+        ));
 
         $nb = $this->con->getQueryCount();
         $paramConverter->apply($request, $configuration);
 
         $author = $request->attributes->get('author');
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor', $author,
-                'param "author" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
+            'param "author" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
 
-        $this->assertEquals($nb +1, $this->con->getQueryCount(), 'only one query to get the book');
+        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'only one query to get the book');
 
         $books = $author->getMyBooks();
         $this->assertInstanceOf('PropelObjectCollection', $books);
         $this->assertCount(2, $books, 'Author should have two books');
 
-        $this->assertEquals($nb +1, $this->con->getQueryCount(), 'no new query to get the books');
+        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'no new query to get the books');
     }
 
-    protected function loadFixture()
+    protected function loadFixtures()
     {
         $this->loadPropelQuickBuilder();
 
         $schema = <<<XML
-<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Request.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Request\ParamConverter" defaultIdMethod="native">
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Request.DataFixtures.Loader"
+    namespace="Propel\PropelBundle\Tests\Request\ParamConverter" defaultIdMethod="native">
     <table name="my_book">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
-        <column name="my_author_id" type="integer" />
+        <column name="my_author_id" type="integer" required="true" />
+
         <foreign-key foreignTable="my_author" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="my_author_id" foreign="id" />
         </foreign-key>
@@ -271,14 +273,15 @@ class PropelParamConverterTest extends TestCase
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
     </table>
-
 </database>
 XML;
         $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
+
         if (class_exists('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor')) {
             $builder->setClassTargets(array());
         }
+
         $this->con = $builder->build();
         $this->con->useDebug(true);
 

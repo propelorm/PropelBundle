@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class UniqueObjectValidator extends ConstraintValidator
 {
     /**
-     * @param object $object
+     * @param object                                  $object
      * @param \Symfony\Component\Validator\Constraint $constraint
      * @return Boolean
      */
@@ -45,7 +45,7 @@ class UniqueObjectValidator extends ConstraintValidator
         $classFields = $peerClass::getFieldNames(\BasePeer::TYPE_FIELDNAME);
 
         foreach ($fields as $fieldName) {
-            if(false === array_search($fieldName, $classFields)) {
+            if (false === array_search($fieldName, $classFields)) {
                 throw new ConstraintDefinitionException('The field "' . $fieldName .'" doesn\'t exist in the "' . $class . '" class.');
             }
         }

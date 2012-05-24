@@ -41,7 +41,7 @@ class Entry implements AuditableEntryInterface
     /**
      * Constructor.
      *
-     * @param \Propel\PropelBundle\Model\Acl\Entry $entry
+     * @param \Propel\PropelBundle\Model\Acl\Entry               $entry
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      */
     public function __construct(ModelEntry $entry, AclInterface $acl)

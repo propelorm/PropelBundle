@@ -59,7 +59,7 @@ EOT
     {
         if ($input->getOption('down')) {
             $this->callPhing('migration-down');
-        } else if($input->getOption('up')) {
+        } elseif ($input->getOption('up')) {
             $this->callPhing('migration-up');
         } else {
             $this->callPhing('migrate');

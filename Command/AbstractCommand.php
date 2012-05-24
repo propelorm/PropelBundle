@@ -103,8 +103,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Call a Phing task.
      *
-     * @param string $taskName  A Propel task name.
-     * @param array $properties An array of properties to pass to Phing.
+     * @param string $taskName   A Propel task name.
+     * @param array  $properties An array of properties to pass to Phing.
      */
     protected function callPhing($taskName, $properties = array())
     {
@@ -168,7 +168,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 strstr($this->buffer, 'failed for the following reason:')) {
                 $returnStatus = false;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $returnStatus = false;
         }
 
@@ -182,7 +182,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param KernelInterface $kernel   The application kernel.
+     * @param KernelInterface $kernel The application kernel.
      */
     protected function copySchemas(KernelInterface $kernel, $cacheDir)
     {
@@ -298,8 +298,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Create a 'build.properties' file.
      *
-     * @param KernelInterface $kernel   The application kernel.
-     * @param string $file  Should be 'build.properties'.
+     * @param KernelInterface $kernel The application kernel.
+     * @param string          $file   Should be 'build.properties'.
      */
     protected function createBuildPropertiesFile(KernelInterface $kernel, $file)
     {
@@ -316,7 +316,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Create an XML file which represents propel.configuration
      *
-     * @param string $file  Should be 'buildtime-conf.xml'.
+     * @param string $file Should be 'buildtime-conf.xml'.
      */
     protected function createBuildTimeFile($file)
     {
@@ -369,7 +369,7 @@ EOT;
     /**
      * Returns an array of properties as key/value pairs from an input file.
      *
-     * @param string $file  A file properties.
+     * @param string $file A file properties.
      * @return array        An array of properties as key/value pairs.
      */
     protected function getProperties($file)
@@ -393,7 +393,7 @@ EOT;
 
             if ("true" === $value) {
                 $value = true;
-            } else if ("false" === $value) {
+            } elseif ("false" === $value) {
                 $value = false;
             }
 
@@ -425,7 +425,7 @@ EOT;
      * Returns the default connection if no option specified or an exception
      * if the specified connection doesn't exist.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @throw \InvalidArgumentException If the connection does not exist.
      * @return array
@@ -454,7 +454,7 @@ EOT;
     /**
      * Extract the database name from a given DSN
      *
-     * @param string $dsn   A DSN
+     * @param string $dsn A DSN
      * @return string       The database name extracted from the given DSN
      */
     protected function parseDbName($dsn)
@@ -485,7 +485,7 @@ EOT;
      * Write Propel output as summary based on a Regexp.
      *
      * @param OutputInterface $output   The output object.
-     * @param string $taskname          A task name
+     * @param string          $taskname A task name
      */
     protected function writeSummary(OutputInterface $output, $taskname)
     {
@@ -507,9 +507,9 @@ EOT;
      * Comes from the SensioGeneratorBundle.
      * @see https://github.com/sensio/SensioGeneratorBundle/blob/master/Command/Helper/DialogHelper.php#L52
      *
-     * @param OutputInterface $output   The output.
-     * @param string $text              A text message.
-     * @param string $style             A style to apply on the section.
+     * @param OutputInterface $output The output.
+     * @param string          $text   A text message.
+     * @param string          $style  A style to apply on the section.
      */
     protected function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
     {
@@ -524,8 +524,8 @@ EOT;
      * Renders an error message if a task has failed.
      *
      * @param OutputInterface $output   The output.
-     * @param string $taskName          A task name.
-     * @param Boolean $more		        Whether to add a 'more details' message or not.
+     * @param string          $taskName A task name.
+     * @param Boolean         $more     Whether to add a 'more details' message or not.
      */
     protected function writeTaskError($output, $taskName, $more = true)
     {
@@ -540,7 +540,7 @@ EOT;
 
     /**
      * @param OutputInterface $output   The output.
-     * @param string $filename	        The filename.
+     * @param string          $filename The filename.
      */
     protected function writeNewFile(OutputInterface $output, $filename)
     {
@@ -548,8 +548,8 @@ EOT;
     }
 
     /**
-     * @param OutputInterface $output   The output.
-     * @param string $directory	        The directory.
+     * @param OutputInterface $output    The output.
+     * @param string          $directory The directory.
      */
     protected function writeNewDirectory(OutputInterface $output, $directory)
     {
@@ -560,8 +560,8 @@ EOT;
      * Ask confirmation from the user.
      *
      * @param OutputInterface $output   The output.
-     * @param string $question          A given question.
-     * @param string $default           A default response.
+     * @param string          $question A given question.
+     * @param string          $default  A default response.
      */
     protected function askConfirmation(OutputInterface $output, $question, $default = null)
     {
@@ -569,7 +569,7 @@ EOT;
     }
 
     /**
-     * @param \SplFileInfo $schema
+     * @param \SplFileInfo    $schema
      * @param BundleInterface $bundle
      * @return string
      */

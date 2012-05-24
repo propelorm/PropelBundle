@@ -29,7 +29,8 @@ class Properties
      *
      * @param $properties   An array of properties.
      */
-    public function __construct(array $properties = array()) {
+    public function __construct(array $properties = array())
+    {
         $this->properties = $properties;
     }
 
@@ -38,7 +39,8 @@ class Properties
      *
      * @return array   An array of properties.
      */
-    public function getProperties() {
+    public function getProperties()
+    {
         return $this->properties;
     }
 }

@@ -44,9 +44,9 @@ abstract class BaseBookQuery extends ModelCriteria
     /**
      * Initializes internal state of BaseBookQuery object.
      *
-     * @param     string $dbName The dabase name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName     The dabase name
+     * @param string $modelName  The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'mydb', $modelName = 'Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book', $modelAlias = null)
     {
@@ -56,8 +56,8 @@ abstract class BaseBookQuery extends ModelCriteria
     /**
      * Returns a new BookQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string   $modelAlias The alias of a model in the query
+     * @param Criteria $criteria   Optional Criteria to build the query from
      *
      * @return    BookQuery
      */
@@ -83,8 +83,8 @@ abstract class BaseBookQuery extends ModelCriteria
      * <code>
      * $obj  = $c->findPk(12, $con);
      * </code>
-     * @param     mixed $key Primary key to use for the query
-     * @param     PropelPDO $con an optional connection object
+     * @param mixed     $key Primary key to use for the query
+     * @param PropelPDO $con an optional connection object
      *
      * @return    Book|array|mixed the result, formatted by the current formatter
      */
@@ -109,8 +109,8 @@ abstract class BaseBookQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     PropelPDO $con an optional connection object
+     * @param array     $keys Primary keys to use for the query
+     * @param PropelPDO $con  an optional connection object
      *
      * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
      */
@@ -126,7 +126,7 @@ abstract class BaseBookQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
      * @return    BookQuery The current query, for fluid interface
      */
@@ -138,7 +138,7 @@ abstract class BaseBookQuery extends ModelCriteria
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array $keys The list of primary key to use for the query
      *
      * @return    BookQuery The current query, for fluid interface
      */
@@ -157,11 +157,11 @@ abstract class BaseBookQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return    BookQuery The current query, for fluid interface
      */
@@ -183,9 +183,9 @@ abstract class BaseBookQuery extends ModelCriteria
      * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param string $name The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return    BookQuery The current query, for fluid interface
      */
@@ -212,9 +212,9 @@ abstract class BaseBookQuery extends ModelCriteria
      * $query->filterBySlug('%fooValue%'); // WHERE slug LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $slug The value to use as filter.
+     * @param string $slug The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return    BookQuery The current query, for fluid interface
      */
@@ -235,7 +235,7 @@ abstract class BaseBookQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param     Book $book Object to remove from the list of results
+     * @param Book $book Object to remove from the list of results
      *
      * @return    BookQuery The current query, for fluid interface
      */

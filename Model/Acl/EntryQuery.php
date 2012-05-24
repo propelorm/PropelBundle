@@ -23,9 +23,9 @@ class EntryQuery extends BaseEntryQuery
      *
      * @see find()
      *
-     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity An ACL related ObjectIdentity.
-     * @param array $securityIdentities A list of SecurityIdentity to filter by.
-     * @param \PropelPDO $con
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity     An ACL related ObjectIdentity.
+     * @param array                                                         $securityIdentities A list of SecurityIdentity to filter by.
+     * @param \PropelPDO                                                    $con
      *
      * @return \PropelObjectCollection
      */

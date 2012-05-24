@@ -10,7 +10,6 @@
 
 namespace Propel\PropelBundle\Controller;
 
-use Symfony\Bridge\Propel1\DataCollector\PropelDataCollector;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,8 +43,8 @@ class PanelController extends ContainerAware
     /**
      * Renders the profiler panel for the given token.
      *
-     * @param string $token The profiler token
-     * @param string $connection The connection name
+     * @param string  $token      The profiler token
+     * @param string  $connection The connection name
      * @param integer $query
      *
      * @return Symfony\Component\HttpFoundation\Response A Response instance

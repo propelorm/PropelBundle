@@ -13,12 +13,10 @@ namespace Propel\PropelBundle\DataFixtures\Loader;
 
 use \BasePeer;
 use \BaseObject;
-use \ColumnMap;
 use \Propel;
 use \PropelException;
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\PropelBundle\Util\PropelInflector;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Abstract class to manage a common logic to load datas.
@@ -40,7 +38,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Transforms a file containing data in an array.
      *
-     * @param string $file  A filename.
+     * @param string $file A filename.
      * @return array
      */
     abstract protected function transformDataToArray($file);
@@ -84,7 +82,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Deletes current data.
      *
-     * @param array   $data  The data to delete
+     * @param array $data The data to delete
      */
     protected function deleteCurrentData($data = null)
     {
@@ -114,7 +112,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Loads the data using the generated data model.
      *
-     * @param array   $data  The data to be loaded
+     * @param array $data The data to be loaded
      */
     protected function loadDataFromArray($data = null)
     {
@@ -174,7 +172,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                     $isARealColumn = true;
                     if ($tableMap->hasColumn($name)) {
                         $column = $tableMap->getColumn($name);
-                    } else if ($tableMap->hasColumnByPhpName($name)) {
+                    } elseif ($tableMap->hasColumnByPhpName($name)) {
                         $column = $tableMap->getColumnByPhpName($name);
                     } else {
                         $isARealColumn = false;
@@ -226,9 +224,9 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Loads many to many objects.
      *
-     * @param BaseObject $obj           A Propel object
-     * @param string $middleTableName   The middle table name
-     * @param array $values             An array of values
+     * @param BaseObject $obj             A Propel object
+     * @param string     $middleTableName The middle table name
+     * @param array      $values          An array of values
      */
     protected function loadManyToMany($obj, $middleTableName, $values)
     {

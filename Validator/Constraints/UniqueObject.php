@@ -11,8 +11,6 @@
 namespace Propel\PropelBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Constraint for the Unique Object validator

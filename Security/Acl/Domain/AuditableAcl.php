@@ -12,10 +12,6 @@ namespace Propel\PropelBundle\Security\Acl\Domain;
 
 use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 
-use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
-use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Acl\Model\AuditableAclInterface;
 
 /**
@@ -27,8 +23,8 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * Updates auditing for class-based ACE
      *
      * @param integer $index
-     * @param bool $auditSuccess
-     * @param bool $auditFailure
+     * @param bool    $auditSuccess
+     * @param bool    $auditFailure
      */
     public function updateClassAuditing($index, $auditSuccess, $auditFailure)
     {
@@ -39,9 +35,9 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * Updates auditing for class-field-based ACE
      *
      * @param integer $index
-     * @param string $field
-     * @param bool $auditSuccess
-     * @param bool $auditFailure
+     * @param string  $field
+     * @param bool    $auditSuccess
+     * @param bool    $auditFailure
      */
     public function updateClassFieldAuditing($index, $field, $auditSuccess, $auditFailure)
     {
@@ -53,8 +49,8 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * Updates auditing for object-based ACE
      *
      * @param integer $index
-     * @param bool $auditSuccess
-     * @param bool $auditFailure
+     * @param bool    $auditSuccess
+     * @param bool    $auditFailure
      */
     public function updateObjectAuditing($index, $auditSuccess, $auditFailure)
     {
@@ -65,9 +61,9 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * Updates auditing for object-field-based ACE
      *
      * @param integer $index
-     * @param string $field
-     * @param bool $auditSuccess
-     * @param bool $auditFailure
+     * @param string  $field
+     * @param bool    $auditSuccess
+     * @param bool    $auditFailure
      */
     public function updateObjectFieldAuditing($index, $field, $auditSuccess, $auditFailure)
     {
@@ -81,9 +77,9 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * @throws \InvalidArgumentException
      *
      * @param array $list
-     * @param int $index
-     * @param bool $auditSuccess
-     * @param bool $auditFailure
+     * @param int   $index
+     * @param bool  $auditSuccess
+     * @param bool  $auditFailure
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl $this
      */

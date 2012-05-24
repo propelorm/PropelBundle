@@ -24,7 +24,6 @@ use Propel\PropelBundle\Security\Acl\Domain\Entry;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
-use Symfony\Component\Security\Acl\Domain\FieldEntry;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -47,8 +46,8 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * Constructor.
      *
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param \PropelPDO $connection
-     * @param \Symfony\Component\Security\Acl\Model\AclCacheInterface $cache
+     * @param \PropelPDO                                                                $connection
+     * @param \Symfony\Component\Security\Acl\Model\AclCacheInterface                   $cache
      */
     public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, \PropelPDO $connection = null, AclCacheInterface $cache = null)
     {
@@ -225,9 +224,9 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Persist the given ACEs.
      *
-     * @param array $accessControlEntries
+     * @param array                                         $accessControlEntries
      * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
-     * @param bool $object
+     * @param bool                                          $object
      *
      * @return array The IDs of the persisted ACEs.
      */
@@ -321,11 +320,11 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Get an ACL for this provider.
      *
-     * @param \PropelObjectCollection $collection
+     * @param \PropelObjectCollection                                       $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
-     * @param array $loadedSecurityIdentities
-     * @param \Symfony\Component\Security\Acl\Model\AclInterface $parentAcl
-     * @param bool $inherited
+     * @param array                                                         $loadedSecurityIdentities
+     * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
+     * @param bool                                                          $inherited
      *
      * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */

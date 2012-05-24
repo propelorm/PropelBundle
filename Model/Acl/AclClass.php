@@ -22,7 +22,7 @@ class AclClass extends BaseAclClass
      * If none can be found, a new one will be saved.
      *
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
-     * @param \PropelPDO $con
+     * @param \PropelPDO                                                    $con
      *
      * @return \Propel\PropelBundle\Model\Acl\AclClass
      */
