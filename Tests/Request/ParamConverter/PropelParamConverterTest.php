@@ -20,6 +20,8 @@ class PropelParamConverterTest extends TestCase
         if (!interface_exists('Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface')) {
             $this->markTestSkipped('SensioFrameworkExtraBundle is not available.');
         }
+
+        \Propel::disableInstancePooling();
     }
 
     public function tearDown()
@@ -192,7 +194,6 @@ class PropelParamConverterTest extends TestCase
     public function testParamConvertWithOptionWith()
     {
         $this->loadFixtures();
-        \Propel::disableInstancePooling();
 
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('id' => 1, 'book' => null));
@@ -223,7 +224,6 @@ class PropelParamConverterTest extends TestCase
     public function testParamConvertWithOptionWithLeftJoin()
     {
         $this->loadFixtures();
-        \Propel::disableInstancePooling();
 
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('param1' => 10, 'author' => null));
