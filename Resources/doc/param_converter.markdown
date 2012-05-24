@@ -95,8 +95,8 @@ public function myAction(Post $post)
 ```
 Accepted parmeters for join :
 
-  left, LEFT, left join, LEFT JOIN, left_join, LEFT_JOIN
-  right, RIGHT, right join, RIGHT JOIN, right_join, RIGHT_JOIN
-  inner, INNER, inner join, INNER JOIN, inner_join, INNER_JOIN
+* left, LEFT, left join, LEFT JOIN, left_join, LEFT_JOIN 
+* right, RIGHT, right join, RIGHT JOIN, right_join, RIGHT_JOIN
+* inner, INNER, inner join, INNER JOIN, inner_join, INNER_JOIN
 
 [Back to index](index.markdown)
