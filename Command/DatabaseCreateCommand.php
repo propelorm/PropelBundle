@@ -82,8 +82,8 @@ class DatabaseCreateCommand extends AbstractCommand
         $dbName = $this->parseDbName($config['connection']['dsn']);
 
         $config['connection']['dsn'] = preg_replace(
-            '#dbname='.$dbName.'#',
-            'dbname='.strtolower($config['adapter']),
+            '#dbname='.$dbName.';#',
+            '',
             $config['connection']['dsn']
         );
 
