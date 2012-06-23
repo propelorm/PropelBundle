@@ -203,6 +203,10 @@ YAML;
 
     public function testLoadWithFaker()
     {
+        if (!class_exists('Faker\Factory')) {
+            $this->markTestSkipped('Faker is mandatory');
+        }
+
         $fixtures = <<<YAML
 Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
     Book_1:
