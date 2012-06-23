@@ -105,17 +105,9 @@ EOT
         }
 
         if (true === $statusCode) {
-            $this->writeSection(
-                $output,
-                '<info>All SQL statements have been inserted.</info>',
-                'bg=black'
-            );
+            $output->writeln('<info>All SQL statements have been inserted.</info>');
         } else {
-            $this->writeSection(
-                $output,
-                '<comment>No SQL statements found.</comment>',
-                'bg=black'
-            );
+            $output->writeln('<comment>No SQL statements found.</comment>');
         }
     }
 

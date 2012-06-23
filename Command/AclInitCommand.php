@@ -71,8 +71,7 @@ EOT
         if (true == $result = $this->callPhing('build-sql', array('propel.sql.dir' => $sqlDirectory))) {
             $this->writeSection(
                 $output,
-                '<comment>1</comment> <info>SQL file has been generated.</info>',
-                'bg=black'
+                '<comment>1</comment> <info>SQL file has been generated.</info>'
             );
         } else {
             $this->writeTaskError($output, 'build-sql');

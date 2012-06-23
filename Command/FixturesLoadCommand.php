@@ -197,11 +197,7 @@ EOT
             return false;
         }
 
-        $this->writeSection(
-            $output,
-            sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''),
-            'fg=white;bg=black'
-        );
+        $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
 
         return true;
     }
@@ -279,9 +275,7 @@ EOT
         ));
 
         if (true === $ret) {
-            $this->writeSection($output, array(
-                '', 'All SQL statements have been inserted.'
-            ), 'fg=green;bg=black');
+            $output->writeln('All SQL statements have been inserted.');
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
 

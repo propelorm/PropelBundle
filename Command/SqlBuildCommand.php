@@ -79,13 +79,9 @@ EOT
                 }
             }
 
-            $this->writeSection(
-                $output,
-                sprintf('<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
-                    $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
-                ),
-                'bg=black'
-            );
+            $output->writeln(sprintf('<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
+                $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
+            ));
         } else {
             $this->writeSection($output, array(
                 '[Propel] Error',
