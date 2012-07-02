@@ -126,6 +126,94 @@ YAML;
         $this->assertEquals('Les misérables', $authors[1]->getBooks()->get(0)->getName());
     }
 
+    public function testYamlLoadManyToManyMultipleFiles()
+    {
+        $schema = <<<XML
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+    <table name="table_book_multiple" phpName="YamlManyToManyMultipleFilesBook">
+        <column name="id" type="integer" primaryKey="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="table_author_multiple" phpName="YamlManyToManyMultipleFilesAuthor">
+        <column name="id" type="integer" primaryKey="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="table_book_author_multiple" phpName="YamlManyToManyMultipleFilesBookAuthor" isCrossRef="true">
+        <column name="book_id" type="integer" required="true" primaryKey="true" />
+        <column name="author_id" type="integer" required="true" primaryKey="true" />
+
+        <foreign-key foreignTable="table_book_multiple" phpName="Book" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="book_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="table_author_multiple" phpName="Author" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+    </table>
+</database>
+XML;
+
+        $fixtures1 = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBook:
+    Book_2:
+        id: 2
+        name: 'Les misérables'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesAuthor:
+    Author_1:
+        id: 1
+        name: 'A famous one'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookAuthor:
+    BookAuthor_1:
+        book_id: Book_1
+        author_id: Author_1
+YAML;
+
+        $fixtures2 = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBook:
+    Book_1:
+        id: 1
+        name: 'An important one'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesAuthor:
+    Author_2:
+        id: 2
+        name: 'Victor Hugo'
+        table_book_author_multiples: [ Book_2 ]
+YAML;
+
+        $filename1 = $this->getTempFile($fixtures1);
+        $filename2 = $this->getTempFile($fixtures2);
+
+        $builder = new \PropelQuickBuilder();
+        $builder->setSchema($schema);
+        $con = $builder->build();
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename1, $filename2), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(2, $books);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBook', $books[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBook', $books[1]);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesAuthorPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(2, $authors);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesAuthor', $authors[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesAuthor', $authors[1]);
+
+        $bookAuthors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookAuthorPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(2, $bookAuthors);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookAuthor', $bookAuthors[0]);
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookAuthor', $bookAuthors[1]);
+
+        $this->assertEquals('Victor Hugo', $authors[1]->getName());
+        $this->assertTrue($authors[1]->getBooks()->contains($books[1]));
+        $this->assertEquals('Les misérables', $authors[1]->getBooks()->get(0)->getName());
+    }
+
     public function testLoadSelfReferencing()
     {
         $fixtures = <<<YAML

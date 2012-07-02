@@ -62,7 +62,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                 $content = $this->transformDataToArray($file);
 
                 if (count($content) > 0) {
-                    $datas = array_merge($datas, $content);
+                    $datas = array_merge_recursive($datas, $content);
                     $nbFiles++;
                 }
             }
