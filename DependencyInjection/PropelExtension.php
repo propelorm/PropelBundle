@@ -33,7 +33,7 @@ class PropelExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
-        $configuration = new Configuration($container->getParameter('kernel.debug'));
+        $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
         // Composer
@@ -128,6 +128,11 @@ class PropelExtension extends Extension
         }
 
         $container->getDefinition('propel.configuration')->setArguments(array($c));
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration($container->getParameter('kernel.debug'));
     }
 
     /**
