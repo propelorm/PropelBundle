@@ -19,5 +19,6 @@
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }
   },
-  "target-dir": "Propel/PropelBundle"
+  "target-dir": "Propel/PropelBundle",
+  "minimum-stability": "dev"
 }
