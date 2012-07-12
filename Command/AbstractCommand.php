@@ -448,6 +448,11 @@ EOT;
             $this->alreadyWroteConnection = true;
         }
 
+        // prevent errors
+        if (!isset($defaultConfig['connection']['password'])) {
+            $defaultConfig['connection']['password'] = null;
+        }
+
         return array($name, $defaultConfig);
     }
 
