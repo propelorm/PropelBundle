@@ -75,10 +75,18 @@ class PropelExtension extends Extension
             $loader->load('converters.xml');
         }
 
+        // build properties
         if (isset($config['build_properties']) && is_array($config['build_properties'])) {
             $buildProperties = $config['build_properties'];
         } else {
             $buildProperties = array();
+        }
+
+        // behaviors
+        if (isset($config['behaviors']) && is_array($config['behaviors'])) {
+            foreach ($config['behaviors'] as $name => $class) {
+                $buildProperties[sprintf('propel.behavior.%s.class', $name)] = $class;
+            }
         }
 
         $container->getDefinition('propel.build_properties')->setArguments(array($buildProperties));
@@ -143,16 +151,6 @@ class PropelExtension extends Extension
     public function getXsdValidationBasePath()
     {
         return __DIR__.'/../Resources/config/schema';
-    }
-
-    /**
-     * Returns the namespace to be used for this extension (XML namespace).
-     *
-     * @return string The XML namespace
-     */
-    public function getNamespace()
-    {
-        return 'http://www.symfony-project.org/schema/dic/propel';
     }
 
     /**

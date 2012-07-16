@@ -62,6 +62,9 @@ class Configuration implements ConfigurationInterface
      *     build_properties:
      *         xxxx.xxxx:   xxxxxx
      *         ...
+     *     behaviors:
+     *         fooable: My\FooableBehavior
+     *         barable: src.barable.BarableBehavior
      */
     private function addGeneralSection(ArrayNodeDefinition $node)
     {
@@ -71,6 +74,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('phing_path')->end()
                 ->scalarNode('logging')->defaultValue($this->debug)->end()
                 ->arrayNode('build_properties')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('behaviors')
                     ->useAttributeAsKey('key')
                     ->prototype('scalar')->end()
                 ->end()
