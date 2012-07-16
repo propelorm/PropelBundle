@@ -604,6 +604,12 @@ EOT;
             'propel.output.dir'         => $kernel->getRootDir().'/propel',
             'propel.php.dir'            => $kernel->getRootDir().'/..',
             'propel.packageObjectModel' => true,
+            'propel.useDateTimeClass'   => true,
+            'propel.dateTimeClass'      => 'DateTime',
+            'propel.defaultTimeFormat'  => '',
+            'propel.defaultDateFormat'  => '',
+            'propel.defaultTimeStampFormat'     => '',
+            'propel.builder.pluralizer.class'   => 'builder.util.StandardEnglishPluralizer',
         ), $properties);
 
         // Adding user defined properties from the configuration
