@@ -4,7 +4,8 @@ Propel Configuration
 You can add a `app/config/propel.ini` file in your project to specify some
 configuration parameters. See the [Build properties Reference](
 http://www.propelorm.org/reference/buildtime-configuration.html) to get more
-information.
+information. However, **the recommended way** to configure Propel is to rely
+on **build properties**, see the section below.
 
 By default the PropelBundle is configured with the default parameters:
 
