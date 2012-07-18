@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * PropelParamConverter
  *
@@ -47,8 +46,21 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected $withs;
 
+    /**
+     * @var bool
+     */
     protected $hasWith = false;
 
+    /**
+     * @param Request                $request
+     * @param ConfigurationInterface $configuration
+     *
+     * @return bool
+     *
+     * @throws \LogicException
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
@@ -107,6 +119,11 @@ class PropelParamConverter implements ParamConverterInterface
         return true;
     }
 
+    /**
+     * @param ConfigurationInterface $configuration
+     *
+     * @return bool
+     */
     public function supports(ConfigurationInterface $configuration)
     {
         if (null === ($classname = $configuration->getClass())) {
@@ -129,6 +146,8 @@ class PropelParamConverter implements ParamConverterInterface
      *
      * @param string  $classQuery the query class
      * @param Request $request
+     *
+     * @return mixed
      */
     protected function findPk($classQuery, Request $request)
     {
@@ -146,9 +165,10 @@ class PropelParamConverter implements ParamConverterInterface
     /**
      * Try to find the object with all params from the $request
      *
-     * @param string  $classQuery
-     * @param Request $request    the query class
-     * @param array   $exclude    an array of param to exclude from the filter
+     * @param string  $classQuery the query class
+     * @param Request $request
+     *
+     * @return mixed
      */
     protected function findOneBy($classQuery, Request $request)
     {
@@ -178,6 +198,9 @@ class PropelParamConverter implements ParamConverterInterface
      * Init the query class with optional joinWith
      *
      * @param string $classQuery
+     *
+     * @return \ModelCriteria
+     *
      * @throws \Exception
      */
     protected function getQuery($classQuery)
@@ -207,6 +230,9 @@ class PropelParamConverter implements ParamConverterInterface
      * Return the valid join Criteria base on the with parameter
      *
      * @param array $with
+     *
+     * @return string
+     *
      * @throws \Exception
      */
     protected function getValidJoin($with)

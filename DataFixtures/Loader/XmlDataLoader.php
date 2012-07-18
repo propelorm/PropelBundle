@@ -28,7 +28,7 @@ class XmlDataLoader extends AbstractDataLoader
     }
 
     /**
-     * @param SimpleXMLElement $xml
+     * @param  SimpleXMLElement $xml
      * @return array
      */
     protected function simpleXmlToArray($xml)
@@ -39,7 +39,7 @@ class XmlDataLoader extends AbstractDataLoader
                 // First make a valid key which is the Ns (Namespace) attribute
                 // + the element name (the class name)
                 foreach ($value->attributes() as $subkey => $subvalue) {
-                    if ('Namespace' === (string)$subkey) {
+                    if ('Namespace' === (string) $subkey) {
                         $key = $subvalue . '\\' . $key;
                         break;
                     }

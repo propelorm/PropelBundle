@@ -24,7 +24,6 @@ use Propel\PropelBundle\Security\Acl\Domain\Entry;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
-
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\FieldEntryInterface;

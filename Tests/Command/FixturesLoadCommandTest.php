@@ -61,7 +61,7 @@ class FixturesLoadCommandTest extends TestCase
     {
         $tmp_dir = $this->fixtures_dir;
 
-        return array_map(function($file) use($tmp_dir) {
+        return array_map(function($file) use ($tmp_dir) {
             return str_replace($tmp_dir . DIRECTORY_SEPARATOR, '', $file);
         }, array_keys(iterator_to_array($file_iterator)));
     }

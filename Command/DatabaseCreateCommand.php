@@ -73,8 +73,8 @@ class DatabaseCreateCommand extends AbstractCommand
      *
      * @see https://github.com/doctrine/doctrine1/blob/master/lib/Doctrine/Connection.php#L1491
      *
-     * @param string $name   A connection name.
-     * @param array  $config A Propel connection configuration.
+     * @param  string $name   A connection name.
+     * @param  array  $config A Propel connection configuration.
      * @return array
      */
     private function getTemporaryConfiguration($name, $config)

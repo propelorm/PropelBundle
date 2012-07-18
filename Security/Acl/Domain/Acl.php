@@ -10,7 +10,6 @@
 
 namespace Propel\PropelBundle\Security\Acl\Domain;
 
-
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
