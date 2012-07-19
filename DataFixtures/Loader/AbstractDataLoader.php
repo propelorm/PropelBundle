@@ -10,7 +10,6 @@
 
 namespace Propel\PropelBundle\DataFixtures\Loader;
 
-
 use \BasePeer;
 use \BaseObject;
 use \Propel;
@@ -38,7 +37,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Transforms a file containing data in an array.
      *
-     * @param string $file A filename.
+     * @param  string $file A filename.
      * @return array
      */
     abstract protected function transformDataToArray($file);

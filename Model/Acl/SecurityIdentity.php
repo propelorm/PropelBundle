@@ -25,7 +25,7 @@ class SecurityIdentity extends BaseSecurityIdentity
      *
      * @return \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface
      */
-    static public function toAclIdentity(SecurityIdentity $securityIdentity)
+    public static function toAclIdentity(SecurityIdentity $securityIdentity)
     {
         $identifier = $securityIdentity->getIdentifier();
 
@@ -58,7 +58,7 @@ class SecurityIdentity extends BaseSecurityIdentity
      *
      * @return \Propel\PropelBundle\Model\Acl\SecurityIdentity
      */
-    static public function fromAclIdentity(SecurityIdentityInterface $aclIdentity, \PropelPDO $con = null)
+    public static function fromAclIdentity(SecurityIdentityInterface $aclIdentity, \PropelPDO $con = null)
     {
         if ($aclIdentity instanceof UserSecurityIdentity) {
             $identifier = $aclIdentity->getClass().'-'.$aclIdentity->getUsername();

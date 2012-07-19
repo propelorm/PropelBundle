@@ -31,7 +31,7 @@ class Entry extends BaseEntry
      *
      * @return \Propel\PropelBundle\Model\Acl\Entry
      */
-    static public function fromAclEntry(EntryInterface $aclEntry)
+    public static function fromAclEntry(EntryInterface $aclEntry)
     {
         $entry = new self();
 
@@ -69,7 +69,7 @@ class Entry extends BaseEntry
      *
      * @return \Symfony\Component\Security\Acl\Model\EntryInterface
      */
-    static public function toAclEntry(Entry $modelEntry, AclInterface $acl)
+    public static function toAclEntry(Entry $modelEntry, AclInterface $acl)
     {
         if (null === $modelEntry->getFieldName()) {
             return new AclEntry($modelEntry, $acl);
