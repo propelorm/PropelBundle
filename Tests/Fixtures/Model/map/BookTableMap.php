@@ -5,7 +5,6 @@ namespace Propel\PropelBundle\Tests\Fixtures\Model\map;
 use \RelationMap;
 use \TableMap;
 
-
 /**
  * This class defines the structure of the 'book' table.
  *
@@ -29,8 +28,8 @@ class BookTableMap extends TableMap
      * Initialize the table attributes, columns and validators
      * Relations are not initialized by this method since they are lazy loaded
      *
-     * @return     void
-     * @throws     PropelException
+     * @return void
+     * @throws PropelException
      */
     public function initialize()
     {

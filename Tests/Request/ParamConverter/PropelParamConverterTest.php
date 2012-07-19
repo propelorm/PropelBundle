@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Propel\PropelBundle\Tests\TestCase;
 
-
 class PropelParamConverterTest extends TestCase
 {
 
@@ -151,7 +150,6 @@ class PropelParamConverterTest extends TestCase
         $configuration = new ParamConverter(array('class' => 'Propel\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
         $paramConverter->apply($request, $configuration);
     }
-
 
     public function testParamConverterFindWithOptionalParam()
     {

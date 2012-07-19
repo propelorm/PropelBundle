@@ -278,7 +278,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
                     $logicalName = $this->transformToLogicalName($schema, $bundle);
                     $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
 
-                    $finalSchemas[(string)$finalSchema] = array($bundle, $finalSchema);
+                    $finalSchemas[(string) $finalSchema] = array($bundle, $finalSchema);
                 }
             }
         }
@@ -287,7 +287,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \SplFileInfo $file
+     * @param  \SplFileInfo $file
      * @return string
      */
     protected function getRelativeFileName(\SplFileInfo $file)
@@ -369,8 +369,8 @@ EOT;
     /**
      * Returns an array of properties as key/value pairs from an input file.
      *
-     * @param string $file A file properties.
-     * @return array        An array of properties as key/value pairs.
+     * @param  string $file A file properties.
+     * @return array  An array of properties as key/value pairs.
      */
     protected function getProperties($file)
     {
@@ -405,7 +405,7 @@ EOT;
 
     /**
      * Return the current Propel cache directory.
-     * @return string   The current Propel cache directory.
+     * @return string The current Propel cache directory.
      */
     protected function getCacheDir()
     {
@@ -459,8 +459,8 @@ EOT;
     /**
      * Extract the database name from a given DSN
      *
-     * @param string $dsn A DSN
-     * @return string       The database name extracted from the given DSN
+     * @param  string $dsn A DSN
+     * @return string The database name extracted from the given DSN
      */
     protected function parseDbName($dsn)
     {
@@ -574,8 +574,8 @@ EOT;
     }
 
     /**
-     * @param \SplFileInfo    $schema
-     * @param BundleInterface $bundle
+     * @param  \SplFileInfo    $schema
+     * @param  BundleInterface $bundle
      * @return string
      */
     protected function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)

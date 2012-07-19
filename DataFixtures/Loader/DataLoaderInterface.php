@@ -23,5 +23,5 @@ interface DataLoaderInterface
      * @param array  $files          A set of files containing datas to load.
      * @param string $connectionName The Propel connection name
      */
-    function load($files = array(), $connectionName);
+    public function load($files = array(), $connectionName);
 }

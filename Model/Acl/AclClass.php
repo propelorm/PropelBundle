@@ -26,7 +26,7 @@ class AclClass extends BaseAclClass
      *
      * @return \Propel\PropelBundle\Model\Acl\AclClass
      */
-    static public function fromAclObjectIdentity(ObjectIdentityInterface $objectIdentity, \PropelPDO $con = null)
+    public static function fromAclObjectIdentity(ObjectIdentityInterface $objectIdentity, \PropelPDO $con = null)
     {
         $obj = AclClassQuery::create()
             ->filterByType($objectIdentity->getType())

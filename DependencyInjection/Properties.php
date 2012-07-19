@@ -37,7 +37,7 @@ class Properties
     /**
      * Get properties.
      *
-     * @return array   An array of properties.
+     * @return array An array of properties.
      */
     public function getProperties()
     {

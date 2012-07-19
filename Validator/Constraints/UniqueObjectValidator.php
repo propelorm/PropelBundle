@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class UniqueObjectValidator extends ConstraintValidator
 {
     /**
-     * @param object                                  $object
-     * @param \Symfony\Component\Validator\Constraint $constraint
+     * @param  object                                  $object
+     * @param  \Symfony\Component\Validator\Constraint $constraint
      * @return Boolean
      */
     public function isValid($object, Constraint $constraint)
@@ -33,7 +33,7 @@ class UniqueObjectValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }
 
-        $fields = (array)$constraint->fields;
+        $fields = (array) $constraint->fields;
 
         if (0 === count($fields)) {
             throw new ConstraintDefinitionException("At least one field must be specified.");

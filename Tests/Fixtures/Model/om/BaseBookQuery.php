@@ -4,7 +4,6 @@ namespace Propel\PropelBundle\Tests\Fixtures\Model\om;
 
 use \Criteria;
 use \ModelCriteria;
-use \ModelJoin;
 use \PropelPDO;
 use Propel\PropelBundle\Tests\Fixtures\Model\BookPeer;
 use Propel\PropelBundle\Tests\Fixtures\Model\BookQuery;
@@ -59,7 +58,7 @@ abstract class BaseBookQuery extends ModelCriteria
      * @param string   $modelAlias The alias of a model in the query
      * @param Criteria $criteria   Optional Criteria to build the query from
      *
-     * @return    BookQuery
+     * @return BookQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
@@ -86,7 +85,7 @@ abstract class BaseBookQuery extends ModelCriteria
      * @param mixed     $key Primary key to use for the query
      * @param PropelPDO $con an optional connection object
      *
-     * @return    Book|array|mixed the result, formatted by the current formatter
+     * @return Book|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
@@ -112,7 +111,7 @@ abstract class BaseBookQuery extends ModelCriteria
      * @param array     $keys Primary keys to use for the query
      * @param PropelPDO $con  an optional connection object
      *
-     * @return    PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|array|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -128,7 +127,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *
      * @param mixed $key Primary key to use for the query
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
@@ -140,7 +139,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *
      * @param array $keys The list of primary key to use for the query
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
@@ -163,7 +162,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
@@ -187,7 +186,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function filterByName($name = null, $comparison = null)
     {
@@ -216,7 +215,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function filterBySlug($slug = null, $comparison = null)
     {
@@ -237,7 +236,7 @@ abstract class BaseBookQuery extends ModelCriteria
      *
      * @param Book $book Object to remove from the list of results
      *
-     * @return    BookQuery The current query, for fluid interface
+     * @return BookQuery The current query, for fluid interface
      */
     public function prune($book = null)
     {
