@@ -4,6 +4,7 @@ namespace ##NAMESPACE##;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ##CLASS## extends AbstractType
 {
@@ -17,11 +18,11 @@ class ##CLASS## extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
+        $resolver->setDefaults(array(
             'data_class' => '##FQCN##',
-        );
+        ));
     }
 
     /**
