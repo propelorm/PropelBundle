@@ -608,6 +608,7 @@ EOT;
             'propel.dateTimeClass'      => 'DateTime',
             'propel.defaultTimeFormat'  => '',
             'propel.defaultDateFormat'  => '',
+            'propel.addClassLevelComment'       => false,
             'propel.defaultTimeStampFormat'     => '',
             'propel.builder.pluralizer.class'   => 'builder.util.StandardEnglishPluralizer',
         ), $properties);
