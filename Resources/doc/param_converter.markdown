@@ -1,7 +1,7 @@
 The PropelParamConverter
 ========================
 
-You can use the PropelParamConverter with the [SensioFrameworkExtraBundle](http://github.com/sensio/SensioFrameworkExtraBundle).
+You can use the `PropelParamConverter` with the [SensioFrameworkExtraBundle](http://github.com/sensio/SensioFrameworkExtraBundle).
 You just need to put the right _Annotation_ on top of your controller:
 
 ``` php
@@ -22,6 +22,22 @@ The _Annotation_ is optional if your parameter is typed you could only have this
 ``` php
 <?php
 
+public function myAction(Post $post)
+{
+}
+```
+
+**New** with last version of `SensioFrameworkExtraBundle`, 
+you can ommit the `class` parameter if your controller parameter is typed, 
+this is usefull when you need to set extra `options`.
+
+``` php
+<?php
+use BlogBundle\Model\Post;
+
+/**
+ * @ParamConverter("post")
+ */
 public function myAction(Post $post)
 {
 }
