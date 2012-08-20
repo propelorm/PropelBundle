@@ -156,6 +156,10 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                 // We did not want auto incremented primary keys
                                 $values[$col] = $row[$col];
                             }
+
+                            if ($column->getType() == \PropelColumnTypes::OBJECT) {
+                                $values[$col] = unserialize($row[$col]);
+                            }
                         }
 
                         if (count($primaryKeys) > 1 || (count($primaryKeys) > 0 && count($foreignKeys) > 0)) {

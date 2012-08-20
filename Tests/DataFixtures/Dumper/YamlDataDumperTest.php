@@ -24,10 +24,14 @@ class YamlDataDumperTest extends TestCase
         $author = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor();
         $author->setName('A famous one')->save($this->con);
 
+        $complementary = new \stdClass();
+        $complementary->first_word_date = '2012-01-01';
+
         $book = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book();
         $book
             ->setName('An important one')
             ->setAuthorId(1)
+            ->setComplementaryInfos($complementary)
             ->save($this->con)
         ;
 
@@ -46,6 +50,7 @@ Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
         id: '1'
         name: 'An important one'
         author_id: BookAuthor_1
+        complementary_infos: !!php/object:O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}
 
 YAML;
 
