@@ -87,10 +87,10 @@ abstract class AbstractDataHandler
     protected function isInDatabase($class, $connectionName)
     {
         $table = new $class();
-        $tableName = $table->getClassname();
 
-        return constant(constant($tableName.'::PEER').'::DATABASE_NAME') == $connectionName;
+        return constant($table->getPeerClassname().'::DATABASE_NAME') == $connectionName;
     }
+
     /**
      * Try to find a valid class with its namespace based on the filename.
      * Based on the PSR-0 standard, the namespace should be the directory structure.
