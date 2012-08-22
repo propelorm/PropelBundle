@@ -37,12 +37,14 @@ class FixturesDumpCommand extends AbstractCommand
         $this
             ->setDescription('Dump data from database into YAML fixtures file.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
+            ->addOption('dir', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a fixture directory')
             ->setHelp(<<<EOT
 The <info>propel:fixtures:dump</info> dumps data from database into YAML fixtures file.
 
   <info>php app/console propel:fixtures:dump</info>
 
 The <info>--connection</info> parameter allows you to change the connection to use.
+The <info>--dir</info> parameter allows you to change the output directory.
 The default connection is the active connection (propel.dbal.default_connection).
 EOT
             )
@@ -58,8 +60,9 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         list($name, $defaultConfig) = $this->getConnection($input, $output);
+        $fixtureDir = $input->getOption('dir') ? $input->getOption('dir') : $this->defaultFixturesDir;
 
-        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $this->defaultFixturesDir;
+        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $fixtureDir;
         $filename = $path . '/fixtures_' . time() . '.yml';
 
         $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());

@@ -61,7 +61,6 @@ abstract class AbstractDataHandler
         }
 
         $this->dbMap = Propel::getDatabaseMap($connectionName);
-
         if (0 === count($this->dbMap->getTables())) {
             $finder = new Finder();
             $files  = $finder->files()->name('*TableMap.php')
@@ -72,11 +71,24 @@ abstract class AbstractDataHandler
             foreach ($files as $file) {
                 $class = $this->guessFullClassName($file->getRelativePath(), basename($file, '.php'));
 
-                if (null !== $class) {
+                if (null !== $class && $this->isInDatabase($class, $connectionName)) {
                     $this->dbMap->addTableFromMapClass($class);
                 }
             }
         }
+    }
+
+    /**
+     * Check if a table is in a database
+     * @param  string  $class
+     * @param  string  $connectionName
+     * @return boolean
+     */
+    protected function isInDatabase($class, $connectionName)
+    {
+        $table = new $class();
+
+        return constant($table->getPeerClassname().'::DATABASE_NAME') == $connectionName;
     }
 
     /**
