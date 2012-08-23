@@ -63,6 +63,10 @@ EOT
         $filesystem->remove($cacheDir);
         $filesystem->mkdir($cacheDir);
 
+        if (!$filesystem->exists($sqlDir)) {
+            $filesystem->mkdir($sqlDir);
+        }
+
         // Execute the task
         $ret = $this->callPhing('build-sql', array(
             'propel.sql.dir' => $cacheDir
@@ -77,10 +81,9 @@ EOT
                 $fileExt = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
                 $finalLocation = $sqlDir. DIRECTORY_SEPARATOR. $file->getFilename();
 
-                if($fileExt === 'map' && $filesystem->exists($finalLocation)) {
+                if ($fileExt === 'map' && $filesystem->exists($finalLocation)) {
                     $this->mergeMapFiles($finalLocation, (string) $file);
-                } 
-                else {
+                } else {
                     $filesystem->remove($finalLocation);
                     $filesystem->rename((string) $file, $finalLocation);
                 }
@@ -105,18 +108,21 @@ EOT
     }
 
     /**
-     * Reads the existing target and the generated map files, and adds to the 
+     * Reads the existing target and the generated map files, and adds to the
      * target the missing lines that are in the generated file.
      *
-     * @param string $target target map filename
+     * @param string $target    target map filename
      * @param string $generated generated map filename
      *
      * @return boolean result
      */
-    protected function mergeMapFiles($target, $generated) {
+    protected function mergeMapFiles($target, $generated)
+    {
         if(($targetContent = file($target)) === false)
+
             return false;
         if(($generatedContent = file($generated)) === false)
+
             return false;
 
         $targetContent = array_merge($generatedContent, array_diff($targetContent, $generatedContent));
