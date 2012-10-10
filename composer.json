@@ -9,7 +9,7 @@
     "email": "william.durand1@gmail.com"
   }],
   "require": {
-    "symfony/symfony": "2.1.*",
+    "symfony/symfony": "2.2.*",
     "propel/propel1": "1.6.*"
   },
   "require-dev": {
