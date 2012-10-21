@@ -57,7 +57,8 @@ class AbstractCommandTest extends TestCase
         $schema
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle/Resources/config/my-schema.xml'));
+            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'
+                    . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'my-schema.xml'));
 
         $expected = '@MySuperBundle/Resources/config/my-schema.xml';
 
@@ -83,7 +84,8 @@ class AbstractCommandTest extends TestCase
         $schema
             ->expects($this->once())
             ->method('getRealPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle/Resources/config/propel/my-schema.xml'));
+            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'
+                    . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'propel/my-schema.xml'));
 
         $expected = '@MySuperBundle/Resources/config/propel/my-schema.xml';
 
