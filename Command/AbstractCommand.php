@@ -61,6 +61,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
     private $alreadyWroteConnection = false;
 
     /**
+     *
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
      * Return the package prefix for a given bundle.
      *
      * @param Bundle $bundle
@@ -89,6 +95,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
+
+        $this->input = $input;
 
         $this->checkConfiguration();
 
@@ -225,6 +233,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
                     sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
                         $bundle->getName(), $finalSchema->getBaseName())
                 );
+            }
+
+            if ($this->input && $this->input->hasOption('connection') && $this->input->getOption('connection')
+                && $database['name'] != $this->input->getOption('connection')) {
+                //we skip this schema because the connection name doesn't match the input value
+                $filesystem->remove($file);
+                continue;
             }
 
             foreach ($database->table as $table) {

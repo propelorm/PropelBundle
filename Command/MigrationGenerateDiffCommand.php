@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\Command;
 
 use Propel\PropelBundle\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -28,6 +29,7 @@ class MigrationGenerateDiffCommand extends AbstractCommand
     {
         $this
             ->setDescription('Generates SQL diff between the XML schemas and the current database structure')
+            ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>propel:migration:generate-diff</info> command compares the current database structure and the available schemas. If there is a difference, it creates a migration file.
 
