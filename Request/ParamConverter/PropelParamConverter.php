@@ -191,6 +191,7 @@ class PropelParamConverter implements ParamConverterInterface
             return $query->findOne();
         } else {
             $results = $query->find();
+
             return reset($results);
         }
     }

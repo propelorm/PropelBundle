@@ -627,7 +627,6 @@ abstract class BaseBook extends BaseObject  implements Persistent
         if ($this->isColumnModified(BookPeer::ID)) $criteria->add(BookPeer::ID, $this->id);
         if ($this->isColumnModified(BookPeer::NAME)) $criteria->add(BookPeer::NAME, $this->name);
         if ($this->isColumnModified(BookPeer::SLUG)) $criteria->add(BookPeer::SLUG, $this->slug);
-
         return $criteria;
     }
 

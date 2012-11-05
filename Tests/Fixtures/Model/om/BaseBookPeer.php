@@ -223,8 +223,8 @@ abstract class BaseBookPeer
     /**
      * Selects one object from the DB.
      *
-     * @param  Criteria  $criteria object used to create the SELECT statement.
-     * @param  PropelPDO $con
+     * @param  Criteria        $criteria object used to create the SELECT statement.
+     * @param  PropelPDO       $con
      * @return Book
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
@@ -243,9 +243,9 @@ abstract class BaseBookPeer
     /**
      * Selects several row from the DB.
      *
-     * @param  Criteria  $criteria The Criteria object used to build the SELECT statement.
-     * @param  PropelPDO $con
-     * @return array Array of selected Objects
+     * @param  Criteria        $criteria The Criteria object used to build the SELECT statement.
+     * @param  PropelPDO       $con
+     * @return array           Array of selected Objects
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
@@ -259,8 +259,8 @@ abstract class BaseBookPeer
      * Use this method directly if you want to work with an executed statement durirectly (for example
      * to perform your own object hydration).
      *
-     * @param  Criteria  $criteria The Criteria object used to build the SELECT statement.
-     * @param  PropelPDO $con      The connection to use
+     * @param  Criteria        $criteria The Criteria object used to build the SELECT statement.
+     * @param  PropelPDO       $con      The connection to use
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      * @return PDOStatement The executed PDOStatement object.
@@ -440,8 +440,8 @@ abstract class BaseBookPeer
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param  array $row      PropelPDO resultset row.
-     * @param  int   $startcol The 0-based offset for reading from the resultset row.
+     * @param  array           $row      PropelPDO resultset row.
+     * @param  int             $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      * @return array (Book object, last column rank)
@@ -506,9 +506,9 @@ abstract class BaseBookPeer
     /**
      * Performs an INSERT on the database, given a Book or Criteria object.
      *
-     * @param  mixed     $values Criteria or Book object containing data that is used to create the INSERT statement.
-     * @param  PropelPDO $con    the PropelPDO connection to use
-     * @return mixed The new primary key.
+     * @param  mixed           $values Criteria or Book object containing data that is used to create the INSERT statement.
+     * @param  PropelPDO       $con    the PropelPDO connection to use
+     * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
@@ -548,9 +548,9 @@ abstract class BaseBookPeer
     /**
      * Performs an UPDATE on the database, given a Book or Criteria object.
      *
-     * @param  mixed     $values Criteria or Book object containing data that is used to create the UPDATE statement.
-     * @param  PropelPDO $con    The connection to use (specify PropelPDO connection object to exert more control over transactions).
-     * @return int The number of affected rows (if supported by underlying database driver).
+     * @param  mixed           $values Criteria or Book object containing data that is used to create the UPDATE statement.
+     * @param  PropelPDO       $con    The connection to use (specify PropelPDO connection object to exert more control over transactions).
+     * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
@@ -588,7 +588,7 @@ abstract class BaseBookPeer
      * Deletes all rows from the book table.
      *
      * @param  PropelPDO $con the connection to use
-     * @return int The number of affected rows (if supported by underlying database driver).
+     * @return int       The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(PropelPDO $con = null)
     {
@@ -621,7 +621,7 @@ abstract class BaseBookPeer
      * @param mixed $values Criteria or Book object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  PropelPDO $con the connection to use
-     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int       The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *             if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
@@ -740,8 +740,8 @@ abstract class BaseBookPeer
     /**
      * Retrieve multiple objects by pkey.
      *
-     * @param  array     $pks List of primary keys
-     * @param  PropelPDO $con the connection to use
+     * @param  array           $pks List of primary keys
+     * @param  PropelPDO       $con the connection to use
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
