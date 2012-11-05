@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Validator\Constraints;
+namespace Propel\PropelBundle\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
