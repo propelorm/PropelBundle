@@ -13,35 +13,24 @@ namespace Propel\PropelBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Unique Object Validator checks if one or a set of fields contain unique values.
  *
  * @author Maxime AILLOUD <maxime.ailloud@gmail.com>
+ * @author Marek Kalnik <marekk@theodo.fr>
  */
 class UniqueObjectValidator extends ConstraintValidator
 {
     /**
-     * @param  object                                  $object
-     * @param  \Symfony\Component\Validator\Constraint $constraint
-     * @return Boolean
+     * {@inheritdoc}
      */
-    public function isValid($object, Constraint $constraint)
+    public function validate($object, Constraint $constraint)
     {
-        if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
-            throw new UnexpectedTypeException($constraint->fields, 'array');
-        }
-
-        $fields = (array) $constraint->fields;
-
-        if (0 === count($fields)) {
-            throw new ConstraintDefinitionException("At least one field must be specified.");
-        }
-
-        $class = get_class($object);
-        $peerClass = $class . 'Peer';
-        $queryClass = $class . 'Query';
+        $fields      = (array) $constraint->fields;
+        $class       = get_class($object);
+        $peerClass   = $class . 'Peer';
+        $queryClass  = $class . 'Query';
         $classFields = $peerClass::getFieldNames(\BasePeer::TYPE_FIELDNAME);
 
         foreach ($fields as $fieldName) {
@@ -52,26 +41,33 @@ class UniqueObjectValidator extends ConstraintValidator
 
         $bddUsersQuery = $queryClass::create();
         foreach ($fields as $fieldName) {
-            $bddUsersQuery->filterBy($peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME), $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME));
+            $bddUsersQuery->filterBy(
+                $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME),
+                $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME)
+            );
         }
-        $bddUsers = $bddUsersQuery->find();
 
+        $bddUsers  = $bddUsersQuery->find();
         $countUser = count($bddUsers);
 
         if ($countUser > 1 || ($countUser === 1 && $object !== $bddUsers[0])) {
-            $constraintMessage = $constraint->getMessage();
-            $constraintMessage .= ' with';
+            $fieldParts = array();
 
             foreach ($fields as $fieldName) {
-              $constraintMessage .= sprintf(' %s "%s" and', $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME), $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME));
+                $fieldParts[] = sprintf(
+                    '%s "%s"',
+                    $peerClass::translateFieldName($fieldName, \BasePeer::TYPE_FIELDNAME, \BasePeer::TYPE_PHPNAME),
+                    $object->getByName($fieldName, \BasePeer::TYPE_FIELDNAME)
+                );
             }
 
-            $constraintMessage = substr($constraintMessage, 0, -4) . '.';
-            $this->setMessage($constraintMessage);
-
-            return false;
+            $this->context->addViolation(
+                $constraint->message,
+                array(
+                    '{{ object_class }}' => $class,
+                    '{{ fields }}' => implode($constraint->messageFieldSeparator, $fieldParts)
+                )
+            );
         }
-
-        return true;
     }
 }

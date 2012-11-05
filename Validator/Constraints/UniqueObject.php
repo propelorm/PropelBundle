@@ -11,35 +11,51 @@
 namespace Propel\PropelBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Constraint for the Unique Object validator
  *
  * @author Maxime AILLOUD <maxime.ailloud@gmail.com>
+ * @author Marek Kalnik <marekk@theodo.fr>
  */
 class UniqueObject extends Constraint
 {
+    /**
+     * @var string
+     */
+    public $message = 'A {{ object_class }} object already exists with {{ fields }}';
+
+    /**
+     * @var string Used to merge multiple fields in the message
+     */
+    public $messageFieldSeparator = ' and ';
+
     /**
      * @var array
      */
     public $fields = array();
 
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        if (!is_array($this->fields) && !is_string($this->fields)) {
+            throw new UnexpectedTypeException($this->fields, 'array');
+        }
+
+        if (0 === count($this->fields)) {
+            throw new ConstraintDefinitionException("At least one field must be specified.");
+        }
+    }
+
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function getRequiredOptions()
     {
         return array('fields');
-    }
-
-    /**
-     * The validator must be defined as a service with this name.
-     *
-     * @return string
-     */
-    public function validatedBy()
-    {
-        return get_class($this).'Validator';
     }
 
     /**
@@ -48,21 +64,5 @@ class UniqueObject extends Constraint
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultOption()
-    {
-        return 'fields';
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage()
-    {
-        return 'A ' . $this->groups[1] . ' object already exists';
     }
 }
