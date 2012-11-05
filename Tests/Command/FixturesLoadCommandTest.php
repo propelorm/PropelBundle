@@ -27,43 +27,44 @@ class FixturesLoadCommandTest extends TestCase
         $this->command = new TestableFixturesLoadCommand('testable-command');
 
         // let's create some dummy fixture files
-        $this->fixtures_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'propel';
-        $this->fixtures_files = array(
+        $this->fixturesDir   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'propel';
+        $this->fixturesFiles = array(
             '10_foo.yml', '20_bar.yml', '15_biz.yml', '18_boo.sql', '42_baz.sql'
         );
 
         $this->filesystem = new Filesystem();
-        $this->filesystem->mkdir($this->fixtures_dir);
-        foreach ($this->fixtures_files as $file) {
-            $this->filesystem->touch($this->fixtures_dir . DIRECTORY_SEPARATOR . $file);
+        $this->filesystem->mkdir($this->fixturesDir);
+
+        foreach ($this->fixturesFiles as $file) {
+            $this->filesystem->touch($this->fixturesDir . DIRECTORY_SEPARATOR . $file);
         }
     }
 
     public function tearDown()
     {
-        $this->filesystem->remove($this->fixtures_dir);
+        $this->filesystem->remove($this->fixturesDir);
     }
 
     public function testOrderedFixturesFiles()
     {
         $this->assertEquals(
             array('10_foo.yml', '15_biz.yml', '20_bar.yml',),
-            $this->cleanFixtureIterator($this->command->getFixtureFiles('yml', $this->fixtures_dir))
+            $this->cleanFixtureIterator($this->command->getFixtureFiles('yml', $this->fixturesDir))
         );
 
         $this->assertEquals(
             array('18_boo.sql', '42_baz.sql',),
-            $this->cleanFixtureIterator($this->command->getFixtureFiles('sql', $this->fixtures_dir))
+            $this->cleanFixtureIterator($this->command->getFixtureFiles('sql', $this->fixturesDir))
         );
     }
 
     protected function cleanFixtureIterator($file_iterator)
     {
-        $tmp_dir = $this->fixtures_dir;
+        $tmpDir = realpath($this->fixturesDir);
 
-        return array_map(function($file) use ($tmp_dir) {
-            return str_replace($tmp_dir . DIRECTORY_SEPARATOR, '', $file);
-        }, array_keys(iterator_to_array($file_iterator)));
+        return array_map(function($file) use ($tmpDir) {
+            return str_replace($tmpDir . DIRECTORY_SEPARATOR, '', $file);
+        }, array_values(iterator_to_array($file_iterator)));
     }
 }
 
