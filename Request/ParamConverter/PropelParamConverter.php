@@ -94,6 +94,15 @@ class PropelParamConverter implements ParamConverterInterface
             $this->exclude = isset($options['exclude'])? $options['exclude'] : array();
             $this->filters = $request->attributes->all();
         }
+        
+        if (!$request->attributes->has($this->pk) && $request->attributes->count()) {
+            foreach ($request->attributes->keys() as $key) {
+                if (substr($key, 0, 1) !== '_') {
+                    $this->pk = $key;
+                    break;
+                }
+            }
+        }
 
         $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
 
