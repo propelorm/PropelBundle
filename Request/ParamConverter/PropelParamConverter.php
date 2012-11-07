@@ -95,13 +95,8 @@ class PropelParamConverter implements ParamConverterInterface
             $this->filters = $request->attributes->all();
         }
         
-        if (!$request->attributes->has($this->pk) && $request->attributes->count()) {
-            foreach ($request->attributes->keys() as $key) {
-                if (substr($key, 0, 1) !== '_') {
-                    $this->pk = $key;
-                    break;
-                }
-            }
+        if (!$request->attributes->has($this->pk) && $request->attributes->has($configuration->getName())) {
+            $this->pk = $configuration->getName();
         }
 
         $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
