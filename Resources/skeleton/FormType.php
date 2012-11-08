@@ -8,20 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ##CLASS## extends AbstractType
 {
-    private $options = array(
-        'data_class' => '##FQCN##',
-    );
-
-    public function set($name, $value)
-    {
-        $this->options[$name] = $value;
-    }
-
-    public function get($name)
-    {
-        return $this->options[$name];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -34,7 +20,9 @@ class ##CLASS## extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults($this->options);
+        $resolver->setDefaults(array(
+            'data_class' => '##FQCN##',
+        ));
     }
 
     /**
