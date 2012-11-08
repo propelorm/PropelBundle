@@ -12,14 +12,19 @@ class ##CLASS## extends AbstractType
         'data_class' => '##FQCN##',
     );
 
-    public function set($name, $value)
+    public function setOption($name, $value)
     {
         $this->options[$name] = $value;
     }
 
-    public function get($name)
+    public function getOption($name)
     {
         return $this->options[$name];
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**
