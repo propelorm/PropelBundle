@@ -5,7 +5,7 @@ namespace ##NAMESPACE##;
 use Propel\PropelBundle\Model\Form\BaseAbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ##CLASS## extends AbstractType
+class ##CLASS## extends BaseAbstractType
 {
     private $options = array(
         'data_class' => '##FQCN##',
