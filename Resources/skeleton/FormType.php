@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ##CLASS## extends BaseAbstractType
 {
-    private $options = array(
+    protected $options = array(
         'data_class' => '##FQCN##',
         'name'       => '##TYPE_NAME##',
     );
