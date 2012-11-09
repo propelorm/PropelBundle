@@ -10,6 +10,7 @@ class ##CLASS## extends AbstractType
 {
     private $options = array(
         'data_class' => '##FQCN##',
+        'name'       => '##TYPE_NAME##',
     );
 
     public function setOption($name, $value)
@@ -47,6 +48,6 @@ class ##CLASS## extends AbstractType
      */
     public function getName()
     {
-        return '##TYPE_NAME##';
+        return $this->getOption('name');
     }
 }
