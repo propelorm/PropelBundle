@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class BaseAbstractType extends AbstractType
 {
-    private $options = array(
+    protected $options = array(
         'name' => '',
     );
 
