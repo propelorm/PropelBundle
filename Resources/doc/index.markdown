@@ -78,11 +78,11 @@ You are almost ready, the next steps are:
 
 Now, you can build your model classes, and SQL by running the following command:
 
-    > php app/console propel:build [--classes] [--sql] [--insert-sql]
+    > php app/console propel:build [--classes] [--sql] [--insert-sql] [--connection[=""]]
 
 To insert SQL statements, use the `propel:sql:insert` command:
 
-    > php app/console propel:sql:insert [--force]
+    > php app/console propel:sql:insert [--force] [--connection[=""]]
 
 Note that the `--force` option is needed to actually execute the SQL statements.
 
