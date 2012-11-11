@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Filesystem\Filesystem;
@@ -39,6 +40,7 @@ The <info>%command.name%</info> command builds the SQL table generation code bas
   <info>php %command.full_name%</info>
 EOT
             )
+            ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setName('propel:sql:build')
         ;
     }

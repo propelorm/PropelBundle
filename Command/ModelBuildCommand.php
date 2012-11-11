@@ -13,6 +13,7 @@ namespace Propel\PropelBundle\Command;
 use Propel\PropelBundle\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -31,6 +32,7 @@ class ModelBuildCommand extends AbstractCommand
         $this
             ->setDescription('Build the Propel Object Model classes based on XML schemas')
             ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle to generate model classes from')
+            ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles.
 

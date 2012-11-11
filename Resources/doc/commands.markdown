@@ -49,7 +49,9 @@ It will write files in `app/propel/graph/`.
 
 Generates SQL diff between the XML schemas and the current database structure:
 
-    > php app/console propel:migration:generate-diff
+    > php app/console propel:migration:generate-diff [--connection[=""]]
+
+As usual, `--connection` allows to specify a connection.
 
 Executes the migrations:
 

@@ -14,6 +14,7 @@ use Propel\PropelBundle\Command\AbstractCommand;
 use Propel\PropelBundle\Command\ModelBuildCommand;
 use Propel\PropelBundle\Command\SqlBuildCommand;
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,26 +52,31 @@ class BuildCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!$input->getOption('sql')) {
-            $modelCommand = new ModelBuildCommand();
-            $modelCommand->setApplication($this->getApplication());
-            $modelCommand->execute($input, $output);
+            $in = new ArrayInput(array(
+                    'command'        => 'propel:model:build',
+                    '--connection'   => $input->getOption('connection')
+            ));
+            $modelCommand = $this->getApplication()->find('propel:model:build');
+            $res = $modelCommand->run($in, $output);
         }
 
         if (!$input->getOption('classes')) {
-            $sqlCommand = new SqlBuildCommand();
-            $sqlCommand->setApplication($this->getApplication());
-            $sqlCommand->execute($input, $output);
+            $in = new ArrayInput(array(
+                    'command'        => 'propel:build:sql',
+                    '--connection'   => $input->getOption('connection'),
+            ));
+            $sqlCommand = $this->getApplication()->find('propel:sql:build');
+            $sqlCommand->run($in, $output);
         }
 
         if ($input->getOption('insert-sql')) {
-            $insertCommand = new SqlInsertCommand();
-            $insertCommand->setApplication($this->getApplication());
-
-            // By-pass the '--force' required option
-            $this->addOption('force', '', InputOption::VALUE_NONE, '');
-            $input->setOption('force', true);
-
-            $insertCommand->execute($input, $output);
+            $in = new ArrayInput(array(
+                    'command'        => 'propel:sql:insert',
+                    '--connection'   => $input->getOption('connection'),
+                    '--force'        => true,
+            ));
+            $insertCommand = $this->getApplication()->find('propel:sql:insert');
+            $insertCommand->run($in, $output);
         }
     }
 }
