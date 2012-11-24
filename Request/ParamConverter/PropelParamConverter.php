@@ -190,7 +190,7 @@ class PropelParamConverter implements ParamConverterInterface
         if (!$this->hasWith) {
             return $query->findOne();
         } else {
-            return $query->find()->first();
+            return $query->find()->getFirst();
         }
     }
 
