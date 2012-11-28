@@ -212,11 +212,36 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                 $obj->save($this->con);
 
-                // save the object for future reference
-                if (method_exists($obj, 'getPrimaryKey')) {
-                    $this->object_references[$class.'_'.$key] = $obj;
-                }
+                $this->saveParentReference($class, $key, $obj);
             }
+        }
+    }
+
+    /**
+     * Save a reference to the specified object (and its ancestors) before loading them.
+     *
+     * @param string     $class  Class name of passed object
+     * @param string     $key    Key identifying specified object
+     * @param BaseObject $obj    A Propel object
+     */
+    protected function saveParentReference($class, $key, &$obj)
+    {
+        if(method_exists($obj, 'getPrimaryKey')) {
+
+            $this->object_references[$class.'_'.$key] = $obj;
+
+            // Get parent (schema ancestor) of parent (Propel base class) in case of inheritance
+            if(false !== ($parentClass = get_parent_class(get_parent_class($class)))) {
+
+                $reflectionClass = new \ReflectionClass($parentClass);
+                if(!$reflectionClass->isAbstract()) {
+                    $parentObj = new $parentClass;
+                    $parentObj->fromArray($obj->toArray());
+                    $this->saveParentReference($parentClass, $key, $parentObj);
+                }
+
+            }
+
         }
     }
 
