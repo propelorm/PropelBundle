@@ -321,4 +321,61 @@ YAML;
         $this->assertNotEquals('null', strtolower($book->getDescription()));
         $this->assertRegexp('#[\w ]+#', $book->getDescription());
     }
+
+    public function testLoadWithInheritedRelationship()
+    {
+        $schema = <<<XML
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+
+    <table name="table_book_inherited_relationship" phpName="YamlInheritedRelationshipBook">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="255" />
+        <column name="author_id" type="integer" required="true" />
+        <foreign-key foreignTable="table_author_inherited_relationship" phpName="Author">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="table_author_inherited_relationship" phpName="YamlInheritedRelationshipAuthor">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="table_nobelized_author_inherited_relationship" phpName="YamlInheritedRelationshipNobelizedAuthor">
+        <column name="nobel_year" type="integer" />
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="table_author_inherited_relationship" />
+        </behavior>
+    </table>
+
+</database>
+XML;
+
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipNobelizedAuthor:
+    NobelizedAuthor_1:
+        nobel_year: 2012
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipBook:
+    Book_1:
+        name: 'Supplice du santal'
+        author_id: NobelizedAuthor_1
+YAML;
+
+        $filename = $this->getTempFile($fixtures);
+
+        $builder = new \PropelQuickBuilder();
+        $builder->setSchema($schema);
+        $con = $builder->build();
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipBookPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(1, $books);
+
+        $book = $books[0];
+        $author = $book->getAuthor();
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipAuthor', $author);
+    }
 }
