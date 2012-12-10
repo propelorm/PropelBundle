@@ -92,18 +92,35 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                 if (in_array($class, $this->deletedClasses)) {
                     continue;
                 }
+                $this->deleteClassData($class);
+            }
+        }
+    }
 
-                // Check that peer class exists before calling doDeleteAll()
-                $peerClass = constant($class.'::PEER');
-                if (!class_exists($peerClass)) {
-                    throw new \InvalidArgumentException(sprintf('Unknown class "%sPeer".', $class));
-                }
+    /**
+     * Delete data for a given class, and for its ancestors (if any).
+     *
+     * @param string $class Class name to delete
+     */
+    protected function deleteClassData($class)
+    {
+        // Check that peer class exists before calling doDeleteAll()
+        $peerClass = constant($class.'::PEER');
+        if (!class_exists($peerClass)) {
+            throw new \InvalidArgumentException(sprintf('Unknown class "%sPeer".', $class));
+        }
 
-                // bypass the soft_delete behavior if enabled
-                $deleteMethod = method_exists($peerClass, 'doForceDeleteAll') ? 'doForceDeleteAll' : 'doDeleteAll';
-                call_user_func(array($peerClass, $deleteMethod), $this->con);
+        // bypass the soft_delete behavior if enabled
+        $deleteMethod = method_exists($peerClass, 'doForceDeleteAll') ? 'doForceDeleteAll' : 'doDeleteAll';
+        call_user_func(array($peerClass, $deleteMethod), $this->con);
 
-                $this->deletedClasses[] = $class;
+        $this->deletedClasses[] = $class;
+
+        // Remove ancestors data
+        if(false !== ($parentClass = get_parent_class(get_parent_class($class)))) {
+            $reflectionClass = new \ReflectionClass($parentClass);
+            if(!$reflectionClass->isAbstract()) {
+                $this->deleteClassData($parentClass);
             }
         }
     }
