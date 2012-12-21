@@ -178,7 +178,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                         } catch (PropelException $e) {
                             // Check whether this is actually an array stored in the object.
                             if ('Cannot fetch TableMap for undefined table: '.substr($name, 0, -1) === $e->getMessage()) {
-                                if ('ARRAY' !== $tableMap->getColumn($name)->getType()) {
+                                if ('ARRAY' !== $tableMap->getColumn($name)->getType() && 'OBJECT' !== $tableMap->getColumn($name)->getType()) {
                                     throw $e;
                                 }
                             }
