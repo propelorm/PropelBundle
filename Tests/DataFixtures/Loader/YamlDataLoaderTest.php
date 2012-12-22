@@ -378,4 +378,37 @@ YAML;
         $author = $book->getAuthor();
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipAuthor', $author);
     }
+
+    public function testLoadArrayToObjectType()
+    {
+        $schema = <<<XML
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+    <table name="table_book_with_object" phpName="YamlBookWithObject">
+        <column name="id" type="integer" primaryKey="true" />
+        <column name="name" type="varchar" size="255" />
+        <column name="options" type="object" />
+    </table>
+</database>
+XML;
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObject:
+    book1:
+        name: my book
+        options: {opt1: 2012, opt2: 140, inner: {subOpt: 123}}
+YAML;
+
+        $filename = $this->getTempFile($fixtures);
+
+        $builder = new \PropelQuickBuilder();
+        $builder->setSchema($schema);
+        $con = $builder->build();
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $book = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObjectQuery::create(null, $con)->findOne();
+
+        $this->assertInstanceOf('\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObject', $book);
+        $this->assertEquals(array('opt1' => 2012, 'opt2' => 140, 'inner' => array('subOpt' => 123)), $book->getOptions());
+    }
 }
