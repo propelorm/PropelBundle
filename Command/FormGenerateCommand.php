@@ -42,13 +42,14 @@ class FormGenerateCommand extends GeneratorAwareCommand
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
-            ->addOption('usePhpName', 'u', InputOption::VALUE_NONE, 'Use original name or phpName')
+            ->addOption('originName', 'o', InputOption::VALUE_NONE, 'Use original name instead of phpName for form fields')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command allows you to quickly generate Form Type stubs for a given bundle.
 
   <info>php app/console %command.full_name%</info>
 
 The <info>--force</info> parameter allows you to overwrite existing files.
+The <info>--originName</info> parameter allows you to use original name instead of phpName for form fields.
 EOT
         )
             ->setName('propel:form:generate');
@@ -122,11 +123,11 @@ EOT
 
     private function addFields(\Table $table, $formTypeContent)
     {
-        $usePhpName = $this->_input->getOption('usePhpName');
+        $useOriginName = $this->_input->getOption('originName');
         $buildCode = '';
         foreach ($table->getColumns() as $column) {
             if (!$column->isPrimaryKey()) {
-                $buildCode .= sprintf("\n        \$builder->add('%s');", $usePhpName ? lcfirst($column->getPhpName()) : $column->getName());
+                $buildCode .= sprintf("\n        \$builder->add('%s');", $useOriginName ? $column->getName(): lcfirst($column->getPhpName()) );
             }
         }
 
