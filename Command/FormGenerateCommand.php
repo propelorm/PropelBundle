@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * This file is part of the PropelBundle package.
  * For the full copyright and license information, please view the LICENSE
@@ -27,6 +26,12 @@ class FormGenerateCommand extends GeneratorAwareCommand
 {
     const DEFAULT_FORM_TYPE_DIRECTORY = '/Form/Type';
 
+    /** @var InputInterface */
+    private $_input;
+
+    /** @var OutputInterface */
+    private $_output;
+
     /**
      * @see Command
      */
@@ -37,6 +42,7 @@ class FormGenerateCommand extends GeneratorAwareCommand
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
+            ->addOption('usePhpName', 'u', InputOption::VALUE_NONE, 'Use original name or phpName')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command allows you to quickly generate Form Type stubs for a given bundle.
 
@@ -55,6 +61,8 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->_input  = $input;
+        $this->_output = $output;
         if ($schemas = $this->getSchemasFromBundle($this->bundle)) {
             foreach ($schemas as $fileName => $array) {
                 foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
@@ -66,9 +74,9 @@ EOT
         }
     }
 
-    private function createFormTypeFromDatabase(BundleInterface $bundle, \Database $database, $models, OutputInterface $output, $force = false)
+    private function createFormTypeFromDatabase(BundleInterface $bundle, \Database $database, $models)
     {
-        $dir = $this->createDirectory($bundle, $output);
+        $dir = $this->createDirectory($bundle, $this->_output);
 
         foreach ($database->getTables() as $table) {
             if (0 < count($models) && !in_array($table->getPhpName(), $models)) {
@@ -77,27 +85,27 @@ EOT
 
             $file = new \SplFileInfo(sprintf('%s/%sType.php', $dir, $table->getPhpName()));
 
-            if (!file_exists($file) || true === $force) {
-                $this->writeFormType($bundle, $table, $file, $force, $output);
+            if (!file_exists($file) || true === $this->_input->getOption('force')) {
+                $this->writeFormType($bundle, $table, $file);
             } else {
-                $output->writeln(sprintf('File <comment>%-60s</comment> exists, skipped. Try the <info>--force</info> option.', $this->getRelativeFileName($file)));
+                $this->_output->writeln(sprintf('File <comment>%-60s</comment> exists, skipped. Try the <info>--force</info> option.', $this->getRelativeFileName($file)));
             }
         }
     }
 
-    private function createDirectory(BundleInterface $bundle, OutputInterface $output)
+    private function createDirectory(BundleInterface $bundle)
     {
         $fs = new Filesystem();
 
         if (!is_dir($dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
             $fs->mkdir($dir);
-            $this->writeNewDirectory($output, $dir);
+            $this->writeNewDirectory($this->_output, $dir);
         }
 
         return $dir;
     }
 
-    private function writeFormType(BundleInterface $bundle, \Table $table, \SplFileInfo $file, $force, OutputInterface $output)
+    private function writeFormType(BundleInterface $bundle, \Table $table, \SplFileInfo $file)
     {
         $modelName       = $table->getPhpName();
         $formTypeContent = file_get_contents(__DIR__ . '/../Resources/skeleton/FormType.php');
@@ -109,15 +117,16 @@ EOT
         $formTypeContent = $this->addFields($table, $formTypeContent);
 
         file_put_contents($file->getPathName(), $formTypeContent);
-        $this->writeNewFile($output, $this->getRelativeFileName($file) . ($force ? ' (forced)' : ''));
+        $this->writeNewFile($this->_output, $this->getRelativeFileName($file) . ($this->_input->getOption('force') ? ' (forced)' : ''));
     }
 
     private function addFields(\Table $table, $formTypeContent)
     {
+        $usePhpName = $this->_input->getOption('usePhpName');
         $buildCode = '';
         foreach ($table->getColumns() as $column) {
             if (!$column->isPrimaryKey()) {
-                $buildCode .= sprintf("\n        \$builder->add('%s');", lcfirst($column->getPhpName()));
+                $buildCode .= sprintf("\n        \$builder->add('%s');", $usePhpName ? lcfirst($column->getPhpName()) : $column->getName());
             }
         }
 
