@@ -250,6 +250,36 @@ class PropelParamConverterTest extends TestCase
         $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'no new query to get the books');
     }
 
+    public function testParamConvertWithOptionWithFindPk()
+    {
+        $this->loadFixtures();
+
+        $paramConverter = new PropelParamConverter();
+        $request = new Request(array(), array(), array('id' => 10, 'author' => null));
+        $configuration = new ParamConverter(array(
+                'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
+                'name' => 'author',
+                'options' => array(
+                        'with'      => array(array('MyBook', 'left join')),
+                )
+        ));
+
+        $nb = $this->con->getQueryCount();
+        $paramConverter->apply($request, $configuration);
+
+        $author = $request->attributes->get('author');
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor', $author,
+                'param "author" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
+
+        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'only one query to get the book');
+
+        $books = $author->getMyBooks();
+        $this->assertInstanceOf('PropelObjectCollection', $books);
+        $this->assertCount(2, $books, 'Author should have two books');
+
+        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'no new query to get the books');
+    }
+
     protected function loadFixtures()
     {
         $this->loadPropelQuickBuilder();
