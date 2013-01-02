@@ -155,10 +155,12 @@ class PropelParamConverter implements ParamConverterInterface
             return false;
         }
 
+        $query = $this->getQuery($classQuery);
+
         if (!$this->hasWith) {
-            return $this->getQuery($classQuery)->findPk($request->attributes->get($this->pk));
+            return $query->findPk($request->attributes->get($this->pk));
         } else {
-            return reset($this->getQuery($classQuery)->filterByPrimaryKey($request->attributes->get($this->pk))->find());
+            return $query->filterByPrimaryKey($request->attributes->get($this->pk))->find()->getFirst();
         }
     }
 
