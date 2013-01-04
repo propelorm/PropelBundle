@@ -37,6 +37,11 @@ class UniqueObject extends Constraint
      */
     public $fields = array();
 
+    /**
+     * @var string Used to set the path where the error will be attached, default is global.
+     */
+    public $errorPath;
+
     public function __construct($options = null)
     {
         parent::__construct($options);
@@ -47,6 +52,10 @@ class UniqueObject extends Constraint
 
         if (0 === count($this->fields)) {
             throw new ConstraintDefinitionException("At least one field must be specified.");
+        }
+
+        if (null !== $this->errorPath && !is_string($this->errorPath)) {
+            throw new UnexpectedTypeException($this->errorPath, 'string or null');
         }
     }
 
