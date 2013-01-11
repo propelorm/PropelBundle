@@ -11,8 +11,6 @@
 namespace Propel\PropelBundle\Command;
 
 use Propel\PropelBundle\Command\AbstractCommand;
-use Propel\PropelBundle\Command\ModelBuildCommand;
-use Propel\PropelBundle\Command\SqlBuildCommand;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;

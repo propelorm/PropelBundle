@@ -11,7 +11,7 @@ abstract class BaseAbstractType extends AbstractType
         'name' => '',
     );
 
-    function __construct($mergeOptions = null)
+    public function __construct($mergeOptions = null)
     {
         if ($mergeOptions) {
             $this->mergeOptions($mergeOptions);
