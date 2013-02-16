@@ -10,10 +10,10 @@
 
 namespace Propel\PropelBundle\DataFixtures\Dumper;
 
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use \PDO;
 use \Propel;
-
-use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use \PropelColumnTypes;
 
 /**
  * Abstract class to manage a common logic to dump data.
@@ -148,16 +148,16 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                     $values[$col] = strlen($row[$col]) ? $relatedTable->getPhpName().'_'.$row[$col] : '';
                                 }
                             } elseif (!$isPrimaryKey || ($isPrimaryKey && !$tableMap->isUseIdGenerator())) {
-                                if (!empty($row[$col]) && 'ARRAY' === $column->getType()) {
+                                if (!empty($row[$col]) && PropelColumnTypes::PHP_ARRAY === $column->getType()) {
                                     $serialized = substr($row[$col], 2, -2);
-                                    $row[$col] = $serialized ? explode(' | ', $serialized) : array();
+                                    $row[$col]  = $serialized ? explode(' | ', $serialized) : array();
                                 }
 
                                 // We did not want auto incremented primary keys
                                 $values[$col] = $row[$col];
                             }
 
-                            if ($column->getType() == \PropelColumnTypes::OBJECT) {
+                            if (PropelColumnTypes::OBJECT === $column->getType()) {
                                 $values[$col] = unserialize($row[$col]);
                             }
                         }

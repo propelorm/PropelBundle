@@ -13,6 +13,7 @@ namespace Propel\PropelBundle\DataFixtures\Loader;
 use \BasePeer;
 use \BaseObject;
 use \Propel;
+use \PropelColumnTypes;
 use \PropelException;
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\PropelBundle\Util\PropelInflector;
@@ -177,8 +178,9 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                             continue;
                         } catch (PropelException $e) {
                             // Check whether this is actually an array stored in the object.
-                            if ('Cannot fetch TableMap for undefined table: '.substr($name, 0, -1) === $e->getMessage()) {
-                                if ('ARRAY' !== $tableMap->getColumn($name)->getType() && 'OBJECT' !== $tableMap->getColumn($name)->getType()) {
+                            if ('Cannot fetch TableMap for undefined table: ' . substr($name, 0, -1) === $e->getMessage()) {
+                                if (PropelColumnTypes::PHP_ARRAY !== $tableMap->getColumn($name)->getType()
+                                    && PropelColumnTypes::OBJECT !== $tableMap->getColumn($name)->getType()) {
                                     throw $e;
                                 }
                             }
