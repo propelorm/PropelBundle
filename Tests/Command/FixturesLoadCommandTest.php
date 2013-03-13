@@ -35,6 +35,8 @@ class FixturesLoadCommandTest extends TestCase
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->fixturesDir);
 
+        $this->fixturesDir = realpath($this->fixturesDir);
+
         foreach ($this->fixturesFiles as $file) {
             $this->filesystem->touch($this->fixturesDir . DIRECTORY_SEPARATOR . $file);
         }
