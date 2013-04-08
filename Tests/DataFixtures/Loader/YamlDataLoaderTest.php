@@ -411,4 +411,56 @@ YAML;
         $this->assertInstanceOf('\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObject', $book);
         $this->assertEquals(array('opt1' => 2012, 'opt2' => 140, 'inner' => array('subOpt' => 123)), $book->getOptions());
     }
+
+    public function testLoadDelegatedOnPrimaryKey()
+    {
+        $schema = <<<XML
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+    <table name="yaml_delegate_on_primary_key_person" phpName="YamlDelegateOnPrimaryKeyPerson">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="yaml_delegate_on_primary_key_author" phpName="YamlDelegateOnPrimaryKeyAuthor">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="false" />
+        <column name="count_books" type="integer" defaultValue="0" required="true" />
+
+        <behavior name="delegate">
+            <parameter name="to" value="yaml_delegate_on_primary_key_person" />
+        </behavior>
+
+        <foreign-key foreignTable="yaml_delegate_on_primary_key_person" onDelete="RESTRICT" onUpdate="CASCADE">
+            <reference local="id" foreign="id" />
+        </foreign-key>
+    </table>
+</database>
+XML;
+
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlDelegateOnPrimaryKeyPerson:
+    yaml_delegate_on_primary_key_person_1:
+        name: "Some Persons Name"
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlDelegateOnPrimaryKeyAuthor:
+    yaml_delegate_on_primary_key_author_1:
+        id: yaml_delegate_on_primary_key_person_1
+        count_books: 7
+YAML;
+
+        $filename = $this->getTempFile($fixtures);
+
+        $builder = new \PropelQuickBuilder();
+        $builder->setSchema($schema);
+        $con = $builder->build();
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlDelegateOnPrimaryKeyAuthorPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $person = $author->getYamlDelegateOnPrimaryKeyPerson();
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlDelegateOnPrimaryKeyPerson', $person);
+    }
 }

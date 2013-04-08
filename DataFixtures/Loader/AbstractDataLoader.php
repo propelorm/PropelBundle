@@ -198,8 +198,11 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                     // foreign key?
                     if ($isARealColumn) {
-                        // self referencing entry
-                        if ($column->isPrimaryKey() && null !== $value) {
+                        /*
+                         * A column, which is a PrimaryKey (self referencing, e.g. versionable behavior),
+                         * but which is not a ForeignKey (e.g. delegatable behavior on 1:1 relation).
+                         */
+                        if ($column->isPrimaryKey() && null !== $value && !$column->isForeignKey()) {
                             if (isset($this->object_references[$class.'_'.$value])) {
                                 $obj = $this->object_references[$class.'_'.$value];
 
