@@ -64,8 +64,7 @@ abstract class AbstractDataHandler
         if (0 === count($this->dbMap->getTables())) {
             $finder = new Finder();
             $files  = $finder->files()->name('*TableMap.php')
-                ->in($this->getRootDir() . '/../src/')
-                ->in($this->getRootDir() . '/../vendor/')
+                ->in($this->getModelSearchPath($connectionName))
                 ->exclude('PropelBundle')
                 ->exclude('Tests');
 
@@ -120,5 +119,25 @@ abstract class AbstractDataHandler
         }
 
         return null;
+    }
+
+    /**
+    * Gets the search path for models out of the configuration.
+    *
+    * @param string $connectionName A connection name.
+    */
+
+    private function getModelSearchPath($connectionName) {
+        $configuration = Propel::getConfiguration();
+        $searchPath = array();
+        if (!empty($configuration['datasources'][$connectionName]['connection']['model_paths'])) {
+            $modelPaths = $configuration['datasources'][$connectionName]['connection']['model_paths'];
+            foreach ($modelPaths as $modelPath) {
+                $searchPath[] = $this->getRootDir() . '/../' . $modelPath;
+            }
+        } else {
+            $searchPath[] = $this->getRootDir() . '/../';
+        }
+        return $searchPath;
     }
 }

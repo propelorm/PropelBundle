@@ -110,10 +110,13 @@ propel:
                 settings:
                     charset:        { value: UTF8 }
                     queries:        { query: 'INSERT INTO BAR ('hey', 'there')' }
+                model_paths:
+                    - /src/Acme/DemoBundle/Model/
+                    - /vendor/
 ```
 
 `options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://www.propelorm.org/reference/runtime-configuration.html) documentation for more explanation.
-
+`model_paths` can be defined to speed up searching for model data. By default it searches in the whole project from project root.
 
 ## Logging ##
 
