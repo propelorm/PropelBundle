@@ -136,7 +136,8 @@ abstract class AbstractDataHandler
                 $searchPath[] = $this->getRootDir() . '/../' . $modelPath;
             }
         } else {
-            $searchPath[] = $this->getRootDir() . '/../';
+            $searchPath[] = $this->getRootDir() . '/../src/';
+            $searchPath[] = $this->getRootDir() . '/../vendor/';
         }
         return $searchPath;
     }
