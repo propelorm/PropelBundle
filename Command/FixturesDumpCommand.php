@@ -62,7 +62,18 @@ EOT
         list($name, $defaultConfig) = $this->getConnection($input, $output);
         $fixtureDir = $input->getOption('dir') ? $input->getOption('dir') : $this->defaultFixturesDir;
 
-        $path     = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $fixtureDir;
+        $path = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $fixtureDir;
+
+        if (!file_exists($path)) {
+            $output->writeln("<info>The $path folder does not exists.</info>");
+            if ($this->askConfirmation($output, "<question>Do you want me to create it for you ?</question> [Yes]")) {
+                $fs = new Filesystem();
+                $fs->mkdir($path);
+            } else {
+                throw new \IOException(sprintf('Unable to find the %s folder', $path));
+            }
+        }
+
         $filename = $path . '/fixtures_' . time() . '.yml';
 
         $dumper = new YamlDataDumper($this->getApplication()->getKernel()->getRootDir());
