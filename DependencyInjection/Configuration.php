@@ -235,6 +235,7 @@ class Configuration implements ConfigurationInterface
                 ->fixXmlConfig('model_path')
                     ->children()
                         ->arrayNode('model_paths')
+                        ->defaultValue(array('src/', 'vendor/'))
                         ->prototype('scalar')->end()
                     ->end()
                 ->end()
