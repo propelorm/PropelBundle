@@ -58,7 +58,7 @@ abstract class BaseBookPeer
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identiy map to hold any loaded instances of Book objects.
+     * An identity map to hold any loaded instances of Book objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
      * @var array Book[]
