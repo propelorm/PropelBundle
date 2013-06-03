@@ -65,6 +65,8 @@ class PropelParamConverter implements ParamConverterInterface
     {
         $classQuery = $configuration->getClass() . 'Query';
         $classPeer = $configuration->getClass() . 'Peer';
+        $this->filters = array();
+        $this->exclude = array();
 
         if (!class_exists($classQuery)) {
             throw new \Exception(sprintf('The %s Query class does not exist', $classQuery));
