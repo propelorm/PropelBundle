@@ -61,7 +61,7 @@ class UniqueObjectValidator extends ConstraintValidator
                 );
             }
 
-            $this->context->addViolationAtSubPath(
+            $this->context->addViolationAt(
                 $constraint->errorPath,
                 $constraint->message,
                 array(
