@@ -1,0 +1,9 @@
+# Propel2 generated base classes, those are environment dependent
+/Model/Base
+/Model/Map
+/Model/**/Base
+/Model/**/Map
+
+# Composer
+/vendor
+/composer.lock
