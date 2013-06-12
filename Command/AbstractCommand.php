@@ -95,6 +95,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
+        
+        if ($input->getOption('verbose')) {
+            $this->additionalPhingArgs[] = 'verbose';
+        }
 
         $this->input = $input;
 
