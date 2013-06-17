@@ -56,10 +56,6 @@ EOT
         require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
 
         if ($input->getOption('force')) {
-            if ($input->getOption('verbose')) {
-                $this->additionalPhingArgs[] = 'verbose';
-            }
-
             $connections = $this->getConnections();
             $sqlDir = $this->getSqlDir();
 

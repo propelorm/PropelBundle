@@ -126,10 +126,6 @@ EOT
             $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
         }
 
-        if ($input->getOption('verbose')) {
-            $this->additionalPhingArgs[] = 'verbose';
-        }
-
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
             return $this->writeSection($output, array(
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'

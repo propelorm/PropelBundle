@@ -45,10 +45,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('verbose')) {
-            $this->additionalPhingArgs[] = 'verbose';
-        }
-
         // Generate ACL model
         if (true == $result = $this->callPhing('om')) {
             $output->writeln(sprintf(
