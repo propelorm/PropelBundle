@@ -52,10 +52,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('verbose')) {
-            $this->additionalPhingArgs[] = 'verbose';
-        }
-
         $finder = new Finder();
         $filesystem = new Filesystem();
 

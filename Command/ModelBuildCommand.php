@@ -50,10 +50,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('verbose')) {
-           $this->additionalPhingArgs[] = 'verbose';
-        }
-
         if (true === $this->callPhing('om')) {
             foreach ($this->tempSchemas as $schemaFile => $schemaDetails) {
                 $output->writeln(sprintf(
