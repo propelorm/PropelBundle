@@ -7,6 +7,8 @@ use Propel\PropelBundle\Request\ParamConverter\PropelParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Propel\PropelBundle\Tests\TestCase;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class PropelParamConverterTest extends TestCase
 {
@@ -278,6 +280,49 @@ class PropelParamConverterTest extends TestCase
         $this->assertCount(2, $books, 'Author should have two books');
 
         $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'no new query to get the books');
+    }
+
+    public function testConfigurationReadFromRouteOptionsIfEmpty()
+    {
+        $routes = new RouteCollection();
+        $routes->add('test_route', new Route('/test/{authorId}', array(), array(), array(
+            'propel_converter' => array(
+                'author' => array(
+                    'mapping' => array(
+                        'authorId' => 'id',
+                    ),
+                ),
+            ),
+        )));
+
+        $router = $this->getMock('Symfony\Bundle\FrameworkBundle\Routing\Router', array(), array(), '', false);
+        $router
+            ->expects($this->once())
+            ->method('getRouteCollection')
+            ->will($this->returnValue($routes))
+        ;
+
+        $paramConverter = new PropelParamConverter();
+        $paramConverter->setRouter($router);
+
+        $request = new Request();
+        $request->attributes->add(array(
+            '_route' => 'test_route',
+            'id' => 10,
+            'author' => null,
+        ));
+
+        $configuration = new ParamConverter(array(
+            'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
+            'name' => 'author',
+            'options' => array(),
+        ));
+
+        $paramConverter->apply($request, $configuration);
+
+        $author = $request->attributes->get('author');
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor', $author,
+                'param "author" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
     }
 
     protected function loadFixtures()
