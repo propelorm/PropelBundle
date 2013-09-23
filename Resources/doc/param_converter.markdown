@@ -27,8 +27,8 @@ public function myAction(Post $post)
 }
 ```
 
-**New** with last version of `SensioFrameworkExtraBundle`, 
-you can ommit the `class` parameter if your controller parameter is typed, 
+**New** with last version of `SensioFrameworkExtraBundle`,
+you can ommit the `class` parameter if your controller parameter is typed,
 this is usefull when you need to set extra `options`.
 
 ``` php
@@ -109,10 +109,25 @@ public function myAction(Post $post)
 {
 }
 ```
-Accepted parmeters for join :
+Accepted parameters for join :
 
-* left, LEFT, left join, LEFT JOIN, left_join, LEFT_JOIN 
+* left, LEFT, left join, LEFT JOIN, left_join, LEFT_JOIN
 * right, RIGHT, right join, RIGHT JOIN, right_join, RIGHT_JOIN
 * inner, INNER, inner join, INNER JOIN, inner_join, INNER_JOIN
+
+#### Named converter ####
+
+If you have a conflict with another ParamConverter you can force the `PropelParamConverter` with the `converter` option.
+
+ ``` php
+ <?php
+
+ /**
+  * @ParamConverter("post", converter="propel")
+  */
+ public function myAction(Post $post)
+ {
+ }
+ ```
 
 [Back to index](index.markdown)
