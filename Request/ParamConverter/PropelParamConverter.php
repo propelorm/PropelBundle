@@ -95,7 +95,7 @@ class PropelParamConverter implements ParamConverterInterface
 
         // Check route options for converter options, if there are non provided.
         if (empty($options) && $request->attributes->has('_route') && $this->router && $configuration instanceof ParamConverter) {
-            $converterOption = $this->router->getRouteCollection()->get($request->attributes->get('_route'))->getOption('propel_converter');
+            $converterOption = $this->router->getOriginalRouteCollection()->get($request->attributes->get('_route'))->getOption('propel_converter');
             if (!empty($converterOption[$configuration->getName()])) {
                 $options = $converterOption[$configuration->getName()];
             }
