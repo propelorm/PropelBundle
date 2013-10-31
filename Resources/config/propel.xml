@@ -6,5 +6,13 @@
 
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
+
+        <parameter key="propel.schema_locator.class">Propel\PropelBundle\Service\SchemaLocator</parameter>
     </parameters>
+
+    <services>
+        <service id="propel.schema_locator" class="%propel.schema_locator.class%">
+            <argument type="service" id="file_locator" />
+        </service>
+    </services>
 </container>

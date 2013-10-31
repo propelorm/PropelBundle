@@ -19,7 +19,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -207,39 +206,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
         if (null !== $bundle) {
-            return $this->getSchemasFromBundle($bundle);
+            return $this->getSchemaLocator()->locateFromBundle($bundle);
         }
 
-        $finalSchemas = array();
-        foreach ($kernel->getBundles() as $bundle) {
-            $finalSchemas = array_merge($finalSchemas, $this->getSchemasFromBundle($bundle));
-        }
-
-        return $finalSchemas;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface
-     */
-    protected function getSchemasFromBundle(BundleInterface $bundle)
-    {
-        $finalSchemas = array();
-
-        if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
-            $finder  = new Finder();
-            $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
-
-            if (iterator_count($schemas)) {
-                foreach ($schemas as $schema) {
-                    $logicalName = $this->transformToLogicalName($schema, $bundle);
-                    $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
-
-                    $finalSchemas[(string) $finalSchema] = array($bundle, $finalSchema);
-                }
-            }
-        }
-
-        return $finalSchemas;
+        return $this->getSchemaLocator()->locateFromBundles($kernel->getBundles());
     }
 
     /*
@@ -342,25 +312,9 @@ EOT;
     /**
      * @return \Symfony\Component\Config\FileLocatorInterface
      */
-    protected function getFileLocator()
+    protected function getSchemaLocator()
     {
-        return $this->getContainer()->get('file_locator');
-    }
-
-    /**
-     * @param  \SplFileInfo    $schema
-     * @param  BundleInterface $bundle
-     * @return string
-     */
-    protected function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
-    {
-        $schemaPath = str_replace(
-            $bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR,
-            '',
-            $schema->getRealPath()
-        );
-
-        return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
+        return $this->getContainer()->get('propel.schema_locator');
     }
 
     /**
