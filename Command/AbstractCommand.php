@@ -75,9 +75,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         // build.properties
         $this->createBuildPropertiesFile($kernel, $this->cacheDir.'/build.properties');
-
-        // buildtime-conf.xml
-        $this->createBuildTimeFile($this->cacheDir.'/buildtime-conf.xml');
     }
 
     protected function getConnections(array $connections)
@@ -112,61 +109,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $fs = new Filesystem();
         $buildPropertiesFile = $kernel->getRootDir().'/config/propel.ini';
 
-        if ($fs->exists($file)) {
+        if ($fs->exists($buildPropertiesFile)) {
             $fs->copy($buildPropertiesFile, $file);
         } else {
             $fs->touch($file);
         }
-    }
-
-    /**
-     * Create an XML file which represents propel.configuration
-     *
-     * @param string $file Should be 'buildtime-conf.xml'.
-     */
-    protected function createBuildTimeFile($file)
-    {
-        if (!$this->getContainer()->hasParameter('propel.configuration')) {
-            throw new \InvalidArgumentException('Could not find Propel configuration.');
-        }
-
-        $xml = strtr(<<<EOT
-<?xml version="1.0"?>
-<config>
-<propel>
-<datasources default="%default_connection%">
-
-EOT
-        , array('%default_connection%' => $this->getContainer()->getParameter('propel.dbal.default_connection')));
-
-        $datasources = $this->getContainer()->getParameter('propel.configuration');
-        foreach ($datasources as $name => $datasource) {
-            $xml .= strtr(<<<EOT
-<datasource id="%name%">
-<adapter>%adapter%</adapter>
-<connection>
-<dsn>%dsn%</dsn>
-<user>%username%</user>
-<password>%password%</password>
-</connection>
-</datasource>
-
-EOT
-            , array(
-                '%name%' => $name,
-                '%adapter%' => $datasource['adapter'],
-                '%dsn%' => $datasource['connection']['dsn'],
-                '%username%' => $datasource['connection']['user'],
-                '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
-            ));
-        }
-
-        $xml .= <<<EOT
-</datasources>
-</propel>
-</config>
-EOT;
-
-        file_put_contents($file, $xml);
     }
 }
