@@ -41,6 +41,29 @@ abstract class AbstractCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * @return \Symfony\Component\Console\Command\Command
+     */
+    protected abstract function createSubCommandInstance();
+
+    /**
+     * @return array
+     */
+    protected abstract function getSubCommandArguments(InputInterface $input);
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->setupBuildTimeFiles();
+
+        $params = $this->getSubCommandArguments($input);
+        $command = $this->createSubCommandInstance();
+
+        return $this->runCommand($command, $params, $input, $output);
+    }
+
     protected function runCommand(Command $command, array $parameters, InputInterface $input, OutputInterface $output)
     {
         array_unshift($parameters, $this->getName());
@@ -77,6 +100,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $this->createBuildPropertiesFile($kernel, $this->cacheDir.'/build.properties');
     }
 
+    /**
+     * Translates a list of connection names to their DSN equivalents.
+     *
+     * @param array $connections The names.
+     *
+     * @return array
+     */
     protected function getConnections(array $connections)
     {
         $knownConnections = $this->getContainer()->getParameter('propel.configuration');

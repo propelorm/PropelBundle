@@ -34,15 +34,18 @@ class SqlInsertCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function createSubCommandInstance()
     {
-        $this->setupBuildTimeFiles();
+        return new \Propel\Generator\Command\SqlInsertCommand();
+    }
 
-        $params = array(
-            '--connection'  => $this->getConnections($input->getOption('connection')),
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSubCommandArguments(InputInterface $input)
+    {
+        return array(
+            '--connection' => $this->getConnections($input->getOption('connection')),
         );
-        $command = new \Propel\Generator\Command\SqlInsertCommand();
-
-        return $this->runCommand($command, $params, $input, $output);
     }
 }
