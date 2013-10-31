@@ -12,6 +12,7 @@ namespace Propel\PropelBundle;
 
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
+use Propel\Runtime\Connection\ConnectionManagerMasterSlave;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -47,8 +48,17 @@ class PropelBundle extends Bundle
         $serviceContainer->setDefaultDatasource($default_datasource);
 
         foreach ($connections_config as $name => $config) {
-            $manager = new ConnectionManagerSingle();
-            $manager->setConfiguration($config['connection']);
+            if (isset($config['slaves'])) {
+                $manager = new ConnectionManagerMasterSlave();
+
+                // configure the master (write) connection
+                $manager->setWriteConfiguration($config['connection']);
+                // configure the slave (read) connections
+                $manager->setReadConfiguration($config['slaves']);
+            } else {
+                $manager = new ConnectionManagerSingle();
+                $manager->setConfiguration($config['connection']);
+            }
 
             $serviceContainer->setAdapterClass($name, $config['adapter']);
             $serviceContainer->setConnectionManager($name, $manager);
