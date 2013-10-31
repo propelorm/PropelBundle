@@ -49,11 +49,15 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
+     * Creates the instance of the Propel sub-command to execute.
+     *
      * @return \Symfony\Component\Console\Command\Command
      */
     protected abstract function createSubCommandInstance();
 
     /**
+     * Returns all the arguments and options needed by the Propel sub-command.
+     *
      * @return array
      */
     protected abstract function getSubCommandArguments(InputInterface $input);
@@ -90,7 +94,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
     protected function runCommand(Command $command, array $parameters, InputInterface $input, OutputInterface $output)
     {
+        // add the command's name to the parameters
         array_unshift($parameters, $this->getName());
+
+        // merge the default parameters
         $parameters = array_merge(array(
             '--input-dir'   => $this->cacheDir,
             '--verbose'     => $input->getOption('verbose'),
@@ -100,15 +107,15 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $parameters['--platform'] = $input->getOption('platform');
         }
 
-        var_dump($parameters);
-
-        $commandInput = new ArrayInput($parameters);
-
         $command->setApplication($this->getApplication());
 
-        return $command->run($commandInput, $output);
+        // and run the sub-command
+        return $command->run(new ArrayInput($parameters), $output);
     }
 
+    /**
+     * Create all the files needed by Propel's commands.
+     */
     protected function setupBuildTimeFiles()
     {
         $kernel = $this->getApplication()->getKernel();
@@ -133,11 +140,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function copySchemas(KernelInterface $kernel, $cacheDir)
     {
         $filesystem = new Filesystem();
-
-        if (!is_dir($cacheDir)) {
-            $filesystem->mkdir($cacheDir);
-        }
-
         $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
         $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
@@ -219,10 +221,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function createBuildTimeFile($file)
     {
-        if (!$this->getContainer()->hasParameter('propel.configuration')) {
-            throw new \InvalidArgumentException('Could not find Propel configuration.');
-        }
-
         $xml = strtr(<<<EOT
 <?xml version="1.0"?>
 <config>
