@@ -30,6 +30,10 @@ class PropelBundle extends Bundle
     public function boot()
     {
         $this->configureConnections();
+
+        if ($this->container->getParameter('propel.logging')) {
+            $this->configureLogging();
+        }
     }
 
     /**
@@ -62,6 +66,20 @@ class PropelBundle extends Bundle
 
             $serviceContainer->setAdapterClass($name, $config['adapter']);
             $serviceContainer->setConnectionManager($name, $manager);
+        }
+    }
+
+    protected function configureLogging()
+    {
+        $serviceContainer = Propel::getServiceContainer();
+        $serviceContainer->setLogger('defaultLogger', $this->container->get('propel.logger'));
+
+        foreach ($serviceContainer->getConnectionManagers() as $manager) {
+            $connection = $manager->getReadConnection($serviceContainer->getAdapter($manager->getName()));
+            $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
+
+            $connection = $manager->getWriteConnection();
+            $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
         }
     }
 }

@@ -7,12 +7,30 @@
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
 
+        <parameter key="propel.class">Propel\Runtime\Propel</parameter>
         <parameter key="propel.schema_locator.class">Propel\PropelBundle\Service\SchemaLocator</parameter>
+        <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
+        <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
+        <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
     </parameters>
 
     <services>
         <service id="propel.schema_locator" class="%propel.schema_locator.class%">
             <argument type="service" id="file_locator" />
+        </service>
+
+        <service id="propel.logger" class="%propel.logger.class%">
+            <argument type="service" id="logger" on-invalid="null" />
+            <argument type="service" id="debug.stopwatch" on-invalid="null" />
+        </service>
+
+        <service id="propel.data_collector" class="%propel.data_collector.class%" public="false">
+            <tag name="data_collector" template="PropelBundle:Collector:propel" id="propel" />
+            <argument type="service" id="propel.logger" />
+        </service>
+
+        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
+            <tag name="twig.extension" />
         </service>
     </services>
 </container>
