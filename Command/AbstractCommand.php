@@ -270,23 +270,30 @@ EOT;
      */
     protected function getConnections(array $connections)
     {
-        $knownConnections = $this->getContainer()->getParameter('propel.configuration');
-
         $dsnList = array();
         foreach ($connections as $connection) {
-            if (!isset($knownConnections[$connection])) {
-                throw new \InvalidArgumentException(sprintf('Unknown connection "%s"', $connection));
-            }
-
-            $dsnList[] = $this->buildDsn($connection, $knownConnections[$connection]['connection']);
+            $dsnList[] = sprintf('%s=%s', $connection, $this->getDsn($connection));
         }
 
         return $dsnList;
     }
 
-    protected function buildDsn($connectionName, array $connectionData)
+    protected function getConnectionData($name)
     {
-        return sprintf('%s=%s;user=%s;password=%s', $connectionName, $connectionData['dsn'], $connectionData['user'], $connectionData['password']);
+        $knownConnections = $this->getContainer()->getParameter('propel.configuration');
+        if (!isset($knownConnections[$name])) {
+            throw new \InvalidArgumentException(sprintf('Unknown connection "%s"', $name));
+        }
+
+        return $knownConnections[$name];
+    }
+
+    protected function getDsn($connectionName)
+    {
+        $connection = $this->getConnectionData($connectionName);
+        $connectionData = $connection['connection'];
+
+        return sprintf('%s;user=%s;password=%s', $connectionData['dsn'], $connectionData['user'], $connectionData['password']);
     }
 
     /**
