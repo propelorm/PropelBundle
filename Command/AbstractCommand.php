@@ -53,14 +53,14 @@ abstract class AbstractCommand extends ContainerAwareCommand
      *
      * @return \Symfony\Component\Console\Command\Command
      */
-    protected abstract function createSubCommandInstance();
+    abstract protected function createSubCommandInstance();
 
     /**
      * Returns all the arguments and options needed by the Propel sub-command.
      *
      * @return array
      */
-    protected abstract function getSubCommandArguments(InputInterface $input);
+    abstract protected function getSubCommandArguments(InputInterface $input);
 
     /**
      * {@inheritdoc}

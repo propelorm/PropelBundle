@@ -12,7 +12,6 @@
 namespace Propel\PropelBundle\DataCollector;
 
 use Propel\PropelBundle\Logger\PropelLogger;
-use Propel\Runtime\Util\Profiler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
