@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
@@ -29,6 +30,7 @@ class ModelBuildCommand extends AbstractCommand
             ->setName('propel:model:build')
             ->setDescription('Build the model classes based on Propel XML schemas')
 
+            ->addOption('connection', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
             ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle to generate model classes from')
             // @todo add the other arguments/options handled by the command
         ;

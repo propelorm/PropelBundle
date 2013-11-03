@@ -39,6 +39,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $bundle = null;
 
     /**
+     *
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -67,10 +73,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setupBuildTimeFiles();
-
         $params = $this->getSubCommandArguments($input);
         $command = $this->createSubCommandInstance();
+
+        $this->setupBuildTimeFiles();
 
         return $this->runCommand($command, $params, $input, $output);
     }
@@ -82,13 +88,15 @@ abstract class AbstractCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
+        $this->input = $input;
+
         $this->checkConfiguration();
 
-        if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
+        if ($input->hasArgument('bundle') && !empty($input->getArgument('bundle'))) {
             $this->bundle = $this
                 ->getContainer()
                 ->get('kernel')
-                ->getBundle(substr($input->getArgument('bundle'), 1));
+                ->getBundle($input->getArgument('bundle'));
         }
     }
 
@@ -175,14 +183,17 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 );
             }
 
-            // @todo
-            //if ($this->input && $this->input->hasOption('connection') && $this->input->getOption('connection')
-            //    && $database['name'] != $this->input->getOption('connection')) {
-            //    //we skip this schema because the connection name doesn't match the input value
-            //    unset($this->tempSchemas[$tempSchema]);
-            //    $filesystem->remove($file);
-            //    continue;
-            //}
+            if ($this->input->hasOption('connection')) {
+                $connections = $this->input->getOption('connection') ?: array($this->getContainer()->getParameter('propel.dbal.default_connection'));
+
+                if (!in_array($database['name'], $connections)) {
+                    // we skip this schema because the connection name doesn't
+                    // match the input values
+                    unset($this->tempSchemas[$tempSchema]);
+                    $filesystem->remove($file);
+                    continue;
+                }
+            }
 
             foreach ($database->table as $table) {
                 if (isset($table['package'])) {
