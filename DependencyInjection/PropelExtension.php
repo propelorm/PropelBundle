@@ -52,7 +52,6 @@ class PropelExtension extends Extension
         }
 
         // build properties
-        // @todo: store them as container parameters and use them in commands
         if (isset($config['build_properties']) && is_array($config['build_properties'])) {
             $buildProperties = $config['build_properties'];
         } else {
@@ -65,6 +64,8 @@ class PropelExtension extends Extension
                 $buildProperties[sprintf('propel.behavior.%s.class', $name)] = $class;
             }
         }
+
+        $container->setParameter('propel.build_properties', $buildProperties);
 
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);

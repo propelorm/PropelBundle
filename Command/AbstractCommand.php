@@ -88,7 +88,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
     {
         parent::initialize($input, $output);
 
+        $kernel = $this->getApplication()->getKernel();
+
         $this->input = $input;
+        $this->cacheDir = $kernel->getCacheDir().'/propel';
 
         $this->checkConfiguration();
 
@@ -127,7 +130,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function setupBuildTimeFiles()
     {
         $kernel = $this->getApplication()->getKernel();
-        $this->cacheDir = $kernel->getCacheDir().'/propel';
 
         $fs = new Filesystem();
         $fs->mkdir($this->cacheDir);
@@ -316,13 +318,13 @@ EOT;
     protected function createBuildPropertiesFile(KernelInterface $kernel, $file)
     {
         $fs = new Filesystem();
-        $buildPropertiesFile = $kernel->getRootDir().'/config/propel.ini';
 
-        if ($fs->exists($file)) {
-            $fs->copy($buildPropertiesFile, $file);
-        } else {
-            $fs->touch($file);
-        }
+        $buildProperties = array_merge(
+            parse_ini_file($kernel->getRootDir().'/config/propel.ini'),
+            $this->getContainer()->getParameter('propel.build_properties')
+        );
+
+        $fs->dumpFile($file, $this->arrayToIni($buildProperties));
     }
 
     /**
@@ -376,5 +378,16 @@ EOT;
     protected function getCacheDir()
     {
         return $this->cacheDir;
+    }
+
+    protected function arrayToIni(array $data)
+    {
+        $lines = array();
+
+        foreach ($data as $key => $value) {
+            $lines[] = $key . ' =' . (!empty($value) ? ' ' . $value : '');
+        }
+
+        return implode(PHP_EOL, $lines);
     }
 }
