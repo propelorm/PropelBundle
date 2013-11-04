@@ -11,11 +11,11 @@
 
 namespace Propel\PropelBundle\Tests\Form;
 
-use Propel\PropelBundle\Form\PropelTypeGuesser;
+use Propel\PropelBundle\Form\TypeGuesser;
 use Propel\PropelBundle\Tests\TestCase;
 use Symfony\Component\Form\Guess\Guess;
 
-class PropelTypeGuesserTest extends TestCase
+class TypeGuesserTest extends TestCase
 {
     const CLASS_NAME = 'Propel\PropelBundle\Tests\Fixtures\Item';
 
@@ -25,7 +25,7 @@ class PropelTypeGuesserTest extends TestCase
 
     public function setUp()
     {
-        $this->guesser = new PropelTypeGuesser();
+        $this->guesser = new TypeGuesser();
     }
 
     public function testGuessMaxLengthWithText()

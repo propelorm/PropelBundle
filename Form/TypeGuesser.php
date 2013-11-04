@@ -23,7 +23,7 @@ use Symfony\Component\Form\Guess\ValueGuess;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PropelTypeGuesser implements FormTypeGuesserInterface
+class TypeGuesser implements FormTypeGuesserInterface
 {
     private $cache = array();
 

@@ -12,7 +12,7 @@
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
-        <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\PropelTypeGuesser</parameter>
+        <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\TypeGuesser</parameter>
     </parameters>
 
     <services>
