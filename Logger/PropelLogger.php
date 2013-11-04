@@ -81,7 +81,8 @@ class PropelLogger implements LoggerInterface
             }
         }
 
-        if ($add && isset($event)) {
+        // $trace[2] has no 'object' key if an exception is thrown while executing a query
+        if ($add && isset($event) && isset($trace[2]['object'])) {
             $connection = $trace[2]['object'];
 
             $this->queries[] = array(
