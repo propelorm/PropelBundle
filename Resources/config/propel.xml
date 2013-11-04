@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
 
-        <parameter key="propel.class">Propel\Runtime\Propel</parameter>
         <parameter key="propel.schema_locator.class">Propel\PropelBundle\Service\SchemaLocator</parameter>
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
