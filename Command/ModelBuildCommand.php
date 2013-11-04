@@ -32,7 +32,6 @@ class ModelBuildCommand extends AbstractCommand
 
             ->addOption('connection', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
             ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle to generate model classes from')
-            // @todo add the other arguments/options handled by the command
         ;
     }
 
