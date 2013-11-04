@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -31,7 +32,7 @@ class DatabaseReverseCommand extends AbstractCommand
             ->setName('propel:database:reverse')
             ->setDescription('Reverse-engineer a XML schema file based on given database')
 
-            ->addOption('connection',       null, InputOption::VALUE_REQUIRED, 'Connection to use. Example: default')
+            ->addArgument('connection',     InputArgument::REQUIRED,           'Connection to use. Example: "default"')
             ->addOption('output-dir',       null, InputOption::VALUE_REQUIRED, 'The output directory', BaseDatabaseReverseCommand::DEFAULT_OUTPUT_DIRECTORY)
             ->addOption('database-name',    null, InputOption::VALUE_REQUIRED, 'The database name to reverse', BaseDatabaseReverseCommand::DEFAULT_DATABASE_NAME)
             ->addOption('schema-name',      null, InputOption::VALUE_REQUIRED, 'The schema name to generate', BaseDatabaseReverseCommand::DEFAULT_SCHEMA_NAME)
@@ -56,7 +57,7 @@ class DatabaseReverseCommand extends AbstractCommand
             '--database-name'   => $input->getOption('database-name'),
             '--schema-name'     => $input->getOption('schema-name'),
             // this one is an argument, so no leading '--'
-            'connection'        => $this->getDsn($input->getOption('connection')),
+            'connection'        => $this->getDsn($input->getArgument('connection')),
         );
     }
 }
