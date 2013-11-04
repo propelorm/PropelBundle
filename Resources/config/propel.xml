@@ -12,6 +12,7 @@
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
+        <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\PropelTypeGuesser</parameter>
     </parameters>
 
     <services>
@@ -31,6 +32,10 @@
 
         <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
             <tag name="twig.extension" />
+        </service>
+
+        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
+            <tag name="form.type_guesser" />
         </service>
     </services>
 </container>
