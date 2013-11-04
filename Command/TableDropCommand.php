@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\Command;
 
 use Propel\Runtime\Propel;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,8 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class TableDropCommand extends AbstractCommand
+class TableDropCommand extends ContainerAwareCommand
 {
+    use FormattingHelpers;
+
     /**
      * {@inheritdoc}
      */
@@ -109,21 +112,5 @@ class TableDropCommand extends AbstractCommand
                 $e->getMessage()
             ), 'fg=white;bg=red');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless for this command
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless for this command
     }
 }
