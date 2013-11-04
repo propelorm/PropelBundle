@@ -29,11 +29,13 @@ class PropelBundle extends Bundle
      */
     public function boot()
     {
-        $this->configureConnections();
+        try {
+            $this->configureConnections();
 
-        if ($this->container->getParameter('propel.logging')) {
-            $this->configureLogging();
-        }
+            if ($this->container->getParameter('propel.logging')) {
+                $this->configureLogging();
+            }
+        } catch (\Exception $e) {}
     }
 
     /**
