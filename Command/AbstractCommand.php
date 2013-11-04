@@ -380,6 +380,36 @@ EOT;
         return $this->cacheDir;
     }
 
+
+    /**
+     * Comes from the SensioGeneratorBundle.
+     * @see https://github.com/sensio/SensioGeneratorBundle/blob/master/Command/Helper/DialogHelper.php#L52
+     *
+     * @param OutputInterface $output The output.
+     * @param string $text A text message.
+     * @param string $style A style to apply on the section.
+     */
+    protected function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
+    {
+        $output->writeln(array(
+            '',
+            $this->getHelperSet()->get('formatter')->formatBlock($text, $style, true),
+            '',
+        ));
+    }
+
+    /**
+     * Ask confirmation from the user.
+     *
+     * @param OutputInterface $output The output.
+     * @param string $question A given question.
+     * @param string $default A default response.
+     */
+    protected function askConfirmation(OutputInterface $output, $question, $default = null)
+    {
+        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
+    }
+
     protected function arrayToIni(array $data)
     {
         $lines = array();
