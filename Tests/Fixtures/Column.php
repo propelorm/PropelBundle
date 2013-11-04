@@ -30,7 +30,7 @@ class Column
         return $this->type;
     }
 
-    public function isTextType()
+    public function isText()
     {
         if (!$this->type) {
             return false;
@@ -51,7 +51,7 @@ class Column
 
     public function getSize()
     {
-        return $this->isTextType() ? 255 : 0;
+        return $this->isText() ? 255 : 0;
     }
 
     public function isNotNull()

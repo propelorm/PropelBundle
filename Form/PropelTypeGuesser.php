@@ -125,7 +125,7 @@ class PropelTypeGuesser implements FormTypeGuesserInterface
     public function guessMaxLength($class, $property)
     {
         if ($column = $this->getColumn($class, $property)) {
-            if ($column->isTextType()) {
+            if ($column->isText()) {
                 return new ValueGuess($column->getSize(), Guess::HIGH_CONFIDENCE);
             }
             switch ($column->getType()) {
