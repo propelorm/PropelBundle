@@ -3,6 +3,7 @@
 namespace Propel\PropelBundle\Request\ParamConverter;
 
 use Propel\PropelBundle\Util\PropelInflector;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -102,7 +103,6 @@ class PropelParamConverter implements ParamConverterInterface
                 $options = $converterOption[$configuration->getName()];
             }
         }
-
         if (isset($options['mapping'])) {
             // We use the mapping for calling findPk or filterBy
             foreach ($options['mapping'] as $routeParam => $column) {
@@ -115,8 +115,12 @@ class PropelParamConverter implements ParamConverterInterface
                 }
             }
         } else {
-            $this->exclude = isset($options['exclude'])? $options['exclude'] : array();
+            $this->exclude = isset($options['exclude']) ? $options['exclude'] : array();
             $this->filters = $request->attributes->all();
+        }
+
+        if (array_key_exists($configuration->getName(), $this->filters)) {
+            unset($this->filters[$configuration->getName()]);
         }
 
         $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
@@ -266,11 +270,11 @@ class PropelParamConverter implements ParamConverterInterface
     {
         switch (trim(str_replace(array('_', 'JOIN'), '', strtoupper($with[1])))) {
             case 'LEFT':
-                return \Criteria::LEFT_JOIN;
+                return Criteria::LEFT_JOIN;
             case 'RIGHT':
-                return \Criteria::RIGHT_JOIN;
+                return Criteria::RIGHT_JOIN;
             case 'INNER':
-                return \Criteria::INNER_JOIN;
+                return Criteria::INNER_JOIN;
         }
 
         throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
