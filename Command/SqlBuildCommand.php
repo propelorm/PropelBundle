@@ -30,7 +30,6 @@ class SqlBuildCommand extends AbstractCommand
             ->setDescription('Build SQL files')
 
             ->addOption('connection', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
-            // @todo add the other arguments/options handled by the command
         ;
     }
 
