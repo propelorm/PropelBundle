@@ -40,7 +40,7 @@ class ModelBuildCommand extends AbstractCommand
      */
     protected function createSubCommandInstance()
     {
-        return new \Propel\Generator\Command\SqlBuildCommand();
+        return new \Propel\Generator\Command\ModelBuildCommand();
     }
 
     /**
