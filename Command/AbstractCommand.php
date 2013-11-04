@@ -394,4 +394,22 @@ EOT;
 
         return implode(PHP_EOL, $lines);
     }
+
+    /**
+     * Extract the database name from a given DSN
+     *
+     * @param string $dsn A DSN
+     * @return string The database name extracted from the given DSN
+     */
+    protected function parseDbName($dsn)
+    {
+        preg_match('#dbname=([a-zA-Z0-9\_]+)#', $dsn, $matches);
+
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+
+        // e.g. SQLite
+        return null;
+    }
 }
