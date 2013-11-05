@@ -22,8 +22,8 @@ trait FormattingHelpers
      * @see https://github.com/sensio/SensioGeneratorBundle/blob/master/Command/Helper/DialogHelper.php#L52
      *
      * @param OutputInterface $output The output.
-     * @param string $text A text message.
-     * @param string $style A style to apply on the section.
+     * @param string          $text   A text message.
+     * @param string          $style  A style to apply on the section.
      */
     protected function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
     {
@@ -37,9 +37,9 @@ trait FormattingHelpers
     /**
      * Ask confirmation from the user.
      *
-     * @param OutputInterface $output The output.
-     * @param string $question A given question.
-     * @param string $default A default response.
+     * @param OutputInterface $output   The output.
+     * @param string          $question A given question.
+     * @param string          $default  A default response.
      */
     protected function askConfirmation(OutputInterface $output, $question, $default = null)
     {

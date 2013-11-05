@@ -48,14 +48,14 @@ class YamlDataLoader extends AbstractDataLoader
 
             if (null !== $this->container && $this->container->has('faker.generator')) {
                 $generator = $this->container->get('faker.generator');
-                $faker = function($type) use ($generator) {
+                $faker = function ($type) use ($generator) {
                     $args = func_get_args();
                     array_shift($args);
 
                     echo Yaml::dump(call_user_func_array(array($generator, $type), $args)) . "\n";
                 };
             } else {
-                $faker = function($text) {
+                $faker = function ($text) {
                     echo $text . "\n";
                 };
             }

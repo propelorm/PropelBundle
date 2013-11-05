@@ -233,8 +233,8 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Save a reference to the specified object (and its ancestors) before loading them.
      *
-     * @param string     $class Class name of passed object
-     * @param string     $key   Key identifying specified object
+     * @param string                $class Class name of passed object
+     * @param string                $key   Key identifying specified object
      * @param ActiveRecordInterface $obj   A Propel object
      */
     protected function saveParentReference($class, $key, &$obj)
@@ -261,8 +261,8 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
      * Loads many to many objects.
      *
      * @param ActiveRecordInterface $obj             A Propel object
-     * @param string     $middleTableName The middle table name
-     * @param array      $values          An array of values
+     * @param string                $middleTableName The middle table name
+     * @param array                 $values          An array of values
      */
     protected function loadManyToMany($obj, $middleTableName, $values)
     {

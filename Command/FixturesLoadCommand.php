@@ -19,9 +19,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
-use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
-
 /**
  * FixturesLoadCommand
  *
@@ -157,8 +154,8 @@ EOT
     /**
      * Load fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
@@ -201,8 +198,8 @@ EOT
     /**
      * Load SQL fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {

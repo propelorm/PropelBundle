@@ -46,6 +46,7 @@ class TableDropCommand extends ContainerAwareCommand
     {
         if (!$input->getOption('force')) {
             $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+
             return;
         }
 
@@ -90,7 +91,7 @@ class TableDropCommand extends ContainerAwareCommand
 
             $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
 
-            array_walk($tablesToDelete, function(&$table, $key, $dbAdapter) {
+            array_walk($tablesToDelete, function (&$table, $key, $dbAdapter) {
                 $table = $dbAdapter->quoteIdentifierTable($table);
             }, $adapter);
 

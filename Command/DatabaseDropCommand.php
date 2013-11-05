@@ -11,7 +11,6 @@
 namespace Propel\PropelBundle\Command;
 
 use Propel\Runtime\Propel;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,6 +56,7 @@ EOT
     {
         if (!$input->getOption('force')) {
             $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
+
             return;
         }
 

@@ -44,9 +44,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected $input;
 
-
     use FormattingHelpers;
-
 
     /**
      * {@inheritdoc}
@@ -398,7 +396,7 @@ EOT;
     /**
      * Extract the database name from a given DSN
      *
-     * @param string $dsn A DSN
+     * @param  string $dsn A DSN
      * @return string The database name extracted from the given DSN
      */
     protected function parseDbName($dsn)

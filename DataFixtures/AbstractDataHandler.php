@@ -140,7 +140,8 @@ abstract class AbstractDataHandler
      *
      * @return string[]
      */
-    protected function getModelSearchPaths($connectionName) {
+    protected function getModelSearchPaths($connectionName)
+    {
         $searchPath = array();
 
         if (!empty($this->datasources[$connectionName]['connection']['model_paths'])) {
