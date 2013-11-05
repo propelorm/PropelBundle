@@ -63,4 +63,22 @@ trait FormattingHelpers
     {
         $output->writeln('>>  <info>Dir+</info>     ' . $directory);
     }
+
+    /**
+     * Renders an error message if a task has failed.
+     *
+     * @param OutputInterface $output   The output.
+     * @param string          $taskName A task name.
+     * @param Boolean         $more     Whether to add a 'more details' message or not.
+     */
+    protected function writeTaskError($output, $taskName, $more = true)
+    {
+        $moreText = $more ? ' To get more details, run the command with the "--verbose" option.' : '';
+
+        return $this->writeSection($output, array(
+            '[Propel] Error',
+            '',
+            'An error has occured during the "' . $taskName . '" task process.' . $moreText
+        ), 'fg=white;bg=red');
+    }
 }

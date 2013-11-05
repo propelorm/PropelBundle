@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -177,7 +178,6 @@ EOT
             $loader = $this->getContainer()->get('propel.loader.yaml');
         } elseif ('xml' === $type) {
             $loader = $this->getContainer()->get('propel.loader.xml');
-            //$loader = new XmlDataLoader($this->getApplication()->getKernel()->getRootDir());
         } else {
             return;
         }
@@ -206,30 +206,30 @@ EOT
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
+        $tmpdir = $this->getCacheDir();
         $datas  = $this->getFixtureFiles('sql');
 
         $this->prepareCache($tmpdir);
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        $connectionName = $input->getOption('connection') ?: $this->getContainer()->getParameter('propel.dbal.default_connection');
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
         foreach ($datas as $data) {
             $output->writeln(sprintf('<info>Loading SQL fixtures from</info> <comment>%s</comment>.', $data));
 
-            $sqldbContent .= $data->getFilename() . '=' . $name . PHP_EOL;
-            $this->filesystem->copy($data, $tmpdir . '/fixtures/' . $data->getFilename(), true);
+            $sqldbContent .= $data->getFilename() . '=' . $connectionName . PHP_EOL;
+            $this->filesystem->copy($data, $tmpdir . '/' . $data->getFilename(), true);
         }
 
         if ('' === $sqldbContent) {
             return -1;
         }
 
-        $sqldbFile = $tmpdir . '/fixtures/sqldb.map';
+        $sqldbFile = $tmpdir . '/sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
 
-        if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
+        if (!$this->insertSql($connectionName, $input, $output)) {
             return -1;
         }
 
@@ -248,36 +248,34 @@ EOT
         // Recreate a propel directory in cache
         $this->filesystem->remove($tmpdir);
         $this->filesystem->mkdir($tmpdir);
-
-        $fixturesdir = $tmpdir . '/fixtures/';
-        $this->filesystem->remove($fixturesdir);
-        $this->filesystem->mkdir($fixturesdir);
     }
 
     /**
      * Insert SQL
      */
-    protected function insertSql($config, $sqlDir, $schemaDir, $output)
+    protected function insertSql($connectionName, InputInterface $input, OutputInterface $output)
     {
-        // Insert SQL
-        $ret = $this->callPhing('insert-sql', array(
-            'propel.database.url'       => $config['connection']['dsn'],
-            'propel.database.database'  => $config['adapter'],
-            'propel.database.user'      => $config['connection']['user'],
-            'propel.database.password'  => $config['connection']['password'],
-            'propel.schema.dir'         => $schemaDir,
-            'propel.sql.dir'            => $sqlDir,
-        ));
+        $parameters = array(
+            '--connection'  => array($connectionName),
+            '--verbose'     => $input->getOption('verbose'),
+        );
 
-        if (true === $ret) {
+        // add the command's name to the parameters
+        array_unshift($parameters, $this->getName());
+
+        $command = $this->getApplication()->find('propel:sql:insert');
+        $command->setApplication($this->getApplication());
+
+        // and run the sub-command
+        $ret = $command->run(new ArrayInput($parameters), $output);
+
+        if ($ret === 0) {
             $output->writeln('All SQL statements have been inserted.');
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
-
-            return false;
         }
 
-        return true;
+        return $ret === 0;
     }
 
     /**
