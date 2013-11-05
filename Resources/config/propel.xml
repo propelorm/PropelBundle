@@ -14,6 +14,7 @@
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\TypeGuesser</parameter>
         <parameter key="propel.dumper.yaml.class">Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper</parameter>
+        <parameter key="propel.loader.yaml.class">Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader</parameter>
     </parameters>
 
     <services>
@@ -46,6 +47,11 @@
             <argument>%kernel.root_dir%</argument>
             <argument type="service" id="propel" />
             <argument>%propel.configuration%</argument>
+        </service>
+
+        <service id="propel.loader.yaml" class="%propel.loader.yaml.class%">
+            <argument>%kernel.root_dir%</argument>
+            <argument type="service" id="service_container" />
         </service>
     </services>
 </container>
