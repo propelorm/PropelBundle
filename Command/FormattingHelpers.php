@@ -45,4 +45,22 @@ trait FormattingHelpers
     {
         return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
     }
+
+    /**
+     * @param OutputInterface $output   The output.
+     * @param string          $filename The filename.
+     */
+    protected function writeNewFile(OutputInterface $output, $filename)
+    {
+        $output->writeln('>>  <info>File+</info>    ' . $filename);
+    }
+
+    /**
+     * @param OutputInterface $output    The output.
+     * @param string          $directory The directory.
+     */
+    protected function writeNewDirectory(OutputInterface $output, $directory)
+    {
+        $output->writeln('>>  <info>Dir+</info>     ' . $directory);
+    }
 }

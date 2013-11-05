@@ -99,7 +99,7 @@ class PropelExtension extends Extension
                 $c[$name]['slaves']['connection'] = $conf['slaves'];
             }
 
-            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings') as $att) {
+            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings', 'model_paths') as $att) {
                 if (isset($conf[$att])) {
                     $c[$name]['connection'][$att] = $conf[$att];
                 }

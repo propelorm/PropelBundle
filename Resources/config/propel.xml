@@ -7,14 +7,19 @@
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
 
+        <parameter key="propel.class">Propel\Runtime\Propel</parameter>
         <parameter key="propel.schema_locator.class">Propel\PropelBundle\Service\SchemaLocator</parameter>
         <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\TypeGuesser</parameter>
+        <parameter key="propel.dumper.yaml.class">Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper</parameter>
     </parameters>
 
     <services>
+        <service id="propel" class="%propel.class%">
+        </service>
+
         <service id="propel.schema_locator" class="%propel.schema_locator.class%">
             <argument type="service" id="file_locator" />
         </service>
@@ -35,6 +40,12 @@
 
         <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
             <tag name="form.type_guesser" />
+        </service>
+
+        <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%">
+            <argument>%kernel.root_dir%</argument>
+            <argument type="service" id="propel" />
+            <argument>%propel.configuration%</argument>
         </service>
     </services>
 </container>
