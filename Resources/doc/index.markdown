@@ -113,6 +113,7 @@ Now you can read more about:
 * [The Fixtures](fixtures.markdown);
 * [The PropelParamConverter](param_converter.markdown);
 * [The UniqueObjectValidator](unique_object_validator.markdown).
+* [The ModelTranslation](model_translation.markdown).
 
 
 ## Bundle Inheritance ##

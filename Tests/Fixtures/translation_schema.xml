@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="translation" defaultIdMethod="native" namespace="Propel\PropelBundle\Tests\Fixtures\Model">
+    <table name="translation">
+        <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
+        <column name="key" type="varchar" size="255" required="true" primaryString="true" />
+        <column name="message"  type="longvarchar" lazyLoad="true" required="true" />
+        <column name="locale" type="varchar" size="255" required="true" />
+        <column name="domain" type="varchar" size="255" required="true" />
+        <column name="updated_at" type="timestamp" />
+
+        <index>
+            <index-column name="domain" />
+        </index>
+        <index>
+            <index-column name="locale" />
+            <index-column name="domain" />
+        </index>
+
+        <unique>
+            <unique-column name="key" />
+            <unique-column name="locale" />
+            <unique-column name="domain" />
+        </unique>
+    </table>
+</database>
