@@ -20,10 +20,10 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  */
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
         if (!file_exists($file = __DIR__ . '/../vendor/propel/propel1/runtime/lib/Propel.php')) {
-            $this->markTestSkipped('Propel is not available.');
+            self::markTestSkipped('Propel is not available.');
         }
 
         require_once $file;
