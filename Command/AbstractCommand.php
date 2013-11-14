@@ -97,11 +97,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $this->checkConfiguration();
 
-        if ($input->hasArgument('bundle') && !empty($input->getArgument('bundle'))) {
+        if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
             $this->bundle = $this
                 ->getContainer()
                 ->get('kernel')
-                ->getBundle($input->getArgument('bundle'));
+                ->getBundle(substr($input->getArgument('bundle'), 1));
         }
     }
 
