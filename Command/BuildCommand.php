@@ -52,7 +52,8 @@ class BuildCommand extends AbstractCommand
         if (!$input->getOption('sql')) {
             $in = new ArrayInput(array(
                     'command'        => 'propel:model:build',
-                    '--connection'   => $input->getOption('connection')
+                    '--connection'   => $input->getOption('connection'),
+                    '--verbose'   => $input->getOption('verbose')
             ));
             $modelCommand = $this->getApplication()->find('propel:model:build');
             $res = $modelCommand->run($in, $output);
@@ -62,6 +63,7 @@ class BuildCommand extends AbstractCommand
             $in = new ArrayInput(array(
                     'command'        => 'propel:build:sql',
                     '--connection'   => $input->getOption('connection'),
+                    '--verbose'   => $input->getOption('verbose')
             ));
             $sqlCommand = $this->getApplication()->find('propel:sql:build');
             $sqlCommand->run($in, $output);
@@ -71,6 +73,7 @@ class BuildCommand extends AbstractCommand
             $in = new ArrayInput(array(
                     'command'        => 'propel:sql:insert',
                     '--connection'   => $input->getOption('connection'),
+                    '--verbose'   => $input->getOption('verbose')
                     '--force'        => true,
             ));
             $insertCommand = $this->getApplication()->find('propel:sql:insert');
