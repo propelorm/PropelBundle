@@ -13,6 +13,7 @@
         <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\TypeGuesser</parameter>
+        <parameter key="propel.form.type.model.class">Propel\PropelBundle\Form\Type\ModelType</parameter>
         <parameter key="propel.dumper.yaml.class">Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper</parameter>
         <parameter key="propel.loader.yaml.class">Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader</parameter>
         <parameter key="propel.loader.xml.class">Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader</parameter>
@@ -42,6 +43,10 @@
 
         <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
             <tag name="form.type_guesser" />
+        </service>
+
+        <service id="propel.form.type.model" class="%propel.form.type.model.class%">
+            <tag name="form.type" alias="model" />
         </service>
 
         <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%">
