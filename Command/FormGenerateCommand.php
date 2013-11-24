@@ -10,13 +10,13 @@
 
 namespace Propel\PropelBundle\Command;
 
+use Propel\Generator\Config\GeneratorConfig;
+use Propel\Generator\Command\ModelBuildCommand;
+use Propel\Generator\Command\AbstractCommand as BaseCommand;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Table;
-use Propel\Runtime\Propel;
 use Propel\Generator\Manager\ModelManager;
-use Propel\Generator\Config\GeneratorConfig;
-
-use Propel\Generator\Command\ModelBuildCommand;
+use Propel\Runtime\Propel;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,13 +37,12 @@ class FormGenerateCommand extends AbstractCommand
      */
     protected function configure()
     {
-        parent::configure();
-
         $this
             ->setName('propel:form:generate')
             ->setDescription('Generate Form types stubs based on the schema.xml')
 
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
+            ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform', BaseCommand::DEFAULT_PLATFORM)
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
 
@@ -140,35 +139,6 @@ EOT
         }
 
         return str_replace('##BUILD_CODE##', $buildCode, $formTypeContent);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless here
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless here
-    }
-
-    protected function getDatabasesFromSchema(\SplFileInfo $file)
-    {
-        $databaseXml = simplexml_load_file($file);
-        $databaseName = (string) $databaseXml['name'];
-
-        if (empty($databaseName)) {
-            throw new \RuntimeException(sprintf('Impossible to determine database name for schema "%s". Please define the "name" attribute', $file->getRealPath()));
-        }
-
-        $serviceContainer = Propel::getServiceContainer();
-        return $serviceContainer->getDatabaseMap($databaseName);
     }
 
     /**

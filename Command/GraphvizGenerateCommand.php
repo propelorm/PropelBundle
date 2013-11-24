@@ -18,7 +18,7 @@ use Propel\Generator\Command\GraphvizGenerateCommand as BaseGraphvizGenerateComm
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class GraphvizGenerateCommand extends AbstractCommand
+class GraphvizGenerateCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}

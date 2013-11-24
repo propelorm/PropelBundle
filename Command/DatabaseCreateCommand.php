@@ -98,20 +98,4 @@ class DatabaseCreateCommand extends AbstractCommand
 
         return $config;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless here
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless here
-    }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class ModelBuildCommand extends AbstractCommand
+class ModelBuildCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}

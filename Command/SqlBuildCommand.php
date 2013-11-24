@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class SqlBuildCommand extends AbstractCommand
+class SqlBuildCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}

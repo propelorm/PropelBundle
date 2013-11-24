@@ -19,7 +19,7 @@ use Propel\Generator\Command\DatabaseReverseCommand as BaseDatabaseReverseComman
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class DatabaseReverseCommand extends AbstractCommand
+class DatabaseReverseCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}

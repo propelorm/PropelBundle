@@ -314,20 +314,4 @@ EOT
     {
         return $bundle->getPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless here
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless here
-    }
 }

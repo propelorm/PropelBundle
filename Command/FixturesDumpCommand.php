@@ -60,7 +60,6 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtureDir = $input->getOption('dir') ?: $this->defaultFixturesDir;
-
         $path = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $fixtureDir;
 
         if (!file_exists($path)) {
@@ -75,7 +74,6 @@ EOT
         }
 
         $filename = $path . '/fixtures_' . time() . '.yml';
-
         $dumper = $this->getContainer()->get('propel.dumper.yaml');
 
         try {
@@ -92,21 +90,5 @@ EOT
         $this->writeNewFile($output, $filename);
 
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless here
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless here
     }
 }

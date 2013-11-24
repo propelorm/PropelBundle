@@ -39,7 +39,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $bundle = null;
 
     /**
-     *
      * @var InputInterface
      */
     protected $input;
@@ -49,47 +48,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform', BaseCommand::DEFAULT_PLATFORM)
-        ;
-    }
-
-    /**
-     * Creates the instance of the Propel sub-command to execute.
-     *
-     * @return \Symfony\Component\Console\Command\Command
-     */
-    abstract protected function createSubCommandInstance();
-
-    /**
-     * Returns all the arguments and options needed by the Propel sub-command.
-     *
-     * @return array
-     */
-    abstract protected function getSubCommandArguments(InputInterface $input);
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $params = $this->getSubCommandArguments($input);
-        $command = $this->createSubCommandInstance();
-
-        $this->setupBuildTimeFiles();
-
-        return $this->runCommand($command, $params, $input, $output);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        parent::initialize($input, $output);
-
         $kernel = $this->getApplication()->getKernel();
 
         $this->input = $input;
@@ -103,27 +63,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 ->get('kernel')
                 ->getBundle(substr($input->getArgument('bundle'), 1));
         }
-    }
-
-    protected function runCommand(Command $command, array $parameters, InputInterface $input, OutputInterface $output)
-    {
-        // add the command's name to the parameters
-        array_unshift($parameters, $this->getName());
-
-        // merge the default parameters
-        $parameters = array_merge(array(
-            '--input-dir'   => $this->cacheDir,
-            '--verbose'     => $input->getOption('verbose'),
-        ), $parameters);
-
-        if ($input->hasOption('platform')) {
-            $parameters['--platform'] = $input->getOption('platform');
-        }
-
-        $command->setApplication($this->getApplication());
-
-        // and run the sub-command
-        return $command->run(new ArrayInput($parameters), $output);
     }
 
     /**

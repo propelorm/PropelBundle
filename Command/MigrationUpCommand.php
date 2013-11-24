@@ -18,7 +18,7 @@ use Propel\Generator\Command\MigrationUpCommand as BaseMigrationCommand;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class MigrationUpCommand extends AbstractCommand
+class MigrationUpCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}

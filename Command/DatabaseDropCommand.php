@@ -94,20 +94,4 @@ EOT
             ), 'fg=white;bg=red');
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSubCommandInstance()
-    {
-        // useless here
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSubCommandArguments(InputInterface $input)
-    {
-        // useless here
-    }
 }
