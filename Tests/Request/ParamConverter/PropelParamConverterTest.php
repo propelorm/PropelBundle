@@ -25,12 +25,13 @@ class PropelParamConverterTest extends TestCase
             $this->markTestSkipped('SensioFrameworkExtraBundle is not available.');
         }
 
-        Propel::disableInstancePooling();
+        // @fixme: some tests fail if instance pooling is disabled...
+        //Propel::disableInstancePooling();
     }
 
     public function tearDown()
     {
-        Propel::enableInstancePooling();
+        //Propel::enableInstancePooling();
 
         if ($this->con) {
             $this->con->useDebug(false);
@@ -236,9 +237,9 @@ class PropelParamConverterTest extends TestCase
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('param1' => 10, 'author' => null));
         $configuration = new ParamConverter(array(
-            'class' => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
-            'name' => 'author',
-            'options' => array(
+            'class'     => 'Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor',
+            'name'      => 'author',
+            'options'   => array(
                 'with'      => array(array('MyBook', 'left join')),
                 'mapping'   => array('param1' => 'id'),
             )
@@ -251,7 +252,7 @@ class PropelParamConverterTest extends TestCase
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor', $author,
             'param "author" should be an instance of "Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor"');
 
-        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'only one query to get the book');
+        $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'only one query to get the author');
 
         $books = $author->getMyBooks();
         $this->assertInstanceOf('\Propel\Runtime\Collection\ObjectCollection', $books);
@@ -338,7 +339,7 @@ class PropelParamConverterTest extends TestCase
     protected function loadFixtures()
     {
         $schema = <<<XML
-<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Request.DataFixtures.Loader"
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Request.ParamConverter"
     namespace="Propel\PropelBundle\Tests\Request\ParamConverter" defaultIdMethod="native">
     <table name="my_book">
         <column name="id" type="integer" primaryKey="true" />
