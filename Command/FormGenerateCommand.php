@@ -71,6 +71,7 @@ EOT
 
         if (!($schemas = $this->getFinalSchemas($kernel, $this->bundle))) {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $this->bundle->getName()));
+
             return;
         }
 
@@ -142,7 +143,7 @@ EOT
     }
 
     /**
-     * @param \SplFileInfo $file
+     * @param  \SplFileInfo $file
      * @return string
      */
     protected function getRelativeFileName(\SplFileInfo $file)

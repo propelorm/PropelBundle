@@ -13,7 +13,6 @@ use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
 
-
 /**
  * This class defines the structure of the 'book' table.
  *
@@ -194,7 +193,6 @@ class BookTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-
             return (int) $row[
                             $indexType == TableMap::TYPE_NUM
                             ? 0 + $offset
@@ -210,8 +208,8 @@ class BookTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
-     * @return string path.to.ClassName
+     * @param  boolean $withPrefix Whether or not to return the path with the class name
+     * @return string  path.to.ClassName
      */
     public static function getOMClass($withPrefix = true)
     {
@@ -253,9 +251,9 @@ class BookTableMap extends TableMap
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
      *
-     * @param DataFetcherInterface $dataFetcher
+     * @param  DataFetcherInterface $dataFetcher
      * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws PropelException      Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
     public static function populateObjects(DataFetcherInterface $dataFetcher)
@@ -289,8 +287,8 @@ class BookTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
+     * @param  Criteria        $criteria object containing the columns to add.
+     * @param  string          $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
@@ -337,10 +335,10 @@ class BookTableMap extends TableMap
     /**
      * Performs a DELETE on the database, given a Book or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Book object or primary key or array of primary keys
+     * @param mixed $values Criteria or Book object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param ConnectionInterface $con the connection to use
-     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param  ConnectionInterface $con the connection to use
+     * @return int                 The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                if supported by native driver or if emulated using Propel.
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
@@ -376,8 +374,8 @@ class BookTableMap extends TableMap
     /**
      * Deletes all rows from the book table.
      *
-     * @param ConnectionInterface $con the connection to use
-     * @return int The number of affected rows (if supported by underlying database driver).
+     * @param  ConnectionInterface $con the connection to use
+     * @return int                 The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
@@ -387,10 +385,10 @@ class BookTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Book or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Book object containing data that is used to create the INSERT statement.
-     * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param  mixed               $criteria Criteria or Book object containing data that is used to create the INSERT statement.
+     * @param  ConnectionInterface $con      the ConnectionInterface connection to use
+     * @return mixed               The new primary key.
+     * @throws PropelException     Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
      */
     public static function doInsert($criteria, ConnectionInterface $con = null)
@@ -408,7 +406,6 @@ class BookTableMap extends TableMap
         if ($criteria->containsKey(BookTableMap::ID) && $criteria->keyContainsValue(BookTableMap::ID) ) {
             throw new PropelException('Cannot insert a value for auto-increment primary key ('.BookTableMap::ID.')');
         }
-
 
         // Set the correct dbName
         $query = BookQuery::create()->mergeWith($criteria);

@@ -6,7 +6,6 @@ use Propel\PropelBundle\Tests\Fixtures\Model\Base\BookQuery as BaseBookQuery;
 
 use Propel\PropelBundle\Tests\Fixtures\Model\Book;
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'book' table.
  *
