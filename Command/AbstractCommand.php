@@ -322,11 +322,11 @@ EOT;
         $fs = new Filesystem();
 
         $buildProperties = $this->getContainer()->getParameter('propel.build_properties');
+        $iniFile = $kernel->getRootDir().'/config/propel.ini';
 
-        $inifile = $kernel->getRootDir().'/config/propel.ini';
-        if (file_exists($inifile)) {
+        if ($fs->exists($iniFile)) {
             $buildProperties = array_merge(
-                parse_ini_file($inifile),
+                parse_ini_file($iniFile),
                 $buildProperties
             );
         }
