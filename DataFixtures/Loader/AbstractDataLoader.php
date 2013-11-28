@@ -268,6 +268,24 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     }
 
     /**
+     * Retrieve all the parent classes of a given class (for the inheritance).
+     *
+     * @param string     $class Class name of the current object
+     */
+    protected function getInheritedClasses($class) {
+        $reflectionClass = new \ReflectionClass($class);
+        $classes = array();
+
+        while (!$reflectionClass->isAbstract()) {
+            $classes[] = constant(constant($class.'::PEER').'::TABLE_NAME');
+            $class = get_parent_class(get_parent_class($class));
+            $reflectionClass = new \ReflectionClass($class);
+        }
+
+        return $classes;
+    }
+
+    /**
      * Loads many to many objects.
      *
      * @param BaseObject $obj             A Propel object
@@ -278,11 +296,11 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     {
         $middleTable = $this->dbMap->getTable($middleTableName);
         $middleClass = $middleTable->getClassname();
-        $tableName   = constant(constant(get_class($obj).'::PEER').'::TABLE_NAME');
+        $inheritedClasses = $this->getInheritedClasses(get_class($obj));
 
         foreach ($middleTable->getColumns() as $column) {
             if ($column->isForeignKey()) {
-                if ($tableName !== $column->getRelatedTableName()) {
+                if (!in_array($column->getRelatedTableName(), $inheritedClasses)) {
                     $relatedClass  = $this->dbMap->getTable($column->getRelatedTableName())->getClassname();
                     $relatedSetter = 'set' . $column->getRelation()->getName();
                 } else {
