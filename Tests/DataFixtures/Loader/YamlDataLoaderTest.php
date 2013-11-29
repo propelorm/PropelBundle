@@ -389,6 +389,12 @@ YAML;
         <column name="name" type="varchar" size="255" />
     </table>
 
+    <table name="table_history_book_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipHistoryBook">
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="table_book_inherited_m2m_relationship" />
+        </behavior>
+    </table>
+
     <table name="table_author_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipAuthor">
         <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
         <column name="name" type="varchar" size="255" />
@@ -419,6 +425,8 @@ XML;
 Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipBook:
     Book_1:
         name: 'Supplice du santal'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipHistoryBook:
     Book_2:
         name: 'Qiushui'
 
