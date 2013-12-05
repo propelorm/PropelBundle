@@ -3,7 +3,6 @@
 namespace Propel\PropelBundle\Request\ParamConverter;
 
 use Propel\PropelBundle\Util\PropelInflector;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,7 +64,7 @@ class PropelParamConverter implements ParamConverterInterface
 
     /**
      * @param Request                $request
-     * @param ConfigurationInterface $configuration
+     * @param ParamConverter $configuration
      *
      * @return bool
      *
@@ -73,7 +72,7 @@ class PropelParamConverter implements ParamConverterInterface
      * @throws NotFoundHttpException
      * @throws \Exception
      */
-    public function apply(Request $request, ConfigurationInterface $configuration)
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $classQuery = $configuration->getClass() . 'Query';
         $classPeer = $configuration->getClass() . 'Peer';
@@ -142,11 +141,11 @@ class PropelParamConverter implements ParamConverterInterface
     }
 
     /**
-     * @param ConfigurationInterface $configuration
+     * @param ParamConverter $configuration
      *
      * @return bool
      */
-    public function supports(ConfigurationInterface $configuration)
+    public function supports(ParamConverter $configuration)
     {
         if (null === ($classname = $configuration->getClass())) {
             return false;
