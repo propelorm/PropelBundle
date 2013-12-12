@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Propel\PropelBundle\Model\Acl" defaultIdMethod="native" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd">
+    <table name="acl_classes" phpName="AclClass">
+        <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
+        <column name="class_type" type="varchar" size="200" required="true" phpName="Type" />
+
+        <unique>
+            <unique-column name="class_type" />
+        </unique>
+    </table>
+
+    <table name="acl_security_identities" phpName="SecurityIdentity">
+        <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
+        <column name="identifier" type="varchar" size="200" required="true" />
+        <column name="username" type="boolean" required="true" />
+
+        <unique>
+            <unique-column name="identifier" />
+            <unique-column name="username" />
+        </unique>
+    </table>
+
+    <table name="acl_object_identities" phpName="ObjectIdentity">
+        <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
+        <column name="class_id" type="integer" required="true" />
+        <column name="object_identifier" type="varchar" size="200" required="true" phpName="Identifier" />
+        <column name="parent_object_identity_id" type="integer" required="false" defaultValue="null" />
+        <column name="entries_inheriting" type="boolean" required="true" defaultValue="true" />
+
+        <unique>
+            <unique-column name="class_id" />
+            <unique-column name="object_identifier" />
+        </unique>
+
+        <index>
+            <index-column name="parent_object_identity_id" />
+        </index>
+
+        <foreign-key foreignTable="acl_classes" onDelete="RESTRICT" onUpdate="CASCADE">
+            <reference local="class_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="acl_object_identities" onDelete="RESTRICT" onUpdate="CASCADE">
+            <reference local="parent_object_identity_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="acl_object_identity_ancestors" phpName="ObjectIdentityAncestor" heavyIndexing="true">
+        <column name="object_identity_id" type="integer" primaryKey="true" />
+        <column name="ancestor_id" type="integer" primaryKey="true" />
+
+        <foreign-key foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="object_identity_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="ancestor_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <table name="acl_entries" phpName="Entry">
+        <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
+        <column name="class_id" type="integer" required="true" />
+        <column name="object_identity_id" type="integer" required="false" defaultValue="null" />
+        <column name="security_identity_id" type="integer" required="true" />
+        <column name="field_name" type="varchar" size="50" />
+        <column name="ace_order" type="integer" required="true" />
+        <column name="mask" type="integer" required="true" />
+        <column name="granting" type="boolean" required="true" />
+        <column name="granting_strategy" type="varchar" size="30" required="true" />
+        <column name="audit_success" type="boolean" required="true" defaultValue="false" />
+        <column name="audit_failure" type="boolean" required="true" defaultValue="true" />
+
+        <unique>
+            <unique-column name="class_id" />
+            <unique-column name="object_identity_id" />
+            <unique-column name="field_name" />
+            <unique-column name="ace_order" />
+        </unique>
+
+        <index>
+            <index-column name="class_id" />
+            <index-column name="object_identity_id" />
+            <index-column name="security_identity_id" />
+        </index>
+        <index>
+            <index-column name="class_id" />
+        </index>
+        <index>
+            <index-column name="object_identity_id" />
+        </index>
+        <index>
+            <index-column name="security_identity_id" />
+        </index>
+
+        <foreign-key foreignTable="acl_classes" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="class_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="object_identity_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="acl_security_identities" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="security_identity_id" foreign="id" />
+        </foreign-key>
+    </table>
+</database>

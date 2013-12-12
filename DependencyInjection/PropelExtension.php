@@ -36,11 +36,7 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
-        if (isset($config['logging']) && $config['logging']) {
-            $logging = $config['logging'];
-        } else {
-            $logging = false;
-        }
+        $logging = isset($config['logging']) && $config['logging'];
 
         $container->setParameter('propel.logging', $logging);
 
@@ -49,6 +45,7 @@ class PropelExtension extends Extension
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
             $loader->load('converters.xml');
+            $loader->load('security.xml');
         }
 
         // build properties

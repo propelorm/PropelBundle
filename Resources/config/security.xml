@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="propel.security.acl.provider.model.class">Propel\PropelBundle\Security\Acl\AuditableAclProvider</parameter>
+        <parameter key="propel.security.user.provider.class">Propel\PropelBundle\Security\User\PropelUserProvider</parameter>
+    </parameters>
+
+    <services>
+        <service id="propel.security.acl.provider" class="%propel.security.acl.provider.model.class%" public="false">
+            <argument type="service" id="security.acl.permission_granting_strategy" />
+            <argument type="service" id="propel.security.acl.connection" on-invalid="null" />
+            <argument type="service" id="security.acl.cache" on-invalid="null" />
+        </service>
+
+        <service id="propel.security.user.provider" class="%propel.security.user.provider.class%" abstract="true" public="false" />
+    </services>
+</container>

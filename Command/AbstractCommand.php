@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -125,7 +126,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             if ($this->input->hasOption('connection')) {
                 $connections = $this->input->getOption('connection') ?: array($this->getContainer()->getParameter('propel.dbal.default_connection'));
 
-                if (!in_array($database['name'], $connections)) {
+                if (!in_array((string) $database['name'], $connections)) {
                     // we skip this schema because the connection name doesn't
                     // match the input values
                     unset($this->tempSchemas[$tempSchema]);
@@ -162,6 +163,27 @@ abstract class AbstractCommand extends ContainerAwareCommand
         }
 
         return $this->getSchemaLocator()->locateFromBundles($kernel->getBundles());
+    }
+
+    protected function runCommand(Command $command, array $parameters, InputInterface $input, OutputInterface $output)
+    {
+        // add the command's name to the parameters
+        array_unshift($parameters, $this->getName());
+
+        // merge the default parameters
+        $parameters = array_merge(array(
+            '--input-dir'   => $this->cacheDir,
+            '--verbose'     => $input->getOption('verbose'),
+        ), $parameters);
+
+        if ($input->hasOption('platform')) {
+            $parameters['--platform'] = $input->getOption('platform');
+        }
+
+        $command->setApplication($this->getApplication());
+
+        // and run the sub-command
+        return $command->run(new ArrayInput($parameters), $output);
     }
 
     /*
