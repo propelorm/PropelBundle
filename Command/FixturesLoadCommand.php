@@ -110,9 +110,7 @@ EOT
     }
 
     /**
-     * @see Command
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -156,6 +154,7 @@ EOT
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param string                                            $type   If specified, only fixtures with the given type will be loaded (yml, xml).
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
@@ -307,6 +306,8 @@ EOT
 
     /**
      * Returns the path the command will look into to find fixture files
+     *
+     * @param BundleInterface $bundle The bundle to explore.
      *
      * @return String
      */

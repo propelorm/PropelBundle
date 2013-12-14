@@ -83,7 +83,9 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param KernelInterface $kernel The application kernel.
+     * @param KernelInterface $kernel   The application kernel.
+     * @param string          $cacheDir The directory in which the schemas will
+     *                                  be copied.
      */
     protected function copySchemas(KernelInterface $kernel, $cacheDir)
     {
@@ -152,9 +154,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Return a list of final schema files that will be processed.
      *
-     * @param \Symfony\Component\HttpKernel\KernelInterface $kernel
+     * @param KernelInterface $kernel The application kernel.
+     * @param BundleInterface $bundle If given, only the bundle's schemas will
+     *                                be returned.
      *
-     * @return array
+     * @return array A list of schemas.
      */
     protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
@@ -165,6 +169,16 @@ abstract class AbstractCommand extends ContainerAwareCommand
         return $this->getSchemaLocator()->locateFromBundles($kernel->getBundles());
     }
 
+    /**
+     * Run a Symfony command.
+     *
+     * @param Command         $command    The command to run.
+     * @param array           $parameters An array of parameters to give to the command.
+     * @param InputInterface  $input      An InputInterface instance
+     * @param OutputInterface $output     An OutputInterface instance
+     *
+     * @return int The command return code.
+     */
     protected function runCommand(Command $command, array $parameters, InputInterface $input, OutputInterface $output)
     {
         // add the command's name to the parameters
@@ -250,6 +264,13 @@ EOT;
         return $dsnList;
     }
 
+    /**
+     * Get the data (host, user, ...) for a given connection.
+     *
+     * @param string $name The connection name.
+     *
+     * @return array The connection data.
+     */
     protected function getConnectionData($name)
     {
         $knownConnections = $this->getContainer()->getParameter('propel.configuration');
@@ -260,6 +281,13 @@ EOT;
         return $knownConnections[$name];
     }
 
+    /**
+     * Get the DSN for a given connection.
+     *
+     * @param string $connectionName The connection name.
+     *
+     * @return string The DSN.
+     */
     protected function getDsn($connectionName)
     {
         $connection = $this->getConnectionData($connectionName);
@@ -300,7 +328,9 @@ EOT;
     }
 
     /**
-     * Check the PropelConfiguration object.
+     * Check the configuration parameters.
+     *
+     * @throws RuntimeException If the configuration is invalid.
      */
     protected function checkConfiguration()
     {
@@ -344,6 +374,13 @@ EOT;
         return $this->cacheDir;
     }
 
+    /**
+     * Converts an array to its INI equivalent
+     *
+     * @param array $data The array to convert.
+     *
+     * @return string The INI formatted array.
+     */
     protected function arrayToIni(array $data)
     {
         $lines = array();

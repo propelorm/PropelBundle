@@ -100,6 +100,11 @@ EOT
         }
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @note We override this method to only return the acl-related schema
+     */
     protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
         $aclSchema = new \SplFileInfo($kernel->locateResource('@PropelBundle/Resources/acl_schema.xml'));
@@ -111,6 +116,8 @@ EOT
 
     /**
      * {@inheritdoc}
+     *
+     * @note We override this method to modify the cache directory
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {

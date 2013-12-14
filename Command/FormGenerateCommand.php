@@ -33,7 +33,7 @@ class FormGenerateCommand extends AbstractCommand
     const DEFAULT_FORM_TYPE_DIRECTORY = '/Form/Type';
 
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -57,9 +57,7 @@ EOT
     }
 
     /**
-     * @see Command
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -84,6 +82,15 @@ EOT
         }
     }
 
+    /**
+     * Create FormTypes from a given database, bundle and models.
+     *
+     * @param BundleInterface $bundle   The bundle for which the FormTypes will be generated.
+     * @param Database        $database The database to inspect.
+     * @param array           $models   The models to build.
+     * @param OutputInterface $output   An OutputInterface instance
+     * @param boolean         $force    Override files if present.
+     */
     protected function createFormTypeFromDatabase(BundleInterface $bundle, Database $database, $models, OutputInterface $output, $force = false)
     {
         $dir = $this->createDirectory($bundle, $output);
@@ -103,6 +110,14 @@ EOT
         }
     }
 
+    /**
+     * Create the FormType directory and log the result.
+     *
+     * @param BundleInterface $bundle The bundle in which we'll create the directory.
+     * @param OutputInterface $output An OutputInterface instance.
+     *
+     * @return string The path to the created directory.
+     */
     protected function createDirectory(BundleInterface $bundle, OutputInterface $output)
     {
         $fs = new Filesystem();
@@ -115,6 +130,15 @@ EOT
         return $dir;
     }
 
+    /**
+     * Write a FormType.
+     *
+     * @param BundleInterface $bundle The bundle in which the FormType will be created.
+     * @param Table           $table  The table for which the FormType will be created.
+     * @param SplFileInfo     $file   File representing the FormType.
+     * @param boolean         $force  Is the write forced?
+     * @param OutputInterface $output An OutputInterface instance.
+     */
     protected function writeFormType(BundleInterface $bundle, Table $table, \SplFileInfo $file, $force, OutputInterface $output)
     {
         $modelName = $table->getPhpName();
@@ -130,6 +154,14 @@ EOT
         $this->writeNewFile($output, $this->getRelativeFileName($file) . ($force ? ' (forced)' : ''));
     }
 
+    /**
+     * Add the fields in the FormType.
+     *
+     * @param Table  $table           Table from which the fields will be extracted.
+     * @param string $formTypeContent FormType skeleton.
+     *
+     * @return string The FormType code.
+     */
     protected function addFields(Table $table, $formTypeContent)
     {
         $buildCode = '';
@@ -151,6 +183,13 @@ EOT
         return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../'), '', $file), 1);
     }
 
+    /**
+     * Get the GeneratorConfig instance to use.
+     *
+     * @param InputInterface $input An InputInterface instance.
+     *
+     * @return GeneratorConfig
+     */
     protected function getGeneratorConfig(InputInterface $input)
     {
         $generatorConfig = array(
@@ -190,6 +229,14 @@ EOT
         return new GeneratorConfig($generatorConfig);
     }
 
+    /**
+     * Get the ModelManager to use.
+     *
+     * @param InputInterface $input   An InputInterface instance.
+     * @param array          $schemas A list of schemas.
+     *
+     * @return ModelManager
+     */
     protected function getModelManager(InputInterface $input, array $schemas)
     {
         $schemaFiles = array();
