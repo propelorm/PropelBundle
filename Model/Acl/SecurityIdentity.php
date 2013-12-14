@@ -56,7 +56,7 @@ class SecurityIdentity extends BaseSecurityIdentity
      * @throws \InvalidArgumentException
      *
      * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $aclIdentity
-     * @param ConnectionInterface                                                      $con
+     * @param ConnectionInterface                                             $con
      *
      * @return \Propel\PropelBundle\Model\Acl\SecurityIdentity
      */

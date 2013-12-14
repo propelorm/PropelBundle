@@ -57,13 +57,13 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Constructor.
      *
-     * @param ObjectCollection                                                   $entries
+     * @param ObjectCollection                                                          $entries
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface             $objectIdentity
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      * @param array                                                                     $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface                        $parentAcl
      * @param bool                                                                      $inherited
-     * @param ConnectionInterface                                                                $con
+     * @param ConnectionInterface                                                       $con
      */
     public function __construct(ObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true, ConnectionInterface $con = null)
     {

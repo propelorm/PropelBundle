@@ -15,7 +15,6 @@ use Propel\Generator\Command\AbstractCommand as BaseCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>

@@ -29,7 +29,7 @@ class EntryQuery extends BaseEntryQuery
      *
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity     An ACL related ObjectIdentity.
      * @param array                                                         $securityIdentities A list of SecurityIdentity to filter by.
-     * @param \ConnectionInterface                                                    $con
+     * @param \ConnectionInterface                                          $con
      *
      * @return \PropelObjectCollection
      */

@@ -51,7 +51,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * Constructor.
      *
      * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param ConnectionInterface                                                                $connection
+     * @param ConnectionInterface                                                       $connection
      * @param \Symfony\Component\Security\Acl\Model\AclCacheInterface                   $cache
      */
     public function __construct(PermissionGrantingStrategyInterface $permissionGrantingStrategy, ConnectionInterface $connection = null, AclCacheInterface $cache = null)
@@ -325,7 +325,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Get an ACL for this provider.
      *
-     * @param ObjectCollection                                       $collection
+     * @param ObjectCollection                                              $collection
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param array                                                         $loadedSecurityIdentities
      * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
