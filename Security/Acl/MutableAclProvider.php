@@ -190,7 +190,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
                 );
             }
 
-            foreach ($modelEntries as &$eachEntry) {
+            foreach ($modelEntries as $eachEntry) {
                 if (!in_array($eachEntry->getId(), $keepEntries)) {
                     $eachEntry->delete($this->connection);
                 }

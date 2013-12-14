@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
  */
 class Acl implements AclInterface
 {
-    protected $model = 'Propel\PropelBundle\Model\Acl\Entry';
+    protected $model = '\Propel\PropelBundle\Model\Acl\Entry';
 
     protected $classAces = array();
     protected $classFieldAces = array();
@@ -59,8 +59,8 @@ class Acl implements AclInterface
      */
     public function __construct(ObjectCollection $entries, ObjectIdentityInterface $objectIdentity, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {
-        if ($entries->getModel() !== $this->model) {
-            throw new AclException(sprintf('The given collection does not contain models of class "%s" but of class "%s".', $this->model, $entries->getModel()));
+        if ($entries->getFullyQualifiedModel() !== $this->model) {
+            throw new AclException(sprintf('The given collection does not contain models of class "%s" but of class "%s".', $this->model, $entries->getFullyQualifiedModel()));
         }
 
         foreach ($entries as $eachEntry) {
