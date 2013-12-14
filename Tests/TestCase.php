@@ -10,9 +10,25 @@
 
 namespace Propel\PropelBundle\Tests;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
 /**
  * TestCase
  */
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+    public function getContainer()
+    {
+        $container = new ContainerBuilder(new ParameterBag(array(
+            'kernel.debug'      => false,
+            'kernel.root_dir'   => __DIR__ . '/../',
+        )));
+
+        $container->setParameter('propel.configuration', array());
+        $container->setDefinition('propel', new Definition('Propel\Runtime\Propel'));
+
+        return $container;
+    }
 }
