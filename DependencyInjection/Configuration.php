@@ -216,7 +216,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->defaultValue('')
                                 ->end()
-                                ->scalarNode('classname')->defaultValue($this->debug ? 'DebugPDO' : 'PropelPDO')->end()
+                                ->scalarNode('classname')->defaultValue($this->debug ? '\Propel\Runtime\Connection\DebugPDO' : '\Propel\Runtime\Connection\ConnectionWrapper')->end()
                             ->end()
                         ->end()
                     ->end()
