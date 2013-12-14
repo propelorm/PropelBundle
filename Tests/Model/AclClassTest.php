@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Tests\Model\Acl;
 
-use Criteria;
-
 use Propel\PropelBundle\Model\Acl\AclClass;
 use Propel\PropelBundle\Model\Acl\AclClassQuery;
 
