@@ -42,7 +42,7 @@ class MigrationUpCommand extends WrappedCommand
      */
     protected function createSubCommandInstance()
     {
-        return new \Propel\Generator\Command\MigrationUpCommand();
+        return new BaseMigrationCommand();
     }
 
     /**

@@ -14,6 +14,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
+use Propel\Generator\Command\ModelBuildCommand as BaseModelBuildCommand;
+
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
@@ -40,7 +42,7 @@ class ModelBuildCommand extends WrappedCommand
      */
     protected function createSubCommandInstance()
     {
-        return new \Propel\Generator\Command\ModelBuildCommand();
+        return new BaseModelBuildCommand();
     }
 
     /**
@@ -48,7 +50,7 @@ class ModelBuildCommand extends WrappedCommand
      */
     protected function getSubCommandArguments(InputInterface $input)
     {
-        $outputDir = realpath($this->getApplication()->getKernel()->getRootDir().'/../');
+        $outputDir = $this->getApplication()->getKernel()->getRootDir().'/../';
 
         return array(
             '--output-dir' => $outputDir,

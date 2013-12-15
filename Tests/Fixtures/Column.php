@@ -37,13 +37,13 @@ class Column
         }
 
         switch ($this->type) {
-        case PropelColumnTypes::CHAR:
-        case PropelColumnTypes::VARCHAR:
-        case PropelColumnTypes::LONGVARCHAR:
-        case PropelColumnTypes::BLOB:
-        case PropelColumnTypes::CLOB:
-        case PropelColumnTypes::CLOB_EMU:
-            return true;
+            case PropelColumnTypes::CHAR:
+            case PropelColumnTypes::VARCHAR:
+            case PropelColumnTypes::LONGVARCHAR:
+            case PropelColumnTypes::BLOB:
+            case PropelColumnTypes::CLOB:
+            case PropelColumnTypes::CLOB_EMU:
+                return true;
         }
 
         return false;
