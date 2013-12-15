@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\Command;
 
+use Propel\Runtime\Adapter\Pdo\MysqlAdapter;
 use Propel\Runtime\Propel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,10 +45,15 @@ class TableDropCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$input->getOption('force')) {
-            $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+        $connection = Propel::getConnection($input->getOption('connection'));
+        $adapter = Propel::getAdapter($connection->getName());
 
-            return;
+        if (!$adapter instanceof MysqlAdapter) {
+            return $output->writeln('<error>This command is MySQL only.</error>');
+        }
+
+        if (!$input->getOption('force')) {
+            return $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
         }
 
         $tablesToDelete = $input->getArgument('table');
@@ -71,9 +77,6 @@ class TableDropCommand extends ContainerAwareCommand
         }
 
         try {
-            $connection = Propel::getConnection($input->getOption('connection'));
-            $adapter = Propel::getAdapter($connection->getName());
-
             $showStatement = $connection->prepare('SHOW TABLES;');
             $showStatement->execute();
 
