@@ -93,6 +93,7 @@ class PropelParamConverter implements ParamConverterInterface
 
         $options = $configuration->getOptions();
 
+        /*
         // Check route options for converter options, if there are non provided.
         if (empty($options) && $request->attributes->has('_route') && $this->router && $configuration instanceof ParamConverter) {
             $converterOption = $this->router->getRouteCollection()->get($request->attributes->get('_route'))->getOption('propel_converter');
@@ -100,6 +101,7 @@ class PropelParamConverter implements ParamConverterInterface
                 $options = $converterOption[$configuration->getName()];
             }
         }
+        */
 
         if (isset($options['mapping'])) {
             // We use the mapping for calling findPk or filterBy
