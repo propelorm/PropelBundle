@@ -16,6 +16,9 @@
     "sensio/framework-extra-bundle": "~3.0",
     "fzaninotto/faker": "dev-master"
   },
+  "conflict": {
+    "sensio/framework-extra-bundle": ">=2.4"
+  },
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }
   },
