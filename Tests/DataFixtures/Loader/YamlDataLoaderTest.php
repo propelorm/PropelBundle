@@ -379,6 +379,81 @@ YAML;
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipAuthor', $author);
     }
 
+    public function testLoadWithInheritedManyToManyRelationship()
+    {
+        $schema = <<<XML
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+
+    <table name="table_book_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipBook">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="table_history_book_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipHistoryBook">
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="table_book_inherited_m2m_relationship" />
+        </behavior>
+    </table>
+
+    <table name="table_author_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipAuthor">
+        <column name="id" type="integer" primaryKey="true" autoIncrement="true" />
+        <column name="name" type="varchar" size="255" />
+    </table>
+
+    <table name="table_nobelized_author_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipNobelizedAuthor">
+        <column name="nobel_year" type="integer" />
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="table_author_inherited_m2m_relationship" />
+        </behavior>
+    </table>
+
+    <table name="table_book_author_inherited_m2m_relationship" phpName="YamlInheritedM2MRelationshipBookAuthor" isCrossRef="true">
+        <column name="author_id" type="integer" primaryKey="true" />
+        <column name="book_id" type="integer" primaryKey="true" />
+        <foreign-key foreignTable="table_author_inherited_m2m_relationship" phpName="Author">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="table_book_inherited_m2m_relationship" phpName="Book">
+            <reference local="book_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+</database>
+XML;
+
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipBook:
+    Book_1:
+        name: 'Supplice du santal'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipHistoryBook:
+    Book_2:
+        name: 'Qiushui'
+
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipNobelizedAuthor:
+    NobelizedAuthor_1:
+        nobel_year: 2012
+        table_book_author_inherited_m2m_relationships: [Book_1, Book_2]
+
+YAML;
+
+        $filename = $this->getTempFile($fixtures);
+
+        $builder = new \PropelQuickBuilder();
+        $builder->setSchema($schema);
+        $con = $builder->build();
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $loader->load(array($filename), 'default');
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedM2MRelationshipNobelizedAuthorPeer::doSelect(new \Criteria(), $con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $books = $author->getBooks();
+        $this->assertCount(2, $books);
+    }
+
     public function testLoadArrayToObjectType()
     {
         $schema = <<<XML
