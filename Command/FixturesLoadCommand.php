@@ -315,4 +315,12 @@ EOT
     {
         return $bundle->getPath() . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'fixtures';
     }
+
+    /**
+     * @return \Symfony\Component\Config\FileLocatorInterface
+     */
+    protected function getFileLocator()
+    {
+        return $this->getContainer()->get('file_locator');
+    }
 }
