@@ -405,17 +405,12 @@ class ModelChoiceList extends ObjectChoiceList
      */
     private function getIdentifierValues($model)
     {
-        if ($model instanceof ActiveRecordInterface) {
-            return array($model->getPrimaryKey());
-        }
-
-        // readonly="true" models do not implement ActiveRecordInterface.
-        if ($model instanceof ActiveRecordInterface && method_exists($model, 'getPrimaryKey')) {
-            return array($model->getPrimaryKey());
-        }
-
         if (null === $model) {
             return array();
+        }
+
+        if ($model instanceof ActiveRecordInterface) {
+            return array($model->getPrimaryKey());
         }
 
         return $model->getPrimaryKeys();
