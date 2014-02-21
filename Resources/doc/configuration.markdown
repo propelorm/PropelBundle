@@ -45,7 +45,6 @@ propel:
         attributes:           {}
 ```
 
-
 ## Configure Multiple Connection ##
 
 If you have more than one connection, or want to use a named connection, the configuration
@@ -92,6 +91,9 @@ propel:
                         dsn:        mysql:host=localhost;dbname=slave_1
 ```
 
+## Symfony 2.4 and Propel 1.4 standard edition note ##
+
+When using Symfony 2.4 with PropelBundle 1.4, make sure to explicitly require ```"sensio/framework-extra-bundle": "3.0.x@dev"```. Earlier versions of ```SensioFrameworkExtraBundle``` declare ```ParamConverterInterface``` that is not supported in PropelBundle 1.4.
 
 ## Attributes, Options, Settings ##
 
