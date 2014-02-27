@@ -11,7 +11,7 @@
 namespace Propel\PropelBundle\Command;
 
 use Propel\Generator\Config\GeneratorConfig;
-use Propel\Generator\Command\ModelBuildCommand;
+use Propel\Generator\Command\ModelBuildCommand as BaseModelBuildCommand;
 use Propel\Generator\Command\AbstractCommand as BaseCommand;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Table;
@@ -194,15 +194,15 @@ EOT
     {
         $generatorConfig = array(
             'propel.platform.class'                     => $input->getOption('platform'),
-            'propel.builder.object.class'               => ModelBuildCommand::DEFAULT_OBJECT_BUILDER,
-            'propel.builder.objectstub.class'           => ModelBuildCommand::DEFAULT_OBJECT_STUB_BUILDER,
-            'propel.builder.objectmultiextend.class'    => ModelBuildCommand::DEFAULT_MULTIEXTEND_OBJECT_BUILDER,
-            'propel.builder.query.class'                => ModelBuildCommand::DEFAULT_QUERY_BUILDER,
-            'propel.builder.querystub.class'            => ModelBuildCommand::DEFAULT_QUERY_STUB_BUILDER,
-            'propel.builder.queryinheritance.class'     => ModelBuildCommand::DEFAULT_QUERY_INHERITANCE_BUILDER,
-            'propel.builder.queryinheritancestub.class' => ModelBuildCommand::DEFAULT_QUERY_INHERITANCE_STUB_BUILDER,
-            'propel.builder.tablemap.class'             => ModelBuildCommand::DEFAULT_TABLEMAP_BUILDER,
-            'propel.builder.pluralizer.class'           => ModelBuildCommand::DEFAULT_PLURALIZER,
+            'propel.builder.object.class'               => BaseModelBuildCommand::DEFAULT_OBJECT_BUILDER,
+            'propel.builder.objectstub.class'           => BaseModelBuildCommand::DEFAULT_OBJECT_STUB_BUILDER,
+            'propel.builder.objectmultiextend.class'    => BaseModelBuildCommand::DEFAULT_MULTIEXTEND_OBJECT_BUILDER,
+            'propel.builder.query.class'                => BaseModelBuildCommand::DEFAULT_QUERY_BUILDER,
+            'propel.builder.querystub.class'            => BaseModelBuildCommand::DEFAULT_QUERY_STUB_BUILDER,
+            'propel.builder.queryinheritance.class'     => BaseModelBuildCommand::DEFAULT_QUERY_INHERITANCE_BUILDER,
+            'propel.builder.queryinheritancestub.class' => BaseModelBuildCommand::DEFAULT_QUERY_INHERITANCE_STUB_BUILDER,
+            'propel.builder.tablemap.class'             => BaseModelBuildCommand::DEFAULT_TABLEMAP_BUILDER,
+            'propel.builder.pluralizer.class'           => BaseModelBuildCommand::DEFAULT_PLURALIZER,
             'propel.disableIdentifierQuoting'           => true,
             'propel.packageObjectModel'                 => true,
             'propel.namespace.autoPackage'              => true,
@@ -218,7 +218,7 @@ EOT
             'propel.schema.autoPrefix'                  => false,
             'propel.dateTimeClass'                      => '\DateTime',
             // MySQL specific
-            'propel.mysql.tableType'                    => ModelBuildCommand::DEFAULT_MYSQL_ENGINE,
+            'propel.mysql.tableType'                    => BaseModelBuildCommand::DEFAULT_MYSQL_ENGINE,
             'propel.mysql.tableEngineKeyword'           => 'ENGINE',
         );
 
