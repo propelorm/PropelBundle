@@ -77,7 +77,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
     {
         $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-        $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+        $segments = explode('\\', $bundle->getNamespace());
+        $length = count($parts);
+
+        $partsDiff = array_diff($segments, $parts);
+        if (empty($partsDiff)) {
+            $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+        }
 
         $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length));
         $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
@@ -95,7 +101,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
-        
+
         if ($input->getOption('verbose')) {
             $this->additionalPhingArgs[] = 'verbose';
         }
