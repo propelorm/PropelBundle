@@ -39,6 +39,7 @@ class PropelExtension extends Extension
         $logging = isset($config['logging']) && $config['logging'];
 
         $container->setParameter('propel.logging', $logging);
+        $container->setParameter('propel.configuration', array());
 
         // Load services
         if (!$container->hasDefinition('propel')) {
