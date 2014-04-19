@@ -12,7 +12,7 @@ namespace Propel\PropelBundle\DataFixtures\Dumper;
 
 use \Pdo;
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
-use Propel\Runtime\Util\PropelColumnTypes;
+use Propel\Generator\Model\PropelTypes;
 
 /**
  * Abstract class to manage a common logic to dump data.
@@ -151,7 +151,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                     $values[$col] = strlen($row[$col]) ? $relatedTable->getPhpName().'_'.$row[$col] : '';
                                 }
                             } elseif (!$isPrimaryKey || ($isPrimaryKey && !$tableMap->isUseIdGenerator())) {
-                                if (!empty($row[$col]) && PropelColumnTypes::PHP_ARRAY === $column->getType()) {
+                                if (!empty($row[$col]) && PropelTypes::PHP_ARRAY === $column->getType()) {
                                     $serialized = substr($row[$col], 2, -2);
                                     $row[$col]  = $serialized ? explode(' | ', $serialized) : array();
                                 }
@@ -160,7 +160,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                                 $values[$col] = $row[$col];
                             }
 
-                            if (PropelColumnTypes::OBJECT === $column->getType()) {
+                            if (PropelTypes::OBJECT === $column->getType()) {
                                 $values[$col] = unserialize($row[$col]);
                             }
                         }

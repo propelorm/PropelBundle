@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\DataFixtures\Loader;
 
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\PropelBundle\Util\PropelInflector;
+use Propel\Generator\Model\PropelTypes;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Map\Exception\TableNotFoundException;
 use Propel\Runtime\Map\TableMap;
@@ -170,8 +171,8 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                         } catch (TableNotFoundException $e) {
                             // Check whether this is actually an array stored in the object.
                             if ('Cannot fetch TableMap for undefined table: ' . substr($name, 0, -1) === $e->getMessage()) {
-                                if (PropelColumnTypes::PHP_ARRAY !== $tableMap->getColumn($name)->getType()
-                                    && PropelColumnTypes::OBJECT !== $tableMap->getColumn($name)->getType()) {
+                                if (PropelTypes::PHP_ARRAY !== $tableMap->getColumn($name)->getType()
+                                    && PropelTypes::OBJECT !== $tableMap->getColumn($name)->getType()) {
                                     throw $e;
                                 }
                             }

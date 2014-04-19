@@ -12,7 +12,7 @@
 namespace Propel\PropelBundle\Form;
 
 use Propel\Runtime\Map\RelationMap;
-use Propel\Runtime\Util\PropelColumnTypes;
+use Propel\Generator\Model\PropelTypes;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -66,30 +66,30 @@ class TypeGuesser implements FormTypeGuesserInterface
         }
 
         switch ($column->getType()) {
-            case PropelColumnTypes::BOOLEAN:
-            case PropelColumnTypes::BOOLEAN_EMU:
+            case PropelTypes::BOOLEAN:
+            case PropelTypes::BOOLEAN_EMU:
                 return new TypeGuess('checkbox', array(), Guess::HIGH_CONFIDENCE);
-            case PropelColumnTypes::TIMESTAMP:
-            case PropelColumnTypes::BU_TIMESTAMP:
+            case PropelTypes::TIMESTAMP:
+            case PropelTypes::BU_TIMESTAMP:
                 return new TypeGuess('datetime', array(), Guess::HIGH_CONFIDENCE);
-            case PropelColumnTypes::DATE:
-            case PropelColumnTypes::BU_DATE:
+            case PropelTypes::DATE:
+            case PropelTypes::BU_DATE:
                 return new TypeGuess('date', array(), Guess::HIGH_CONFIDENCE);
-            case PropelColumnTypes::TIME:
+            case PropelTypes::TIME:
                 return new TypeGuess('time', array(), Guess::HIGH_CONFIDENCE);
-            case PropelColumnTypes::FLOAT:
-            case PropelColumnTypes::REAL:
-            case PropelColumnTypes::DOUBLE:
-            case PropelColumnTypes::DECIMAL:
+            case PropelTypes::FLOAT:
+            case PropelTypes::REAL:
+            case PropelTypes::DOUBLE:
+            case PropelTypes::DECIMAL:
                 return new TypeGuess('number', array(), Guess::MEDIUM_CONFIDENCE);
-            case PropelColumnTypes::TINYINT:
-            case PropelColumnTypes::SMALLINT:
-            case PropelColumnTypes::INTEGER:
-            case PropelColumnTypes::BIGINT:
-            case PropelColumnTypes::NUMERIC:
+            case PropelTypes::TINYINT:
+            case PropelTypes::SMALLINT:
+            case PropelTypes::INTEGER:
+            case PropelTypes::BIGINT:
+            case PropelTypes::NUMERIC:
                 return new TypeGuess('integer', array(), Guess::MEDIUM_CONFIDENCE);
-            case PropelColumnTypes::ENUM:
-            case PropelColumnTypes::CHAR:
+            case PropelTypes::ENUM:
+            case PropelTypes::CHAR:
                 if ($column->getValueSet()) {
                     //check if this is mysql enum
                     $choices = $column->getValueSet();
@@ -97,12 +97,12 @@ class TypeGuesser implements FormTypeGuesserInterface
 
                     return new TypeGuess('choice', array('choices' => array_combine($choices, $labels)), Guess::MEDIUM_CONFIDENCE);
                 }
-            case PropelColumnTypes::VARCHAR:
+            case PropelTypes::VARCHAR:
                 return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
-            case PropelColumnTypes::LONGVARCHAR:
-            case PropelColumnTypes::BLOB:
-            case PropelColumnTypes::CLOB:
-            case PropelColumnTypes::CLOB_EMU:
+            case PropelTypes::LONGVARCHAR:
+            case PropelTypes::BLOB:
+            case PropelTypes::CLOB:
+            case PropelTypes::CLOB_EMU:
                 return new TypeGuess('textarea', array(), Guess::MEDIUM_CONFIDENCE);
             default:
                 return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
@@ -129,10 +129,10 @@ class TypeGuesser implements FormTypeGuesserInterface
                 return new ValueGuess($column->getSize(), Guess::HIGH_CONFIDENCE);
             }
             switch ($column->getType()) {
-                case PropelColumnTypes::FLOAT:
-                case PropelColumnTypes::REAL:
-                case PropelColumnTypes::DOUBLE:
-                case PropelColumnTypes::DECIMAL:
+                case PropelTypes::FLOAT:
+                case PropelTypes::REAL:
+                case PropelTypes::DOUBLE:
+                case PropelTypes::DECIMAL:
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }
@@ -145,10 +145,10 @@ class TypeGuesser implements FormTypeGuesserInterface
     {
         if ($column = $this->getColumn($class, $property)) {
             switch ($column->getType()) {
-                case PropelColumnTypes::FLOAT:
-                case PropelColumnTypes::REAL:
-                case PropelColumnTypes::DOUBLE:
-                case PropelColumnTypes::DECIMAL:
+                case PropelTypes::FLOAT:
+                case PropelTypes::REAL:
+                case PropelTypes::DOUBLE:
+                case PropelTypes::DECIMAL:
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }

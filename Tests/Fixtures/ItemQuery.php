@@ -14,21 +14,21 @@ namespace Propel\PropelBundle\Tests\Fixtures;
 use Propel\Runtime\Map\ColumnMap;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
-use Propel\Runtime\Util\PropelColumnTypes;
+use Propel\Generator\Model\PropelTypes;
 
 class ItemQuery
 {
     private $map = array(
-        'id'            => PropelColumnTypes::INTEGER,
-        'value'         => PropelColumnTypes::VARCHAR,
-        'price'         => PropelColumnTypes::FLOAT,
-        'is_active'     => PropelColumnTypes::BOOLEAN,
-        'enabled'       => PropelColumnTypes::BOOLEAN_EMU,
-        'updated_at'    => PropelColumnTypes::TIMESTAMP,
+        'id'            => PropelTypes::INTEGER,
+        'value'         => PropelTypes::VARCHAR,
+        'price'         => PropelTypes::FLOAT,
+        'is_active'     => PropelTypes::BOOLEAN,
+        'enabled'       => PropelTypes::BOOLEAN_EMU,
+        'updated_at'    => PropelTypes::TIMESTAMP,
 
-        'updated_at'    => PropelColumnTypes::TIMESTAMP,
-        'updated_at'    => PropelColumnTypes::TIMESTAMP,
-        'updated_at'    => PropelColumnTypes::TIMESTAMP,
+        'updated_at'    => PropelTypes::TIMESTAMP,
+        'updated_at'    => PropelTypes::TIMESTAMP,
+        'updated_at'    => PropelTypes::TIMESTAMP,
     );
 
     public function getTableMap()

@@ -11,6 +11,7 @@
 namespace Propel\PropelBundle\Tests\DataFixtures;
 
 use Propel\Generator\Util\QuickBuilder;
+use Propel\Runtime\Propel;
 use Propel\PropelBundle\Tests\TestCase as BaseTestCase;
 
 /**
@@ -34,7 +35,8 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $schema = <<<XML
+        if (!class_exists('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook')) {
+            $schema = <<<XML
 <database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
     <table name="cool_book">
         <column name="id" type="integer" primaryKey="true" />
@@ -55,16 +57,11 @@ class TestCase extends BaseTestCase
 </database>
 XML;
 
-        if (class_exists('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook')) {
-            $classTargets = array();
-        } else {
-            $classTargets = null;
+            QuickBuilder::buildSchema($schema);
         }
 
-        $builder = new QuickBuilder();
-        $builder->setSchema($schema);
-
-        $this->con = $builder->build($dsn = null, $user = null, $pass = null, $adapter = null, $classTargets);
+        $this->con = Propel::getServiceContainer()->getConnection('default');
+        $this->con->beginTransaction();
     }
 
     protected function tearDown()
@@ -74,6 +71,18 @@ XML;
         }
 
         $this->tmpFiles = array();
+
+        // Only commit if the transaction hasn't failed.
+        // This is because tearDown() is also executed on a failed tests,
+        // and we don't want to call ConnectionInterface::commit() in that case
+        // since it will trigger an exception on its own
+        // ('Cannot commit because a nested transaction was rolled back')
+        if (null !== $this->con) {
+            if ($this->con->isCommitable()) {
+                $this->con->commit();
+            }
+            $this->con = null;
+        }
     }
 
     /**
@@ -93,5 +102,10 @@ XML;
         $this->tmpFiles[] = $filename;
 
         return $filename;
+    }
+
+    public static function tearDownAfterClass()
+    {
+        Propel::getServiceContainer()->closeConnections();
     }
 }

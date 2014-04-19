@@ -409,7 +409,7 @@ YAML;
         $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
         $loader->load(array($filename), 'default');
 
-        $book = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObjectQuery::create(null, $con)->findOne();
+        $book = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObjectQuery::create(null)->findOne($con);
 
         $this->assertInstanceOf('\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObject', $book);
         $this->assertEquals(array('opt1' => 2012, 'opt2' => 140, 'inner' => array('subOpt' => 123)), $book->getOptions());
