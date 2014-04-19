@@ -44,7 +44,8 @@ class SqlInsertCommand extends WrappedCommand
     protected function getSubCommandArguments(InputInterface $input)
     {
         return array(
-            '--connection' => $this->getConnections($input->getOption('connection')),
+            '--connection'  => $this->getConnections($input->getOption('connection')),
+            '--sql-dir'   => $this->cacheDir,
         );
     }
 }
