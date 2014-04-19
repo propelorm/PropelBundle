@@ -45,7 +45,7 @@ class TestCase extends BaseTestCase
         <column name="author_id" type="integer" required="false" defaultValue="null" />
         <column name="complementary_infos" required="false" type="object" description="An object column" />
 
-        <foreign-key foreignTable="cool_book_author" onDelete="RESTRICT" onUpdate="CASCADE">
+        <foreign-key foreignTable="cool_book_author" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
     </table>
@@ -102,10 +102,5 @@ XML;
         $this->tmpFiles[] = $filename;
 
         return $filename;
-    }
-
-    public static function tearDownAfterClass()
-    {
-        Propel::getServiceContainer()->closeConnections();
     }
 }

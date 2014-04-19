@@ -47,6 +47,115 @@ YAML;
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor', $book->getCoolBookAuthor());
     }
 
+    public function testLoadSelfReferencing()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
+    CoolBookAuthor_1:
+        id: '1'
+        name: 'to be announced'
+    CoolBookAuthor_2:
+        id: CoolBookAuthor_1
+        name: 'A famous one'
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $this->assertCount(0, $books);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $this->assertEquals('A famous one', $author->getName());
+    }
+
+    public function testLoaderWithPhp()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
+    CoolBookAuthor_1:
+        id: '1'
+        name: <?php echo "to be announced"; ?>
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $this->assertCount(0, $books);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $this->assertEquals('to be announced', $author->getName());
+    }
+
+    public function testLoadWithoutFaker()
+    {
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
+    CoolBookAuthor_1:
+        id: '1'
+        name: <?php echo \$faker('word'); ?>
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $this->assertCount(0, $books);
+
+        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
+        $this->assertCount(1, $authors);
+
+        $author = $authors[0];
+        $this->assertEquals('word', $author->getName());
+    }
+
+    public function testLoadWithFaker()
+    {
+        if (!class_exists('Faker\Factory')) {
+            $this->markTestSkipped('Faker is mandatory');
+        }
+
+        $fixtures = <<<YAML
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook:
+    CoolBook_1:
+        id: '1'
+        name: <?php \$faker('word'); ?>
+        description: <?php \$faker('sentence'); ?>
+
+YAML;
+        $filename  = $this->getTempFile($fixtures);
+        $container = $this->getContainer();
+        $container->set('faker.generator', \Faker\Factory::create());
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $container);
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $this->assertCount(1, $books);
+
+        $book = $books[0];
+        $this->assertNotNull($book->getName());
+        $this->assertNotEquals('null', strtolower($book->getName()));
+        $this->assertRegexp('#[a-z]+#', $book->getName());
+        $this->assertNotNull($book->getDescription());
+        $this->assertNotEquals('null', strtolower($book->getDescription()));
+        $this->assertRegexp('#[\w ]+#', $book->getDescription());
+    }
+
+
     public function testYamlLoadManyToMany()
     {
         $schema = <<<XML
@@ -215,114 +324,6 @@ YAML;
         $this->assertEquals('Victor Hugo', $authors[1]->getName());
         $this->assertTrue($authors[1]->getBooks()->contains($books[1]));
         $this->assertEquals('Les misérables', $authors[1]->getBooks()->get(0)->getName());
-    }
-
-    public function testLoadSelfReferencing()
-    {
-        $fixtures = <<<YAML
-Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
-    CoolBookAuthor_1:
-        id: '1'
-        name: 'to be announced'
-    CoolBookAuthor_2:
-        id: CoolBookAuthor_1
-        name: 'A famous one'
-
-YAML;
-        $filename = $this->getTempFile($fixtures);
-
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
-        $loader->load(array($filename), 'default');
-
-        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
-        $this->assertCount(0, $books);
-
-        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
-        $this->assertCount(1, $authors);
-
-        $author = $authors[0];
-        $this->assertEquals('A famous one', $author->getName());
-    }
-
-    public function testLoaderWithPhp()
-    {
-        $fixtures = <<<YAML
-Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
-    CoolBookAuthor_1:
-        id: '1'
-        name: <?php echo "to be announced"; ?>
-
-YAML;
-        $filename = $this->getTempFile($fixtures);
-
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
-        $loader->load(array($filename), 'default');
-
-        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
-        $this->assertCount(0, $books);
-
-        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
-        $this->assertCount(1, $authors);
-
-        $author = $authors[0];
-        $this->assertEquals('to be announced', $author->getName());
-    }
-
-    public function testLoadWithoutFaker()
-    {
-        $fixtures = <<<YAML
-Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
-    CoolBookAuthor_1:
-        id: '1'
-        name: <?php echo \$faker('word'); ?>
-
-YAML;
-        $filename = $this->getTempFile($fixtures);
-
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
-        $loader->load(array($filename), 'default');
-
-        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
-        $this->assertCount(0, $books);
-
-        $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthorQuery::create()->find($this->con);
-        $this->assertCount(1, $authors);
-
-        $author = $authors[0];
-        $this->assertEquals('word', $author->getName());
-    }
-
-    public function testLoadWithFaker()
-    {
-        if (!class_exists('Faker\Factory')) {
-            $this->markTestSkipped('Faker is mandatory');
-        }
-
-        $fixtures = <<<YAML
-Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook:
-    CoolBook_1:
-        id: '1'
-        name: <?php \$faker('word'); ?>
-        description: <?php \$faker('sentence'); ?>
-
-YAML;
-        $filename  = $this->getTempFile($fixtures);
-        $container = $this->getContainer();
-        $container->set('faker.generator', \Faker\Factory::create());
-
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $container);
-        $loader->load(array($filename), 'default');
-
-        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
-        $this->assertCount(1, $books);
-
-        $book = $books[0];
-        $this->assertNotNull($book->getName());
-        $this->assertNotEquals('null', strtolower($book->getName()));
-        $this->assertRegexp('#[a-z]+#', $book->getName());
-        $this->assertNotNull($book->getDescription());
-        $this->assertNotEquals('null', strtolower($book->getDescription()));
-        $this->assertRegexp('#[\w ]+#', $book->getDescription());
     }
 
     public function testLoadWithInheritedRelationship()
