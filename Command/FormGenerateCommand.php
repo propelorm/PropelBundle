@@ -43,7 +43,7 @@ class FormGenerateCommand extends AbstractCommand
 
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
             ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform', BaseCommand::DEFAULT_PLATFORM)
-            ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types')
+            ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types (Ex: @AcmeDemoBundle)')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
 
             ->setHelp(<<<EOT
@@ -64,6 +64,10 @@ EOT
         $kernel = $this->getApplication()->getKernel();
         $models = $input->getArgument('models');
         $force = $input->getOption('force');
+
+        if (!$this->bundle) {
+            throw new \InvalidArgumentException('No valid bundle given');
+        }
 
         $this->setupBuildTimeFiles();
 
