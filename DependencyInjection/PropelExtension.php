@@ -36,9 +36,7 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $logging = isset($config['logging']) && $config['logging'];
-
-        $container->setParameter('propel.logging', $logging);
+        $container->setParameter('propel.logging', $config['logging']);
         $container->setParameter('propel.configuration', array());
 
         // Load services
@@ -50,11 +48,7 @@ class PropelExtension extends Extension
         }
 
         // build properties
-        if (isset($config['build_properties']) && is_array($config['build_properties'])) {
-            $buildProperties = $config['build_properties'];
-        } else {
-            $buildProperties = array();
-        }
+        $buildProperties = $config['build_properties'];
 
         // behaviors
         if (isset($config['behaviors']) && is_array($config['behaviors'])) {
