@@ -36,7 +36,7 @@ class ObjectIdentity extends BaseObjectIdentity
 
     public function preUpdate(ConnectionInterface $con = null)
     {
-        if ($this->isColumnModified(ObjectIdentityTableMap::PARENT_OBJECT_IDENTITY_ID)) {
+        if ($this->isColumnModified(ObjectIdentityTableMap::COL_PARENT_OBJECT_IDENTITY_ID)) {
             $this->updateAncestorsTree($con);
         }
 

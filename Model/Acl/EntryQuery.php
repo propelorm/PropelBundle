@@ -57,8 +57,8 @@ class EntryQuery extends BaseEntryQuery
                 ->filterByType((string) $objectIdentity->getType())
             ->endUse()
             ->leftJoinObjectIdentity()
-            ->add(ObjectIdentityTableMap::OBJECT_IDENTIFIER, (string) $objectIdentity->getIdentifier(), Criteria::EQUAL)
-            ->addOr(EntryTableMap::OBJECT_IDENTITY_ID, null, Criteria::ISNULL)
+            ->add(ObjectIdentityTableMap::COL_OBJECT_IDENTIFIER, (string) $objectIdentity->getIdentifier(), Criteria::EQUAL)
+            ->addOr(EntryTableMap::COL_OBJECT_IDENTITY_ID, null, Criteria::ISNULL)
         ;
 
         if (!empty($securityIdentities)) {

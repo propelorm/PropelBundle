@@ -38,7 +38,7 @@ class AclTestCase extends TestCase
 
         $schema = file_get_contents(__DIR__.'/../Resources/acl_schema.xml');
 
-        if (!class_exists('Propel\PropelBundle\Model\Acl\map\AclClassTableMap')) {
+        if (!class_exists('Propel\PropelBundle\Model\Acl\Map\AclClassTableMap')) {
             $classTargets = array('tablemap', 'object', 'query');
         } else {
             $classTargets = array();

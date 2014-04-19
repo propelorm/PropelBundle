@@ -244,7 +244,7 @@ class AclProviderTest extends AclTestCase
         $this->cache->content[1] = $acl;
 
         // Change database
-        EntryQuery::create()->update(array(EntryTableMap::translateFieldName(EntryTableMap::MASK, TableMap::TYPE_COLNAME, TableMap::TYPE_PHPNAME) => 128), $this->con);
+        EntryQuery::create()->update(array(EntryTableMap::translateFieldName(EntryTableMap::COL_MASK, TableMap::TYPE_COLNAME, TableMap::TYPE_PHPNAME) => 128), $this->con);
         $this->assertEquals(0, EntryQuery::create()->filterByMask(64)->count($this->con));
 
         // Verify cache has been read
