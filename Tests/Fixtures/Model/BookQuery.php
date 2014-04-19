@@ -2,8 +2,9 @@
 
 namespace Propel\PropelBundle\Tests\Fixtures\Model;
 
-use Propel\PropelBundle\Tests\Fixtures\Model\Base\BookQuery as BaseBookQuery;
+use Propel\Runtime\Connection\ConnectionInterface;
 
+use Propel\PropelBundle\Tests\Fixtures\Model\Base\BookQuery as BaseBookQuery;
 use Propel\PropelBundle\Tests\Fixtures\Model\Book;
 
 /**
@@ -24,7 +25,7 @@ class BookQuery extends BaseBookQuery
     /**
      * fake for test
      */
-    public function findPk($key, $con = null)
+    public function findPk($key, ConnectionInterface $con = null)
     {
         if (1 === $key) {
             $book = new Book();
@@ -71,7 +72,7 @@ class BookQuery extends BaseBookQuery
     /**
      * fake for test
      */
-    public function findOne($con = null)
+    public function findOne(ConnectionInterface $con = null)
     {
         if (true === $this->bySlug) {
             $book = new Book();

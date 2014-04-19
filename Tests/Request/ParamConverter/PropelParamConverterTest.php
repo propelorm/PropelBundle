@@ -14,7 +14,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 class PropelParamConverterTest extends TestCase
 {
-
     protected $con;
 
     public function setUp()
@@ -357,15 +356,12 @@ class PropelParamConverterTest extends TestCase
     </table>
 </database>
 XML;
-        $builder = new QuickBuilder();
-        $builder->setSchema($schema);
-        $classTargets = null;
 
-        if (class_exists('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor')) {
-            $classTargets = array();
+        if (!class_exists('Propel\PropelBundle\Tests\Request\ParamConverter\MyAuthor')) {
+            QuickBuilder::buildSchema($schema);
         }
 
-        $this->con = $builder->build($dsn = null, $user = null, $pass = null, $adapter = null, $classTargets);
+        $this->con = Propel::getConnection('default');
         $this->con->useDebug(true);
 
         MyBookQuery::create()->deleteAll($this->con);
