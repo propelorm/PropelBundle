@@ -98,7 +98,7 @@ class PropelExtension extends Extension
             }
 
             foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings', 'model_paths') as $att) {
-                if (isset($conf[$att])) {
+                if (array_key_exists($att, $conf)) {
                     $c[$name]['connection'][$att] = $conf[$att];
                 }
             }
