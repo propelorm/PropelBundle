@@ -38,7 +38,7 @@ class YamlDataDumperTest extends TestCase
 
         $filename = $this->getTempFile();
 
-        $loader = new YamlDataDumper(__DIR__.'/../../Fixtures/DataFixtures/Loader', new Propel(), array());
+        $loader = new YamlDataDumper(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->dump($filename);
 
         $expected = <<<YAML

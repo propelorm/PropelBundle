@@ -31,7 +31,7 @@ class YamlDataLoader extends AbstractDataLoader
      */
     public function __construct($rootDir, ContainerInterface $container)
     {
-        parent::__construct($rootDir, $container->get('propel'), $container->getParameter('propel.configuration'));
+        parent::__construct($rootDir, $container->getParameter('propel.configuration'));
 
         $this->container = $container;
     }

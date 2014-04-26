@@ -13,6 +13,7 @@ namespace Propel\PropelBundle\DataFixtures\Dumper;
 use \Pdo;
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\Generator\Model\PropelTypes;
+use Propel\Runtime\Propel;
 
 /**
  * Abstract class to manage a common logic to dump data.
@@ -31,7 +32,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
         }
 
         $this->loadMapBuilders($connectionName);
-        $this->con = $this->propel->getConnection($connectionName);
+        $this->con = Propel::getConnection($connectionName);
 
         $array = $this->getDataAsArray($connectionName);
         $data  = $this->transformArrayToData($array);
