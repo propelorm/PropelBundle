@@ -37,7 +37,7 @@ class YamlDataLoaderTest extends TestCase
 YAML;
         $filename = $this->getTempFile($fixtures);
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
@@ -61,7 +61,7 @@ Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
 YAML;
         $filename = $this->getTempFile($fixtures);
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
@@ -85,7 +85,7 @@ Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
 YAML;
         $filename = $this->getTempFile($fixtures);
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
@@ -109,7 +109,7 @@ Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
 YAML;
         $filename = $this->getTempFile($fixtures);
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
@@ -137,10 +137,8 @@ Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook:
 
 YAML;
         $filename  = $this->getTempFile($fixtures);
-        $container = $this->getContainer();
-        $container->set('faker.generator', \Faker\Factory::create());
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $container);
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array(), \Faker\Factory::create());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
@@ -215,7 +213,7 @@ YAML;
 
         $con = $builder->build();
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyBookQuery::create()->find($con);
@@ -303,7 +301,7 @@ YAML;
         $builder->setSchema($schema);
         $con = $builder->build();
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename1, $filename2), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlManyToManyMultipleFilesBookQuery::create()->find($con);
@@ -372,7 +370,7 @@ YAML;
         $builder->setSchema($schema);
         $con = $builder->build();
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlInheritedRelationshipBookQuery::create()->find($con);
@@ -407,7 +405,7 @@ YAML;
         $builder->setSchema($schema);
         $con = $builder->build();
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $book = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlBookWithObjectQuery::create(null)->findOne($con);
@@ -457,7 +455,7 @@ YAML;
         $builder->setSchema($schema);
         $con = $builder->build();
 
-        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $this->getContainer());
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $authors = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\YamlDelegateOnPrimaryKeyAuthorQuery::create()->find($con);

@@ -52,7 +52,8 @@
 
         <service id="propel.loader.yaml" class="%propel.loader.yaml.class%">
             <argument>%kernel.root_dir%</argument>
-            <argument type="service" id="service_container" />
+            <argument>%propel.configuration%</argument>
+            <argument type="service" id="faker.generator" on-invalid="null" />
         </service>
 
         <service id="propel.loader.xml" class="%propel.loader.xml.class%">

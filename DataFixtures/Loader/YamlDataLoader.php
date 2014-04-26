@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\DataFixtures\Loader;
 
+use Faker\Generator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -22,18 +23,18 @@ use Symfony\Component\Yaml\Yaml;
 class YamlDataLoader extends AbstractDataLoader
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var \Faker\Generator
      */
-    private $container;
+    private $faker;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($rootDir, ContainerInterface $container)
+    public function __construct($rootDir, array $datasources, Generator $faker = null)
     {
-        parent::__construct($rootDir, $container->getParameter('propel.configuration'));
+        parent::__construct($rootDir, $datasources);
 
-        $this->container = $container;
+        $this->faker = $faker;
     }
 
     /**
@@ -46,8 +47,8 @@ class YamlDataLoader extends AbstractDataLoader
                 throw new ParseException(sprintf('Unable to parse "%s" as the file is not readable.', $file));
             }
 
-            if (null !== $this->container && $this->container->has('faker.generator')) {
-                $generator = $this->container->get('faker.generator');
+            if (null !== $this->faker) {
+                $generator = $this->faker;
                 $faker = function ($type) use ($generator) {
                     $args = func_get_args();
                     array_shift($args);
