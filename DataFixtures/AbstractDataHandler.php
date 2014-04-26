@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle\DataFixtures;
 
+use Propel\Runtime\Map\DatabaseMap;
 use Propel\Runtime\Propel;
 use Symfony\Component\Finder\Finder;
 
@@ -22,12 +23,14 @@ abstract class AbstractDataHandler
      * @var string
      */
     protected $rootDir;
+
     /**
      * @var \PDO
      */
     protected $con;
+
     /**
-     * @var \DatabaseMap
+     * @var DatabaseMap
      */
     protected $dbMap;
 
@@ -45,11 +48,11 @@ abstract class AbstractDataHandler
      * Default constructor
      *
      * @param string $rootDir The root directory.
+     * @param array $datasources
      */
-    public function __construct($rootDir, Propel $propel, array $datasources)
+    public function __construct($rootDir, array $datasources)
     {
         $this->rootDir = $rootDir;
-        $this->propel = $propel;
         $this->datasources = $datasources;
     }
 
@@ -72,7 +75,7 @@ abstract class AbstractDataHandler
             return;
         }
 
-        $this->dbMap = $this->propel->getDatabaseMap($connectionName);
+        $this->dbMap = Propel::getDatabaseMap($connectionName);
         if (0 === count($this->dbMap->getTables())) {
             $finder = new Finder();
             $files  = $finder
@@ -94,8 +97,10 @@ abstract class AbstractDataHandler
 
     /**
      * Check if a table is in a database
+     *
      * @param  string  $class
      * @param  string  $connectionName
+     *
      * @return boolean
      */
     protected function isInDatabase($class, $connectionName)
@@ -109,6 +114,8 @@ abstract class AbstractDataHandler
      *
      * @param string $path           The relative path of the file.
      * @param string $shortClassName The short class name aka the filename without extension.
+     *
+     * @return string|null
      */
     private function guessFullClassName($path, $shortClassName)
     {

@@ -16,6 +16,7 @@ use Propel\Generator\Model\PropelTypes;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Map\Exception\TableNotFoundException;
 use Propel\Runtime\Map\TableMap;
+use Propel\Runtime\Propel;
 
 /**
  * Abstract class to manage a common logic to load datas.
@@ -51,7 +52,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
         $this->deletedClasses = array();
 
         $this->loadMapBuilders($connectionName);
-        $this->con = $this->propel->getConnection($connectionName);
+        $this->con = Propel::getConnection($connectionName);
 
         try {
             $this->con->beginTransaction();
@@ -121,7 +122,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
     /**
      * Loads the data using the generated data model.
      *
-     * @param array $data The data to be loaded
+     * @param array|null $data The data to be loaded
      */
     protected function loadDataFromArray($data = null)
     {

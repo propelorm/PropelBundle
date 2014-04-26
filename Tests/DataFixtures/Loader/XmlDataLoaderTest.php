@@ -35,7 +35,7 @@ XML;
 
         $filename = $this->getTempFile($fixtures);
 
-        $loader = new XmlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', new Propel(), array());
+        $loader = new XmlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
         $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
