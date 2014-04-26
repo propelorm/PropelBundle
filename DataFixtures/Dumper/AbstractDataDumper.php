@@ -10,7 +10,7 @@
 
 namespace Propel\PropelBundle\DataFixtures\Dumper;
 
-use \Pdo;
+use \PDO;
 use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Runtime\Propel;
@@ -110,7 +110,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                     ->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::TABLE_MAP').'::TABLE_NAME')));
 
                 $set = array();
-                while (($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $set[] = $row;
                 }
                 $resultsSets[] = $set;

@@ -10,7 +10,6 @@
 
 namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\ObjectIdentity;
 use Propel\PropelBundle\Model\Acl\Base\ObjectIdentityQuery as BaseObjectIdentityQuery;
 
 use Propel\Runtime\ActiveQuery\Criteria;

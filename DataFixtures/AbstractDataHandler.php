@@ -42,8 +42,8 @@ abstract class AbstractDataHandler
     /**
      * Default constructor
      *
-     * @param string $rootDir The root directory.
-     * @param array $datasources
+     * @param string $rootDir     The root directory.
+     * @param array  $datasources
      */
     public function __construct($rootDir, array $datasources)
     {
@@ -93,8 +93,8 @@ abstract class AbstractDataHandler
     /**
      * Check if a table is in a database
      *
-     * @param  string  $class
-     * @param  string  $connectionName
+     * @param string $class
+     * @param string $connectionName
      *
      * @return boolean
      */

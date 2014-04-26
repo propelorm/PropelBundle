@@ -279,7 +279,7 @@ EOT
      *
      * @param string $type The extension of the files.
      * @param string $in   The directory in which we search the files. If null,
-     *                      we'll use the absoluteFixturesPath property.
+     *                     we'll use the absoluteFixturesPath property.
      *
      * @return \Iterator An iterator through the files.
      */

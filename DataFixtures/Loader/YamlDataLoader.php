@@ -11,7 +11,6 @@
 namespace Propel\PropelBundle\DataFixtures\Loader;
 
 use Faker\Generator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
