@@ -35,11 +35,6 @@ abstract class AbstractDataHandler
     protected $dbMap;
 
     /**
-     * @var Propel
-     */
-    protected $propel;
-
-    /**
      * @var array
      */
     protected $datasources = array();
