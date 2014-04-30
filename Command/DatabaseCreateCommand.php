@@ -77,12 +77,12 @@ class DatabaseCreateCommand extends AbstractCommand
      * @param  array  $config A Propel connection configuration.
      * @return array
      */
-    private function getTemporaryConfiguration($name, $config)
+    protected function getTemporaryConfiguration($name, $config)
     {
         $dbName = $this->parseDbName($config['connection']['dsn']);
 
         $config['connection']['dsn'] = preg_replace(
-            '#dbname='.$dbName.';#',
+            '#dbname='.$dbName.'(;|$)#',
             '',
             $config['connection']['dsn']
         );
