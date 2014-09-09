@@ -44,9 +44,9 @@ class DatabaseCreateCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $connectionName = $input->getOption('connection') ?: $this->getContainer()->getParameter('propel.dbal.default_connection');
+        $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
         $config = $this->getConnectionData($connectionName);
-        $dbName = $this->parseDbName($config['connection']['dsn']);
+        $dbName = $this->parseDbName($config['dsn']);
 
         if (null === $dbName) {
             return $output->writeln('<error>No database name found.</error>');
@@ -56,7 +56,7 @@ class DatabaseCreateCommand extends AbstractCommand
 
         try {
             $manager = new ConnectionManagerSingle();
-            $manager->setConfiguration($this->getTemporaryConfiguration($config['connection']));
+            $manager->setConfiguration($this->getTemporaryConfiguration($config));
 
             $serviceContainer = Propel::getServiceContainer();
             $serviceContainer->setAdapterClass($connectionName, $config['adapter']);

@@ -45,7 +45,7 @@ class SqlInsertCommand extends WrappedCommand
     {
         return array(
             '--connection'  => $this->getConnections($input->getOption('connection')),
-            '--sql-dir'   => $this->cacheDir,
+            '--sql-dir'     => $this->cacheDir,
         );
     }
 }

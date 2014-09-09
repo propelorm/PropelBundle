@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <th>Default connection</th>
-            <td>{{ default_connection }}</td>
+            <td>{{ configuration.runtime.defaultConnection }}</td>
         <tr>
             <th>Logging</th>
             <td>{{ logging ? 'enabled' : 'disabled' }}</td>
@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for name, config in configuration %}
+        {% for name, config in configuration.database.connections %}
         <tr>
             <th rowspan="5" style="vertical-align: top;">
                 {{ name }}
@@ -38,17 +38,17 @@
         </tr>
         <tr>
             <th>DSN</th>
-            <td>{{ config.connection.dsn }}</td>
+            <td>{{ config.dsn }}</td>
         </tr>
         <tr>
             <th>Class</th>
-            <td>{{ config.connection.classname }}</td>
+            <td>{{ config.classname }}</td>
         </tr>
         <tr>
             <th>Options</th>
             <td>
                 <ul>
-                    {% for key, value in config.connection.options %}
+                    {% for key, value in config.options %}
                     <li>{{ key }} : {{ value }}</li>
                     {% endfor %}
                 </ul>
@@ -58,7 +58,7 @@
             <th>Attributes</th>
             <td>
                 <ul>
-                    {% for key, value in config.connection.attributes %}
+                    {% for key, value in config.attributes %}
                     <li>{{ key }} : {{ value }}</li>
                     {% endfor %}
                 </ul>

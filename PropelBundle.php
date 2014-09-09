@@ -47,14 +47,13 @@ class PropelBundle extends Bundle
 
     protected function configureConnections()
     {
-        $connections_config = $this->container->getParameter('propel.configuration');
-        $default_datasource = $this->container->getParameter('propel.dbal.default_connection');
+        $config = $this->container->getParameter('propel.configuration');
 
         $serviceContainer = Propel::getServiceContainer();
-        $serviceContainer->setDefaultDatasource($default_datasource);
+        $serviceContainer->setDefaultDatasource($config['runtime']['defaultConnection']);
 
-        foreach ($connections_config as $name => $config) {
-            if (isset($config['slaves'])) {
+        foreach ($config['database']['connections'] as $name => $config) {
+            if (!empty($config['slaves'])) {
                 $manager = new ConnectionManagerMasterSlave();
 
                 // configure the master (write) connection
@@ -63,7 +62,7 @@ class PropelBundle extends Bundle
                 $manager->setReadConfiguration($config['slaves']);
             } else {
                 $manager = new ConnectionManagerSingle();
-                $manager->setConfiguration($config['connection']);
+                $manager->setConfiguration($config);
             }
 
             $serviceContainer->setAdapterClass($name, $config['adapter']);

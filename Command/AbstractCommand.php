@@ -75,11 +75,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
         // collect all schemas
         $this->copySchemas($kernel, $this->cacheDir);
 
-        // build.properties
-        $this->createBuildPropertiesFile($kernel, $this->cacheDir.'/build.properties');
-
-        // buildtime-conf.xml
-        $this->createBuildTimeFile($this->cacheDir.'/buildtime-conf.xml');
+        // propel.json
+        $this->createPropelConfigurationFile($this->cacheDir.'/propel.json');
     }
 
     /**
@@ -126,7 +123,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             }
 
             if ($this->input->hasOption('connection')) {
-                $connections = $this->input->getOption('connection') ?: array($this->getContainer()->getParameter('propel.dbal.default_connection'));
+                $connections = $this->input->getOption('connection') ?: array($this->getDefaultConnection());
 
                 if (!in_array((string) $database['name'], $connections)) {
                     // we skip this schema because the connection name doesn't
@@ -203,48 +200,15 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /*
      * Create an XML file which represents propel.configuration
      *
-     * @param string $file Should be 'buildtime-conf.xml'.
+     * @param string $file Should be 'propel.json'.
      */
-    protected function createBuildTimeFile($file)
+    protected function createPropelConfigurationFile($file)
     {
-        $xml = strtr(<<<EOT
-<?xml version="1.0"?>
-<config>
-<propel>
-<datasources default="%default_connection%">
+        $config = array(
+            'propel' => $this->getContainer()->getParameter('propel.configuration')
+        );
 
-EOT
-        , array('%default_connection%' => $this->getContainer()->getParameter('propel.dbal.default_connection')));
-
-        $datasources = $this->getContainer()->getParameter('propel.configuration');
-        foreach ($datasources as $name => $datasource) {
-            $xml .= strtr(<<<EOT
-<datasource id="%name%">
-<adapter>%adapter%</adapter>
-<connection>
-<dsn>%dsn%</dsn>
-<user>%username%</user>
-<password>%password%</password>
-</connection>
-</datasource>
-
-EOT
-            , array(
-                '%name%' => $name,
-                '%adapter%' => $datasource['adapter'],
-                '%dsn%' => $datasource['connection']['dsn'],
-                '%username%' => $datasource['connection']['user'],
-                '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
-            ));
-        }
-
-        $xml .= <<<EOT
-</datasources>
-</propel>
-</config>
-EOT;
-
-        file_put_contents($file, $xml);
+        file_put_contents($file, json_encode($config, JSON_PRETTY_PRINT));
     }
 
     /**
@@ -274,11 +238,11 @@ EOT;
     protected function getConnectionData($name)
     {
         $knownConnections = $this->getContainer()->getParameter('propel.configuration');
-        if (!isset($knownConnections[$name])) {
+        if (!isset($knownConnections['database']['connections'][$name])) {
             throw new \InvalidArgumentException(sprintf('Unknown connection "%s"', $name));
         }
 
-        return $knownConnections[$name];
+        return $knownConnections['database']['connections'][$name];
     }
 
     /**
@@ -291,32 +255,8 @@ EOT;
     protected function getDsn($connectionName)
     {
         $connection = $this->getConnectionData($connectionName);
-        $connectionData = $connection['connection'];
 
-        return sprintf('%s;user=%s;password=%s', $connectionData['dsn'], $connectionData['user'], $connectionData['password']);
-    }
-
-    /**
-     * Create a 'build.properties' file.
-     *
-     * @param KernelInterface $kernel The application kernel.
-     * @param string          $file   Should be 'build.properties'.
-     */
-    protected function createBuildPropertiesFile(KernelInterface $kernel, $file)
-    {
-        $fs = new Filesystem();
-
-        $buildProperties = $this->getContainer()->getParameter('propel.build_properties');
-        $iniFile = $kernel->getRootDir().'/config/propel.ini';
-
-        if ($fs->exists($iniFile)) {
-            $buildProperties = array_merge(
-                parse_ini_file($iniFile),
-                $buildProperties
-            );
-        }
-
-        $fs->dumpFile($file, $this->arrayToIni($buildProperties));
+        return $connection['dsn'];
     }
 
     /**
@@ -375,24 +315,6 @@ EOT;
     }
 
     /**
-     * Converts an array to its INI equivalent
-     *
-     * @param array $data The array to convert.
-     *
-     * @return string The INI formatted array.
-     */
-    protected function arrayToIni(array $data)
-    {
-        $lines = array();
-
-        foreach ($data as $key => $value) {
-            $lines[] = $key . ' =' . (!empty($value) ? ' ' . $value : '');
-        }
-
-        return implode(PHP_EOL, $lines);
-    }
-
-    /**
      * Extract the database name from a given DSN
      *
      * @param  string $dsn A DSN
@@ -408,5 +330,17 @@ EOT;
 
         // e.g. SQLite
         return null;
+    }
+
+    /**
+     * Returns the name of the default connection.
+     *
+     * @return string
+     */
+    protected function getDefaultConnection()
+    {
+        $config = $this->getContainer()->getParameter('propel.configuration');
+
+        return $config['generator']['defaultConnection'];
     }
 }

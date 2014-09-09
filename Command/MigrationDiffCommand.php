@@ -33,7 +33,7 @@ class MigrationDiffCommand extends WrappedCommand
 
             ->addOption('connection',       null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
             ->addOption('output-dir',       null, InputOption::VALUE_OPTIONAL,    'The output directory')
-            ->addOption('migration-table',    null, InputOption::VALUE_REQUIRED,  'Migration table name', BaseMigrationCommand::DEFAULT_MIGRATION_TABLE)
+            ->addOption('migration-table',    null, InputOption::VALUE_REQUIRED,  'Migration table name', null)
             ->addOption('table-renaming',     null, InputOption::VALUE_NONE,      'Detect table renaming', null)
             ->addOption('editor',             null, InputOption::VALUE_OPTIONAL,  'The text editor to use to open diff files', null)
             ->addOption('skip-removed-table', null, InputOption::VALUE_NONE,      'Option to skip removed table from the migration')

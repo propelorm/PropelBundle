@@ -68,10 +68,10 @@ EOT
             }
         }
 
-        $connectionName = $input->getOption('connection') ?: $this->getContainer()->getParameter('propel.dbal.default_connection');
+        $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
         $config = $this->getConnectionData($connectionName);
         $connection = Propel::getConnection($connectionName);
-        $dbName = $this->parseDbName($config['connection']['dsn']);
+        $dbName = $this->parseDbName($config['dsn']);
 
         if (null === $dbName) {
             return $output->writeln('<error>No database name found.</error>');

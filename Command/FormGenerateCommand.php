@@ -12,7 +12,6 @@ namespace Propel\PropelBundle\Command;
 
 use Propel\Generator\Config\GeneratorConfig;
 use Propel\Generator\Command\ModelBuildCommand as BaseModelBuildCommand;
-use Propel\Generator\Command\AbstractCommand as BaseCommand;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Table;
 use Propel\Generator\Manager\ModelManager;
@@ -42,7 +41,7 @@ class FormGenerateCommand extends AbstractCommand
             ->setDescription('Generate Form types stubs based on the schema.xml')
 
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
-            ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform', BaseCommand::DEFAULT_PLATFORM)
+            ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform')
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types (Ex: @AcmeDemoBundle)')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
 

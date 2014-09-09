@@ -36,8 +36,9 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $container->setParameter('propel.logging', $config['logging']);
-        $container->setParameter('propel.configuration', array());
+        // @todo: restore
+        $container->setParameter('propel.logging', true); //$config['logging']);
+        $container->setParameter('propel.configuration', $config);
 
         // Load services
         if (!$container->hasDefinition('propel')) {
@@ -46,69 +47,6 @@ class PropelExtension extends Extension
             $loader->load('converters.xml');
             $loader->load('security.xml');
         }
-
-        // build properties
-        $buildProperties = $config['build_properties'];
-
-        // behaviors
-        if (isset($config['behaviors']) && is_array($config['behaviors'])) {
-            foreach ($config['behaviors'] as $name => $class) {
-                $buildProperties[sprintf('propel.behavior.%s.class', $name)] = $class;
-            }
-        }
-
-        $container->setParameter('propel.build_properties', $buildProperties);
-
-        if (!empty($config['dbal'])) {
-            $this->dbalLoad($config['dbal'], $container);
-        }
-    }
-
-    /**
-     * Loads the DBAL configuration.
-     *
-     * @param array            $config    An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     */
-    protected function dbalLoad(array $config, ContainerBuilder $container)
-    {
-        if (empty($config['default_connection'])) {
-            $keys = array_keys($config['connections']);
-            $config['default_connection'] = reset($keys);
-        }
-
-        $connectionName = $config['default_connection'];
-        $container->setParameter('propel.dbal.default_connection', $connectionName);
-
-        if (0 === count($config['connections'])) {
-            $config['connections'] = array($connectionName => $config);
-        }
-
-        $c = array();
-        foreach ($config['connections'] as $name => $conf) {
-            $c[$name]['adapter'] = $conf['driver'];
-            if (!empty($conf['slaves'])) {
-                $c[$name]['slaves']['connection'] = $conf['slaves'];
-            }
-
-            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings', 'model_paths') as $att) {
-                if (array_key_exists($att, $conf)) {
-                    $c[$name]['connection'][$att] = $conf[$att];
-                }
-            }
-        }
-
-        // Alias the default connection if not defined
-        if (!isset($c['default'])) {
-            $c['default'] = $c[$connectionName];
-        }
-
-        $container->setParameter('propel.configuration', $c);
-    }
-
-    public function getConfiguration(array $config, ContainerBuilder $container)
-    {
-        return new Configuration($container->getParameter('kernel.debug'));
     }
 
     /**

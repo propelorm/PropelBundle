@@ -33,7 +33,6 @@ class PanelController extends ContainerAware
             array(
                 'propel_version'     => Propel::VERSION,
                 'configuration'      => $this->container->getParameter('propel.configuration'),
-                'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
                 'logging'            => $this->container->getParameter('propel.logging'),
             )
         );

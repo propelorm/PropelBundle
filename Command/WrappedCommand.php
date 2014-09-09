@@ -10,8 +10,6 @@
 
 namespace Propel\PropelBundle\Command;
 
-use Propel\Generator\Command\AbstractCommand as BaseCommand;
-
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +39,7 @@ abstract class WrappedCommand extends AbstractCommand
     protected function configure()
     {
         $this
-            ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform', BaseCommand::DEFAULT_PLATFORM)
+            ->addOption('platform',  null, InputOption::VALUE_OPTIONAL, 'The platform')
         ;
     }
 
