@@ -36,8 +36,7 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
-        // @todo: restore
-        $container->setParameter('propel.logging', true); //$config['logging']);
+        $container->setParameter('propel.logging', $container->getParameter('kernel.debug'));
         $container->setParameter('propel.configuration', $config);
 
         // Load services
@@ -47,6 +46,11 @@ class PropelExtension extends Extension
             $loader->load('converters.xml');
             $loader->load('security.xml');
         }
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration($container->getParameter('kernel.debug'));
     }
 
     /**
