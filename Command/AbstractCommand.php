@@ -186,7 +186,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         ), $parameters);
 
         if ($input->hasOption('platform')) {
-            $parameters['--platform'] = $input->getOption('platform');
+            $parameters['--platform'] = $input->getOption('platform') ?: $this->getPlatform();
         }
 
         $command->setApplication($this->getApplication());
@@ -338,5 +338,18 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $config = $this->getContainer()->getParameter('propel.configuration');
 
         return $config['generator']['defaultConnection'];
+    }
+
+    /**
+     * Reads the platform class from the configuration
+     *
+     * @return The platform class name.
+     */
+    protected function getPlatform()
+    {
+        $config = $this->getContainer()->getParameter('propel.configuration');
+        $className = $config['generator']['platformClass'];
+
+        return ($pos = strrpos($className, '\\')) === false ? $className : substr($className, $pos + 1);
     }
 }
