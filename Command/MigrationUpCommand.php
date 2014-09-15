@@ -32,7 +32,7 @@ class MigrationUpCommand extends WrappedCommand
             ->setDescription('Execute migrations up')
 
             ->addOption('connection',       null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
-            ->addOption('migration-table',  null, InputOption::VALUE_REQUIRED,  'Migration table name', BaseMigrationCommand::DEFAULT_MIGRATION_TABLE)
+            ->addOption('migration-table',  null, InputOption::VALUE_OPTIONAL,  'Migration table name (if none given, the configured table is used)', null)
             ->addOption('output-dir',       null, InputOption::VALUE_OPTIONAL,  'The output directory')
         ;
     }
@@ -54,7 +54,7 @@ class MigrationUpCommand extends WrappedCommand
 
         return array(
             '--connection'      => $this->getConnections($input->getOption('connection')),
-            '--migration-table' => $input->getOption('migration-table'),
+            '--migration-table' => $input->getOption('migration-table') ?: $this->getMigrationsTable(),
             '--output-dir'      => $input->getOption('output-dir') ?: $defaultOutputDir,
         );
     }

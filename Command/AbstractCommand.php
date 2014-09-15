@@ -317,6 +317,18 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
+     * Returns the name of the migrations table.
+     *
+     * @return string
+     */
+    protected function getMigrationsTable()
+    {
+        $config = $this->getContainer()->getParameter('propel.configuration');
+
+        return $config['migrations']['tableName'];
+    }
+
+    /**
      * Returns the name of the default connection.
      *
      * @return string
