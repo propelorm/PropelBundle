@@ -232,10 +232,10 @@ abstract class BookQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param mixed $id The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param mixed  $id         The value to use as filter.
+     *                           Use scalar values for equality.
+     *                           Use array values for in_array() equivalent.
+     *                           Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildBookQuery The current query, for fluid interface
@@ -272,8 +272,8 @@ abstract class BookQuery extends ModelCriteria
      * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param string $title The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param string $title      The value to use as filter.
+     *                           Accepts wildcards (* and % trigger a LIKE)
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildBookQuery The current query, for fluid interface
@@ -301,8 +301,8 @@ abstract class BookQuery extends ModelCriteria
      * $query->filterByIsbn('%fooValue%'); // WHERE ISBN LIKE '%fooValue%'
      * </code>
      *
-     * @param string $isbn The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param string $isbn       The value to use as filter.
+     *                           Accepts wildcards (* and % trigger a LIKE)
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildBookQuery The current query, for fluid interface
@@ -333,10 +333,10 @@ abstract class BookQuery extends ModelCriteria
      *
      * @see       filterByAuthor()
      *
-     * @param mixed $authorId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param mixed  $authorId   The value to use as filter.
+     *                           Use scalar values for equality.
+     *                           Use array values for in_array() equivalent.
+     *                           Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildBookQuery The current query, for fluid interface
@@ -447,13 +447,13 @@ abstract class BookQuery extends ModelCriteria
     /**
      * Performs a DELETE on the database, given a ChildBook or Criteria object OR a primary key value.
      *
-     * @param mixed $values Criteria or ChildBook object or primary key or array of primary keys
-     *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
+     * @param  mixed               $values Criteria or ChildBook object or primary key or array of primary keys
+     *                                     which is used to create the DELETE statement
+     * @param  ConnectionInterface $con    the connection to use
      * @return int                 The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                                    if supported by native driver or if emulated using Propel.
+     * @throws PropelException     Any exceptions caught during processing will be
+     *                                    rethrown wrapped into a PropelException.
      */
      public function delete(ConnectionInterface $con = null)
      {

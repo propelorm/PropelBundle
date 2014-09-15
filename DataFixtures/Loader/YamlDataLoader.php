@@ -61,7 +61,7 @@ class YamlDataLoader extends AbstractDataLoader
             }
 
             ob_start();
-            $retval  = include($file);
+            $retval  = include $file;
             $content = ob_get_clean();
 
             // if an array is returned by the config file assume it's in plain php form else in YAML

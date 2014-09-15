@@ -153,7 +153,6 @@ YAML;
         $this->assertRegexp('#[\w ]+#', $book->getDescription());
     }
 
-
     public function testYamlLoadManyToMany()
     {
         $schema = <<<XML

@@ -167,7 +167,7 @@ class BookTableMap extends TableMap
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
+     *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
@@ -187,7 +187,7 @@ class BookTableMap extends TableMap
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
+     *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
@@ -226,8 +226,8 @@ class BookTableMap extends TableMap
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
-     * @return array (Book object, last column rank)
+     *                         rethrown wrapped into a PropelException.
+     * @return array           (Book object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
@@ -254,7 +254,7 @@ class BookTableMap extends TableMap
      * @param  DataFetcherInterface $dataFetcher
      * @return array
      * @throws PropelException      Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                                          rethrown wrapped into a PropelException.
      */
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
@@ -290,7 +290,7 @@ class BookTableMap extends TableMap
      * @param  Criteria        $criteria object containing the columns to add.
      * @param  string          $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                                  rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -314,7 +314,7 @@ class BookTableMap extends TableMap
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                         rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -335,13 +335,13 @@ class BookTableMap extends TableMap
     /**
      * Performs a DELETE on the database, given a Book or Criteria object OR a primary key value.
      *
-     * @param mixed $values Criteria or Book object or primary key or array of primary keys
-     *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
+     * @param  mixed               $values Criteria or Book object or primary key or array of primary keys
+     *                                     which is used to create the DELETE statement
+     * @param  ConnectionInterface $con    the connection to use
      * @return int                 The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                                    if supported by native driver or if emulated using Propel.
+     * @throws PropelException     Any exceptions caught during processing will be
+     *                                    rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, ConnectionInterface $con = null)
      {
@@ -389,7 +389,7 @@ class BookTableMap extends TableMap
      * @param  ConnectionInterface $con      the ConnectionInterface connection to use
      * @return mixed               The new primary key.
      * @throws PropelException     Any exceptions caught during processing will be
-     *         rethrown wrapped into a PropelException.
+     *                                      rethrown wrapped into a PropelException.
      */
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {

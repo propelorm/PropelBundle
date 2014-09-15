@@ -64,7 +64,7 @@ class PropelParamConverter implements ParamConverterInterface
     }
 
     /**
-     * @param Request                $request
+     * @param Request        $request
      * @param ParamConverter $configuration
      *
      * @return bool
@@ -122,7 +122,7 @@ class PropelParamConverter implements ParamConverterInterface
             unset($this->filters[$configuration->getName()]);
         }
 
-        $this->withs = isset($options['with'])? is_array($options['with'])? $options['with'] : array($options['with']) : array();
+        $this->withs = isset($options['with']) ? is_array($options['with']) ? $options['with'] : array($options['with']) : array();
 
         // find by Pk
         if (false === $object = $this->findPk($classQuery, $request)) {
