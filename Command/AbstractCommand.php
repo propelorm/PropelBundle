@@ -52,8 +52,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $this->input = $input;
         $this->cacheDir = $kernel->getCacheDir().'/propel';
 
-        $this->checkConfiguration();
-
         if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
             $this->bundle = $this
                 ->getContainer()
@@ -197,7 +195,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         return $command->run(new ArrayInput($parameters), $output);
     }
 
-    /*
+    /**
      * Create an XML file which represents propel.configuration
      *
      * @param string $file Should be 'propel.json'.
@@ -265,20 +263,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getSchemaLocator()
     {
         return $this->getContainer()->get('propel.schema_locator');
-    }
-
-    /**
-     * Check the configuration parameters.
-     *
-     * @throws RuntimeException If the configuration is invalid.
-     */
-    protected function checkConfiguration()
-    {
-        $parameters = $this->getContainer()->getParameter('propel.configuration');
-
-        if (0 === count($parameters)) {
-            throw new \RuntimeException('Propel should be configured (no database configuration found).');
-        }
     }
 
     /**
