@@ -8,11 +8,6 @@
     "name": "William Durand",
     "email": "william.durand1@gmail.com"
   }],
-  "extra": {
-    "branch-alias": {
-      "dev-new-config": "2.0.x-dev"
-    }
-  },
   "require": {
     "symfony/symfony": "~2.5",
     "propel/propel": "2.*@dev"
