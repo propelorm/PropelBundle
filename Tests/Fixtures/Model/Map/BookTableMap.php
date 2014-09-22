@@ -106,7 +106,7 @@ class BookTableMap extends TableMap
      */
     protected static $fieldNames = array (
         self::TYPE_PHPNAME       => array('Id', 'Name', 'Slug', 'Isbn', 'AuthorId', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'name', 'slug', 'isbn', 'authorId', ),
+        self::TYPE_CAMELNAME => array('id', 'name', 'slug', 'isbn', 'authorId', ),
         self::TYPE_COLNAME       => array(BookTableMap::ID, BookTableMap::NAME, BookTableMap::SLUG, BookTableMap::ISBN, BookTableMap::AUTHOR_ID, ),
         self::TYPE_RAW_COLNAME   => array('ID', 'NAME', 'SLUG', 'ISBN', 'AUTHOR_ID', ),
         self::TYPE_FIELDNAME     => array('id', 'name', 'slug', 'ISBN', 'author_id', ),
@@ -121,7 +121,7 @@ class BookTableMap extends TableMap
      */
     protected static $fieldKeys = array (
         self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Slug' => 2, 'Isbn' => 3, 'AuthorId' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'name' => 1, 'slug' => 2, 'isbn' => 3, 'authorId' => 4, ),
+        self::TYPE_CAMELNAME => array('id' => 0, 'name' => 1, 'slug' => 2, 'isbn' => 3, 'authorId' => 4, ),
         self::TYPE_COLNAME       => array(BookTableMap::ID => 0, BookTableMap::NAME => 1, BookTableMap::SLUG => 2, BookTableMap::ISBN => 3, BookTableMap::AUTHOR_ID => 4, ),
         self::TYPE_RAW_COLNAME   => array('ID' => 0, 'NAME' => 1, 'SLUG' => 2, 'ISBN' => 3, 'AUTHOR_ID' => 4, ),
         self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'slug' => 2, 'ISBN' => 3, 'author_id' => 4, ),
@@ -166,7 +166,7 @@ class BookTableMap extends TableMap
      *
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
-     * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
+     * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
@@ -186,7 +186,7 @@ class BookTableMap extends TableMap
      *
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
-     * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
+     * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
@@ -222,7 +222,7 @@ class BookTableMap extends TableMap
      * @param array  $row       row returned by DataFetcher->fetch().
      * @param int    $offset    The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
-                                 One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
+                                 One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
      * @throws PropelException Any exceptions caught during processing will be
