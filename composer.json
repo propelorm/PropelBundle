@@ -9,11 +9,12 @@
     "email": "william.durand1@gmail.com"
   }],
   "require": {
-    "symfony/symfony": "~2.3",
+    "symfony/symfony": "~2.5",
     "propel/propel": "2.*@dev"
   },
   "require-dev": {
-    "sensio/framework-extra-bundle": "~2.3",
+    "sensio/framework-extra-bundle": "~3.0",
+    "phpunit/phpunit": "~4.0",
     "fzaninotto/faker": "~1.1"
   },
   "autoload": {
