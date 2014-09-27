@@ -67,32 +67,50 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $input;
 
     /**
-     * Return the package prefix for a given bundle.
+     * Return the package for a given bundle.
      *
      * @param Bundle $bundle
      * @param string $baseDirectory The base directory to exclude from prefix.
      *
      * @return string
      */
-    protected function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
+    protected function getPackage(Bundle $bundle, $namespace = '', $baseDirectory = '')
     {
-        $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-        $segments = explode('\\', $bundle->getNamespace());
-        $length = count($parts);
+        $path  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
+        $bundle_namespace = explode('\\', $bundle->getNamespace());
 
-        $partsDiff = array_diff($segments, $parts);
-        if (empty($partsDiff)) {
-            $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+        $diff = array_diff($bundle_namespace, $path);
+
+        if (empty($diff)) {
+            // PSR-0
+            $length = count($bundle_namespace) * (-1);
+
+            $package = implode(
+                DIRECTORY_SEPARATOR,
+                array_merge(
+                    array_slice($path, 0, $length),
+                    explode('\\', $namespace)
+                )
+            );
+        } else {
+            // PSR-4
+            $ns = explode('\\', $namespace);
+
+            $diff = array_diff($ns, $bundle_namespace);
+
+            $package = implode(
+                DIRECTORY_SEPARATOR,
+                array_merge($path, $diff)
+            );
         }
 
-        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length));
-        $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
+        $package = ltrim(str_replace($baseDirectory, '', $package), DIRECTORY_SEPARATOR);
 
-        if (!empty($prefix)) {
-            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
+        if (!empty($package)) {
+            $package = str_replace(DIRECTORY_SEPARATOR, '.', $package).'.';
         }
 
-        return $prefix;
+        return $package;
     }
 
     /**
@@ -215,7 +233,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
         foreach ($finalSchemas as $schema) {
             list($bundle, $finalSchema) = $schema;
-            $packagePrefix = $this->getPackagePrefix($bundle, $base);
 
             $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
             $this->tempSchemas[$tempSchema] = array(
@@ -237,7 +254,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 // This is used to override the package resulting from namespace conversion.
                 $database['package'] = $database['package'];
             } elseif (isset($database['namespace'])) {
-                $database['package'] = $packagePrefix . str_replace('\\', '.', $database['namespace']);
+                $database['package'] = $this->getPackage($bundle, $database['namespace'], $base);
             } else {
                 throw new \RuntimeException(
                     sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
