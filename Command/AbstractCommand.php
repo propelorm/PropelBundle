@@ -252,9 +252,9 @@ abstract class AbstractCommand extends ContainerAwareCommand
             if (isset($database['package'])) {
                 // Do not use the prefix!
                 // This is used to override the package resulting from namespace conversion.
-                $database['package'] = $database['package'];
+                $package = $database['package'];
             } elseif (isset($database['namespace'])) {
-                $database['package'] = $this->getPackage($bundle, $database['namespace'], $base);
+                $package = $this->getPackage($bundle, $database['namespace'], $base);
             } else {
                 throw new \RuntimeException(
                     sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
@@ -262,10 +262,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 );
             }
 
+            $database['package'] = $package;
+
             if ($this->input && $this->input->hasOption('connection') && $this->input->getOption('connection')
                 && $database['name'] != $this->input->getOption('connection')) {
                 //we skip this schema because the connection name doesn't match the input value
-                unset($this->tempSchemas[$tempSchema]);
+                // unset($this->tempSchemas[$tempSchema]);
                 $filesystem->remove($file);
                 continue;
             }
@@ -273,10 +275,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
             foreach ($database->table as $table) {
                 if (isset($table['package'])) {
                     $table['package'] = $table['package'];
-                } elseif (isset($table['namespace'])) {
-                    $table['package'] = $packagePrefix . str_replace('\\', '.', $table['namespace']);
                 } else {
-                    $table['package'] = $database['package'];
+                    $table['package'] = $package;
                 }
             }
 
