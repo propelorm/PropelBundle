@@ -267,7 +267,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             if ($this->input && $this->input->hasOption('connection') && $this->input->getOption('connection')
                 && $database['name'] != $this->input->getOption('connection')) {
                 //we skip this schema because the connection name doesn't match the input value
-                // unset($this->tempSchemas[$tempSchema]);
+                unset($this->tempSchemas[$tempSchema]);
                 $filesystem->remove($file);
                 continue;
             }
