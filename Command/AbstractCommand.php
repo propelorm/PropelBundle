@@ -107,7 +107,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $package = ltrim(str_replace($baseDirectory, '', $package), DIRECTORY_SEPARATOR);
 
         if (!empty($package)) {
-            $package = str_replace(DIRECTORY_SEPARATOR, '.', $package).'.';
+            $package = str_replace(DIRECTORY_SEPARATOR, '.', $package);
         }
 
         return $package;
