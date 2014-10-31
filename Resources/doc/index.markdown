@@ -8,13 +8,8 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 The recommended way to install this bundle is to rely on [Composer](http://getcomposer.org):
 
-``` javascript
-{
-    "require": {
-        // ...
-        "propel/propel-bundle": "1.1.*"
-    }
-}
+```sh
+composer require propel/propel-bundle
 ```
 
 Otherwise you can use Git, SVN, Git submodules, or the Symfony vendor management (deps file):
