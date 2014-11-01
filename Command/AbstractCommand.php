@@ -306,7 +306,9 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @param \Symfony\Component\HttpKernel\Bundle\BundleInterface $bundle
+     *
+     * @return array
      */
     protected function getSchemasFromBundle(BundleInterface $bundle)
     {
