@@ -58,7 +58,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
      * @param  string $connectionName The connection name
      * @return array
      */
-    protected function getDataAsArray()
+    protected function getDataAsArray($connectionName = null)
     {
         $tables = array();
         foreach ($this->dbMap->getTables() as $table) {
@@ -105,9 +105,22 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                 foreach ($tableMap->getColumns() as $column) {
                     $in[] = strtolower($column->getName());
                 }
-                $stmt = $this
-                    ->con
-                    ->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
+
+                if (null !== $connectionName) {
+                    $adapter = Propel::getDB($connectionName);
+                    // Quote fieldnames
+                    $countFields = count($in);
+                    for ($i=0;$i<$countFields;$i++) {
+                        $in[$i] = $adapter->quoteIdentifier($in[$i]);
+                    }
+                    $stmt = $this
+                        ->con
+                        ->query(sprintf('SELECT %s FROM %s', implode(',', $in), $adapter->quoteIdentifier(constant(constant($tableName.'::PEER').'::TABLE_NAME'))));
+                } else {
+                    $stmt = $this
+                        ->con
+                        ->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
+                }
 
                 $resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $stmt->closeCursor();
