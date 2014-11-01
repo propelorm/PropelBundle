@@ -20,6 +20,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class AbstractCommandTest extends TestCase
 {
+    /**
+     * @var TestableAbstractCommand
+     */
     protected $command;
 
     public function setUp()
@@ -40,6 +43,9 @@ class AbstractCommandTest extends TestCase
 
     public function testTransformToLogicalName()
     {
+        $bundleDir = realpath(__DIR__ . '/../Fixtures/src/My/SuperBundle');
+        $filename = 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'a-schema.xml';
+
         $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
         $bundle
             ->expects($this->once())
@@ -48,47 +54,30 @@ class AbstractCommandTest extends TestCase
         $bundle
             ->expects($this->once())
             ->method('getPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'));
+            ->will($this->returnValue($bundleDir));
 
-        $schema = $this
-            ->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $schema
-            ->expects($this->once())
-            ->method('getRealPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'
-                    . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'my-schema.xml'));
-
-        $expected = '@MySuperBundle/Resources/config/my-schema.xml';
-
+        $schema = new \SplFileInfo($bundleDir . DIRECTORY_SEPARATOR . $filename);
+        $expected = '@MySuperBundle/Resources/config/a-schema.xml';
         $this->assertEquals($expected, $this->command->transformToLogicalName($schema, $bundle));
     }
 
     public function testTransformToLogicalNameWithSubDir()
     {
+        $bundleDir = realpath(__DIR__ . '/../Fixtures/src/My/ThirdBundle');
+        $filename = 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'propel' . DIRECTORY_SEPARATOR . 'schema.xml';
+
         $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
         $bundle
             ->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('MySuperBundle'));
+            ->will($this->returnValue('MyThirdBundle'));
         $bundle
             ->expects($this->once())
             ->method('getPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'));
+            ->will($this->returnValue($bundleDir));
 
-        $schema = $this
-            ->getMockBuilder('\SplFileInfo')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $schema
-            ->expects($this->once())
-            ->method('getRealPath')
-            ->will($this->returnValue('/Users/foo/project/src/My/SuperBundle'
-                    . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'propel/my-schema.xml'));
-
-        $expected = '@MySuperBundle/Resources/config/propel/my-schema.xml';
-
+        $schema = new \SplFileInfo($bundleDir . DIRECTORY_SEPARATOR . $filename);
+        $expected = '@MyThirdBundle/Resources/config/propel/schema.xml';
         $this->assertEquals($expected, $this->command->transformToLogicalName($schema, $bundle));
     }
 
