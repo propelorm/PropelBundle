@@ -37,6 +37,7 @@ class Configuration extends PropelConfiguration
                             ->isRequired()
                             ->requiresAtLeastOneElement()
                             ->normalizeKeys(false)
+                            ->useAttributeAsKey('id')
                             ->prototype('array')
                             ->fixXmlConfig('slave')
                                 ->children()
