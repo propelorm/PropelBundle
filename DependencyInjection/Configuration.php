@@ -27,6 +27,8 @@ class Configuration extends PropelConfiguration
 
     protected function addDatabaseSection(ArrayNodeDefinition $node)
     {
+        $validAdapters = array('mysql', 'pgsql', 'sqlite', 'mssql', 'sqlsrv', 'oracle');
+
         $node
             ->children()
                 ->arrayNode('database')
@@ -41,12 +43,26 @@ class Configuration extends PropelConfiguration
                             ->fixXmlConfig('slave')
                                 ->children()
                                     ->scalarNode('classname')->defaultValue($this->debug ? '\Propel\Runtime\Connection\DebugPDO' : '\Propel\Runtime\Connection\ConnectionWrapper')->end()
-                                    ->enumNode('adapter')
+                                    ->scalarNode('adapter')
                                         ->isRequired()
                                         ->cannotBeEmpty()
-                                        ->values(array('mysql', 'pgsql', 'sqlite', 'mssql', 'sqlsrv', 'oracle'))
+                                        ->beforeNormalization()
+                                            ->ifString()
+                                            ->then(function ($v) { return str_replace('pdo_', '', strtolower($v)); })
+                                        ->end()
+                                        ->validate()
+                                            ->ifNotInArray($validAdapters)
+                                            ->thenInvalid('The adapter %s is not supported. Please choose one of ' . implode(', ', $validAdapters))
+                                        ->end()
                                     ->end()
-                                    ->scalarNode('dsn')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('dsn')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                        ->beforeNormalization()
+                                            ->ifString()
+                                            ->then(function ($v) { return str_replace('pdo_', '', $v); })
+                                        ->end()
+                                    ->end()
                                     ->scalarNode('user')->isRequired()->end()
                                     ->scalarNode('password')->isRequired()->treatNullLike('')->end()
                                     ->arrayNode('options')
