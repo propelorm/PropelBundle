@@ -28,7 +28,8 @@ class SqlBuildCommand extends WrappedCommand
         $this
             ->setName('propel:sql:build')
             ->setDescription('Build SQL files')
-
+            ->addOption('sql-dir', null, InputOption::VALUE_REQUIRED, 'The SQL files directory')
+            ->addOption('overwrite', null, InputOption::VALUE_NONE, '')
             ->addOption('connection', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
         ;
     }
@@ -46,9 +47,12 @@ class SqlBuildCommand extends WrappedCommand
      */
     protected function getSubCommandArguments(InputInterface $input)
     {
+        $defaultSqlDir = sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
+
         return array(
-            '--output-dir'  => $this->getCacheDir(),
             '--connection'  => $this->getConnections($input->getOption('connection')),
+            '--sql-dir'  => $input->getOption('sql-dir') ?: $defaultSqlDir,
+            '--overwrite' => $input->getOption('overwrite')
         );
     }
 }
