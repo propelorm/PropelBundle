@@ -108,7 +108,6 @@ class BookTableMap extends TableMap
         self::TYPE_PHPNAME       => array('Id', 'Name', 'Slug', 'Isbn', 'AuthorId', ),
         self::TYPE_CAMELNAME => array('id', 'name', 'slug', 'isbn', 'authorId', ),
         self::TYPE_COLNAME       => array(BookTableMap::ID, BookTableMap::NAME, BookTableMap::SLUG, BookTableMap::ISBN, BookTableMap::AUTHOR_ID, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'NAME', 'SLUG', 'ISBN', 'AUTHOR_ID', ),
         self::TYPE_FIELDNAME     => array('id', 'name', 'slug', 'ISBN', 'author_id', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
@@ -123,7 +122,6 @@ class BookTableMap extends TableMap
         self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Slug' => 2, 'Isbn' => 3, 'AuthorId' => 4, ),
         self::TYPE_CAMELNAME => array('id' => 0, 'name' => 1, 'slug' => 2, 'isbn' => 3, 'authorId' => 4, ),
         self::TYPE_COLNAME       => array(BookTableMap::ID => 0, BookTableMap::NAME => 1, BookTableMap::SLUG => 2, BookTableMap::ISBN => 3, BookTableMap::AUTHOR_ID => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'NAME' => 1, 'SLUG' => 2, 'ISBN' => 3, 'AUTHOR_ID' => 4, ),
         self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'slug' => 2, 'ISBN' => 3, 'author_id' => 4, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
