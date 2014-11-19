@@ -12,6 +12,7 @@ namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -26,6 +27,8 @@ class SqlInsertCommand extends WrappedCommand
         $this
             ->setName('propel:sql:insert')
             ->setDescription('Insert SQL statements')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
+            ->addOption('sql-dir', null, InputOption::VALUE_REQUIRED, 'The SQL files directory')
             ->addOption('connection', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
         ;
     }
@@ -41,11 +44,26 @@ class SqlInsertCommand extends WrappedCommand
     /**
      * {@inheritdoc}
      */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->getOption('force')) {
+            parent::execute($input, $output);
+        } else {
+            $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
+            return 1;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getSubCommandArguments(InputInterface $input)
     {
+        $defaultSqlDir = sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
+
         return array(
             '--connection'  => $this->getConnections($input->getOption('connection')),
-            '--sql-dir'     => $this->cacheDir,
+            '--sql-dir'     => $input->getOption('sql-dir') ?: $defaultSqlDir,
         );
     }
 }
