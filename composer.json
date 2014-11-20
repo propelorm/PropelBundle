@@ -9,16 +9,22 @@
     "email": "william.durand1@gmail.com"
   }],
   "require": {
-    "symfony/symfony": "~2.4",
-    "propel/propel1": "~1.6"
+    "propel/propel1": "~1.6",
+    "symfony/framework-bundle": "~2.4",
+    "symfony/propel1-bridge": "~2.4"
   },
   "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "twig/twig": "~1.12",
     "sensio/framework-extra-bundle": "~3.0",
-    "fzaninotto/faker": "dev-master"
+    "symfony/console": "~2.4",
+    "symfony/finder": "~2.4",
+    "symfony/form": "~2.4",
+    "symfony/security-acl": "~2.4",
+    "symfony/translation": "~2.4",
+    "symfony/validator": "~2.4"
   },
   "autoload": {
-    "psr-0": { "Propel\\PropelBundle": "" }
-  },
-  "target-dir": "Propel/PropelBundle",
-  "minimum-stability": "dev"
+    "psr-4": { "Propel\\PropelBundle\\": "" }
+  }
 }
