@@ -51,7 +51,7 @@ class SqlBuildCommand extends WrappedCommand
 
         return array(
             '--connection'  => $this->getConnections($input->getOption('connection')),
-            '--sql-dir'  => $input->getOption('sql-dir') ?: $defaultSqlDir,
+            '--output-dir'  => $input->getOption('sql-dir') ?: $defaultSqlDir,
             '--overwrite' => $input->getOption('overwrite')
         );
     }
