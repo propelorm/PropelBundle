@@ -31,7 +31,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $cacheDir = null;
 
     /**
-     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @var \Symfony\Component\HttpKernel\Bundle\BundleInterface
      */
     protected $bundle = null;
 
@@ -180,10 +180,19 @@ abstract class AbstractCommand extends ContainerAwareCommand
         array_unshift($parameters, $this->getName());
 
         // merge the default parameters
-        $parameters = array_merge(array(
-            '--input-dir'   => $this->cacheDir,
-            '--verbose'     => $input->getOption('verbose'),
-        ), $parameters);
+        $extraParameters = [
+            '--verbose' => $input->getOption('verbose')
+        ];
+
+        if ($command->getDefinition()->hasOption('schema-dir')) {
+            $extraParameters['--schema-dir'] = $this->cacheDir;
+        }
+
+        if ($command->getDefinition()->hasOption('config-dir')) {
+            $extraParameters['--config-dir'] = $this->cacheDir;
+        }
+
+        $parameters = array_merge($extraParameters, $parameters);
 
         if ($input->hasOption('platform')) {
             $parameters['--platform'] = $input->getOption('platform') ?: $this->getPlatform();
@@ -343,13 +352,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Reads the platform class from the configuration
      *
-     * @return The platform class name.
+     * @return string The platform class name.
      */
     protected function getPlatform()
     {
         $config = $this->getContainer()->getParameter('propel.configuration');
-        $className = $config['generator']['platformClass'];
-
-        return ($pos = strrpos($className, '\\')) === false ? $className : substr($className, $pos + 1);
+        return $config['generator']['platformClass'];
     }
 }

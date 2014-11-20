@@ -4,6 +4,7 @@ namespace Propel\PropelBundle\Request\ParamConverter;
 
 use Propel\PropelBundle\Util\PropelInflector;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -160,6 +161,7 @@ class PropelParamConverter implements ParamConverterInterface
         if (!class_exists($classname)) {
             return false;
         }
+
         // Propel Class?
         $class = new \ReflectionClass($configuration->getClass());
         if ($class->implementsInterface('\Propel\Runtime\ActiveRecord\ActiveRecordInterface')) {
@@ -209,7 +211,7 @@ class PropelParamConverter implements ParamConverterInterface
                 try {
                     $query->{'filterBy' . PropelInflector::camelize($column)}($value);
                     $hasCriteria = true;
-                } catch (\PropelException $e) { }
+                } catch (\Exception $e) { }
             }
         }
 
@@ -229,7 +231,7 @@ class PropelParamConverter implements ParamConverterInterface
      *
      * @param string $classQuery
      *
-     * @return \ModelCriteria
+     * @return ModelCriteria
      *
      * @throws \Exception
      */

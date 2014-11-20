@@ -30,7 +30,7 @@ class CollectionToArrayTransformer implements DataTransformerInterface
         }
 
         if (!$collection instanceof ObjectCollection) {
-            throw new TransformationFailedException('Expected a \ObjectCollection.');
+            throw new TransformationFailedException('Expected a \Propel\Runtime\Collection\ObjectCollection.');
         }
 
         return $collection->getData();

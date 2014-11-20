@@ -178,16 +178,7 @@ EOT
             return;
         }
 
-        try {
-            $nb = $loader->load($datas, $connectionName);
-        } catch (\Exception $e) {
-            $this->writeSection($output, array(
-                '[Propel] Exception',
-                '',
-                $e->getMessage()), 'fg=white;bg=red');
-
-            return false;
-        }
+        $nb = $loader->load($datas, $connectionName);
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
 
