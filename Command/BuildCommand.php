@@ -70,6 +70,7 @@ class BuildCommand extends ContainerAwareCommand
             $in = new ArrayInput(array(
                 'command'       => 'propel:sql:insert',
                 '--connection'  => $input->getOption('connection'),
+                '--force'       => true,
                 '--verbose'     => $input->getOption('verbose'),
             ));
             $cmd = $this->getApplication()->find('propel:sql:insert');
