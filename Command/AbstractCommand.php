@@ -194,8 +194,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $parameters = array_merge($extraParameters, $parameters);
 
-        if ($input->hasOption('platform')) {
-            $parameters['--platform'] = $input->getOption('platform') ?: $this->getPlatform();
+        if ($input->hasOption('platform') && ($platform = $input->getOption('platform') ?: $this->getPlatform()) !== null) {
+            $parameters['--platform'] = $platform;
         }
 
         $command->setApplication($this->getApplication());
