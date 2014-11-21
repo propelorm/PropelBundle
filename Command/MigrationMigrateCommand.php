@@ -13,12 +13,12 @@ namespace Propel\PropelBundle\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
-use Propel\Generator\Command\MigrationUpCommand as BaseMigrationCommand;
+use Propel\Generator\Command\MigrationMigrateCommand as BaseMigrationCommand;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class MigrationUpCommand extends WrappedCommand
+class MigrationMigrateCommand extends WrappedCommand
 {
     /**
      * {@inheritdoc}
@@ -28,8 +28,8 @@ class MigrationUpCommand extends WrappedCommand
         parent::configure();
 
         $this
-            ->setName('propel:migration:up')
-            ->setDescription('Execute (only one) next migration')
+            ->setName('propel:migration:migrate')
+            ->setDescription('Execute all pending migrations')
 
             ->addOption('connection',       null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
             ->addOption('migration-table',  null, InputOption::VALUE_OPTIONAL,  'Migration table name (if none given, the configured table is used)', null)
