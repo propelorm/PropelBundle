@@ -346,7 +346,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     {
         $config = $this->getContainer()->getParameter('propel.configuration');
 
-        return $config['generator']['defaultConnection'];
+        return !empty($config['generator']['defaultConnection']) ? $config['generator']['defaultConnection'] : key($config['database']['connections']);
     }
 
     /**

@@ -48,9 +48,10 @@ class PropelBundle extends Bundle
     protected function configureConnections()
     {
         $config = $this->container->getParameter('propel.configuration');
+        $defaultConnection = !empty($config['runtime']['defaultConnection']) ? $config['runtime']['defaultConnection'] : key($config['database']['connections']);
 
         $serviceContainer = Propel::getServiceContainer();
-        $serviceContainer->setDefaultDatasource($config['runtime']['defaultConnection']);
+        $serviceContainer->setDefaultDatasource($defaultConnection);
 
         foreach ($config['database']['connections'] as $name => $config) {
             if (!empty($config['slaves'])) {
