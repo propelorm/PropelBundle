@@ -36,7 +36,7 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $container->setParameter('propel.logging', $container->getParameter('kernel.debug'));
+        $container->setParameter('propel.logging', $config['runtime']['logging']);
         $container->setParameter('propel.configuration', $config);
 
         // Load services
