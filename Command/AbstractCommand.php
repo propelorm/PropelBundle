@@ -213,8 +213,14 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function createPropelConfigurationFile($file)
     {
+        $propelConfig = $this->getContainer()->getParameter('propel.configuration');
+
+        //needed because because Propel2's configuration tree is a bit different
+        //propel.runtime.logging is PropelBundle feature only.
+        unset($propelConfig['runtime']['logging']);
+
         $config = array(
-            'propel' => $this->getContainer()->getParameter('propel.configuration')
+            'propel' => $propelConfig
         );
 
         file_put_contents($file, json_encode($config, JSON_PRETTY_PRINT));
