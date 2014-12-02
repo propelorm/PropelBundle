@@ -295,8 +295,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
         $length = count(explode('\\', $bundle->getNamespace())) * (-1);
 
-        $prefix = implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length));
-        $prefix = ltrim(str_replace($baseDirectory, '', $prefix), DIRECTORY_SEPARATOR);
+        $prefix = ltrim(implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length)), DIRECTORY_SEPARATOR);
+        $prefix = ltrim(substr($prefix, strlen($baseDirectory)), DIRECTORY_SEPARATOR);
 
         if (!empty($prefix)) {
             $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
