@@ -204,11 +204,10 @@ class ModelChoiceList extends ObjectChoiceList
                 $filterBy = 'filterBy' . current($this->identifier)->getPhpName();
                 // The initial query is cloned, so all additional filters are applied correctly.
                 $query = clone $this->query;
-                $result = (array)$query
-                    ->$filterBy(
-                        $values
-                    )
-                    ->find();
+                $query
+                    ->$filterBy($values)
+                ;
+                $result = iterator_to_array($query->find());
                 // Preserve the keys as provided by the values.
                 $models = array();
                 foreach ($values as $index => $value) {
@@ -424,10 +423,10 @@ class ModelChoiceList extends ObjectChoiceList
             return;
         }
 
-        $models = (array)$this->query->find();
+        $models = iterator_to_array($this->query->find());
         $preferred = array();
         if ($this->preferredQuery instanceof ModelCriteria) {
-            $preferred = (array)$this->preferredQuery->find();
+            $preferred = iterator_to_array($this->preferredQuery->find());
         }
 
         try {

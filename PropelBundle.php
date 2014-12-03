@@ -10,6 +10,7 @@
 
 namespace Propel\PropelBundle;
 
+use Propel\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Connection\ConnectionManagerMasterSlave;
@@ -35,7 +36,8 @@ class PropelBundle extends Bundle
             if ($this->container->getParameter('propel.logging')) {
                 $this->configureLogging();
             }
-        } catch (\Exception $e) {}
+        } catch( \Exception $e ) {
+        }
     }
 
     /**
@@ -43,6 +45,11 @@ class PropelBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        parent::build($container);
+
+        if ($container->hasExtension('security')) {
+            $container->getExtension('security')->addUserProviderFactory(new PropelFactory('propel', 'propel.security.user.provider'));
+        }
     }
 
     protected function configureConnections()
