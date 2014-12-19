@@ -34,6 +34,8 @@ class MigrationMigrateCommand extends WrappedCommand
             ->addOption('connection',       null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Connection to use. Example: default, bookstore')
             ->addOption('migration-table',  null, InputOption::VALUE_OPTIONAL,  'Migration table name (if none given, the configured table is used)', null)
             ->addOption('output-dir',       null, InputOption::VALUE_OPTIONAL,  'The output directory')
+            ->addOption('fake',             null, InputOption::VALUE_NONE,      'Does not touch the actual schema, but marks all migration as executed.')
+            ->addOption('force',            null, InputOption::VALUE_NONE,      'Continues with the migration even when errors occur.')
         ;
     }
 
@@ -56,6 +58,8 @@ class MigrationMigrateCommand extends WrappedCommand
             '--connection'      => $this->getConnections($input->getOption('connection')),
             '--migration-table' => $input->getOption('migration-table') ?: $this->getMigrationsTable(),
             '--output-dir'      => $input->getOption('output-dir') ?: $defaultOutputDir,
+            '--fake'            => $input->getOption('fake'),
+            '--force'           => $input->getOption('force'),
         );
     }
 }
