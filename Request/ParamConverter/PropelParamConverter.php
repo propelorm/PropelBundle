@@ -130,12 +130,12 @@ class PropelParamConverter implements ParamConverterInterface
         }
 
         $this->withs = isset($options['with']) ? is_array($options['with']) ? $options['with'] : array($options['with']) : array();
-        $this->queryMethod = $queryMethod = isset($options['query_method'])? $options['query_method'] : null;
-        if($this->queryMethod != null and \method_exists($classQuery,$this->queryMethod)){
+        $this->queryMethod = $queryMethod = isset($options['query_method']) ? $options['query_method'] : null;
+        if ($this->queryMethod != null and \method_exists($classQuery, $this->queryMethod)) {
             // find by custom method
-			$query = $this->getQuery($classQuery);
-			$object =  $query->$queryMethod($request->attributes);
-        }else{
+            $query = $this->getQuery($classQuery);
+            $object = $query->$queryMethod($request->attributes);
+        } else {
             // find by Pk
             if (false === $object = $this->findPk($classQuery, $request)) {
                 // find by criteria
