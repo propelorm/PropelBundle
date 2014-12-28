@@ -133,7 +133,7 @@ class PropelParamConverter implements ParamConverterInterface
 
         $this->queryMethod = $queryMethod = isset($options['query_method']) ? $options['query_method'] : null;
 
-        if ($this->queryMethod != null and method_exists($classQuery, $this->queryMethod)) {
+        if ($this->queryMethod != null && method_exists($classQuery, $this->queryMethod)) {
             // find by custom method
             $query = $this->getQuery($classQuery);
             // execute a custom query
