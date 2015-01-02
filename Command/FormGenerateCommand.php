@@ -195,41 +195,13 @@ EOT
      */
     protected function getGeneratorConfig(InputInterface $input)
     {
-        $generatorConfig = array(
-            'propel.platform.class'                     => $input->getOption('platform'),
-            'propel.builder.object.class'               => BaseModelBuildCommand::DEFAULT_OBJECT_BUILDER,
-            'propel.builder.objectstub.class'           => BaseModelBuildCommand::DEFAULT_OBJECT_STUB_BUILDER,
-            'propel.builder.objectmultiextend.class'    => BaseModelBuildCommand::DEFAULT_MULTIEXTEND_OBJECT_BUILDER,
-            'propel.builder.query.class'                => BaseModelBuildCommand::DEFAULT_QUERY_BUILDER,
-            'propel.builder.querystub.class'            => BaseModelBuildCommand::DEFAULT_QUERY_STUB_BUILDER,
-            'propel.builder.queryinheritance.class'     => BaseModelBuildCommand::DEFAULT_QUERY_INHERITANCE_BUILDER,
-            'propel.builder.queryinheritancestub.class' => BaseModelBuildCommand::DEFAULT_QUERY_INHERITANCE_STUB_BUILDER,
-            'propel.builder.tablemap.class'             => BaseModelBuildCommand::DEFAULT_TABLEMAP_BUILDER,
-            'propel.builder.pluralizer.class'           => BaseModelBuildCommand::DEFAULT_PLURALIZER,
-            'propel.disableIdentifierQuoting'           => true,
-            'propel.packageObjectModel'                 => true,
-            'propel.namespace.autoPackage'              => true,
-            'propel.addGenericAccessors'                => true,
-            'propel.addGenericMutators'                 => true,
-            'propel.addSaveMethod'                      => true,
-            'propel.addTimeStamp'                       => false,
-            'propel.addValidateMethod'                  => true,
-            'propel.addHooks'                           => true,
-            'propel.namespace.map'                      => 'Map',
-            'propel.useLeftJoinsInDoJoinMethods'        => true,
-            'propel.emulateForeignKeyConstraints'       => false,
-            'propel.schema.autoPrefix'                  => false,
-            'propel.dateTimeClass'                      => '\DateTime',
-            // MySQL specific
-            'propel.mysql.tableType'                    => BaseModelBuildCommand::DEFAULT_MYSQL_ENGINE,
-            'propel.mysql.tableEngineKeyword'           => 'ENGINE',
-        );
+        $generatorConfig = null;
 
-        // merge the custom build properties
-        $buildProperties = parse_ini_file($this->getCacheDir().'/build.properties');
-        $generatorConfig = array_merge($generatorConfig, $buildProperties);
+        if (null !== $input->getOption('platform')) {
+            $generatorConfig['propel']['generator']['platformClass'] = $input->getOption('platform');
+        }
 
-        return new GeneratorConfig($generatorConfig);
+        return new GeneratorConfig($this->getCacheDir().'/propel.json', $generatorConfig);
     }
 
     /**
