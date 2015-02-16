@@ -10,6 +10,7 @@
   }],
   "require": {
     "symfony/symfony": "~2.2",
+    "symfony/propel1-bridge": "~2.2",
     "propel/propel1": "~1.6"
   },
   "require-dev": {
