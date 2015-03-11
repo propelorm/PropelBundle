@@ -270,6 +270,14 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getDsn($connectionName)
     {
         $connection = $this->getConnectionData($connectionName);
+        // Add user and password to dsn string
+        $dsn = explode(';', $connection['dsn']);
+        if (isset($connection['user'])) {
+            $dsn[] = 'user=' . urlencode($connection['user']);
+        }
+        if (isset($connection['password'])) {
+            $dsn[] = 'password=' . urlencode($connection['password']);
+        }
 
         return $connection['dsn'];
     }
