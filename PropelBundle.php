@@ -64,9 +64,18 @@ class PropelBundle extends Bundle
                 $manager = new ConnectionManagerMasterSlave();
 
                 // configure the master (write) connection
-                $manager->setWriteConfiguration($config['connection']);
+                $manager->setWriteConfiguration($config);
+
                 // configure the slave (read) connections
-                $manager->setReadConfiguration($config['slaves']);
+                $slaveConnections = [];
+                foreach ($config['slaves'] as $slave) {
+                    $slaveConnections[] = array_merge($config, [
+                        'dsn' => $slave['dsn'],
+                        'slaves' => null
+                    ]);
+                }
+
+                $manager->setReadConfiguration($slaveConnections);
             } else {
                 $manager = new ConnectionManagerSingle();
                 $manager->setConfiguration($config);
