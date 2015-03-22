@@ -34,7 +34,7 @@ class ModelBuildCommand extends AbstractCommand
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command builds the Propel runtime model classes (ActiveRecord, Query, Peer, and TableMap classes) based on the XML schemas defined in all Bundles.
 
-  <info>php app/console %command.full_name%</info>
+  <info>php %command.full_name%</info>
 EOT
             )
             ->setName('propel:model:build')

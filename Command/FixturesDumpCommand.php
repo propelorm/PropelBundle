@@ -38,9 +38,9 @@ class FixturesDumpCommand extends AbstractCommand
             ->setDescription('Dump data from database into YAML fixtures file.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:fixtures:dump</info> dumps data from database into YAML fixtures file.
+The <info>%command.name%</info> dumps data from database into YAML fixtures file.
 
-  <info>php app/console propel:fixtures:dump</info>
+  <info>php %command.full_name%</info>
 
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).

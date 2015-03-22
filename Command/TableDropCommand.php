@@ -35,9 +35,9 @@ class TableDropCommand extends AbstractCommand
             ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:table:drop</info> command will drop one or several table.
+The <info>%command.name%</info> command will drop one or several table.
 
-  <info>php app/console propel:table:drop</info>
+  <info>php %command.full_name%</info>
 
 The <info>table</info> arguments define the list of table which has to be delete <comment>(default: all table)</comment>.
 The <info>--force</info> parameter has to be used to actually drop the table.
