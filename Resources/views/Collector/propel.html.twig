@@ -65,7 +65,37 @@
         font-size: 17px;
         margin-bottom: 0;
     }
+
+    .query-trace {
+        display: none;
+        overflow: auto;
+        padding: 5px;
+        border: 1px solid silver;
+        margin: 5px;
+        border-radius: 5px;
+        font-family: monospace;
+        white-space: nowrap;
+        color: #333;
+    }
+
+    .query-trace .gray {
+        color: silver;
+    }
+
+    .query-trace .gray + .regular {
+        margin-top: 3px;
+    }
+    .query-trace .regular + .gray {
+        margin-top: 3px;
+    }
     </style>
+
+    <script>
+        function toggle(id) {
+            var el = document.getElementById(id);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
 
     <h2>Queries</h2>
     <table summary="Show logged queries">
@@ -94,11 +124,23 @@
                         </div>
                     {% endif %}
                     <div class="SQLInfo">
-                        Time: {{ query.time }} - Memory: {{ query.memory|format_memory }} - Connection: {{ query.connection }}
+                        Time: {{ query.time }} - Memory: {{ query.memory|format_memory }} - Connection: {{ query.connection }} -
+                        <a href="#" onclick="toggle('propel-stack-trace-{{ i }}'); return false;">Stacktrace</a>
 
                         {% if app.request.query.get('query', -1) != i %}
                             - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}#propel-query-{{ i }}">Explain the query</a>
                         {% endif %}
+                    </div>
+                    <div id="propel-stack-trace-{{ i }}" class="query-trace">
+                        {% for trace in query.stackTrace %}
+                            <div class="{{
+                            (': Symfony\\Component' in trace
+                                or ': Propel\\Runtime' in trace
+                                or ': Propel\\PropelBundle' in trace
+                                or ': call_user_func(Object(Symfony\\Component' in trace
+                                or ': call_user_func(Array, Object(Symfony\\Component' in trace
+                            ) ? 'gray' : 'regular' }}">{{ trace }}</div>
+                        {% endfor %}
                     </div>
                 </td>
             </tr>

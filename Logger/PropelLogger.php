@@ -64,6 +64,7 @@ class PropelLogger implements LoggerInterface
         }
 
         $add = true;
+        $stackTrace = $this->getStackTrace();
 
         if (null !== $this->stopwatch) {
             $trace = debug_backtrace();
@@ -90,6 +91,7 @@ class PropelLogger implements LoggerInterface
                 'connection'    => $connection->getName(),
                 'time'          => $event->getDuration() / 1000,
                 'memory'        => $event->getMemory(),
+                'stackTrace'    => $stackTrace,
             );
         }
 
@@ -99,5 +101,26 @@ class PropelLogger implements LoggerInterface
     public function getQueries()
     {
         return $this->queries;
+    }
+
+    /**
+     * Returns the current stack trace.
+     *
+     * @return array
+     */
+    private function getStackTrace()
+    {
+        $e = new \Exception();
+        $trace = explode("\n", $e->getTraceAsString());
+        $trace = array_reverse($trace);
+        array_shift($trace); // remove {main}
+        array_pop($trace); // remove call to this method
+
+        foreach ($trace as $i => &$value) {
+            $value = $i + 1 . ')' . substr($value, strpos($value, ' '));
+            $value = preg_replace('/\((\d+)\)/', ':$1', $value, 1);
+        }
+
+        return $trace;
     }
 }
