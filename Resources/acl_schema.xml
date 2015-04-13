@@ -48,10 +48,10 @@
         <column name="object_identity_id" type="integer" primaryKey="true" />
         <column name="ancestor_id" type="integer" primaryKey="true" />
 
-        <foreign-key foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key name="acl_object_identity_id" foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="object_identity_id" foreign="id" />
         </foreign-key>
-        <foreign-key foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key name="acl_object_ancestor_id" foreignTable="acl_object_identities" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="ancestor_id" foreign="id" />
         </foreign-key>
     </table>
