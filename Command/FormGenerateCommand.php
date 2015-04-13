@@ -40,7 +40,7 @@ class FormGenerateCommand extends GeneratorAwareCommand
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command allows you to quickly generate Form Type stubs for a given bundle.
 
-  <info>php app/console %command.full_name%</info>
+  <info>php %command.full_name%</info>
 
 The <info>--force</info> parameter allows you to overwrite existing files.
 EOT

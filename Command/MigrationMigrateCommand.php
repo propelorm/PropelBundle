@@ -35,15 +35,15 @@ class MigrationMigrateCommand extends AbstractCommand
                 new InputOption('--down', '', InputOption::VALUE_NONE, 'Executes the next migration down'),
             ))
             ->setHelp(<<<EOT
-The <info>propel:migration:migrate</info> command checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and executes them.
+The <info>%command.name%</info> command checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and executes them.
 
-    <info>php app/console propel:migration:migrate [--up] [--down]</info>
+    <info>php %command.full_name% [--up] [--down]</info>
 
-    <info>php app/console propel:migration:migrate</info> : is the default command, it <comment>executes all</comment> migrations files.
+    <info>php %command.full_name%</info> : is the default command, it <comment>executes all</comment> migrations files.
 
-    <info>php app/console propel:migration:migrate --up</info> : checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
+    <info>php %command.full_name% --up</info> : checks the version of the database structure, looks for migrations files not yet executed (i.e. with a greater version timestamp), and <comment>executes the first one</comment> of them.
 
-    <info>php app/console propel:migration:migrate --down</info> : checks the version of the database structure, and looks for migration files already executed (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
+    <info>php %command.full_name% --down</info> : checks the version of the database structure, and looks for migration files already executed (i.e. with a lower version timestamp). <comment>The last executed migration found is reversed.</comment>
 EOT
             )
             ->setName('propel:migration:migrate')

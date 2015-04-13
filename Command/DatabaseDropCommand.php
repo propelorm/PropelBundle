@@ -33,9 +33,9 @@ class DatabaseDropCommand extends AbstractCommand
             ->addOption('force', null, InputOption::VALUE_NONE, 'Set this parameter to execute this action.')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:database:drop</info> command will drop your database.
+The <info>%command.name%</info> command will drop your database.
 
-  <info>php app/console propel:database:drop</info>
+  <info>php %command.full_name%</info>
 
 The <info>--force</info> parameter has to be used to actually drop the database.
 The <info>--connection</info> parameter allows you to change the connection to use.

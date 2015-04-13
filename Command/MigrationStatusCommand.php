@@ -29,9 +29,9 @@ class MigrationStatusCommand extends AbstractCommand
         $this
             ->setDescription('Lists the migrations yet to be executed')
             ->setHelp(<<<EOT
-The <info>propel:migration:status</info> command checks the version of the database structure, and looks for migration files not yet executed (i.e. with a greater version timestamp).
+The <info>%command.name%</info> command checks the version of the database structure, and looks for migration files not yet executed (i.e. with a greater version timestamp).
 
-  <info>php app/console propel:migration:status</info>
+  <info>php %command.full_name%</info>
 EOT
             )
             ->setName('propel:migration:status')

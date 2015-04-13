@@ -33,8 +33,8 @@ class ReverseCommand extends AbstractCommand
             ->setDescription('Generate XML schema from reverse-engineered database')
             ->addOption('connection', null, InputOption::VALUE_OPTIONAL, 'Set this parameter to define a connection to use')
             ->setHelp(<<<EOT
-The <info>propel:reverse</info> command generates an XML schema from reverse-engineered database.
-  <info>php app/console propel:reverse</info>
+The <info>%command.name%</info> command generates an XML schema from reverse-engineered database.
+  <info>php %command.full_name%</info>
 
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
