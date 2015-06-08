@@ -1,24 +1,23 @@
 {
-  "name": "propel/propel-bundle",
-  "description": "Integration of Propel in Symfony2",
-  "keywords": ["propel", "orm", "persistence"],
-  "type": "symfony-bundle",
-  "license": "MIT",
-  "authors": [{
-    "name": "William Durand",
-    "email": "william.durand1@gmail.com"
-  }],
-  "require": {
-    "symfony/symfony": "~2.5",
-    "propel/propel": "2.*@dev"
-  },
-  "require-dev": {
-    "sensio/framework-extra-bundle": "~3.0",
-    "phpunit/phpunit": "~4.0",
-    "fzaninotto/faker": "~1.1"
-  },
-  "autoload": {
-    "psr-0": { "Propel\\PropelBundle": "" }
-  },
-  "target-dir": "Propel/PropelBundle"
+    "name": "propel/propel-bundle",
+    "description": "Integration of Propel in Symfony2",
+    "keywords": ["propel", "orm", "persistence"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [{
+        "name": "William Durand",
+        "email": "william.durand1@gmail.com"
+    }],
+    "require": {
+        "symfony/symfony": "~2.5",
+        "propel/propel": "2.*@dev"
+    },
+    "require-dev": {
+        "sensio/framework-extra-bundle": "~3.0",
+        "phpunit/phpunit": "~4.0",
+        "fzaninotto/faker": "~1.1"
+    },
+    "autoload": {
+        "psr-4": { "Propel\\PropelBundle\\": "" }
+    }
 }
