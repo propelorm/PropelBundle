@@ -206,7 +206,6 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                         if ($column->isForeignKey() && null !== $value) {
                             $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
                             if (!isset($this->object_references[$this->cleanObjectRef($relatedTable->getClassname().'_'.$value)])) {
-                                var_dump($this->object_references, $this->cleanObjectRef($relatedTable->getClassname().'_'.$value));
                                 throw new \InvalidArgumentException(
                                     sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getClassname())
                                 );
