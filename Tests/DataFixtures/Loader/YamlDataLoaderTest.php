@@ -47,6 +47,38 @@ YAML;
         $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor', $book->getCoolBookAuthor());
     }
 
+    public function testYamlLoadOneToManyExternalReference()
+    {
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
+
+        $fixtures = <<<YAML
+\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor:
+    CoolBookAuthor_1:
+        id: '1'
+        name: 'A famous one'
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+        $loader->load(array($filename), 'default');
+
+        $fixtures = <<<YAML
+\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook:
+    CoolBook_1:
+        id: '1'
+        name: 'An important one'
+        author_id: 1
+
+YAML;
+        $filename = $this->getTempFile($fixtures);
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $this->assertCount(1, $books);
+
+        $book = $books[0];
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor', $book->getCoolBookAuthor());
+    }
+
     public function testLoadSelfReferencing()
     {
         $fixtures = <<<YAML
