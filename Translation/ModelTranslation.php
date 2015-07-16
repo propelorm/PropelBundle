@@ -3,7 +3,6 @@
 namespace Propel\PropelBundle\Translation;
 
 use Symfony\Component\Config\Resource\ResourceInterface;
-
 use Symfony\Component\Translation\Dumper\DumperInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
@@ -14,11 +13,21 @@ use Symfony\Component\Translation\Translator;
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
-class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInterface
+class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInterface, \Serializable
 {
+    /**
+     * @var string
+     */
     protected $className;
+
+    /**
+     * @var \ModelCriteria
+     */
     protected $query;
 
+    /**
+     * @var array
+     */
     protected $options = array(
         'columns' => array(
             // The key and its translation ..
@@ -33,8 +42,23 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
         ),
     );
 
+    /**
+     * @var \PDOStatement
+     */
     private $resourcesStatement;
 
+    /**
+     * Constructor.
+     *
+     * @todo Enabled re-use of the provided query when deserializing the resource.
+     *
+     * @param string              $className
+     * @param array               $options
+     * @param \ModelCriteria|null $query     A Query to use. If null is provided a new one will be retrieved.
+     *                                       Note: This query will not be re-used when checking the freshness of the resource.
+     *
+     * @throws \PropelException If the class is invalid and no query class could be found.
+     */
     public function __construct($className, array $options = array(), \ModelCriteria $query = null)
     {
         $this->className = $className;
@@ -43,6 +67,7 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
         if (!$query) {
             $query = \PropelQuery::from($this->className);
         }
+
         $this->query = $query;
     }
 
@@ -84,6 +109,8 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
         $translations = $query->find();
 
         $catalogue = new MessageCatalogue($locale);
+        $catalogue->addResource($this);
+
         foreach ($translations as $eachTranslation) {
             $key = $eachTranslation->getByName($this->getColumnPhpname('key'));
             $message = $eachTranslation->getByName($this->getColumnPhpname('translation'));
@@ -185,13 +212,53 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
         return $stmt;
     }
 
-    private function getColumnname($column)
+    /**
+     * Returns the actual column name mapped to the given column identifier.
+     *
+     * @param string $identifier
+     *
+     * @return string
+     */
+    private function getColumnname($identifier)
     {
-        return $this->options['columns'][$column];
+        return $this->options['columns'][$identifier];
     }
 
-    private function getColumnPhpname($column)
+    /**
+     * Returns the Propel PHP name for the column identified by the given identifier.
+     *
+     * @param string $identifier
+     *
+     * @return string
+     *
+     * @throws \PropelException
+     */
+    private function getColumnPhpname($identifier)
     {
-        return $this->query->getTableMap()->getColumn($this->getColumnname($column))->getPhpName();
+        return $this->query->getTableMap()->getColumn($this->getColumnname($identifier))->getPhpName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->className,
+            $this->options,
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->className,
+            $this->options
+        ) = unserialize($serialized);
+
+        $this->query = \PropelQuery::from($this->className);
     }
 }
