@@ -4,11 +4,27 @@ php:
     - 5.4
     - 5.5
     - 5.6
+    - 7.0
+    - hhvm
 
 env:
-    - SYMFONY_VERSION="~2.3.0"
-    - SYMFONY_VERSION="~2.4.0"
     - SYMFONY_VERSION="~2.5.0"
+    - SYMFONY_VERSION="~2.6.0"
+    - SYMFONY_VERSION="~2.7.0"
+    - SYMFONY_VERSION="dev-master"
+
+matrix:
+    fast_finish: true
+    allow_failures:
+        - php: 7.0
+        - php: hhvm
+        - env: SYMFONY_VERSION="dev-master"
+    exclude:
+        # Symfony 3.x requires PHP 5.5
+        - php: 5.4
+          env: SYMFONY_VERSION="dev-master"
+
+sudo: false
 
 before_script:
     - curl -s http://getcomposer.org/installer | php
