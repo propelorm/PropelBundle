@@ -13,8 +13,9 @@ namespace Propel\PropelBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Propel\PropelBundle\Form\EventListener\TranslationFormListener;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Translation type class
@@ -44,11 +45,17 @@ class TranslationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array(
             'data_class',
             'columns'
         ));
+    }
+
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
     }
 }
