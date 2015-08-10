@@ -96,6 +96,7 @@ class ModelType extends AbstractType
             'group_by'          => null,
             'by_reference'      => false,
             'index_property'    => null,
+            'choice_translation_domain' => false,
         ));
     }
 
