@@ -277,7 +277,9 @@ EOT
     protected function getFixtureFiles($type = 'sql', $in = null)
     {
         $finder = new Finder();
-        $finder->sortByName()->name('*.' . $type);
+        $finder->sort(function ($a, $b) {
+            return strcmp($a->getPathname(), $b->getPathname());
+        })->name('*.' . $type);
 
         $files = $finder->in(null !== $in ? $in : $this->absoluteFixturesPath);
 
