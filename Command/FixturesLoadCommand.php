@@ -245,6 +245,8 @@ EOT
         $parameters = array(
             '--connection'  => array($connectionName),
             '--verbose'     => $input->getOption('verbose'),
+            '--sql-dir'     => $this->getCacheDir(),
+            '--force'       => 'force'
         );
 
         // add the command's name to the parameters
