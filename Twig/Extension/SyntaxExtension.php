@@ -22,8 +22,8 @@ class SyntaxExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'format_sql'    => new \Twig_Filter_Method($this, 'formatSQL', array('is_safe' => array('html'))),
-            'format_memory' => new \Twig_Filter_Method($this, 'formatMemory'),
+            new \Twig_SimpleFilter('format_sql', array($this, 'formatSQL', array('is_safe' => array('html')))),
+            new \Twig_SimpleFilter('format_memory', array($this, 'formatMemory')),
         );
     }
 
