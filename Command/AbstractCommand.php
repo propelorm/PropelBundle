@@ -279,7 +279,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $dsn[] = 'password=' . urlencode($connection['password']);
         }
 
-        return $connection['dsn'];
+        return implode(';', $dsn);
     }
 
     /**
