@@ -52,7 +52,7 @@ class UniqueObjectValidator extends ConstraintValidator
         $bddUsers  = $bddUsersQuery->find();
         $countUser = count($bddUsers);
 
-        if ($countUser > 1 || ($countUser === 1 && $object !== $bddUsers[0])) {
+        if ($countUser > 1 || ($countUser === 1 && !$object->equals($bddUsers[0]))) {
             $fieldParts = array();
 
             foreach ($fields as $fieldName) {
