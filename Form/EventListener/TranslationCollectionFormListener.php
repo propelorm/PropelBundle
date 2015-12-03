@@ -81,8 +81,7 @@ class TranslationCollectionFormListener implements EventSubscriberInterface
                     if (method_exists($rootData, $addFunction)) {
                         $foundData = true;
                         break;
-                    } elseif ($currentForm->hasParent()) {
-                        $currentForm = $currentForm->getParent();
+                    } elseif (null != ($currentForm = $currentForm->getParent())) {
                         $rootData = $currentForm->getData();
                     } else {
                         break;
