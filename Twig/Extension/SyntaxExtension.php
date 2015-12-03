@@ -21,10 +21,10 @@ class SyntaxExtension extends \Twig_Extension
 {
     public function getFilters()
     {
-        return array(
-            new \Twig_Filter('format_sql', [$this, 'formatSQL'], ['is_safe' => ['html']]),
-            new \Twig_Filter('format_memory', [$this, 'formatMemory']),
-        );
+        return [
+            new \Twig_SimpleFilter('format_sql', [$this, 'formatSQL'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('format_memory', [$this, 'formatMemory']),
+        ];
     }
 
     public function getName()
