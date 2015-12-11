@@ -11,13 +11,10 @@
 namespace Propel\PropelBundle\Tests\Model\Acl;
 
 use Criteria;
-
 use Propel\PropelBundle\Model\Acl\AclClass;
 use Propel\PropelBundle\Model\Acl\AclClassPeer;
-
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-
 use Propel\PropelBundle\Tests\AclTestCase;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
