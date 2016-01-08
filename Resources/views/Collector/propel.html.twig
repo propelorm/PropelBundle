@@ -112,7 +112,7 @@
             <tr>
                 <td>
                     <a name="propel-query-{{ i }}" ></a>
-                    <code>{{ query.sql|format_sql }}</code>
+                    <code>{{ query.sql|format_sql|raw }}</code>
                     {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                         <div class="SQLExplain">
                         {% render controller('PropelBundle:Panel:explain', {
