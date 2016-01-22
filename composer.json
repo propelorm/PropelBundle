@@ -8,18 +8,20 @@
     "name": "William Durand",
     "email": "william.durand1@gmail.com"
   }],
+
+  "target-dir": "Propel/PropelBundle",
+  "autoload": {
+    "psr-0": { "Propel\\PropelBundle": "" }
+  },
+
   "require": {
     "symfony/symfony": "^2.8.2|^3.0.1",
-    "symfony/propel1-bridge": "2.7.x-dev|^2.8|^3.0",
+    "symfony/propel1-bridge": "2.7.x-dev",
     "propel/propel1": "~1.6"
   },
   "require-dev": {
     "sensio/framework-extra-bundle": "^3.0.2",
-    "fzaninotto/faker": "dev-master"
-  },
-  "autoload": {
-    "psr-0": { "Propel\\PropelBundle": "" }
-  },
-  "target-dir": "Propel/PropelBundle",
-  "minimum-stability": "dev"
+    "fzaninotto/faker": "dev-master",
+    "phpunit/phpunit": "^4.8.21|^5.0.10"
+  }
 }
