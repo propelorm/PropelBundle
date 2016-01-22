@@ -9,10 +9,10 @@ php:
     - hhvm
 
 env:
-    - SYMFONY_VERSION="~2.4.0"
-    - SYMFONY_VERSION="~2.5.0"
-    - SYMFONY_VERSION="~2.6.0"
-    - SYMFONY_VERSION="~2.7.0"
+    - SYMFONY_VERSION="^2.8.2"
+    - SYMFONY_VERSION="^2.8.2" COMPOSER_FLAGS="--prefer-lowest"
+    - SYMFONY_VERSION="^3.0.1"
+    - SYMFONY_VERSION="^3.0.1" COMPOSER_FLAGS="--prefer-lowest"
     - SYMFONY_VERSION="dev-master"
 
 matrix:
@@ -23,6 +23,14 @@ matrix:
         - env: SYMFONY_VERSION="dev-master"
     exclude:
         # Symfony 3.x requires PHP 5.5
+        - php: 5.3
+          env: SYMFONY_VERSION="^3.0.1"
+        - php: 5.4
+          env: SYMFONY_VERSION="^3.0.1"
+        - php: 5.3
+          env: SYMFONY_VERSION="^3.0.1" COMPOSER_FLAGS="--prefer-lowest"
+        - php: 5.4
+          env: SYMFONY_VERSION="^3.0.1" COMPOSER_FLAGS="--prefer-lowest"
         - php: 5.3
           env: SYMFONY_VERSION="dev-master"
         - php: 5.4
