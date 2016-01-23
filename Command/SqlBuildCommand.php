@@ -55,24 +55,19 @@ EOT
         $finder = new Finder();
         $filesystem = new Filesystem();
 
-        $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
-        $cacheDir = $this->getApplication()->getKernel()->getCacheDir(). DIRECTORY_SEPARATOR . 'sql';
+        $sqlDir = $this->getApplication()->getKernel()->getCacheDir(). DIRECTORY_SEPARATOR .'propel'.DIRECTORY_SEPARATOR. 'sql';
 
-        $filesystem->remove($cacheDir);
-        $filesystem->mkdir($cacheDir);
-
-        if (!$filesystem->exists($sqlDir)) {
-            $filesystem->mkdir($sqlDir);
-        }
+        $filesystem->remove($sqlDir);
+        $filesystem->mkdir($sqlDir);
 
         // Execute the task
         $ret = $this->callPhing('build-sql', array(
-            'propel.sql.dir' => $cacheDir
+            'propel.sql.dir' => $sqlDir
         ));
 
         // Show the list of generated files
         if (true === $ret) {
-            $files = $finder->name('*')->in($cacheDir);
+            $files = $finder->name('*')->in($sqlDir);
 
             $nbFiles = 0;
             foreach ($files as $file) {
@@ -81,9 +76,6 @@ EOT
 
                 if ($fileExt === 'map' && $filesystem->exists($finalLocation)) {
                     $this->mergeMapFiles($finalLocation, (string) $file);
-                } else {
-                    $filesystem->remove($finalLocation);
-                    $filesystem->rename((string) $file, $finalLocation);
                 }
 
                 $this->writeNewFile($output, (string) $file);

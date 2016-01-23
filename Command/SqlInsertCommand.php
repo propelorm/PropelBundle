@@ -52,9 +52,6 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Bad require but needed :(
-        require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
-
         if ($input->getOption('force')) {
             $connections = $this->getConnections();
             $sqlDir = $this->getSqlDir();
@@ -80,7 +77,7 @@ EOT
 
     protected function getSqlDir()
     {
-        return sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
+        return sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getCacheDir());
     }
 
     /**
