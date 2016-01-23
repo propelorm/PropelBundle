@@ -13,7 +13,6 @@
         <parameter key="propel.form.type.model.class">Propel\Bundle\PropelBundle\Form\Type\ModelType</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\Bundle\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Propel\Bundle\PropelBundle\Form\PropelTypeGuesser</parameter>
-        <parameter key="propel.security.acl.provider.model.class">Propel\Bundle\PropelBundle\Security\Acl\AuditableAclProvider</parameter>
         <parameter key="propel.security.user.provider.class">Propel\Bundle\PropelBundle\Security\User\PropelUserProvider</parameter>
     </parameters>
 
@@ -44,12 +43,6 @@
 
         <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
             <tag name="form.type_guesser" />
-        </service>
-
-        <service id="propel.security.acl.provider" class="%propel.security.acl.provider.model.class%" public="false">
-            <argument type="service" id="security.acl.permission_granting_strategy" />
-            <argument type="service" id="propel.security.acl.connection" on-invalid="null" />
-            <argument type="service" id="security.acl.cache" on-invalid="null" />
         </service>
 
         <service id="propel.security.user.provider" class="%propel.security.user.provider.class%" abstract="true" public="false">
