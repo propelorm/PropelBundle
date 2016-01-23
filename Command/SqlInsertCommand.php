@@ -111,7 +111,17 @@ EOT
 
         $connections = array();
         foreach ($propelConfiguration['datasources'] as $name => $config) {
+            // The default connection is defined under its original name and "default".
+            if ('default' === $name) {
+                continue;
+            }
+
             $connections[$name] = $config['connection'];
+        }
+
+        // In case there is only the default connection, use it.
+        if (empty($connections)) {
+            $connections['default'] = $propelConfiguration['datasources']['default']['connection'];
         }
 
         return $connections;
