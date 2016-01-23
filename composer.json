@@ -9,9 +9,9 @@
     "email": "william.durand1@gmail.com"
   }],
 
-  "target-dir": "Propel/PropelBundle",
   "autoload": {
-    "psr-0": { "Propel\\PropelBundle": "" }
+    "psr-4": { "Propel\\PropelBundle\\": "" },
+    "exclude-from-classmap": [ "Tests/" ]
   },
 
   "require": {
