@@ -7,14 +7,14 @@
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
         <parameter key="propel.configuration.class">PropelConfiguration</parameter>
-        <parameter key="propel.logger.class">Symfony\Bridge\Propel1\Logger\PropelLogger</parameter>
-        <parameter key="propel.data_collector.class">Symfony\Bridge\Propel1\DataCollector\PropelDataCollector</parameter>
+        <parameter key="propel.logger.class">Propel\PropelBundle\Logger\PropelLogger</parameter>
+        <parameter key="propel.data_collector.class">Propel\PropelBundle\DataCollector\PropelDataCollector</parameter>
         <parameter key="propel.build_properties.class">Propel\PropelBundle\DependencyInjection\Properties</parameter>
-        <parameter key="propel.form.type.model.class">Symfony\Bridge\Propel1\Form\Type\ModelType</parameter>
+        <parameter key="propel.form.type.model.class">Propel\PropelBundle\Form\Type\ModelType</parameter>
         <parameter key="propel.twig.extension.syntax.class">Propel\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
-        <parameter key="form.type_guesser.propel.class">Symfony\Bridge\Propel1\Form\PropelTypeGuesser</parameter>
+        <parameter key="form.type_guesser.propel.class">Propel\PropelBundle\Form\PropelTypeGuesser</parameter>
         <parameter key="propel.security.acl.provider.model.class">Propel\PropelBundle\Security\Acl\AuditableAclProvider</parameter>
-        <parameter key="propel.security.user.provider.class">Symfony\Bridge\Propel1\Security\User\PropelUserProvider</parameter>
+        <parameter key="propel.security.user.provider.class">Propel\PropelBundle\Security\User\PropelUserProvider</parameter>
     </parameters>
 
     <services>
