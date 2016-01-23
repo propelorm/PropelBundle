@@ -24,9 +24,7 @@ If you are running on an older version, you may require one of the following ver
 
 ### Propel2 integration
 
-* The `2.0` branch will contain `Propel2` integration for Symfony *2.1*.
-  We are still considering to integrate `Propel2` with Symfony *2.0*.
-  In case, we will do so, there will be a `2.1` and `2.0` branch integrating the respective Symfony version!
+* The `2.0` branch will contain `Propel2` integration for Symfony *3.0*.
 
 **Note:** the `master` branch won't be updated anymore, and will trigger an `E_USER_DEPRECATED` error to notice people.
 
@@ -49,7 +47,7 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.1/Resources/doc/index.markdown)
+[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.5/Resources/doc/index.markdown)
 
 For license, see:
 
