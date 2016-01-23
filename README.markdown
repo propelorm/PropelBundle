@@ -8,24 +8,27 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 ## Branching model
 
-As `Propel2` will be released in the near future, we are migrating the branching model of this bundle in advance!
+### Propel1 integration
 
-* The `1.0` branch contains Propel *1.6* integration for Symfony *2.0* (*currently 2.0 branch*).
-* The `1.1` branch contains Propel *1.6* integration for Symfony *2.1* (*currently 2.1 branch*).
-* The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1* (*currently 2.2 and 2.3 *).
-* The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3* (*currently 2.4 and master branch*).
+The two major branches being supported are:
+
+* The `1.5` branch contains Propel *1.6+* integration for Symfony *2.8 LTS*.
+* The `1.6` branch contains Propel *1.6+* integration for Symfony *3.0*.
+
+If you are running on an older version, you may require one of the following versions of this bundle.
+
+* The `1.0` branch contains Propel *1.6* integration for Symfony *2.0*.
+* The `1.1` branch contains Propel *1.6* integration for Symfony *2.1*.
+* The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1*.
+* The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3*.
+
+### Propel2 integration
+
 * The `2.0` branch will contain `Propel2` integration for Symfony *2.1*.
   We are still considering to integrate `Propel2` with Symfony *2.0*.
   In case, we will do so, there will be a `2.1` and `2.0` branch integrating the respective Symfony version!
 
-**The 1.x branches are already available and you are encouraged to migrate your dependencies according to the listings!**
-
-* If you depend on Symfony `2.4` or `master` branch, switch to the `1.4` branch.
-* If you depend on Symfony `2.2` or `2.3`  branch, switch to the `1.2` branch.
-* If you depend on Symfony `2.1` branch, switch to the `1.1` branch.
-* If you depend on Symfony `2.0` branch, switch to the `1.0` branch.
-
-**Note:** the `master`, and `2.0` branches won't be updated anymore, and will trigger a `E_USER_DEPRECATED` error to notice people.
+**Note:** the `master` branch won't be updated anymore, and will trigger an `E_USER_DEPRECATED` error to notice people.
 
 ## Features
 
