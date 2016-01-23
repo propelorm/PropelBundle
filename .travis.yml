@@ -46,6 +46,7 @@ matrix:
           env: SYMFONY_VERSION="dev-master"
 
 before_install:
+    - phpenv config-rm xdebug.ini
     - composer self-update
     - if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update "symfony/symfony:${SYMFONY_VERSION}"; fi;
 
@@ -53,4 +54,4 @@ install:
     - composer update ${COMPOSER_FLAGS} --prefer-source
 
 script:
-    - vendor/bin/phpunit --colors --coverage-text
+    - vendor/bin/phpunit --colors
