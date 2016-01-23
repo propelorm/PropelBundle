@@ -24,7 +24,7 @@ You can specify this using the `validation.yml` file, like this:
 ``` yaml
 Acme\DemoBundle\Model\User:
     constraints:
-        - Propel\PropelBundle\Validator\Constraints\UniqueObject: 
+        - Propel\Bundle\PropelBundle\Validator\Constraints\UniqueObject:
             fields:  username
 ```
 
@@ -33,7 +33,7 @@ If you want to validate the uniqueness of more than just one field:
 ``` yaml
 Acme\DemoBundle\Model\User:
     constraints:
-        - Propel\PropelBundle\Validator\Constraints\UniqueObject: 
+        - Propel\Bundle\PropelBundle\Validator\Constraints\UniqueObject:
             fields: [username, login]
 ```
 
@@ -42,7 +42,7 @@ Full configuration :
 ``` yaml
 Acme\DemoBundle\Model\User:
     constraints:
-        - Propel\PropelBundle\Validator\Constraints\UniqueObject: 
+        - Propel\Bundle\PropelBundle\Validator\Constraints\UniqueObject:
             fields: [username, login]
             message: We already have a user with {{ fields }}
             messageFieldSeparator: " and "
@@ -55,7 +55,7 @@ PHP
 You can also specify this using php. Fields can be specified as a string if there is only one field
 
 ``` php
-use Propel\PropelBundle\Validator\Constraint\UniqueObject;
+use Propel\Bundle\PropelBundle\Validator\Constraint\UniqueObject;
 
 ...
 
@@ -110,7 +110,7 @@ You can also specify this using xml
 
     <class name="Acme\DemoBundle\Model\User">
         
-        <constraint name="Propel\PropelBundle\Validator\Constraints\UniqueObject">
+        <constraint name="Propel\Bundle\PropelBundle\Validator\Constraints\UniqueObject">
             <option name="fields">username</option>
             <option name="message">We already have a user with {{ fields }}</option>
             <option name="messageFieldSeparator"> and </option>

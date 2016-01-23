@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Tests\Fixtures;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures;
 
 class Column extends \ColumnMap
 {

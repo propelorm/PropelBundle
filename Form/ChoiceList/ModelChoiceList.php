@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Form\ChoiceList;
+namespace Propel\Bundle\PropelBundle\Form\ChoiceList;
 
-use Propel\PropelBundle\Form\Type\ModelType;
+use Propel\Bundle\PropelBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Exception\StringCastException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\Extension\Core\DataTransformer\ChoicesToValuesTransformer;

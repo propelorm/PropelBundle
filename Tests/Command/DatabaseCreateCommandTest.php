@@ -7,11 +7,10 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\Tests\Command;
 
-namespace Propel\PropelBundle\Tests\Command;
-
-use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\Command\DatabaseCreateCommand;
+use Propel\Bundle\PropelBundle\Command\DatabaseCreateCommand;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 
 /**
  * @author Warnar Boekkooi <warnar@boekkooi.net>

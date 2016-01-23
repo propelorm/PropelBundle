@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Tests\Form\Type;
+namespace Propel\Bundle\PropelBundle\Tests\Form\Type;
 
-use Propel\PropelBundle\Form\PropelExtension;
-use Propel\PropelBundle\Tests\Fixtures\Item;
-use Propel\PropelBundle\Tests\Fixtures\TranslatableItem;
-use Propel\PropelBundle\Tests\Fixtures\TranslatableItemI18n;
+use Propel\Bundle\PropelBundle\Form\PropelExtension;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItem;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class TranslationCollectionTypeTest extends TypeTestCase
 {
-    const TRANSLATION_CLASS = 'Propel\PropelBundle\Tests\Fixtures\TranslatableItem';
-    const TRANSLATABLE_I18N_CLASS = 'Propel\PropelBundle\Tests\Fixtures\TranslatableItemI18n';
-    const NON_TRANSLATION_CLASS = 'Propel\PropelBundle\Tests\Fixtures\Item';
+    const TRANSLATION_CLASS = 'Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItem';
+    const TRANSLATABLE_I18N_CLASS = 'Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n';
+    const NON_TRANSLATION_CLASS = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
 
     protected function getExtensions()
     {

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Tests\Form\DataTransformer;
+namespace Propel\Bundle\PropelBundle\Tests\Form\DataTransformer;
 
-use Propel\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
-use Propel\PropelBundle\Tests\TestCase;
+use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 
 class CollectionToArrayTransformerTest extends TestCase
 {

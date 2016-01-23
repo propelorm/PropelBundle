@@ -7,8 +7,7 @@
  *
  * @license    MIT License
  */
-
-namespace Propel\PropelBundle\Tests;
+namespace Propel\Bundle\PropelBundle\Tests;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;

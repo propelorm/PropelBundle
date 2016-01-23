@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Tests\DataCollector;
+namespace Propel\Bundle\PropelBundle\Tests\DataCollector;
 
-use Propel\PropelBundle\DataCollector\PropelDataCollector;
-use Propel\PropelBundle\Tests\TestCase;
+use Propel\Bundle\PropelBundle\DataCollector\PropelDataCollector;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -92,7 +92,7 @@ class PropelDataCollectorTest extends TestCase
             ->will($this->returnArgument(1))
         ;
 
-        $logger = $this->getMock('\Propel\PropelBundle\Logger\PropelLogger');
+        $logger = $this->getMock('\Propel\Bundle\PropelBundle\Logger\PropelLogger');
         $logger
             ->expects($this->any())
             ->method('getQueries')

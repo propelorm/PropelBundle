@@ -10,7 +10,7 @@
   }],
 
   "autoload": {
-    "psr-4": { "Propel\\PropelBundle\\": "" },
+    "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
     "exclude-from-classmap": [ "Tests/" ]
   },
 

@@ -7,10 +7,9 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\DataFixtures;
 
-namespace Propel\PropelBundle\DataFixtures;
-
-use \Propel;
+use Propel;
 use Symfony\Component\Finder\Finder;
 
 /**
