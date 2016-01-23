@@ -7,12 +7,11 @@
  *
  * @license    MIT License
  */
-
 namespace Propel\PropelBundle\Tests\Security\User;
 
+use Propel\PropelBundle\Security\User\PropelUserProvider;
 use Propel\PropelBundle\Tests\Fixtures\Model\User;
 use Propel\PropelBundle\Tests\TestCase;
-use Symfony\Bridge\Propel1\Security\User\PropelUserProvider;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
