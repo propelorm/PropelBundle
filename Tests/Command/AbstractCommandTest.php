@@ -7,11 +7,10 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\Tests\Command;
 
-namespace Propel\PropelBundle\Tests\Command;
-
-use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\Command\AbstractCommand;
+use Propel\Bundle\PropelBundle\Command\AbstractCommand;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 

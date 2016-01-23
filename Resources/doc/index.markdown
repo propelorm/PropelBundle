@@ -50,7 +50,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Propel\PropelBundle\PropelBundle(),
+        new Propel\Bundle\PropelBundle\PropelBundle(),
     );
 
     // ...

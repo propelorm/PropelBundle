@@ -2,7 +2,7 @@
 
 namespace ##NAMESPACE##;
 
-use Propel\PropelBundle\Form\BaseAbstractType;
+use Propel\Bundle\PropelBundle\Form\BaseAbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ##CLASS## extends BaseAbstractType

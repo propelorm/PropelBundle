@@ -7,11 +7,10 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\Tests\DataFixtures\Loader;
 
-namespace Propel\PropelBundle\Tests\DataFixtures\Loader;
-
-use Propel\PropelBundle\Tests\DataFixtures\TestCase;
-use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
+use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
+use Propel\Bundle\PropelBundle\Tests\DataFixtures\TestCase;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
@@ -23,10 +22,10 @@ class XmlDataLoaderTest extends TestCase
     {
         $fixtures = <<<XML
 <Fixtures>
-    <BookAuthor Namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
+    <BookAuthor Namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
         <BookAuthor_1 id="1" name="A famous one" />
     </BookAuthor>
-    <Book Namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
+    <Book Namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
         <Book_1 id="1" name="An important one" author_id="BookAuthor_1" />
     </Book>
 </Fixtures>
@@ -37,10 +36,10 @@ XML;
         $loader = new XmlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
         $loader->load(array($filename), 'default');
 
-        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $books = \Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
         $this->assertCount(1, $books);
 
         $book = $books[0];
-        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor', $book->getBookAuthor());
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor', $book->getBookAuthor());
     }
 }

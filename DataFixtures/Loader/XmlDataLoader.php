@@ -7,8 +7,7 @@
  *
  * @license    MIT License
  */
-
-namespace Propel\PropelBundle\DataFixtures\Loader;
+namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
 
 /**
  * XML fixtures loader.

@@ -1,18 +1,18 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Form\ChoiceList;
+namespace Propel\Bundle\PropelBundle\Tests\Form\ChoiceList;
 
-use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Propel\PropelBundle\Tests\Fixtures\Item;
-use Propel\PropelBundle\Tests\Fixtures\ItemQuery;
+use Propel\Bundle\PropelBundle\Form\ChoiceList\ModelChoiceList;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\ItemQuery;
 use Symfony\Component\Form\Tests\Extension\Core\ChoiceList\AbstractChoiceListTest;
 
 class CompatModelChoiceListTest extends AbstractChoiceListTest
 {
-    const ITEM_CLASS = '\Propel\PropelBundle\Tests\Fixtures\Item';
+    const ITEM_CLASS = '\Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\Propel\PropelBundle\Tests\Fixtures\ItemQuery
+     * @var \PHPUnit_Framework_MockObject_MockObject|\Propel\Bundle\PropelBundle\Tests\Fixtures\ItemQuery
      */
     protected $query;
 
@@ -40,7 +40,7 @@ class CompatModelChoiceListTest extends AbstractChoiceListTest
 
     protected function setUp()
     {
-        $this->query = $this->getMock('Propel\PropelBundle\Tests\Fixtures\ItemQuery', array(
+        $this->query = $this->getMock('Propel\Bundle\PropelBundle\Tests\Fixtures\ItemQuery', array(
             'filterById',
         ), array(), '', true, true, true, false, true);
 

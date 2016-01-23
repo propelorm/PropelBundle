@@ -7,20 +7,17 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\Command;
 
-namespace Propel\PropelBundle\Command;
-
-use Symfony\Component\Console\Input\InputOption;
+use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
+use Propel\Bundle\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-
-use Propel\PropelBundle\Command\AbstractCommand;
-use Propel\PropelBundle\DataFixtures\Loader\YamlDataLoader;
-use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 
 /**
  * FixturesLoadCommand

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Security\User;
+namespace Propel\Bundle\PropelBundle\Security\User;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

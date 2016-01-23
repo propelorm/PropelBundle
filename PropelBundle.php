@@ -7,9 +7,9 @@
  *
  * @license    MIT License
  */
-namespace Propel\PropelBundle;
+namespace Propel\Bundle\PropelBundle;
 
-use Propel\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
+use Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

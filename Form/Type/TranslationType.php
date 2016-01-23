@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Form\Type;
+namespace Propel\Bundle\PropelBundle\Form\Type;
 
-use Propel\PropelBundle\Form\EventListener\TranslationFormListener;
+use Propel\Bundle\PropelBundle\Form\EventListener\TranslationFormListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

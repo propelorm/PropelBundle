@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Logger;
+namespace Propel\Bundle\PropelBundle\Logger;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
