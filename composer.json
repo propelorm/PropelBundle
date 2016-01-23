@@ -22,7 +22,7 @@
   },
   "require-dev": {
     "sensio/framework-extra-bundle": "^3.0.2",
-    "fzaninotto/faker": "dev-master",
+    "fzaninotto/faker": "^1.5",
     "phpunit/phpunit": "^4.8.21|^5.0.10"
   }
 }
