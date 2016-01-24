@@ -321,6 +321,37 @@ YAML;
         $this->assertRegexp('#[\w ]+#', $book->getDescription());
     }
 
+    public function testLoadWithFakerDateTime()
+    {
+        if (!class_exists('Faker\Factory')) {
+            $this->markTestSkipped('Faker is mandatory');
+        }
+
+        $fixtures = <<<YAML
+Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+    Book_1:
+        id: '1'
+        name: <?php \$faker('dateTimeThisMonth'); ?>
+        description: <?php \$faker('sentence'); ?>
+
+YAML;
+        $filename  = $this->getTempFile($fixtures);
+        $container = $this->getContainer();
+        $container->set('faker.generator', \Faker\Factory::create());
+
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', $container);
+        $loader->load(array($filename), 'default');
+
+        $books = \Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookPeer::doSelect(new \Criteria(), $this->con);
+        $this->assertCount(1, $books);
+
+        $book = $books[0];
+        $this->assertRegExp('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $book->getName());
+
+        $datetime = new \DateTime($book->getName());
+        $this->assertInstanceOf('DateTime', $datetime);
+    }
+
     public function testLoadWithInheritedRelationship()
     {
         $schema = <<<XML
