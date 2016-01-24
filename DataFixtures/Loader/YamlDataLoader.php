@@ -51,7 +51,12 @@ class YamlDataLoader extends AbstractDataLoader
                     $args = func_get_args();
                     array_shift($args);
 
-                    echo Yaml::dump(call_user_func_array(array($generator, $type), $args)) . "\n";
+                    $value = call_user_func_array(array($generator, $type), $args);
+                    if ($value instanceof \DateTime) {
+                        $value = $value->format('Y-m-d H:i:s');
+                    }
+
+                    echo Yaml::dump($value) . "\n";
                 };
             } else {
                 $faker = function($text) {
