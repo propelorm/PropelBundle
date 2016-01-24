@@ -10,7 +10,7 @@
 namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Yaml\ParseException;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
