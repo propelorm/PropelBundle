@@ -383,6 +383,10 @@ EOT
 
         $propelConfiguration = $container->get('propel.configuration');
         foreach ($propelConfiguration['datasources'] as $name => $datasource) {
+            if (is_scalar($datasource)) {
+                continue;
+            }
+
             $xml .= strtr(<<<EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>

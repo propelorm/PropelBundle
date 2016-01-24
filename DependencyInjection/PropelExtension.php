@@ -126,7 +126,7 @@ class PropelExtension extends Extension
 
         // Alias the default connection if not defined
         if (!isset($c['datasources']['default'])) {
-            $c['datasources']['default'] = $c['datasources'][$connectionName];
+            $c['datasources']['default'] = $connectionName;
         }
 
         $container->getDefinition('propel.configuration')->setArguments(array($c));
