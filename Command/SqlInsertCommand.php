@@ -111,6 +111,10 @@ EOT
 
         $connections = array();
         foreach ($propelConfiguration['datasources'] as $name => $config) {
+            if (is_scalar($config)) {
+                continue;
+            }
+
             $connections[$name] = $config['connection'];
         }
 
