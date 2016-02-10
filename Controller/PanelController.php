@@ -11,7 +11,8 @@
 namespace Propel\Bundle\PropelBundle\Controller;
 
 use Propel\Runtime\Propel;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -19,8 +20,10 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController extends ContainerAware
+class PanelController implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+    
     /**
      * This method renders the global Propel configuration.
      */
@@ -45,7 +48,7 @@ class PanelController extends ContainerAware
      * @param string  $connection The connection name
      * @param integer $query
      *
-     * @return Symfony\Component\HttpFoundation\Response A Response instance
+     * @return Response A Response instance
      */
     public function explainAction($token, $connection, $query)
     {
