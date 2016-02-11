@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="default" namespace="Propel\PropelBundle\Model\Acl" defaultIdMethod="native" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd">
+<database name="default" namespace="Propel\Bundle\PropelBundle\Model\Acl" defaultIdMethod="native" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd">
     <table name="acl_classes" phpName="AclClass">
         <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
         <column name="class_type" type="varchar" size="200" required="true" phpName="Type" />

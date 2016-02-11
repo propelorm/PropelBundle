@@ -8,15 +8,15 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 
-use Propel\PropelBundle\Model\Acl\ObjectIdentity;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityAncestorQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityAncestorQuery;
 
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>

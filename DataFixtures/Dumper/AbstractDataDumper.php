@@ -8,10 +8,10 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\DataFixtures\Dumper;
+namespace Propel\Bundle\PropelBundle\DataFixtures\Dumper;
 
 use \PDO;
-use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use Propel\Bundle\PropelBundle\DataFixtures\AbstractDataHandler;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Runtime\Propel;
 

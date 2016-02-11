@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Form\DataTransformer;
+namespace Propel\Bundle\PropelBundle\Form\DataTransformer;
 
 use Propel\Runtime\Collection\ObjectCollection;
 use Symfony\Component\Form\DataTransformerInterface;

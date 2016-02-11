@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\Entry as ModelEntry;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
 
-use Propel\PropelBundle\Security\Acl\Domain\Entry as AclEntry;
+use Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry as AclEntry;
 
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -24,11 +24,11 @@ class EntryTest extends AclTestCase
 {
     public function testToAclEntry()
     {
-        $acl = $this->getMock('Propel\PropelBundle\Security\Acl\Domain\AuditableAcl', array(), array(), '', false, false);
+        $acl = $this->getMock('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl', array(), array(), '', false, false);
         $entry = $this->createModelEntry();
 
         $aclEntry = ModelEntry::toAclEntry($entry, $acl);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $aclEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry', $aclEntry);
         $this->assertSame($acl, $aclEntry->getAcl());
         $this->assertEquals(42, $aclEntry->getId());
         $this->assertTrue($aclEntry->isAuditFailure());
@@ -45,12 +45,12 @@ class EntryTest extends AclTestCase
      */
     public function testToAclEntryFieldEntry()
     {
-        $acl = $this->getMock('Propel\PropelBundle\Security\Acl\Domain\AuditableAcl', array(), array(), '', false, false);
+        $acl = $this->getMock('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl', array(), array(), '', false, false);
         $entry = $this->createModelEntry();
         $entry->setFieldName('name');
 
         $aclEntry = ModelEntry::toAclEntry($entry, $acl);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\FieldEntry', $aclEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry', $aclEntry);
     }
 
     /**
@@ -60,7 +60,7 @@ class EntryTest extends AclTestCase
     {
         $modelEntry = ModelEntry::fromAclEntry($aclEntry);
 
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\Entry', $modelEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\Entry', $modelEntry);
         $this->assertEquals(42, $modelEntry->getId());
         $this->assertTrue($modelEntry->getAuditFailure());
         $this->assertFalse($modelEntry->getAuditSuccess());

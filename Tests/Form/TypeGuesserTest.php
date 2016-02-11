@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Tests\Form;
+namespace Propel\Bundle\PropelBundle\Tests\Form;
 
-use Propel\PropelBundle\Form\TypeGuesser;
-use Propel\PropelBundle\Tests\TestCase;
+use Propel\Bundle\PropelBundle\Form\TypeGuesser;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Symfony\Component\Form\Guess\Guess;
 
 class TypeGuesserTest extends TestCase
 {
-    const CLASS_NAME = 'Propel\PropelBundle\Tests\Fixtures\Item';
+    const CLASS_NAME = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
 
-    const UNKNOWN_CLASS_NAME = 'Propel\PropelBundle\Tests\Fixtures\UnknownItem';
+    const UNKNOWN_CLASS_NAME = 'Propel\Bundle\PropelBundle\Tests\Fixtures\UnknownItem';
 
     private $guesser;
 

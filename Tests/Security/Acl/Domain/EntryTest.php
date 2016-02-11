@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
+namespace Propel\Bundle\PropelBundle\Tests\Security\Acl\Domain;
 
 use Propel\Runtime\Collection\ObjectCollection;
 
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\PropelBundle\Security\Acl\Domain\Acl;
-use Propel\PropelBundle\Security\Acl\Domain\Entry;
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl;
+use Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
@@ -27,7 +27,7 @@ class EntryTest extends AclTestCase
     public function testConstruct()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
         $model = $this->createEntry();
@@ -56,7 +56,7 @@ class EntryTest extends AclTestCase
 
         $this->assertNotEmpty($serialized);
         $this->assertNotEmpty($unserialized);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $unserialized);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry', $unserialized);
 
         $this->assertEquals($entry->getMask(), $unserialized->getMask());
         $this->assertEquals($entry->isGranting(), $unserialized->isGranting());

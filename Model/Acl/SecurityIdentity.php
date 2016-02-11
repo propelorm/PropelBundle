@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\Base\SecurityIdentity as BaseSecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\Base\SecurityIdentity as BaseSecurityIdentity;
 
 use Propel\Runtime\Connection\ConnectionInterface;
 
@@ -23,7 +23,7 @@ class SecurityIdentity extends BaseSecurityIdentity
     /**
      * Transform a given mode security identity into an ACL related SecurityIdentity.
      *
-     * @param \Propel\PropelBundle\Model\Acl\SecurityIdentity $securityIdentity
+     * @param \Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity $securityIdentity
      *
      * @return \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface
      */
@@ -58,7 +58,7 @@ class SecurityIdentity extends BaseSecurityIdentity
      * @param \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface $aclIdentity
      * @param ConnectionInterface                                             $con
      *
-     * @return \Propel\PropelBundle\Model\Acl\SecurityIdentity
+     * @return \Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity
      */
     public static function fromAclIdentity(SecurityIdentityInterface $aclIdentity, ConnectionInterface $con = null)
     {

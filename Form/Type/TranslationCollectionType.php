@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\PropelBundle\Form\Type;
+namespace Propel\Bundle\PropelBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Propel\PropelBundle\Form\EventListener\TranslationCollectionFormListener;
+use Propel\Bundle\PropelBundle\Form\EventListener\TranslationCollectionFormListener;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**

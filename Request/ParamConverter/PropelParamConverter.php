@@ -1,8 +1,8 @@
 <?php
 
-namespace Propel\PropelBundle\Request\ParamConverter;
+namespace Propel\Bundle\PropelBundle\Request\ParamConverter;
 
-use Propel\PropelBundle\Util\PropelInflector;
+use Propel\Bundle\PropelBundle\Util\PropelInflector;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

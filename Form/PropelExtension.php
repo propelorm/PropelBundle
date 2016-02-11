@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Propel\PropelBundle\Form;
+namespace Propel\Bundle\PropelBundle\Form;
 
 use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\PropertyAccess\PropertyAccess;

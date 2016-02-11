@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\AclClass;
-use Propel\PropelBundle\Model\Acl\AclClassQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\AclClass;
+use Propel\Bundle\PropelBundle\Model\Acl\AclClassQuery;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -27,11 +27,11 @@ class AclClassTest extends AclTestCase
         $type = 'Merchant';
 
         $aclClass = AclClass::fromAclObjectIdentity(new ObjectIdentity(5, $type), $this->con);
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\AclClass', $aclClass);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\AclClass', $aclClass);
         $this->assertEquals($type, $aclClass->getType());
 
         $dbEntry = AclClassQuery::create()->findOne($this->con);
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\AclClass', $dbEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\AclClass', $dbEntry);
         $this->assertEquals($type, $dbEntry->getType());
 
         $this->assertEquals($dbEntry->getId(), $aclClass->getId());
