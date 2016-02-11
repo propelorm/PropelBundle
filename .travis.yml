@@ -24,8 +24,8 @@ matrix:
 
     allow_failures:
         - php: hhvm
-        - SYMFONY_VERSION="^3.0.0"
-        - SYMFONY_VERSION="^3.0.0" COMPOSER_FLAGS="--prefer-lowest"
+        - env: SYMFONY_VERSION="^3.0.0"
+        - env: SYMFONY_VERSION="^3.0.0" COMPOSER_FLAGS="--prefer-lowest"
 
 before_install:
     - phpenv config-rm xdebug.ini
