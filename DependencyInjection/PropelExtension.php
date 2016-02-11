@@ -36,6 +36,16 @@ class PropelExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $processor->processConfiguration($configuration, $configs);
 
+        if (1 === count($config['database']['connections'])) {
+            $defaultConnection = array_keys($config['database']['connections'])[0];
+            if (!isset($config['runtime']['defaultConnection'])) {
+                $config['runtime']['defaultConnection'] = $defaultConnection;
+            }
+            if (!isset($config['generator']['defaultConnection'])) {
+                $config['generator']['defaultConnection'] = $defaultConnection;
+            }
+        }
+        
         $container->setParameter('propel.logging', $config['runtime']['logging']);
         $container->setParameter('propel.configuration', $config);
 
