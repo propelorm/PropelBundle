@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Fixtures\Model\Map;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Map;
 
 use Acme\DemoBundle\Model\Book;
 use Acme\DemoBundle\Model\BookQuery;
@@ -46,7 +46,7 @@ class BookTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book';
+    const OM_CLASS = '\\Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book';
 
     /**
      * A class that can be returned by this tableMap
@@ -138,7 +138,7 @@ class BookTableMap extends TableMap
         // attributes
         $this->setName('book');
         $this->setPhpName('Book');
-        $this->setClassName('\\Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
+        $this->setClassName('\\Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
         $this->setPackage('src.Acme.DemoBundle.Model');
         $this->setUseIdGenerator(true);
         // columns

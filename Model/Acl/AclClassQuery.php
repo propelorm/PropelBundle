@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\Base\AclClassQuery as BaseAclClassQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\Base\AclClassQuery as BaseAclClassQuery;
 
 class AclClassQuery extends BaseAclClassQuery
 {

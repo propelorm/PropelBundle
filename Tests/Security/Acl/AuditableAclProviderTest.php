@@ -8,11 +8,11 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Security\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Security\Acl;
 
-use Propel\PropelBundle\Model\Acl\EntryQuery;
-use Propel\PropelBundle\Security\Acl\AuditableAclProvider;
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
+use Propel\Bundle\PropelBundle\Security\Acl\AuditableAclProvider;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
@@ -26,7 +26,7 @@ class AuditableAclProviderTest extends AclTestCase
         $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
 
         $this->assertNotEmpty($acl);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\AuditableAcl', $acl);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl', $acl);
         $this->assertEquals(1, $acl->getId());
     }
 

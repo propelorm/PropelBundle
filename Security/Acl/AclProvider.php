@@ -8,16 +8,16 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Security\Acl;
+namespace Propel\Bundle\PropelBundle\Security\Acl;
 
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 
-use Propel\PropelBundle\Model\Acl\EntryQuery;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
 
-use Propel\PropelBundle\Security\Acl\Domain\Acl;
+use Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -172,7 +172,7 @@ class AclProvider implements AclProviderInterface
      * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
      * @param bool                                                          $inherited
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\Acl
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl
      */
     protected function getAcl(ObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {

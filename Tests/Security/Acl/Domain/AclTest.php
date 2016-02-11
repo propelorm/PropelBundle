@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
+namespace Propel\Bundle\PropelBundle\Tests\Security\Acl\Domain;
 
 use Propel\Runtime\Collection\ObjectCollection;
 
-use Propel\PropelBundle\Model\Acl\Entry;
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\PropelBundle\Security\Acl\Domain\Acl;
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Model\Acl\Entry;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
@@ -27,7 +27,7 @@ class AclTest extends AclTestCase
     public function testConstructorInvalidCollection()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\AclClass');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\AclClass');
 
         $this->setExpectedException('Symfony\Component\Security\Acl\Exception\Exception');
         new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
@@ -36,7 +36,7 @@ class AclTest extends AclTestCase
     public function testConstructorEmptyCollection()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $aclObj = $this->getAclObjectIdentity();
         $acl = new Acl($collection, $aclObj, new PermissionGrantingStrategy());
@@ -55,7 +55,7 @@ class AclTest extends AclTestCase
     public function testConstructorWithAces()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $obj = $this->createModelObjectIdentity(1);
 
@@ -107,10 +107,10 @@ class AclTest extends AclTestCase
         $classFieldAces = $acl->getClassFieldAces('name');
         $objectFieldAces = $acl->getObjectFieldAces('name');
 
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $classAces[0]);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $objectAces[0]);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\FieldEntry', $classFieldAces[0]);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\FieldEntry', $objectFieldAces[0]);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry', $classAces[0]);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry', $objectAces[0]);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry', $classFieldAces[0]);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry', $objectFieldAces[0]);
 
         $this->assertSame($acl, $classAces[0]->getAcl());
         $this->assertSame($acl, $objectAces[0]->getAcl());
@@ -124,7 +124,7 @@ class AclTest extends AclTestCase
     public function testIsSidLoadedNoneLoaded()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
         $this->assertFalse($acl->isSidLoaded($this->getRoleSecurityIdentity()));
@@ -133,7 +133,7 @@ class AclTest extends AclTestCase
     public function testIsSidLoadedInvalid()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $aclObj = $this->getAclObjectIdentity();
         $acl = new Acl($collection, $aclObj, new PermissionGrantingStrategy());
@@ -145,7 +145,7 @@ class AclTest extends AclTestCase
     public function testIsGrantedNoAces()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
@@ -156,7 +156,7 @@ class AclTest extends AclTestCase
     public function testIsGrantedNoMatchingSecurityIdentity()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();
         $entry
@@ -174,7 +174,7 @@ class AclTest extends AclTestCase
     public function testIsFieldGrantedNoAces()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
@@ -185,7 +185,7 @@ class AclTest extends AclTestCase
     public function testSerializeUnserialize()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();
         $entry
@@ -200,7 +200,7 @@ class AclTest extends AclTestCase
 
         $this->assertNotEmpty($serialized);
         $this->assertNotEmpty($unserialized);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $unserialized);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl', $unserialized);
         $this->assertEquals($serialized, serialize($unserialized));
     }
 }

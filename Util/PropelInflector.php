@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Util;
+namespace Propel\Bundle\PropelBundle\Util;
 
 /**
  * The Propel inflector class provides methods for inflecting text.

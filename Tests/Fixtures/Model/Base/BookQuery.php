@@ -1,12 +1,12 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Fixtures\Model\Base;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Base;
 
 use \Exception;
 use \PDO;
-use Propel\PropelBundle\Tests\Fixtures\Model\Book as ChildBook;
-use Propel\PropelBundle\Tests\Fixtures\Model\BookQuery as ChildBookQuery;
-use Propel\PropelBundle\Tests\Fixtures\Model\Map\BookTableMap;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book as ChildBook;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery as ChildBookQuery;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Map\BookTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -59,7 +59,7 @@ abstract class BookQuery extends ModelCriteria
      * @param string $modelName  The phpName of a model, e.g. 'Book'
      * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book', $modelAlias = null)
+    public function __construct($dbName = 'default', $modelName = '\\Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -74,10 +74,10 @@ abstract class BookQuery extends ModelCriteria
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \Propel\PropelBundle\Tests\Fixtures\Model\BookQuery) {
+        if ($criteria instanceof \Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery) {
             return $criteria;
         }
-        $query = new \Propel\PropelBundle\Tests\Fixtures\Model\BookQuery();
+        $query = new \Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }

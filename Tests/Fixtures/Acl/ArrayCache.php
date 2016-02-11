@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Fixtures\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Acl;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\AclCacheInterface;

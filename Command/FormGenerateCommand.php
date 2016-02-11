@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Command;
+namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Generator\Config\GeneratorConfig;
 use Propel\Generator\Command\ModelBuildCommand as BaseModelBuildCommand;

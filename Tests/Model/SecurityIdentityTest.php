@@ -8,16 +8,16 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\PropelBundle\Model\Acl\SecurityIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentityQuery;
 
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -47,7 +47,7 @@ class SecurityIdentityTest extends AclTestCase
     public function testToAclIdentityValidUser()
     {
         $identity = new SecurityIdentity();
-        $identity->setIdentifier('Propel\PropelBundle\Tests\Fixtures\UserProxy-propel');
+        $identity->setIdentifier('Propel\Bundle\PropelBundle\Tests\Fixtures\UserProxy-propel');
         $identity->setUsername(true);
 
         $secIdentity = SecurityIdentity::toAclIdentity($identity);
@@ -57,7 +57,7 @@ class SecurityIdentityTest extends AclTestCase
     public function testToAclIdentityMultipleDashes()
     {
         $identity = new SecurityIdentity();
-        $identity->setIdentifier('Propel\PropelBundle\Tests\Fixtures\UserProxy-some-username@domain.com');
+        $identity->setIdentifier('Propel\Bundle\PropelBundle\Tests\Fixtures\UserProxy-some-username@domain.com');
         $identity->setUsername(true);
 
         $secIdentity = SecurityIdentity::toAclIdentity($identity);
@@ -92,17 +92,17 @@ class SecurityIdentityTest extends AclTestCase
 
     public function testFromAclIdentityWithUser()
     {
-        $secIdentity = new UserSecurityIdentity('propel', 'Propel\PropelBundle\Tests\Fixtures\UserProxy');
+        $secIdentity = new UserSecurityIdentity('propel', 'Propel\Bundle\PropelBundle\Tests\Fixtures\UserProxy');
 
         $identity = SecurityIdentity::fromAclIdentity($secIdentity, $this->con);
 
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\SecurityIdentity', $identity);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity', $identity);
         $this->assertEquals(true, $identity->getUsername());
-        $this->assertEquals('Propel\PropelBundle\Tests\Fixtures\UserProxy-propel', $identity->getIdentifier());
+        $this->assertEquals('Propel\Bundle\PropelBundle\Tests\Fixtures\UserProxy-propel', $identity->getIdentifier());
         $this->assertGreaterThan(0, $identity->getId());
 
         $dbEntry = SecurityIdentityQuery::create()->findPk($identity->getId());
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\SecurityIdentity', $dbEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity', $dbEntry);
     }
 
     public function testFromAclIdentityWithRole()
@@ -111,12 +111,12 @@ class SecurityIdentityTest extends AclTestCase
 
         $identity = SecurityIdentity::fromAclIdentity($secIdentity, $this->con);
 
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\SecurityIdentity', $identity);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity', $identity);
         $this->assertEquals(false, $identity->getUsername());
         $this->assertEquals('ROLE_USER', $identity->getIdentifier());
         $this->assertGreaterThan(0, $identity->getId());
 
         $dbEntry = SecurityIdentityQuery::create()->findPk($identity->getId());
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\SecurityIdentity', $dbEntry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity', $dbEntry);
     }
 }

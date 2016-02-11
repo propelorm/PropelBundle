@@ -8,17 +8,17 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Security\Acl\Domain;
+namespace Propel\Bundle\PropelBundle\Security\Acl\Domain;
 
-use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\Entry as ModelEntry;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\AuditableEntryInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
- * An ACE implementation retrieving data from a given Propel\PropelBundle\Model\Acl\Entry.
+ * An ACE implementation retrieving data from a given Propel\Bundle\PropelBundle\Model\Acl\Entry.
  *
  * The entry is only used to grab a "snapshot" of its data as an EntryInterface is immutable!
  *
@@ -41,7 +41,7 @@ class Entry implements AuditableEntryInterface
     /**
      * Constructor.
      *
-     * @param \Propel\PropelBundle\Model\Acl\Entry               $entry
+     * @param \Propel\Bundle\PropelBundle\Model\Acl\Entry        $entry
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      */
     public function __construct(ModelEntry $entry, AclInterface $acl)

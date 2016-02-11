@@ -8,15 +8,15 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Security\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Security\Acl;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 
-use Propel\PropelBundle\Model\Acl\EntryQuery;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
-use Propel\PropelBundle\Tests\AclTestCase;
-use Propel\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -28,7 +28,7 @@ class MutableAclProviderTest extends AclTestCase
         $acl = $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
 
         $this->assertNotEmpty($acl);
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\MutableAcl', $acl);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl', $acl);
         $this->assertEquals(1, $acl->getId());
 
         $this->assertEmpty($acl->getClassAces());
@@ -54,13 +54,13 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertEquals(2, EntryQuery::create()->count($this->con));
 
         $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(1));
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\MutableAcl', $acl);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl', $acl);
 
         $objAces = $acl->getObjectAces();
         $this->assertCount(1, $objAces);
 
         $entry = $objAces[0];
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Entry', $entry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry', $entry);
         $this->assertEquals(64, $entry->getMask());
         $this->assertEquals($this->getRoleSecurityIdentity(), $entry->getSecurityIdentity());
 
@@ -68,7 +68,7 @@ class MutableAclProviderTest extends AclTestCase
         $this->assertCount(1, $classFieldAces);
 
         $entry = $classFieldAces[0];
-        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\FieldEntry', $entry);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry', $entry);
         $this->assertEquals('name', $entry->getField());
         $this->assertEquals(128, $entry->getMask());
         $this->assertEquals($this->getRoleSecurityIdentity('ROLE_ADMIN'), $entry->getSecurityIdentity());
