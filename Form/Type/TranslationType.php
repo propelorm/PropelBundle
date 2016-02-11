@@ -37,14 +37,6 @@ class TranslationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'propel_translation';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array(
@@ -53,9 +45,16 @@ class TranslationType extends AbstractType
         ));
     }
 
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
-        $this->configureOptions($resolver);
+        return 'propel_translation';
+    }
+
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

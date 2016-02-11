@@ -11,6 +11,7 @@
 
 namespace Propel\Bundle\PropelBundle\Tests\Form\Form\Type;
 
+use Propel\Bundle\PropelBundle\Form\Type\TranslationCollectionType;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
 use Propel\Bundle\PropelBundle\Form\PropelExtension;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n;
@@ -45,9 +46,9 @@ class TranslationCollectionTypeTest extends TypeTestCase
             'data_class' => self::TRANSLATION_CLASS
         ));
 
-        $builder->add('translatableItemI18ns', 'propel_translation_collection', array(
+        $builder->add('translatableItemI18ns', TranslationCollectionType::class, array(
             'languages' => array('en', 'fr'),
-            'options' => array(
+            'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
                 'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
             )
@@ -81,9 +82,9 @@ class TranslationCollectionTypeTest extends TypeTestCase
         $builder = $this->factory->createBuilder('form', null, array(
             'data_class' => self::TRANSLATION_CLASS
         ));
-        $builder->add('translatableItemI18ns', 'propel_translation_collection', array(
+        $builder->add('translatableItemI18ns', TranslationCollectionType::class, array(
             'languages' => array('en', 'fr'),
-            'options' => array(
+            'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
                 'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
             )
@@ -105,9 +106,9 @@ class TranslationCollectionTypeTest extends TypeTestCase
         $builder = $this->factory->createBuilder('form', null, array(
             'data_class' => self::NON_TRANSLATION_CLASS
         ));
-        $builder->add('value', 'propel_translation_collection', array(
+        $builder->add('value', TranslationCollectionType::class, array(
             'languages' => array('en', 'fr'),
-            'options' => array(
+            'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
                 'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
             )
@@ -122,9 +123,9 @@ class TranslationCollectionTypeTest extends TypeTestCase
      */
     public function testNoDataClassAdded()
     {
-        $this->factory->createNamed('itemI18ns', 'propel_translation_collection', null, array(
+        $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
             'languages' => array('en', 'fr'),
-            'options' => array(
+            'entry_options' => array(
                 'columns' => array('value', 'value2')
             )
         ));
@@ -135,8 +136,8 @@ class TranslationCollectionTypeTest extends TypeTestCase
      */
     public function testNoLanguagesAdded()
     {
-        $this->factory->createNamed('itemI18ns', 'propel_translation_collection', null, array(
-           'options' => array(
+        $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
+           'entry_options' => array(
                'data_class' => self::TRANSLATABLE_I18N_CLASS,
                'columns' => array('value', 'value2')
            )
@@ -148,9 +149,9 @@ class TranslationCollectionTypeTest extends TypeTestCase
      */
     public function testNoColumnsAdded()
     {
-        $this->factory->createNamed('itemI18ns', 'propel_translation_collection', null, array(
+        $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
             'languages' => array('en', 'fr'),
-            'options' => array(
+            'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS
             )
         ));
