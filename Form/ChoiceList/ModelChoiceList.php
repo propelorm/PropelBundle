@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Propel\PropelBundle\Form\ChoiceList;
+namespace Propel\Bundle\PropelBundle\Form\ChoiceList;
 
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;

@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\AclClass;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\AclClass;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
-use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\Bundle\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -24,10 +24,10 @@ class ObjectIdentityQueryTest extends AclTestCase
 {
     public function testFilterByAclObjectIdentity()
     {
-        $aclObj = new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
+        $aclObj = new ObjectIdentity(1, 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book');
 
         $aclClass = AclClass::fromAclObjectIdentity($aclObj, $this->con);
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\AclClass', $aclClass);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\AclClass', $aclClass);
 
         // None given.
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
@@ -42,7 +42,7 @@ class ObjectIdentityQueryTest extends AclTestCase
         $this->assertEquals(1, $result->getFirst()->getIdentifier());
 
         // Change the entity.
-        $aclObj = new ObjectIdentity(2, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
+        $aclObj = new ObjectIdentity(2, 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book');
         $result = ObjectIdentityQuery::create()->filterByAclObjectIdentity($aclObj, $this->con)->find($this->con);
         $this->assertCount(0, $result);
     }
@@ -52,7 +52,7 @@ class ObjectIdentityQueryTest extends AclTestCase
      */
     public function testFindOneByAclObjectIdentity()
     {
-        $aclObj = new ObjectIdentity(1, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
+        $aclObj = new ObjectIdentity(1, 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book');
 
         $result = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($aclObj, $this->con);
         $this->assertEmpty($result);
@@ -60,7 +60,7 @@ class ObjectIdentityQueryTest extends AclTestCase
         $objIdentity = $this->createModelObjectIdentity(1);
 
         $result = ObjectIdentityQuery::create()->findOneByAclObjectIdentity($aclObj, $this->con);
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\ObjectIdentity', $result);
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity', $result);
         $this->assertSame($objIdentity, $result);
     }
 
@@ -79,7 +79,7 @@ class ObjectIdentityQueryTest extends AclTestCase
 
         $result = ObjectIdentityQuery::create()->findChildren($objIdentity, $this->con);
         $this->assertCount(1, $result);
-        $this->assertInstanceOf('Propel\PropelBundle\Model\Acl\ObjectIdentity', $result->getFirst());
+        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity', $result->getFirst());
         $this->assertSame($childObjIdentity, $result->getFirst());
         $this->assertSame($objIdentity, $result->getFirst()->getObjectIdentityRelatedByParentObjectIdentityId());
     }

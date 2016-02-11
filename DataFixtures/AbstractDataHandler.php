@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\DataFixtures;
+namespace Propel\Bundle\PropelBundle\DataFixtures;
 
 use Propel\Runtime\Map\DatabaseMap;
 use Propel\Runtime\Propel;

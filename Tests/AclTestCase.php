@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Tests;
+namespace Propel\Bundle\PropelBundle\Tests;
 
 use Propel\Generator\Util\QuickBuilder;
 
-use Propel\PropelBundle\Model\Acl\AclClass;
-use Propel\PropelBundle\Model\Acl\Entry;
-use Propel\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
-use Propel\PropelBundle\Security\Acl\MutableAclProvider;
+use Propel\Bundle\PropelBundle\Model\Acl\AclClass;
+use Propel\Bundle\PropelBundle\Model\Acl\Entry;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity as ModelObjectIdentity;
+use Propel\Bundle\PropelBundle\Security\Acl\MutableAclProvider;
 
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -38,7 +38,7 @@ class AclTestCase extends TestCase
 
         $schema = file_get_contents(__DIR__.'/../Resources/acl_schema.xml');
 
-        if (!class_exists('Propel\PropelBundle\Model\Acl\Map\AclClassTableMap')) {
+        if (!class_exists('Propel\Bundle\PropelBundle\Model\Acl\Map\AclClassTableMap')) {
             $classTargets = array('tablemap', 'object', 'query');
         } else {
             $classTargets = array();
@@ -51,7 +51,7 @@ class AclTestCase extends TestCase
     }
 
     /**
-     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity
+     * @return \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity
      */
     protected function createModelObjectIdentity($identifier)
     {
@@ -94,7 +94,7 @@ class AclTestCase extends TestCase
 
     protected function getAclObjectIdentity($identifier = 1)
     {
-        return new ObjectIdentity($identifier, 'Propel\PropelBundle\Tests\Fixtures\Model\Book');
+        return new ObjectIdentity($identifier, 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book');
     }
 
     protected function getRoleSecurityIdentity($role = 'ROLE_USER')

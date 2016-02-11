@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Model\Acl;
+namespace Propel\Bundle\PropelBundle\Model\Acl;
 
-use Propel\PropelBundle\Model\Acl\Base\SecurityIdentityQuery as BaseSecurityIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\Base\SecurityIdentityQuery as BaseSecurityIdentityQuery;
 
 class SecurityIdentityQuery extends BaseSecurityIdentityQuery
 {

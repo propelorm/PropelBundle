@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Command;
+namespace Propel\Bundle\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;

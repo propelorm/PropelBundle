@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\DependencyInjection;
+namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
 use Propel\Common\Config\PropelConfiguration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

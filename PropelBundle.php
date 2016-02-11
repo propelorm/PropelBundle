@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle;
+namespace Propel\Bundle\PropelBundle;
 
-use Propel\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
+use Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
 use Propel\Runtime\Connection\ConnectionManagerMasterSlave;

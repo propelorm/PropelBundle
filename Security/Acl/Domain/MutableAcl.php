@@ -8,15 +8,15 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Security\Acl\Domain;
+namespace Propel\Bundle\PropelBundle\Security\Acl\Domain;
 
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 
-use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
-use Propel\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\PropelBundle\Model\Acl\ObjectIdentity;
-use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\Bundle\PropelBundle\Model\Acl\Entry as ModelEntry;
+use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity;
+use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
@@ -43,7 +43,7 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * A reference to the ObjectIdentity this ACL is mapped to.
      *
-     * @var \Propel\PropelBundle\Model\Acl\ObjectIdentity
+     * @var \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity
      */
     protected $modelObjectIdentity;
 
@@ -338,11 +338,11 @@ class MutableAcl extends Acl implements MutableAclInterface
     /**
      * Insert a given entry into the list on the given index by shifting all others.
      *
-     * @param array                                      $list
-     * @param int                                        $index
-     * @param \Propel\PropelBundle\Model\Acl\Entry\Entry $entry
+     * @param array                                             $list
+     * @param int                                               $index
+     * @param \Propel\Bundle\PropelBundle\Model\Acl\Entry\Entry $entry
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function insertToList(array &$list, $index, Entry $entry)
     {
@@ -370,7 +370,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param string $strategy
      * @param string $field
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function updateAce(array &$list, $index, $mask, $strategy = null)
     {
@@ -397,7 +397,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param $index
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function deleteIndex(array &$list, $index)
     {
@@ -416,7 +416,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param int   $index
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function isWithinBounds(array &$list, $index)
     {
@@ -436,7 +436,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param $index
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function validateIndex(array &$list, $index)
     {
@@ -455,7 +455,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array  $list
      * @param string $field
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function validateField(array &$list, $field)
     {
@@ -472,7 +472,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param array $list
      * @param int   $index The right boundary to which the list is valid.
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl $this
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl $this
      */
     protected function reorderList(array &$list, $index)
     {
@@ -494,7 +494,7 @@ class MutableAcl extends Acl implements MutableAclInterface
      * @param bool                                                            $granting
      * @param string                                                          $field
      *
-     * @return \Propel\PropelBundle\Security\Acl\Domain\Entry|\Propel\PropelBundle\Security\Acl\Domain\FieldEntry
+     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry|\Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry
      */
     protected function createAce($mask, $index, SecurityIdentityInterface $securityIdentity, $strategy = null, $granting = true, $field = null)
     {

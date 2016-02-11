@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\PropelBundle\Controller;
+namespace Propel\Bundle\PropelBundle\Controller;
 
 use Propel\Runtime\Propel;
 use Symfony\Component\DependencyInjection\ContainerAware;
