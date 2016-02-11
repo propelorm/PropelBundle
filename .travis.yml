@@ -3,8 +3,6 @@ sudo: false
 language: php
 
 php:
-    - 5.3
-    - 5.4
     - 5.5
     - 5.6
     - 7.0
@@ -15,9 +13,8 @@ cache:
         - $HOME/.composer/cache/files
 
 env:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - SYMFONY_VERSION="^2.8.2"
-    - SYMFONY_VERSION="^2.8.2" COMPOSER_FLAGS="--prefer-lowest"
+    - SYMFONY_VERSION="^3.0.2"
+    - SYMFONY_VERSION="^3.0.2" COMPOSER_FLAGS="--prefer-lowest"
 
 matrix:
     fast_finish: true

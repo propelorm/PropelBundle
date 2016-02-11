@@ -11,8 +11,7 @@
          bootstrap="vendor/autoload.php">
 
     <php>
-        <ini name="error_reporting" value="E_ALL ^ E_DEPRECATED"/>
-        <includePath>vendor/phing/phing/classes</includePath>
+        <ini name="error_reporting" value="E_ALL"/>
     </php>
 
     <testsuites>
