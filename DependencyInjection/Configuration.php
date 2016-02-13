@@ -122,6 +122,7 @@ class Configuration extends PropelConfiguration
                             ->useAttributeAsKey('id')
                             ->prototype('array')
                             ->fixXmlConfig('slave')
+                            ->fixXmlConfig('model_path')
                                 ->children()
                                     ->scalarNode('classname')->defaultValue($this->debug ? '\Propel\Runtime\Connection\DebugPDO' : '\Propel\Runtime\Connection\ConnectionWrapper')->end()
                                     ->scalarNode('adapter')
