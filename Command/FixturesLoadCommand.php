@@ -168,7 +168,7 @@ EOT
             return -1;
         }
 
-        $connectionName = $input->getOption('connection');
+        $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
 
         if ('yml' === $type) {
             $loader = $this->getContainer()->get('propel.loader.yaml');
