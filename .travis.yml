@@ -24,8 +24,13 @@ matrix:
 
     allow_failures:
         - php: hhvm
-        - env: SYMFONY_VERSION="^3.0.0"
-        - env: SYMFONY_VERSION="^3.0.0" COMPOSER_FLAGS="--prefer-lowest"
+        - env: SYMFONY_VERSION="dev-master"
+    exclude:
+        # Symfony 3.x requires PHP 5.5
+        - php: 5.4
+          env: SYMFONY_VERSION="~3.0.0"
+        - php: 5.4
+          env: SYMFONY_VERSION="dev-master"
 
 before_install:
     - phpenv config-rm xdebug.ini
