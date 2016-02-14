@@ -19,9 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 abstract class BaseAbstractType extends AbstractType
 {
-    protected $options = array(
-        'name' => '',
-    );
+    protected $options = array();
 
     public function __construct($mergeOptions = null)
     {
@@ -63,17 +61,11 @@ abstract class BaseAbstractType extends AbstractType
         $resolver->setDefaults($this->options);
     }
 
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return $this->getOption('name');
+        return get_class($this);
     }
 }
