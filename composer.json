@@ -11,6 +11,7 @@
 
   "autoload": {
     "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
+    "files": ["autoload_aliases.php"],
     "exclude-from-classmap": [ "Tests/" ]
   },
 
