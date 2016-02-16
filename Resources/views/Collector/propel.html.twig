@@ -79,12 +79,12 @@
                     <code>{{ query.sql|format_sql }}</code>
                     {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                         <div class="SQLExplain">
-                        {% render controller('PropelBundle:Panel:explain', {
+                        {{ render(controller('PropelBundle:Panel:explain', {
                             'token': token,
                             'panel': 'propel',
                             'query': app.request.query.get('query'),
                             'connection': app.request.query.get('connection')
-                        }) %}
+                        })) }}
                         </div>
                     {% endif %}
                     <div class="SQLInfo">
@@ -101,5 +101,5 @@
         </tbody>
     </table>
 
-    {% render controller('PropelBundle:Panel:configuration') %}
+    {{ render(controller('PropelBundle:Panel:configuration')) }}
 {% endblock %}
