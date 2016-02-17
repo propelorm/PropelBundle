@@ -10,6 +10,7 @@
 
 namespace Propel\Bundle\PropelBundle\Form;
 
+use Propel\Generator\Model\ForeignKey;
 use Propel\Generator\Model\Table;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -52,9 +53,18 @@ class FormBuilder
     {
         $buildCode = '';
         foreach ($table->getColumns() as $column) {
-            if (!$column->isPrimaryKey()) {
-                $buildCode .= sprintf("\n        \$builder->add('%s');", lcfirst($column->getPhpName()));
+            if ($column->isPrimaryKey()) {
+                continue;
             }
+            $name = $column->getPhpName();
+            
+            // Use foreignKey table name, so the TypeGuesser gets it right 
+            if ($column->isForeignKey()) {
+                /** @var ForeignKey $foreignKey */
+                $foreignKey = current($column->getForeignKeys());
+                $name = $foreignKey->getForeignTable()->getPhpName();
+            }
+            $buildCode .= sprintf("\n        \$builder->add('%s');", lcfirst($name));
         }
 
         return $buildCode;

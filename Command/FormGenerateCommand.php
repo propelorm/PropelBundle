@@ -78,7 +78,7 @@ EOT
 
         foreach ($manager->getDataModels() as $dataModel) {
             foreach ($dataModel->getDatabases() as $database) {
-                $this->createFormTypeFromDatabase($this->bundle, $database, $models, $output, $force);
+                $this->createFormTypeFromDatabase($bundle, $database, $models, $output, $force);
             }
         }
     }
