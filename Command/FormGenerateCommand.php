@@ -10,12 +10,12 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Propel\Bundle\PropelBundle\Form\FormBuilder;
 use Propel\Generator\Config\GeneratorConfig;
-use Propel\Generator\Command\ModelBuildCommand as BaseModelBuildCommand;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Table;
 use Propel\Generator\Manager\ModelManager;
-use Propel\Runtime\Propel;
+use Propel\PropelBundle\Command\BundleTrait;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,6 +30,8 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 class FormGenerateCommand extends AbstractCommand
 {
     const DEFAULT_FORM_TYPE_DIRECTORY = '/Form/Type';
+    
+    use BundleTrait;
 
     /**
      * {@inheritdoc}
@@ -42,7 +44,7 @@ class FormGenerateCommand extends AbstractCommand
 
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing Form types')
             ->addOption('platform',  null, InputOption::VALUE_REQUIRED,  'The platform')
-            ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle to use to generate Form types (Ex: @AcmeDemoBundle)')
+            ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle to use to generate Form types (Ex: @AcmeDemoBundle)')
             ->addArgument('models', InputArgument::IS_ARRAY, 'Model classes to generate Form Types from')
 
             ->setHelp(<<<EOT
@@ -64,15 +66,12 @@ EOT
         $models = $input->getArgument('models');
         $force = $input->getOption('force');
 
-        if (!$this->bundle) {
-            throw new \InvalidArgumentException('No valid bundle given');
-        }
+        $bundle = $this->getBundle($input, $output);
 
         $this->setupBuildTimeFiles();
-
-        if (!($schemas = $this->getFinalSchemas($kernel, $this->bundle))) {
-            $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $this->bundle->getName()));
-
+        $schemas = $this->getFinalSchemas($kernel, $bundle);
+        if (!$schemas) {
+            $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
             return;
         }
 
@@ -138,43 +137,17 @@ EOT
      *
      * @param BundleInterface $bundle The bundle in which the FormType will be created.
      * @param Table           $table  The table for which the FormType will be created.
-     * @param SplFileInfo     $file   File representing the FormType.
+     * @param \SplFileInfo    $file   File representing the FormType.
      * @param boolean         $force  Is the write forced?
      * @param OutputInterface $output An OutputInterface instance.
      */
     protected function writeFormType(BundleInterface $bundle, Table $table, \SplFileInfo $file, $force, OutputInterface $output)
     {
-        $modelName = $table->getPhpName();
-        $formTypeContent = file_get_contents(__DIR__ . '/../Resources/skeleton/FormType.php');
-
-        $formTypeContent = str_replace('##NAMESPACE##', $bundle->getNamespace() . str_replace('/', '\\', self::DEFAULT_FORM_TYPE_DIRECTORY), $formTypeContent);
-        $formTypeContent = str_replace('##CLASS##', $modelName . 'Type', $formTypeContent);
-        $formTypeContent = str_replace('##FQCN##', sprintf('%s\%s', $table->getNamespace(), $modelName), $formTypeContent);
-        $formTypeContent = str_replace('##TYPE_NAME##', strtolower($modelName), $formTypeContent);
-        $formTypeContent = $this->addFields($table, $formTypeContent);
+        $formBuilder = new FormBuilder();
+        $formTypeContent = $formBuilder->buildFormType($bundle, $table, self::DEFAULT_FORM_TYPE_DIRECTORY);
 
         file_put_contents($file->getPathName(), $formTypeContent);
         $this->writeNewFile($output, $this->getRelativeFileName($file) . ($force ? ' (forced)' : ''));
-    }
-
-    /**
-     * Add the fields in the FormType.
-     *
-     * @param Table  $table           Table from which the fields will be extracted.
-     * @param string $formTypeContent FormType skeleton.
-     *
-     * @return string The FormType code.
-     */
-    protected function addFields(Table $table, $formTypeContent)
-    {
-        $buildCode = '';
-        foreach ($table->getColumns() as $column) {
-            if (!$column->isPrimaryKey()) {
-                $buildCode .= sprintf("\n        \$builder->add('%s');", lcfirst($column->getPhpName()));
-            }
-        }
-
-        return str_replace('##BUILD_CODE##', $buildCode, $formTypeContent);
     }
 
     /**
