@@ -225,7 +225,7 @@ class ModelType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'entity';
+        return 'model';
     }
 
     public function getParent()
