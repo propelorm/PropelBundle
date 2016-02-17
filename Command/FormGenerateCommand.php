@@ -15,7 +15,6 @@ use Propel\Generator\Config\GeneratorConfig;
 use Propel\Generator\Model\Database;
 use Propel\Generator\Model\Table;
 use Propel\Generator\Manager\ModelManager;
-use Propel\PropelBundle\Command\BundleTrait;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
