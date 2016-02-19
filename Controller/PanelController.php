@@ -9,7 +9,8 @@
  */
 namespace Propel\Bundle\PropelBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,8 +18,10 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController extends ContainerAware
+class PanelController implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * This method renders the global Propel configuration.
      */
