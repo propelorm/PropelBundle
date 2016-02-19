@@ -237,7 +237,7 @@ class ModelType extends AbstractType
 
         $resolver->setRequired(array('class'));
         $resolver->setNormalizer('query', $queryNormalizer);
-        $resolver->setNormalizer('choice_value', $choiceLabelNormalizer);
+        $resolver->setNormalizer('choice_label', $choiceLabelNormalizer);
         $resolver->setAllowedTypes('query', ['null', 'Propel\Runtime\ActiveQuery\ModelCriteria']);
     }
 
