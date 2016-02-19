@@ -204,12 +204,32 @@ class ModelType extends AbstractType
             return $query;
         };
         
+        $choiceLabelNormalizer = function (Options $options, $choiceLabel) {
+            if ($choiceLabel === null) {
+                if ($options['property'] == null) {
+                    $choiceLabel = array(__CLASS__, 'createChoiceLabel');
+                } else {
+                    $valueProperty = $options['property'];
+                    /** @var ModelCriteria $query */
+                    $query = $options['query'];
+                    $getter = 'get' . ucfirst($query->getTableMap()->getColumn($valueProperty)->getPhpName());
+                    
+                    $choiceLabel = function($choice) use ($getter) {
+                        return call_user_func([$choice, $getter]);
+                    };
+                }
+            }
+            
+            return $choiceLabel;
+        };
+        
         $resolver->setDefaults([
             'query' => null,
             'index_property' => null,
+            'property' => null,
             'choices' => null,
             'choice_loader' => $choiceLoader,
-            'choice_label' => array(__CLASS__, 'createChoiceLabel'),
+            'choice_label' => null,
             'choice_name' => $choiceName,
             'choice_value' => $choiceValue,
             'choice_translation_domain' => false,
@@ -217,6 +237,7 @@ class ModelType extends AbstractType
 
         $resolver->setRequired(array('class'));
         $resolver->setNormalizer('query', $queryNormalizer);
+        $resolver->setNormalizer('choice_value', $choiceLabelNormalizer);
         $resolver->setAllowedTypes('query', ['null', 'Propel\Runtime\ActiveQuery\ModelCriteria']);
     }
 
