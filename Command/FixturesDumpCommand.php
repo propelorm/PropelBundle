@@ -62,7 +62,7 @@ EOT
 
         if (!file_exists($path)) {
             $output->writeln("<info>The $path folder does not exists.</info>");
-            if ($this->askConfirmation($output, "<question>Do you want me to create it for you ?</question> [Yes]")) {
+            if ($this->askConfirmation($input, $output, "<question>Do you want me to create it for you ?</question> [Yes]")) {
                 $fs = new Filesystem();
                 $fs->mkdir($path);
                 $this->writeNewDirectory($output, $path);
