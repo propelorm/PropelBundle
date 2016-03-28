@@ -2,20 +2,27 @@
 
 namespace ##NAMESPACE##;
 
-use Propel\Bundle\PropelBundle\Form\BaseAbstractType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ##CLASS## extends BaseAbstractType
+class ##CLASS## extends AbstractType
 {
-    protected $options = array(
-        'data_class' => '##FQCN##',
-        'name'       => '##TYPE_NAME##',
-    );
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {##BUILD_CODE##
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => '##FQCN##',
+            'name'       => '##TYPE_NAME##',
+        ]);
     }
 }
