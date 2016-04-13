@@ -40,6 +40,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected $input;
 
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    protected $tempSchemas = [];
+
     use FormattingHelpers;
 
     /**
@@ -50,6 +57,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $kernel = $this->getApplication()->getKernel();
 
         $this->input = $input;
+        $this->output = $output;
         $this->cacheDir = $kernel->getCacheDir().'/propel';
 
         if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
@@ -85,12 +93,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function copySchemas(KernelInterface $kernel, $cacheDir)
     {
         $filesystem = new Filesystem();
-        $base = ltrim(realpath($kernel->getRootDir().'/..'), DIRECTORY_SEPARATOR);
 
         $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
         foreach ($finalSchemas as $schema) {
+            /** @var Bundle $bundle */
             list($bundle, $finalSchema) = $schema;
-            $packagePrefix = $this->getPackagePrefix($bundle, $base);
 
             $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
             $this->tempSchemas[$tempSchema] = array(
@@ -112,7 +119,8 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 // This is used to override the package resulting from namespace conversion.
                 $database['package'] = $database['package'];
             } elseif (isset($database['namespace'])) {
-                $database['package'] = $packagePrefix . str_replace('\\', '.', $database['namespace']);
+
+                $database['package'] = $this->getPackageFromBundle($bundle, (string)$database['namespace']);
             } else {
                 throw new \RuntimeException(
                     sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
@@ -128,6 +136,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
                     // match the input values
                     unset($this->tempSchemas[$tempSchema]);
                     $filesystem->remove($file);
+                    $this->output->writeln(sprintf(
+                        '<info>Skipped schema %s due to database name missmatch (%s not in [%s]).</info>',
+                        $finalSchema->getPathname(),
+                        $database['name'],
+                        implode(',', $connections)
+                    ));
                     continue;
                 }
             }
@@ -136,7 +150,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 if (isset($table['package'])) {
                     $table['package'] = $table['package'];
                 } elseif (isset($table['namespace'])) {
-                    $table['package'] = $packagePrefix . str_replace('\\', '.', $table['namespace']);
+                    $table['package'] = $this->getPackageFromBundle($bundle, (string)$table['namespace']);
                 } else {
                     $table['package'] = $database['package'];
                 }
@@ -291,26 +305,39 @@ abstract class AbstractCommand extends ContainerAwareCommand
     }
 
     /**
-     * Return the package prefix for a given bundle.
-     *
      * @param Bundle $bundle
-     * @param string $baseDirectory The base directory to exclude from prefix.
+     * @param string $namespace
      *
      * @return string
      */
-    protected function getPackagePrefix(Bundle $bundle, $baseDirectory = '')
+    protected function getPackageFromBundle(Bundle $bundle, $namespace)
     {
-        $parts  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
-        $length = count(explode('\\', $bundle->getNamespace())) * (-1);
+        //find relative path from namespace to bundle->getNamespace()
+        $baseNamespace = (new \ReflectionClass($bundle))->getNamespaceName();
+        if (0 === strpos($namespace, $baseNamespace)) {
+            //base namespace fits
+            //eg.
+            //  Base: Jarves/JarvesBundle => Jarves
+            //  Model namespace: Jarves\Model
+            //  strpos(Jarves\Model, Jarves) === 0
+            // $namespaceDiff = Model
 
-        $prefix = ltrim(implode(DIRECTORY_SEPARATOR, array_slice($parts, 0, $length)), DIRECTORY_SEPARATOR);
-        $prefix = ltrim(substr($prefix, strlen($baseDirectory)), DIRECTORY_SEPARATOR);
+            $namespaceDiff = substr($namespace, strlen($baseNamespace) + 1);
 
-        if (!empty($prefix)) {
-            $prefix = str_replace(DIRECTORY_SEPARATOR, '.', $prefix).'.';
+            $bundlePath = realpath($bundle->getPath()) . '/' . str_replace('\\', '/', $namespaceDiff);
+            $appPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/..');
+
+            $path = static::getRelativePath($bundlePath, $appPath);
+
+            return str_replace('/', '.', $path);
         }
 
-        return $prefix;
+        //does not match or its a absolute path, so return it without suffix
+        if ('\\' === $namespace[0]) {
+            $namespace = substr($namespace, 1);
+        }
+
+        return str_replace('\\', '.', $namespace);
     }
 
     /**
@@ -321,6 +348,32 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getCacheDir()
     {
         return $this->cacheDir;
+    }
+
+    /**
+     * Returns a relative path from $path to $current.
+     *
+     * @param string $from
+     * @param string $to relative to this
+     *
+     * @return string relative path without trailing slash
+     */
+    public static function getRelativePath($from, $to)
+    {
+        $from = '/' . trim($from, '/');
+        $to = '/' . trim($to, '/');
+
+        if (0 === $pos = strpos($from, $to)) {
+            return substr($from, strlen($to) + ('/' === $to ? 0 : 1));
+        }
+
+        $result = '';
+        while ($to && false === strpos($from, $to)) {
+            $result .= '../';
+            $to = substr($to, 0, strrpos($to, '/'));
+        }
+
+        return !$to /*we reached root*/ ? $result . substr($from, 1) : $result. substr($from, strlen($to) + 1);
     }
 
     /**
