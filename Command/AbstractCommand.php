@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;

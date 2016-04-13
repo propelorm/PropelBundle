@@ -8,11 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -37,29 +35,15 @@ trait FormattingHelpers
     }
 
     /**
-     * Asks a confirmation to the user.
+     * Ask confirmation from the user.
      *
-     * The question will be asked until the user answers by nothing, yes, or no.
-     *
-     * @param InputInterface  $input    An Input instance
-     * @param OutputInterface $output   An Output instance
-     * @param string|array    $question The question to ask
-     * @param bool            $default  The default answer if the user enters nothing
-     *
-     * @return bool true if the user has confirmed, false otherwise
+     * @param OutputInterface $output   The output.
+     * @param string          $question A given question.
+     * @param string          $default  A default response.
      */
-    protected function askConfirmation(InputInterface $input, OutputInterface $output, $question, $default = true)
+    protected function askConfirmation(OutputInterface $output, $question, $default = null)
     {
-        $question = new Question($question);
-        do {
-            $answer = $this->getHelperSet()->get('question')->ask($input, $output, $question);
-        } while ($answer && !in_array(strtolower($answer[0]), array('y', 'n')));
-
-        if (false === $default) {
-            return $answer && 'y' == strtolower($answer[0]);
-        }
-
-        return !$answer || 'y' == strtolower($answer[0]);
+        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
     }
 
     /**
@@ -91,7 +75,7 @@ trait FormattingHelpers
     {
         $moreText = $more ? ' To get more details, run the command with the "--verbose" option.' : '';
 
-        $this->writeSection($output, array(
+        return $this->writeSection($output, array(
             '[Propel] Error',
             '',
             'An error has occured during the "' . $taskName . '" task process.' . $moreText

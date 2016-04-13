@@ -9,23 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Form;
+namespace Propel\PropelBundle\Tests\Form;
 
-use Propel\Bundle\PropelBundle\Form\Type\ModelType;
-use Propel\Bundle\PropelBundle\Form\TypeGuesser;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Propel\PropelBundle\Form\TypeGuesser;
+use Propel\PropelBundle\Tests\TestCase;
 use Symfony\Component\Form\Guess\Guess;
 
 class TypeGuesserTest extends TestCase
 {
-    const CLASS_NAME = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
+    const CLASS_NAME = 'Propel\PropelBundle\Tests\Fixtures\Item';
 
-    const UNKNOWN_CLASS_NAME = 'Propel\Bundle\PropelBundle\Tests\Fixtures\UnknownItem';
+    const UNKNOWN_CLASS_NAME = 'Propel\PropelBundle\Tests\Fixtures\UnknownItem';
 
     private $guesser;
 
@@ -86,7 +80,7 @@ class TypeGuesserTest extends TestCase
         $value = $this->guesser->guessType(self::UNKNOWN_CLASS_NAME, 'property');
 
         $this->assertNotNull($value);
-        $this->assertEquals(TextType::class, $value->getType());
+        $this->assertEquals('text', $value->getType());
         $this->assertEquals(Guess::LOW_CONFIDENCE, $value->getConfidence());
     }
 
@@ -95,7 +89,7 @@ class TypeGuesserTest extends TestCase
         $value = $this->guesser->guessType(self::CLASS_NAME, 'property');
 
         $this->assertNotNull($value);
-        $this->assertEquals(TextType::class, $value->getType());
+        $this->assertEquals('text', $value->getType());
         $this->assertEquals(Guess::LOW_CONFIDENCE, $value->getConfidence());
     }
 
@@ -110,7 +104,7 @@ class TypeGuesserTest extends TestCase
         $this->assertEquals($type, $value->getType());
         $this->assertEquals($confidence, $value->getConfidence());
 
-        if ($type === ModelType::class) {
+        if ($type === 'model') {
             $options = $value->getOptions();
 
             $this->assertSame($multiple, $options['multiple']);
@@ -120,16 +114,16 @@ class TypeGuesserTest extends TestCase
     public static function dataProviderForGuessType()
     {
         return array(
-            array('is_active',  CheckboxType::class, Guess::HIGH_CONFIDENCE),
-            array('enabled',    CheckboxType::class, Guess::HIGH_CONFIDENCE),
-            array('id',         IntegerType::class,  Guess::MEDIUM_CONFIDENCE),
-            array('value',      TextType::class,     Guess::MEDIUM_CONFIDENCE),
-            array('price',      NumberType::class,   Guess::MEDIUM_CONFIDENCE),
-            array('updated_at', DateTimeType::class, Guess::HIGH_CONFIDENCE),
+            array('is_active',  'checkbox', Guess::HIGH_CONFIDENCE),
+            array('enabled',    'checkbox', Guess::HIGH_CONFIDENCE),
+            array('id',         'integer',  Guess::MEDIUM_CONFIDENCE),
+            array('value',      'text',     Guess::MEDIUM_CONFIDENCE),
+            array('price',      'number',   Guess::MEDIUM_CONFIDENCE),
+            array('updated_at', 'datetime', Guess::HIGH_CONFIDENCE),
 
-            array('Authors',    ModelType::class,    Guess::HIGH_CONFIDENCE,     true),
-            array('Resellers',  ModelType::class,    Guess::HIGH_CONFIDENCE,     true),
-            array('MainAuthor', ModelType::class,    Guess::HIGH_CONFIDENCE,     false),
+            array('Authors',    'model',    Guess::HIGH_CONFIDENCE,     true),
+            array('Resellers',  'model',    Guess::HIGH_CONFIDENCE,     true),
+            array('MainAuthor', 'model',    Guess::HIGH_CONFIDENCE,     false),
         );
     }
 }

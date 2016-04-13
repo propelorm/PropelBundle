@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\DependencyInjection;
+namespace Propel\PropelBundle\DependencyInjection;
 
 use Propel\Common\Config\PropelConfiguration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -122,7 +122,6 @@ class Configuration extends PropelConfiguration
                             ->useAttributeAsKey('id')
                             ->prototype('array')
                             ->fixXmlConfig('slave')
-                            ->fixXmlConfig('model_path')
                                 ->children()
                                     ->scalarNode('classname')->defaultValue($this->debug ? '\Propel\Runtime\Connection\DebugPDO' : '\Propel\Runtime\Connection\ConnectionWrapper')->end()
                                     ->scalarNode('adapter')
@@ -158,10 +157,6 @@ class Configuration extends PropelConfiguration
                                         ->children()
                                             ->booleanNode('ATTR_EMULATE_PREPARES')->defaultFalse()->end()
                                         ->end()
-                                    ->end()
-                                    ->arrayNode('model_paths')
-                                        ->defaultValue(['src', 'vendor'])
-                                        ->prototype('scalar')->end()
                                     ->end()
                                     ->arrayNode('settings')
                                     ->fixXmlConfig('query', 'queries')

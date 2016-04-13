@@ -8,10 +8,10 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\ObjectIdentity as BaseObjectIdentity;
-use Propel\Bundle\PropelBundle\Model\Acl\Map\ObjectIdentityTableMap;
+use Propel\PropelBundle\Model\Acl\Base\ObjectIdentity as BaseObjectIdentity;
+use Propel\PropelBundle\Model\Acl\Map\ObjectIdentityTableMap;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Connection\ConnectionInterface;
@@ -67,7 +67,7 @@ class ObjectIdentity extends BaseObjectIdentity
      *
      * @param ConnectionInterface $con
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity $this
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity $this
      */
     protected function updateAncestorsTree(ConnectionInterface $con = null)
     {

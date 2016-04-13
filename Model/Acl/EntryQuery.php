@@ -8,11 +8,11 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\EntryQuery as BaseEntryQuery;
-use Propel\Bundle\PropelBundle\Model\Acl\Map\EntryTableMap;
-use Propel\Bundle\PropelBundle\Model\Acl\Map\ObjectIdentityTableMap;
+use Propel\PropelBundle\Model\Acl\Base\EntryQuery as BaseEntryQuery;
+use Propel\PropelBundle\Model\Acl\Map\EntryTableMap;
+use Propel\PropelBundle\Model\Acl\Map\ObjectIdentityTableMap;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Connection\ConnectionInterface;

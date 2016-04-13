@@ -1,8 +1,8 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model;
+namespace Propel\PropelBundle\Tests\Fixtures\Model;
 
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Base\Book as BaseBook;
+use Propel\PropelBundle\Tests\Fixtures\Model\Base\Book as BaseBook;
 
 class Book extends BaseBook
 {

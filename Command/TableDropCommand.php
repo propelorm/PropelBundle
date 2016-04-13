@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
 use Propel\Runtime\Adapter\Pdo\MysqlAdapter;
 use Propel\Runtime\Propel;
@@ -69,7 +69,7 @@ class TableDropCommand extends ContainerAwareCommand
                 'bg=red;fg=white'
             );
 
-            if (false === $this->askConfirmation($input, $output, 'Are you sure ? (y/n) ', false)) {
+            if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                 $output->writeln('<info>Aborted, nice decision !</info>');
 
                 return -2;

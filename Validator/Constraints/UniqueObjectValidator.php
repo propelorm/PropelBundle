@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Validator\Constraints;
+namespace Propel\PropelBundle\Validator\Constraints;
 
 use Propel\Runtime\Map\TableMap;
 

@@ -8,11 +8,11 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\DataFixtures;
+namespace Propel\PropelBundle\Tests\DataFixtures;
 
 use Propel\Generator\Util\QuickBuilder;
 use Propel\Runtime\Propel;
-use Propel\Bundle\PropelBundle\Tests\TestCase as BaseTestCase;
+use Propel\PropelBundle\Tests\TestCase as BaseTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -35,9 +35,9 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        if (!class_exists('Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook')) {
+        if (!class_exists('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook')) {
             $schema = <<<XML
-<database name="default" package="vendor.bundles.Propel.Bundle.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
     <table name="cool_book">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />

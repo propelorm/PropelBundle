@@ -8,15 +8,15 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Model\Acl;
+namespace Propel\PropelBundle\Tests\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Entry;
-use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
-use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\PropelBundle\Model\Acl\Entry;
+use Propel\PropelBundle\Model\Acl\EntryQuery;
+use Propel\PropelBundle\Model\Acl\SecurityIdentity;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
-use Propel\Bundle\PropelBundle\Tests\AclTestCase;
+use Propel\PropelBundle\Tests\AclTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>

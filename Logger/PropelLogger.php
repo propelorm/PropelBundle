@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Logger;
+namespace Propel\PropelBundle\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;

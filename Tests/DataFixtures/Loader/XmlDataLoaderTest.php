@@ -8,11 +8,11 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\DataFixtures\Loader;
+namespace Propel\PropelBundle\Tests\DataFixtures\Loader;
 
 use Propel\Runtime\Propel;
-use Propel\Bundle\PropelBundle\Tests\DataFixtures\TestCase;
-use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
+use Propel\PropelBundle\Tests\DataFixtures\TestCase;
+use Propel\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
@@ -24,10 +24,10 @@ class XmlDataLoaderTest extends TestCase
     {
         $fixtures = <<<XML
 <Fixtures>
-    <CoolBookAuthor Namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
+    <CoolBookAuthor Namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
         <CoolBookAuthor_1 id="1" name="A famous one" />
     </CoolBookAuthor>
-    <CoolBook Namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
+    <CoolBook Namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader">
         <CoolBook_1 id="1" name="An important one" author_id="CoolBookAuthor_1" />
     </CoolBook>
 </Fixtures>
@@ -38,10 +38,10 @@ XML;
         $loader = new XmlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader', array());
         $loader->load(array($filename), 'default');
 
-        $books = \Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookQuery::create()->find($this->con);
         $this->assertCount(1, $books);
 
         $book = $books[0];
-        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor', $book->getCoolBookAuthor());
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBookAuthor', $book->getCoolBookAuthor());
     }
 }

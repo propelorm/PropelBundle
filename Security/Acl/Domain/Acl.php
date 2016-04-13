@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Security\Acl\Domain;
+namespace Propel\PropelBundle\Security\Acl\Domain;
 
 use Propel\Runtime\Collection\ObjectCollection;
 
@@ -20,13 +20,13 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
- * An ACL implementation that is immutable based on data from a ObjectCollection of Propel\Bundle\PropelBundle\Model\Acl\Entry.
+ * An ACL implementation that is immutable based on data from a ObjectCollection of Propel\PropelBundle\Model\Acl\Entry.
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  */
 class Acl implements AclInterface
 {
-    protected $model = '\Propel\Bundle\PropelBundle\Model\Acl\Entry';
+    protected $model = '\Propel\PropelBundle\Model\Acl\Entry';
 
     protected $classAces = array();
     protected $classFieldAces = array();
@@ -303,7 +303,7 @@ class Acl implements AclInterface
      *
      * @param string $field
      *
-     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\Acl $this
      */
     protected function updateFields($field)
     {

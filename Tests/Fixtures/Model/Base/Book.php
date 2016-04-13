@@ -1,11 +1,11 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Base;
+namespace Propel\PropelBundle\Tests\Fixtures\Model\Base;
 
 use \Exception;
 use \PDO;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery as ChildBookQuery;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Map\BookTableMap;
+use Propel\PropelBundle\Tests\Fixtures\Model\BookQuery as ChildBookQuery;
+use Propel\PropelBundle\Tests\Fixtures\Model\Map\BookTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -22,7 +22,7 @@ abstract class Book implements ActiveRecordInterface
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Map\\BookTableMap';
+    const TABLE_MAP = '\\Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Map\\BookTableMap';
 
     /**
      * attribute to determine if this object has previously been saved.

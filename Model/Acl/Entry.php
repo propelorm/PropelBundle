@@ -8,12 +8,12 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\Entry as BaseEntry;
+use Propel\PropelBundle\Model\Acl\Base\Entry as BaseEntry;
 
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry as AclEntry;
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\FieldEntry as AclFieldEntry;
+use Propel\PropelBundle\Security\Acl\Domain\Entry as AclEntry;
+use Propel\PropelBundle\Security\Acl\Domain\FieldEntry as AclFieldEntry;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -29,7 +29,7 @@ class Entry extends BaseEntry
      *
      * @param \Symfony\Component\Security\Acl\Model\EntryInterface $aclEntry
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\Entry
+     * @return \Propel\PropelBundle\Model\Acl\Entry
      */
     public static function fromAclEntry(EntryInterface $aclEntry)
     {
@@ -64,7 +64,7 @@ class Entry extends BaseEntry
     /**
      * Transform a given model entry into an ACL related Entry (ACE).
      *
-     * @param \Propel\Bundle\PropelBundle\Model\Acl\Entry        $modelEntry
+     * @param \Propel\PropelBundle\Model\Acl\Entry               $modelEntry
      * @param \Symfony\Component\Security\Acl\Model\AclInterface $acl
      *
      * @return \Symfony\Component\Security\Acl\Model\EntryInterface

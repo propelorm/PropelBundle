@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\ObjectIdentityAncestorQuery as BaseObjectIdentityAncestorQuery;
+use Propel\PropelBundle\Model\Acl\Base\ObjectIdentityAncestorQuery as BaseObjectIdentityAncestorQuery;
 
 class ObjectIdentityAncestorQuery extends BaseObjectIdentityAncestorQuery
 {

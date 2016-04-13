@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\DataCollector;
+namespace Propel\PropelBundle\DataCollector;
 
-use Propel\Bundle\PropelBundle\Logger\PropelLogger;
+use Propel\PropelBundle\Logger\PropelLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;

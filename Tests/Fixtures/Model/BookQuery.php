@@ -1,11 +1,11 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model;
+namespace Propel\PropelBundle\Tests\Fixtures\Model;
 
 use Propel\Runtime\Connection\ConnectionInterface;
 
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Base\BookQuery as BaseBookQuery;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book;
+use Propel\PropelBundle\Tests\Fixtures\Model\Base\BookQuery as BaseBookQuery;
+use Propel\PropelBundle\Tests\Fixtures\Model\Book;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'book' table.

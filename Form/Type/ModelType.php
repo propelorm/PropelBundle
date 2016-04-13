@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Form\Type;
+namespace Propel\PropelBundle\Form\Type;
 
-use Propel\Bundle\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
+use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
+use Propel\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -102,24 +101,19 @@ class ModelType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return ChoiceType::class;
+        $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getParent()
     {
-        return 'model';
+        return 'choice';
     }
 
     public function getName()
     {
-        return $this->getBlockPrefix();
+        return 'model';
     }
 }

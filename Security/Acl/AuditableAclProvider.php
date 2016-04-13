@@ -8,10 +8,10 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Security\Acl;
+namespace Propel\PropelBundle\Security\Acl;
 
 use Propel\Runtime\Collection\ObjectCollection;
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl;
+use Propel\PropelBundle\Security\Acl\Domain\AuditableAcl;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -30,7 +30,7 @@ class AuditableAclProvider extends MutableAclProvider
      * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
      * @param bool                                                          $inherited
      *
-     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl
      */
     protected function getAcl(ObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures;
+namespace Propel\PropelBundle\Tests\Fixtures;
 
 use Propel\Runtime\Map\ColumnMap;
 use Propel\Runtime\Map\RelationMap;

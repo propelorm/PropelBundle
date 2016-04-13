@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Service;
+namespace Propel\PropelBundle\Service;
 
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Finder\Finder;

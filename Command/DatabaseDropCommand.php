@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
 use Propel\Runtime\Propel;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,7 +61,7 @@ EOT
         if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
             $this->writeSection($output, 'WARNING: you are about to drop a database in production !', 'bg=red;fg=white');
 
-            if (false === $this->askConfirmation($input, $output, 'Are you sure ? (y/n) ', false)) {
+            if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                 $output->writeln('Aborted, nice decision !');
 
                 return -2;

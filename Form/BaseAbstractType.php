@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Form;
+namespace Propel\PropelBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 abstract class BaseAbstractType extends AbstractType
 {
-    protected $options = array();
+    protected $options = array(
+        'name' => '',
+    );
 
     public function __construct($mergeOptions = null)
     {
@@ -61,11 +63,17 @@ abstract class BaseAbstractType extends AbstractType
         $resolver->setDefaults($this->options);
     }
 
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return get_class($this);
+        return $this->getOption('name');
     }
 }

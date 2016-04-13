@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\DataFixtures;
+namespace Propel\PropelBundle\DataFixtures;
 
 use Propel\Runtime\Map\DatabaseMap;
 use Propel\Runtime\Propel;
@@ -146,8 +146,8 @@ abstract class AbstractDataHandler
     {
         $searchPath = array();
 
-        if (!empty($this->datasources['database']['connections'][$connectionName]['model_paths'])) {
-            $modelPaths = $this->datasources['database']['connections'][$connectionName]['model_paths'];
+        if (!empty($this->datasources[$connectionName]['connection']['model_paths'])) {
+            $modelPaths = $this->datasources[$connectionName]['connection']['model_paths'];
             foreach ($modelPaths as $modelPath) {
                 $searchPath[] = $this->getRootDir() . '/../' . $modelPath;
             }

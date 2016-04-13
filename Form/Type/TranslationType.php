@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Form\Type;
+namespace Propel\PropelBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Propel\Bundle\PropelBundle\Form\EventListener\TranslationFormListener;
+use Propel\PropelBundle\Form\EventListener\TranslationFormListener;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -37,6 +37,14 @@ class TranslationType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getName()
+    {
+        return 'propel_translation';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array(
@@ -45,16 +53,9 @@ class TranslationType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return 'propel_translation';
-    }
-
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        $this->configureOptions($resolver);
     }
 }

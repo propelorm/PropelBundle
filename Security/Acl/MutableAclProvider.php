@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Security\Acl;
+namespace Propel\PropelBundle\Security\Acl;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Collection\ObjectCollection;
@@ -16,16 +16,16 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ServiceContainer\ServiceContainerInterface;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Entry as ModelEntry;
-use Propel\Bundle\PropelBundle\Model\Acl\Map\EntryTableMap;
-use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
-use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity;
-use Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery;
+use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
+use Propel\PropelBundle\Model\Acl\Map\EntryTableMap;
+use Propel\PropelBundle\Model\Acl\EntryQuery;
+use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\PropelBundle\Model\Acl\ObjectIdentity;
+use Propel\PropelBundle\Model\Acl\ObjectIdentityQuery;
 
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl;
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl;
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\Entry;
+use Propel\PropelBundle\Security\Acl\Domain\Acl;
+use Propel\PropelBundle\Security\Acl\Domain\MutableAcl;
+use Propel\PropelBundle\Security\Acl\Domain\Entry;
 
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 use Symfony\Component\Security\Acl\Exception\Exception as AclException;
@@ -72,7 +72,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      *
-     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */
     public function createAcl(ObjectIdentityInterface $objectIdentity)
     {
@@ -169,7 +169,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     public function updateAcl(MutableAclInterface $acl)
     {
         if (!$acl instanceof MutableAcl) {
-            throw new \InvalidArgumentException('The given ACL is not tracked by this provider. Please provide \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl only.');
+            throw new \InvalidArgumentException('The given ACL is not tracked by this provider. Please provide \Propel\PropelBundle\Security\Acl\Domain\MutableAcl only.');
         }
 
         try {
@@ -229,9 +229,9 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
     /**
      * Persist the given ACEs.
      *
-     * @param array                                                $accessControlEntries
-     * @param \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
-     * @param bool                                                 $object
+     * @param array                                         $accessControlEntries
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
+     * @param bool                                          $object
      *
      * @return array The IDs of the persisted ACEs.
      */
@@ -286,7 +286,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      *
      * @param \Symfony\Component\Security\Acl\Model\EntryInterface $ace
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\Entry|null
+     * @return \Propel\PropelBundle\Model\Acl\Entry|null
      */
     protected function getPersistedAce(EntryInterface $ace, ObjectIdentity $objectIdentity, $object = false)
     {
@@ -331,7 +331,7 @@ class MutableAclProvider extends AclProvider implements MutableAclProviderInterf
      * @param \Symfony\Component\Security\Acl\Model\AclInterface            $parentAcl
      * @param bool                                                          $inherited
      *
-     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl
+     * @return \Propel\PropelBundle\Security\Acl\Domain\MutableAcl
      */
     protected function getAcl(ObjectCollection $collection, ObjectIdentityInterface $objectIdentity, array $loadedSecurityIdentities = array(), AclInterface $parentAcl = null, $inherited = true)
     {

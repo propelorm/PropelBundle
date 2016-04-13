@@ -115,12 +115,12 @@
                     <code>{{ query.sql|format_sql|raw }}</code>
                     {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                         <div class="SQLExplain">
-                        {{ render(controller('PropelBundle:Panel:explain', {
+                        {% render controller('PropelBundle:Panel:explain', {
                             'token': token,
                             'panel': 'propel',
                             'query': app.request.query.get('query'),
                             'connection': app.request.query.get('connection')
-                        })) }}
+                        }) %}
                         </div>
                     {% endif %}
                     <div class="SQLInfo">
@@ -136,7 +136,7 @@
                             <div class="{{
                             (': Symfony\\Component' in trace
                                 or ': Propel\\Runtime' in trace
-                                or ': Propel\\Bundle\\PropelBundle' in trace
+                                or ': Propel\\PropelBundle' in trace
                                 or ': call_user_func(Object(Symfony\\Component' in trace
                                 or ': call_user_func(Array, Object(Symfony\\Component' in trace
                             ) ? 'gray' : 'regular' }}">{{ trace }}</div>
@@ -149,5 +149,5 @@
         </tbody>
     </table>
 
-    {{ render(controller('PropelBundle:Panel:configuration')) }}
+    {% render controller('PropelBundle:Panel:configuration') %}
 {% endblock %}

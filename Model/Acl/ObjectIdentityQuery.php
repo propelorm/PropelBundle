@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\ObjectIdentityQuery as BaseObjectIdentityQuery;
+use Propel\PropelBundle\Model\Acl\Base\ObjectIdentityQuery as BaseObjectIdentityQuery;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Connection\ConnectionInterface;
@@ -25,7 +25,7 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param ConnectionInterface                                           $con
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentityQuery $this
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentityQuery $this
      */
     public function filterByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, ConnectionInterface $con = null)
     {
@@ -48,7 +48,7 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param ConnectionInterface                                           $con
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity
+     * @return \Propel\PropelBundle\Model\Acl\ObjectIdentity
      */
     public function findOneByAclObjectIdentity(ObjectIdentityInterface $objectIdentity, ConnectionInterface $con = null)
     {
@@ -61,8 +61,8 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Return all children of the given object identity.
      *
-     * @param \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
-     * @param ConnectionInterface                                  $con
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
+     * @param ConnectionInterface                           $con
      *
      * @return \PropelObjectCollection
      */
@@ -77,8 +77,8 @@ class ObjectIdentityQuery extends BaseObjectIdentityQuery
     /**
      * Return all children and grand-children of the given object identity.
      *
-     * @param \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
-     * @param ConnectionInterface                                  $con
+     * @param \Propel\PropelBundle\Model\Acl\ObjectIdentity $objectIdentity
+     * @param ConnectionInterface                           $con
      *
      * @return \PropelObjectCollection
      */

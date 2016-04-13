@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Form\Type;
+namespace Propel\PropelBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Propel\Bundle\PropelBundle\Form\EventListener\TranslationCollectionFormListener;
+use Propel\PropelBundle\Form\EventListener\TranslationCollectionFormListener;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * form type for i18n-columns in propel
@@ -30,15 +30,28 @@ class TranslationCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!isset($options['entry_options']['data_class']) || null === $options['entry_options']['data_class']) {
+        if (!isset($options['options']['data_class']) || null === $options['options']['data_class']) {
             throw new MissingOptionsException('data_class must be set');
         }
-        if (!isset($options['entry_options']['columns']) || null === $options['entry_options']['columns']) {
+        if (!isset($options['options']['columns']) || null === $options['options']['columns']) {
             throw new MissingOptionsException('columns must be set');
         }
 
-        $listener = new TranslationCollectionFormListener($options['languages'], $options['entry_options']['data_class']);
+        $listener = new TranslationCollectionFormListener($options['languages'], $options['options']['data_class']);
         $builder->addEventSubscriber($listener);
+    }
+
+    public function getParent()
+    {
+        return 'collection';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'propel_translation_collection';
     }
 
     /**
@@ -51,34 +64,19 @@ class TranslationCollectionType extends AbstractType
         ));
 
         $resolver->setDefaults(array(
-            'entry_type'    => TranslationType::class,
+            'type'          => 'propel_translation',
             'allow_add'     => false,
             'allow_delete'  => false,
-            'entry_options' => array(
+            'options'       => array(
                 'data_class'    => null,
                 'columns'       => null
             )
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return CollectionType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'propel_translation_collection';
-    }
-
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        $this->configureOptions($resolver);
     }
 }

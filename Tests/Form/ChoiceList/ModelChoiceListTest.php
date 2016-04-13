@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Form\ChoiceList;
+namespace Propel\PropelBundle\Tests\Form\ChoiceList;
 
-use Propel\Bundle\PropelBundle\Form\ChoiceList\ModelChoiceList;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\ReadOnlyItem;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\Form\ChoiceList\ModelChoiceList;
+use Propel\PropelBundle\Tests\Fixtures\Item;
+use Propel\PropelBundle\Tests\Fixtures\ReadOnlyItem;
+use Propel\PropelBundle\Tests\TestCase;
 
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 class ModelChoiceListTest extends TestCase
 {
-    const ITEM_CLASS = '\Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
+    const ITEM_CLASS = '\Propel\PropelBundle\Tests\Fixtures\Item';
 
     protected function setUp()
     {
@@ -48,7 +48,7 @@ class ModelChoiceListTest extends TestCase
     {
         $item = new ReadOnlyItem();
         $choiceList = new ModelChoiceList(
-            '\Propel\Bundle\PropelBundle\Tests\Fixtures\ReadOnlyItem',
+            '\Propel\PropelBundle\Tests\Fixtures\ReadOnlyItem',
             'name',
             array(
                 $item,

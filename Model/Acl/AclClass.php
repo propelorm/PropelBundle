@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Model\Acl;
+namespace Propel\PropelBundle\Model\Acl;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Base\AclClass as BaseAclClass;
+use Propel\PropelBundle\Model\Acl\Base\AclClass as BaseAclClass;
 use Propel\Runtime\Connection\ConnectionInterface;
 
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -25,7 +25,7 @@ class AclClass extends BaseAclClass
      * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $objectIdentity
      * @param ConnectionInterface                                           $con
      *
-     * @return \Propel\Bundle\PropelBundle\Model\Acl\AclClass
+     * @return \Propel\PropelBundle\Model\Acl\AclClass
      */
     public static function fromAclObjectIdentity(ObjectIdentityInterface $objectIdentity, ConnectionInterface $con = null)
     {

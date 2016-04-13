@@ -8,9 +8,9 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Security\Acl\Domain;
+namespace Propel\PropelBundle\Security\Acl\Domain;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Entry as ModelEntry;
+use Propel\PropelBundle\Model\Acl\Entry as ModelEntry;
 
 use Symfony\Component\Security\Acl\Model\AuditableAclInterface;
 
@@ -81,7 +81,7 @@ class AuditableAcl extends MutableAcl implements AuditableAclInterface
      * @param bool  $auditSuccess
      * @param bool  $auditFailure
      *
-     * @return \Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl $this
+     * @return \Propel\PropelBundle\Security\Acl\Domain\AuditableAcl $this
      */
     protected function updateAuditing(array &$list, $index, $auditSuccess, $auditFailure)
     {

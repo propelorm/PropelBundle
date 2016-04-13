@@ -8,14 +8,14 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Security\Acl\Domain;
+namespace Propel\PropelBundle\Tests\Security\Acl\Domain;
 
 use Propel\Runtime\Collection\ObjectCollection;
 
-use Propel\Bundle\PropelBundle\Model\Acl\Entry;
-use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl;
-use Propel\Bundle\PropelBundle\Tests\AclTestCase;
+use Propel\PropelBundle\Model\Acl\Entry;
+use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\PropelBundle\Security\Acl\Domain\MutableAcl;
+use Propel\PropelBundle\Tests\AclTestCase;
 
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
@@ -28,7 +28,7 @@ class MutableAclTest extends AclTestCase
     public function testConstructorInvalidCollection()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\AclClass');
+        $collection->setModel('Propel\PropelBundle\Model\Acl\AclClass');
 
         $this->setExpectedException('Symfony\Component\Security\Acl\Exception\Exception');
         new MutableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy(), array(), null, false, $this->con);
@@ -226,7 +226,7 @@ class MutableAclTest extends AclTestCase
     public function testUpdatePersistedAceKeepsId()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();
         $entry
@@ -247,7 +247,7 @@ class MutableAclTest extends AclTestCase
     public function testSerializeUnserialize()
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         $entry = $this->createEntry();
         $entry
@@ -262,14 +262,14 @@ class MutableAclTest extends AclTestCase
 
         $this->assertNotEmpty($serialized);
         $this->assertNotEmpty($unserialized);
-        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\MutableAcl', $unserialized);
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\MutableAcl', $unserialized);
         $this->assertEquals($serialized, serialize($unserialized));
     }
 
     protected function createEmptyAcl($identifier = 1, array $securityIdentities = array(), AclInterface $parentAcl = null, $inherited = null)
     {
         $collection = new ObjectCollection();
-        $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\Entry');
+        $collection->setModel('Propel\PropelBundle\Model\Acl\Entry');
 
         return new MutableAcl($collection, $this->getAclObjectIdentity($identifier), new PermissionGrantingStrategy(), $securityIdentities, $parentAcl, $inherited, $this->con);
     }

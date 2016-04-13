@@ -8,10 +8,10 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
+namespace Propel\PropelBundle\DataFixtures\Loader;
 
-use Propel\Bundle\PropelBundle\DataFixtures\AbstractDataHandler;
-use Propel\Bundle\PropelBundle\Util\PropelInflector;
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use Propel\PropelBundle\Util\PropelInflector;
 use Propel\Generator\Model\PropelTypes;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Map\Exception\TableNotFoundException;

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Propel\Bundle\PropelBundle\Form\EventListener;
+namespace Propel\PropelBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

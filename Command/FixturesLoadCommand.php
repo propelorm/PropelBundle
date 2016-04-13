@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Command;
+namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
@@ -168,7 +168,7 @@ EOT
             return -1;
         }
 
-        $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
+        $connectionName = $input->getOption('connection');
 
         if ('yml' === $type) {
             $loader = $this->getContainer()->get('propel.loader.yaml');

@@ -8,21 +8,21 @@
  * @license    MIT License
  */
 
-namespace Propel\Bundle\PropelBundle\Tests\Security\Acl;
+namespace Propel\PropelBundle\Tests\Security\Acl;
 
 use Propel\Runtime\Map\TableMap;
 
-use Propel\Bundle\PropelBundle\Model\Acl\SecurityIdentity;
-use Propel\Bundle\PropelBundle\Model\Acl\EntryQuery;
-use Propel\Bundle\PropelBundle\Model\Acl\Map\EntryTableMap;
+use Propel\PropelBundle\Model\Acl\SecurityIdentity;
+use Propel\PropelBundle\Model\Acl\EntryQuery;
+use Propel\PropelBundle\Model\Acl\Map\EntryTableMap;
 
-use Propel\Bundle\PropelBundle\Security\Acl\AclProvider;
+use Propel\PropelBundle\Security\Acl\AclProvider;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 
-use Propel\Bundle\PropelBundle\Tests\AclTestCase;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
+use Propel\PropelBundle\Tests\AclTestCase;
+use Propel\PropelBundle\Tests\Fixtures\Acl\ArrayCache as AclCache;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -59,7 +59,7 @@ class AclProviderTest extends AclTestCase
         $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(1), array($this->getRoleSecurityIdentity('ROLE_USER')));
 
         $this->assertNotEmpty($acl);
-        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl', $acl);
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $acl);
 
         $this->assertEmpty($acl->getFields());
         $this->assertEmpty($acl->getClassAces());
@@ -106,8 +106,8 @@ class AclProviderTest extends AclTestCase
         $acl = $this->getAclProvider()->findAcl($this->getAclObjectIdentity(2), array($this->getRoleSecurityIdentity('ROLE_USER')));
         $parent = $acl->getParentAcl();
 
-        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl', $acl);
-        $this->assertInstanceOf('Propel\Bundle\PropelBundle\Security\Acl\Domain\Acl', $parent);
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $acl);
+        $this->assertInstanceOf('Propel\PropelBundle\Security\Acl\Domain\Acl', $parent);
 
         $aces = $acl->getObjectAces();
         $parentAces = $parent->getObjectAces();
