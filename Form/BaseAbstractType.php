@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author William DURAND <william.durand1@gmail.com>
+ * @deprecated use AbstractType directly
  */
 abstract class BaseAbstractType extends AbstractType
 {

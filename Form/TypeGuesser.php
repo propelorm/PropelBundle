@@ -12,8 +12,10 @@
 namespace Propel\Bundle\PropelBundle\Form;
 
 use Propel\Bundle\PropelBundle\Form\Type\ModelType;
+use Propel\Runtime\Map\ColumnMap;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Generator\Model\PropelTypes;
+use Propel\Runtime\Map\TableMap;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -164,6 +166,11 @@ class TypeGuesser implements FormTypeGuesserInterface
         }
     }
 
+    /**
+     * @param string $class
+     *
+     * @return TableMap|null
+     */
     protected function getTable($class)
     {
         if (isset($this->cache[$class])) {
@@ -175,8 +182,16 @@ class TypeGuesser implements FormTypeGuesserInterface
 
             return $this->cache[$class] = $query->getTableMap();
         }
+        
+        return null;
     }
 
+    /**
+     * @param string $class
+     * @param string $property
+     *
+     * @return ColumnMap|null
+     */
     protected function getColumn($class, $property)
     {
         if (isset($this->cache[$class.'::'.$property])) {
@@ -188,5 +203,7 @@ class TypeGuesser implements FormTypeGuesserInterface
         if ($table && $table->hasColumn($property)) {
             return $this->cache[$class.'::'.$property] = $table->getColumn($property);
         }
+
+        return null;
     }
 }
