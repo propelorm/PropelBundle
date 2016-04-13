@@ -50,6 +50,12 @@ class PropelParamConverter implements ParamConverterInterface
     protected $withs;
 
     /**
+     * name of method use to call a query method
+     * @var string
+     */
+    protected $queryMethod;
+
+    /**
      * @var bool
      */
     protected $hasWith = false;
@@ -125,15 +131,24 @@ class PropelParamConverter implements ParamConverterInterface
 
         $this->withs = isset($options['with']) ? is_array($options['with']) ? $options['with'] : array($options['with']) : array();
 
-        // find by Pk
-        if (false === $object = $this->findPk($classQuery, $request)) {
-            // find by criteria
-            if (false === $object = $this->findOneBy($classQuery, $request)) {
-                if ($configuration->isOptional()) {
-                    //we find nothing but the object is optional
-                    $object = null;
-                } else {
-                    throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
+        $this->queryMethod = $queryMethod = isset($options['query_method']) ? $options['query_method'] : null;
+
+        if ($this->queryMethod != null && method_exists($classQuery, $this->queryMethod)) {
+            // find by custom method
+            $query = $this->getQuery($classQuery);
+            // execute a custom query
+            $object = $query->$queryMethod($request->attributes);
+        } else {
+            // find by Pk
+            if (false === $object = $this->findPk($classQuery, $request)) {
+                // find by criteria
+                if (false === $object = $this->findOneBy($classQuery, $request)) {
+                    if ($configuration->isOptional()) {
+                        //we find nothing but the object is optional
+                        $object = null;
+                    } else {
+                        throw new \LogicException('Unable to guess how to get a Propel object from the request information.');
+                    }
                 }
             }
         }
