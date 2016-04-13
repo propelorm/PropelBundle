@@ -21,8 +21,8 @@ As `Propel2` will be released in the near future, we are migrating the branching
  * Insertion of SQL statements;
  * Runtime autoloading of Propel and generated classes;
  * Propel runtime initialization through the XML configuration;
- * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html);
- * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database);
+ * [Propel Migrations](http://propelorm.org/documentation/09-migrations.html);
+ * Reverse engineering from [existing database](http://propelorm.org/documentation/cookbook/working-with-existing-databases.html);
  * Integration to the Symfony2 Profiler;
  * Load SQL, YAML and XML fixtures;
  * Create/Drop databases;
@@ -30,11 +30,7 @@ As `Propel2` will be released in the near future, we are migrating the branching
  * Integration with the Security component;
  * Propel ParamConverter can be used with Sensio Framework Extra Bundle.
 
-For documentation, see:
-
-    Resources/doc/
-
-[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.1/Resources/doc/index.markdown)
+[Read the documentation](http://propelorm.org/documentation/)
 
 For license, see:
 
