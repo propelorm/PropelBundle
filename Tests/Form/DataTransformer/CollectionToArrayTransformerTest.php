@@ -57,14 +57,14 @@ class CollectionToArrayTransformerTest extends TestCase
     public function testTransformWithData()
     {
         $coll = new ObjectCollection();
-        $coll->setData(array('foo', 'bar'));
+        $coll->setData(array($a = new \stdClass, $b = new \stdClass));
 
         $result = $this->transformer->transform($coll);
 
         $this->assertTrue(is_array($result));
         $this->assertEquals(2, count($result));
-        $this->assertEquals('foo', $result[0]);
-        $this->assertEquals('bar', $result[1]);
+        $this->assertSame($a, $result[0]);
+        $this->assertSame($b, $result[1]);
     }
 
     public function testReverseTransformWithNull()
@@ -93,7 +93,7 @@ class CollectionToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithData()
     {
-        $inputData  = array('foo', 'bar');
+        $inputData  = array($a = new \stdClass, $b = new \stdClass);
 
         $result     = $this->transformer->reverseTransform($inputData);
         $data       = $result->getData();
@@ -102,8 +102,8 @@ class CollectionToArrayTransformerTest extends TestCase
 
         $this->assertTrue(is_array($data));
         $this->assertEquals(2, count($data));
-        $this->assertEquals('foo', $data[0]);
-        $this->assertEquals('bar', $data[1]);
+        $this->assertSame($a, $data[0]);
+        $this->assertSame($b, $data[1]);
         $this->assertsame($inputData, $data);
     }
 }

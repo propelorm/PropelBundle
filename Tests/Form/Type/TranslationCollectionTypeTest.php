@@ -16,7 +16,9 @@ use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
 use Propel\Bundle\PropelBundle\Form\PropelExtension;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItem;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 class TranslationCollectionTypeTest extends TypeTestCase
 {
@@ -42,7 +44,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
         $item->addTranslatableItemI18n(new TranslatableItemI18n(1, 'fr', 'val1'));
         $item->addTranslatableItemI18n(new TranslatableItemI18n(2, 'en', 'val2'));
 
-        $builder = $this->factory->createBuilder('form', null, array(
+        $builder = $this->factory->createBuilder(FormType::class, null, array(
             'data_class' => self::TRANSLATION_CLASS
         ));
 
@@ -50,7 +52,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
             'languages' => array('en', 'fr'),
             'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
-                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
+                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => TextareaType::class))
             )
         ));
         $form = $builder->getForm();
@@ -69,7 +71,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
 
         $columnOptions = $translations['fr']->getConfig()->getOption('columns');
         $this->assertEquals('value', $columnOptions[0]);
-        $this->assertEquals('textarea', $columnOptions['value2']['type']);
+        $this->assertEquals(TextareaType::class, $columnOptions['value2']['type']);
         $this->assertEquals('Label', $columnOptions['value2']['label']);
     }
 
@@ -79,14 +81,14 @@ class TranslationCollectionTypeTest extends TypeTestCase
 
         $this->assertCount(0, $item->getTranslatableItemI18ns());
 
-        $builder = $this->factory->createBuilder('form', null, array(
+        $builder = $this->factory->createBuilder(FormType::class, null, array(
             'data_class' => self::TRANSLATION_CLASS
         ));
         $builder->add('translatableItemI18ns', TranslationCollectionType::class, array(
             'languages' => array('en', 'fr'),
             'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
-                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
+                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => TextareaType::class))
             )
         ));
 
@@ -103,14 +105,14 @@ class TranslationCollectionTypeTest extends TypeTestCase
     {
         $item = new Item(null, 'val');
 
-        $builder = $this->factory->createBuilder('form', null, array(
+        $builder = $this->factory->createBuilder(FormType::class, null, array(
             'data_class' => self::NON_TRANSLATION_CLASS
         ));
         $builder->add('value', TranslationCollectionType::class, array(
             'languages' => array('en', 'fr'),
             'entry_options' => array(
                 'data_class' => self::TRANSLATABLE_I18N_CLASS,
-                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => 'textarea'))
+                'columns' => array('value', 'value2' => array('label' => 'Label', 'type' => TextareaType::class))
             )
         ));
 
