@@ -1,9 +1,9 @@
 PropelBundle
 ============
 
-[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=2.0)](https://travis-ci.org/propelorm/PropelBundle)
+[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=3.0)](https://travis-ci.org/propelorm/PropelBundle)
 
-This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony 2.
+This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony 3.
 
 ## Branching model
 
