@@ -60,14 +60,13 @@ class UniqueObjectValidator extends ConstraintValidator
                 );
             }
 
-            $this->context->addViolationAt(
-                $constraint->errorPath,
-                $constraint->message,
-                array(
+            $this->context->buildViolation($constraint->message)
+                ->atPath($constraint->errorPath)
+                ->setParameters(array(
                     '{{ object_class }}' => $class,
                     '{{ fields }}' => implode($constraint->messageFieldSeparator, $fieldParts)
-                )
-            );
+                ))
+                ->addViolation();
 
         }
     }
