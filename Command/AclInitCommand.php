@@ -82,22 +82,28 @@ EOT
             return 2;
         }
 
-        // insert sql
-        $sqlInsertCmd = new \Propel\Generator\Command\SqlInsertCommand();
-        $sqlInsertArgs = array(
-            '--connection' => $this->getConnections($input->getOption('connection')),
-        );
-
-        if ($this->runCommand($sqlBuildCmd, $sqlBuildArgs, $input, $output) === 0) {
-            $this->writeSection(
-                $output,
-                '<comment>1</comment> <info>SQL file has been inserted.</info>'
+        
+        if ($input->getOption('force')) {
+            // insert sql
+            $sqlInsertCmd = new \Propel\Generator\Command\SqlInsertCommand();
+            $sqlInsertArgs = array(
+                '--connection' => $this->getConnections($input->getOption('connection')),
+                '--sql-dir' => $this->getCacheDir(),
             );
-        } else {
-            $this->writeTaskError($output, 'sql:insert');
 
-            return 3;
+            if ($this->runCommand($sqlInsertCmd, $sqlInsertArgs, $input, $output) === 0) {
+                $this->writeSection(
+                    $output,
+                    '<comment>1</comment> <info>SQL file has been inserted.</info>'
+                );
+            } else {
+                $this->writeTaskError($output, 'sql:insert');
+
+                return 3;
+            }
         }
+
+        return 0;
     }
 
     /**
