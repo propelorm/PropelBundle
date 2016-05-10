@@ -3,7 +3,7 @@ PropelBundle
 
 [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=3.0)](https://travis-ci.org/propelorm/PropelBundle)
 
-This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony 3.
+This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony.
 
 ## Branching model
 
@@ -23,7 +23,7 @@ As `Propel2` will be released in the near future, we are migrating the branching
  * Propel runtime initialization through the XML configuration;
  * [Propel Migrations](http://propelorm.org/documentation/09-migrations.html);
  * Reverse engineering from [existing database](http://propelorm.org/documentation/cookbook/working-with-existing-databases.html);
- * Integration to the Symfony2 Profiler;
+ * Integration to the Symfony Profiler;
  * Load SQL, YAML and XML fixtures;
  * Create/Drop databases;
  * Integration with the Form component;
