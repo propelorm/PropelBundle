@@ -76,45 +76,37 @@ class TableDropCommand extends ContainerAwareCommand
             }
         }
 
-        try {
-            $showStatement = $connection->prepare('SHOW TABLES;');
-            $showStatement->execute();
+        $showStatement = $connection->prepare('SHOW TABLES;');
+        $showStatement->execute();
 
-            $allTables = $showStatement->fetchAll(\PDO::FETCH_COLUMN);
+        $allTables = $showStatement->fetchAll(\PDO::FETCH_COLUMN);
 
-            if ($nbTable) {
-                foreach ($tablesToDelete as $tableToDelete) {
-                    if (!array_search($tableToDelete, $allTables)) {
-                        throw new \InvalidArgumentException(sprintf('Table %s doesn\'t exist in the database.', $tableToDelete));
-                    }
+        if ($nbTable) {
+            foreach ($tablesToDelete as $tableToDelete) {
+                if (!array_search($tableToDelete, $allTables)) {
+                    throw new \InvalidArgumentException(sprintf('Table %s doesn\'t exist in the database.', $tableToDelete));
                 }
-            } else {
-                $tablesToDelete = $allTables;
             }
-
-            $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
-
-            array_walk($tablesToDelete, function (&$table, $key, $dbAdapter) {
-                $table = $dbAdapter->quoteIdentifierTable($table);
-            }, $adapter);
-
-            $tablesToDelete = join(', ', $tablesToDelete);
-
-            if ('' !== $tablesToDelete) {
-                $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
-
-                $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
-            } else {
-                $output->writeln('<info>No tables have been dropped</info>');
-            }
-
-            $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
-        } catch (\Exception $e) {
-            $this->writeSection($output, array(
-                '[Propel] Exception caught',
-                '',
-                $e->getMessage()
-            ), 'fg=white;bg=red');
+        } else {
+            $tablesToDelete = $allTables;
         }
+
+        $connection->exec('SET FOREIGN_KEY_CHECKS = 0;');
+
+        array_walk($tablesToDelete, function (&$table, $key, $dbAdapter) {
+            $table = $dbAdapter->quoteIdentifierTable($table);
+        }, $adapter);
+
+        $tablesToDelete = join(', ', $tablesToDelete);
+
+        if ('' !== $tablesToDelete) {
+            $connection->exec('DROP TABLE ' . $tablesToDelete . ' ;');
+
+            $output->writeln(sprintf('Table' . $tablePlural . ' <info><comment>%s</comment> has been dropped.</info>', $tablesToDelete));
+        } else {
+            $output->writeln('<info>No tables have been dropped</info>');
+        }
+
+        $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }
