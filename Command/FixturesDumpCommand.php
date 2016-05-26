@@ -74,16 +74,7 @@ EOT
         $filename = $path . '/fixtures_' . time() . '.yml';
         $dumper = $this->getContainer()->get('propel.dumper.yaml');
 
-        try {
-            $dumper->dump($filename, $input->getOption('connection'));
-        } catch (\Exception $e) {
-            $this->writeSection($output, array(
-                '[Propel] Exception',
-                '',
-                $e->getMessage()), 'fg=white;bg=red');
-
-            return false;
-        }
+        $dumper->dump($filename, $input->getOption('connection'));
 
         $this->writeNewFile($output, $filename);
 
