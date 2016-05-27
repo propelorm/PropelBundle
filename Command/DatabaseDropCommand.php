@@ -79,17 +79,9 @@ EOT
             $query  = 'DROP DATABASE '. $dbName .';';
         }
 
-        try {
-            $statement = $connection->prepare($query);
-            $statement->execute();
+        $statement = $connection->prepare($query);
+        $statement->execute();
 
-            $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
-        } catch (\Exception $e) {
-            $this->writeSection($output, array(
-                '[Propel] Exception caught',
-                '',
-                $e->getMessage()
-            ), 'fg=white;bg=red');
-        }
+        $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
     }
 }
