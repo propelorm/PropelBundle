@@ -121,7 +121,6 @@ class ModelType extends AbstractType
     {
         if ($options['multiple']) {
             $builder
-            #    ->addEventSubscriber(new MergeDoctrineCollectionListener())
                 ->addViewTransformer(new CollectionToArrayTransformer(), true)
             ;
         }
@@ -233,6 +232,7 @@ class ModelType extends AbstractType
             'choice_name' => $choiceName,
             'choice_value' => $choiceValue,
             'choice_translation_domain' => false,
+            'by_reference' => false,
         ]);
 
         $resolver->setRequired(array('class'));
