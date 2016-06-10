@@ -109,7 +109,8 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
         // Optimize performance in case we have a single-field identifier
         if (!$this->choiceList && $this->identifierAsIndex && current($this->identifier) instanceof ColumnMap) {
             $phpName = current($this->identifier)->getPhpName();
-            $unorderedObjects = $this->query->filterBy($phpName, $values);
+            $query = clone $this->query;
+            $unorderedObjects = $query->filterBy($phpName, $values, \Criteria::IN)->find();
             $objectsById = array();
             $objects = array();
 
@@ -203,7 +204,7 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
         if ($model instanceof \BaseObject) {
             return array($model->getPrimaryKey());
         }
-
+        
         return $model->getPrimaryKeys();
     }
 

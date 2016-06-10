@@ -211,7 +211,6 @@ class ModelType extends AbstractType
                     $valueProperty = $options['property'];
                     /** @var ModelCriteria $query */
                     $query = $options['query'];
-//var_dump($query->getTableMap());
                     $getter = 'get' . ucfirst($query->getTableMap()->getColumn($valueProperty)->getPhpName());
 
                     $choiceLabel = function($choice) use ($getter) {
@@ -240,7 +239,7 @@ class ModelType extends AbstractType
         $resolver->setRequired(array('class'));
         $resolver->setNormalizer('query', $queryNormalizer);
         $resolver->setNormalizer('choice_label', $choiceLabelNormalizer);
-        $resolver->setAllowedTypes('query', ['null', 'Propel\Runtime\ActiveQuery\ModelCriteria']);
+        $resolver->setAllowedTypes('query', ['null', '\ModelCriteria']);
     }
 
     /**
