@@ -91,7 +91,7 @@ class ModelType extends AbstractType
     {
         return (string) $choice;
     }
-    
+
     /**
      * Creates the field name for a choice.
      *
@@ -134,17 +134,17 @@ class ModelType extends AbstractType
         $choiceLoader = function (Options $options) {
             // Unless the choices are given explicitly, load them on demand
             if (null === $options['choices']) {
-                
+
                 $propelChoiceLoader = new PropelChoiceLoader(
                     $this->choiceListFactory,
                     $options['class'],
                     $options['query'],
                     $options['index_property']
                 );
-                
+
                 return $propelChoiceLoader;
             }
-            
+
             return null;
         };
 
@@ -178,12 +178,15 @@ class ModelType extends AbstractType
             $firstIdentifier = current($identifier);
             if (count($identifier) === 1 && in_array($firstIdentifier->getPdoType(), [\PDO::PARAM_BOOL, \PDO::PARAM_INT, \PDO::PARAM_STR])) {
                 return function($object) use ($firstIdentifier) {
-                    return call_user_func([$object, 'get' . ucfirst($firstIdentifier->getPhpName())]);
+                    if ($object) {
+                        return call_user_func([$object, 'get' . ucfirst($firstIdentifier->getPhpName())]);
+                    }
+                    return null;
                 };
             }
             return null;
         };
-        
+
         $queryNormalizer = function (Options $options, $query) {
             if ($query === null) {
                 $queryClass = $options['class'] . 'Query';
@@ -202,7 +205,7 @@ class ModelType extends AbstractType
             }
             return $query;
         };
-        
+
         $choiceLabelNormalizer = function (Options $options, $choiceLabel) {
             if ($choiceLabel === null) {
                 if ($options['property'] == null) {
@@ -212,16 +215,16 @@ class ModelType extends AbstractType
                     /** @var ModelCriteria $query */
                     $query = $options['query'];
                     $getter = 'get' . ucfirst($query->getTableMap()->getColumn($valueProperty)->getPhpName());
-                    
+
                     $choiceLabel = function($choice) use ($getter) {
                         return call_user_func([$choice, $getter]);
                     };
                 }
             }
-            
+
             return $choiceLabel;
         };
-        
+
         $resolver->setDefaults([
             'query' => null,
             'index_property' => null,
