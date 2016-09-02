@@ -16,7 +16,7 @@ env:
     - SYMFONY_VERSION="^2.8"
     - SYMFONY_VERSION="^2.8" COMPOSER_FLAGS="--prefer-lowest"
     - SYMFONY_VERSION="^3.0"
-    - SYMFONY_VERSION="^3.0" COMPOSER_FLAGS="--prefer-lowest""
+    - SYMFONY_VERSION="^3.0" COMPOSER_FLAGS="--prefer-lowest"
     - SYMFONY_VERSION="dev-master"
 
 matrix:
