@@ -49,11 +49,13 @@ Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
         id: '1'
         name: 'An important one'
         author_id: BookAuthor_1
-        complementary_infos: !!php/object:O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}
+        complementary_infos: !php/object:O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}
 
 YAML;
 
+        $expectedLegacy = str_replace('!php/object', '!!php/object', $expected);
+
         $result = file_get_contents($filename);
-        $this->assertEquals($expected, $result);
+        $this->assertTrue(self::equalTo($expected)->evaluate($result, 'Symfony 2.8.3', true) || self::equalTo($expectedLegacy)->evaluate($result, 'Symfony 2.8.2 support', true));
     }
 }
