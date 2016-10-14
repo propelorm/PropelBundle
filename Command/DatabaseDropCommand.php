@@ -14,6 +14,7 @@ use Propel\Runtime\Propel;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Propel\Runtime\Connection\ConnectionManagerSingle;
 
 /**
  * DatabaseDropCommand class.
@@ -79,9 +80,41 @@ EOT
             $query  = 'DROP DATABASE '. $dbName .';';
         }
 
+
+        $manager = new ConnectionManagerSingle();
+        $manager->setConfiguration($this->getTemporaryConfiguration($config));
+
+        $serviceContainer = Propel::getServiceContainer();
+        $serviceContainer->setAdapterClass($connectionName, $config['adapter']);
+        $serviceContainer->setConnectionManager($connectionName, $manager);
+
+        $connection = Propel::getConnection($connectionName);
+
         $statement = $connection->prepare($query);
         $statement->execute();
 
         $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
+    }
+
+    /**
+     * Create a temporary configuration to connect to the database in order
+     * to create a given database. This idea comes from Doctrine1.
+     *
+     * @see https://github.com/doctrine/doctrine1/blob/master/lib/Doctrine/Connection.php#L1491
+     *
+     * @param  array $config A Propel connection configuration.
+     * @return array
+     */
+    private function getTemporaryConfiguration($config)
+    {
+        $dbName = $this->parseDbName($config['dsn']);
+
+        $config['dsn'] = preg_replace(
+            '#;?(dbname|Database)='.$dbName.'#',
+            '',
+            $config['dsn']
+        );
+
+        return $config;
     }
 }
