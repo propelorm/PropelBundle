@@ -15,7 +15,7 @@
     },
 
     "require": {
-        "propel/propel": "dev-master",
+        "propel/propel": "2.0.0-alpha6",
         "symfony/symfony": "^2.8|^3.0",
         "symfony/security-acl": "^2.8|^3.0"
     },
