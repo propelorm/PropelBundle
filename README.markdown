@@ -14,12 +14,14 @@ As `Propel2` will be released in the near future, we are migrating the branching
 * The `1.1` branch contains Propel *1.6* integration for Symfony *2.1* (*currently 2.1 branch*).
 * The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1* (*currently 2.2 and 2.3 *).
 * The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3* (*currently 2.4 and master branch*).
+* The `1.5` branch contains Propel *1.7* integration for Symfony *>3*.
 * The `2.0` branch will contain `Propel2` integration for Symfony *2.1*.
   We are still considering to integrate `Propel2` with Symfony *2.0*.
   In case, we will do so, there will be a `2.1` and `2.0` branch integrating the respective Symfony version!
 
 **The 1.x branches are already available and you are encouraged to migrate your dependencies according to the listings!**
 
+* If you depend on Symfony `3.0` or `master` branch, switch to the `1.5` branch.
 * If you depend on Symfony `2.4` or `master` branch, switch to the `1.4` branch.
 * If you depend on Symfony `2.2` or `2.3`  branch, switch to the `1.2` branch.
 * If you depend on Symfony `2.1` branch, switch to the `1.1` branch.
