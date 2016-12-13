@@ -161,6 +161,7 @@ class Configuration extends PropelConfiguration
                                     	->addDefaultsIfNotSet()
                                         ->children()
                                             ->booleanNode('ATTR_EMULATE_PREPARES')->defaultFalse()->end()
+                                            ->scalarNode('SQLSRV_ATTR_ENCODING')->end()
                                         ->end()
                                     ->end()
                                     ->arrayNode('model_paths')
