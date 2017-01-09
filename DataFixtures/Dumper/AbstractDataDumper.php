@@ -107,7 +107,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                 }
                 $stmt = $this
                     ->con
-                    ->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::TABLE_MAP').'::TABLE_NAME')));
+                    ->query(sprintf('SELECT `%s` FROM `%s`', implode('`, `', $in), constant(constant($tableName.'::TABLE_MAP').'::TABLE_NAME')));
 
                 $set = array();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
