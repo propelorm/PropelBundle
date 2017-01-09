@@ -384,10 +384,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function parseDbName($dsn)
     {
-        preg_match('#dbname=([a-zA-Z0-9\_]+)#', $dsn, $matches);
+        preg_match('#(dbname|Database)=([a-zA-Z0-9\_]+)#', $dsn, $matches);
 
-        if (isset($matches[1])) {
-            return $matches[1];
+        if (isset($matches[2])) {
+            return $matches[2];
         }
 
         // e.g. SQLite
