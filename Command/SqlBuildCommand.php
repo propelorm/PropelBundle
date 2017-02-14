@@ -51,7 +51,13 @@ EOT
         $finder = new Finder();
         $filesystem = new Filesystem();
 
-        $sqlDir = $this->getApplication()->getKernel()->getCacheDir().DIRECTORY_SEPARATOR.'propel'.DIRECTORY_SEPARATOR.'sql';
+        $buildProperties = $this->getContainer()->get('propel.build_properties')->getProperties();
+
+        if(isset($buildProperties['propel.sql.dir'])) {
+            $sqlDir = $buildProperties['propel.sql.dir'];
+        } else {
+            $sqlDir = $this->getApplication()->getKernel()->getCacheDir().DIRECTORY_SEPARATOR.'propel'.DIRECTORY_SEPARATOR.'sql';
+        }
 
         $filesystem->remove($sqlDir);
         $filesystem->mkdir($sqlDir);
