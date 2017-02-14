@@ -53,7 +53,7 @@ EOT
 
         $buildProperties = $this->getContainer()->get('propel.build_properties')->getProperties();
 
-        if(isset($buildProperties['propel.sql.dir'])) {
+        if(isset($buildProperties['propel.sql.dir']) && strlen(trim($buildProperties['propel.sql.dir'])) > 0) {
             $sqlDir = $buildProperties['propel.sql.dir'];
         } else {
             $sqlDir = $this->getApplication()->getKernel()->getCacheDir().DIRECTORY_SEPARATOR.'propel'.DIRECTORY_SEPARATOR.'sql';
