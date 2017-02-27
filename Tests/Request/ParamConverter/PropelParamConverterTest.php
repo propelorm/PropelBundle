@@ -290,12 +290,17 @@ class PropelParamConverterTest extends TestCase
         $this->assertEquals($nb + 1, $this->con->getQueryCount(), 'no new query to get the books');
     }
 
-    public function testConfigurationReadFromRouteOptionsIfEmpty()
+    public function testConfigurationReadFromRequestAttributesIfEmpty()
     {
         $this->loadFixtures();
 
-        $routes = new RouteCollection();
-        $routes->add('test_route', new Route('/test/{authorId}', array(), array(), array(
+        $paramConverter = new PropelParamConverter();
+
+        $request = new Request();
+        $request->attributes->add(array(
+            '_route' => 'test_route',
+            'id' => 10,
+            'author' => null,
             'propel_converter' => array(
                 'author' => array(
                     'mapping' => array(
@@ -303,23 +308,6 @@ class PropelParamConverterTest extends TestCase
                     ),
                 ),
             ),
-        )));
-
-        $router = $this->getMock('Symfony\Bundle\FrameworkBundle\Routing\Router', array(), array(), '', false);
-        $router
-            ->expects($this->once())
-            ->method('getRouteCollection')
-            ->will($this->returnValue($routes))
-        ;
-
-        $paramConverter = new PropelParamConverter();
-        $paramConverter->setRouter($router);
-
-        $request = new Request();
-        $request->attributes->add(array(
-            '_route' => 'test_route',
-            'id' => 10,
-            'author' => null,
         ));
 
         $configuration = new ParamConverter(array(

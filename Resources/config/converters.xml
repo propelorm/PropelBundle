@@ -11,10 +11,6 @@
     <services>
         <service id="propel.converter.propel.orm" class="%propel.converter.propel.class%">
             <tag name="request.param_converter" converter="propel" priority="1" />
-
-            <call method="setRouter">
-                <argument type="service" id="router" on-invalid="null" />
-            </call>
         </service>
     </services>
 </container>
