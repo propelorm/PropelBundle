@@ -103,7 +103,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
             } else {
                 $in = array();
                 foreach ($tableMap->getColumns() as $column) {
-                    $in[] = strtolower($column->getName());
+                    $in[] = '`' . strtolower($column->getName()) . '`';
                 }
                 $stmt = $this
                     ->con
