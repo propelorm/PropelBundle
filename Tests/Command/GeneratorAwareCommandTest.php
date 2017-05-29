@@ -63,10 +63,10 @@ class GeneratorAwareCommandTestable extends GeneratorAwareCommand
         return $this->container;
     }
 
-    public function getDatabasesFromSchema(\SplFileInfo $file)
+    public function getDatabasesFromSchema(\SplFileInfo $file, \XmlToAppData $transformer = null)
     {
         $this->loadPropelGenerator();
 
-        return parent::getDatabasesFromSchema($file);
+        return parent::getDatabasesFromSchema($file, $transformer);
     }
 }

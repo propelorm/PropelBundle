@@ -5,7 +5,7 @@ namespace Propel\Bundle\PropelBundle\Tests\Form\ChoiceList;
 use Propel\Bundle\PropelBundle\Form\ChoiceList\ModelChoiceList;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\ItemQuery;
-use Symfony\Component\Form\Tests\Extension\Core\ChoiceList\AbstractChoiceListTest;
+use Symfony\Component\Form\Tests\ChoiceList\AbstractChoiceListTest;
 
 class CompatModelChoiceListTest extends AbstractChoiceListTest
 {
