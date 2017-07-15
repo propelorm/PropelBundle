@@ -176,9 +176,9 @@ class ModelType extends AbstractType
             }
             /** @var ColumnMap $firstIdentifier */
             $firstIdentifier = current($identifier);
-            if (count($identifier) === 1 && in_array($firstIdentifier->getPdoType(), [\PDO::PARAM_BOOL, \PDO::PARAM_INT, \PDO::PARAM_STR])) {
+            if (count($identifier) === 1 && in_array($firstIdentifier->getPdoType(), array(\PDO::PARAM_BOOL, \PDO::PARAM_INT, \PDO::PARAM_STR))) {
                 return function($object) use ($firstIdentifier) {
-                    return call_user_func([$object, 'get' . ucfirst($firstIdentifier->getPhpName())]);
+                    return call_user_func(array($object, 'get' . ucfirst($firstIdentifier->getPhpName())));
                 };
             }
             return null;
@@ -214,7 +214,7 @@ class ModelType extends AbstractType
                     $getter = 'get' . ucfirst($query->getTableMap()->getColumn($valueProperty)->getPhpName());
 
                     $choiceLabel = function($choice) use ($getter) {
-                        return call_user_func([$choice, $getter]);
+                        return call_user_func(array($choice, $getter));
                     };
                 }
             }
@@ -222,7 +222,7 @@ class ModelType extends AbstractType
             return $choiceLabel;
         };
 
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'query' => null,
             'index_property' => null,
             'property' => null,
@@ -234,12 +234,12 @@ class ModelType extends AbstractType
             'choice_value' => $choiceValue,
             'choice_translation_domain' => false,
             'by_reference' => false,
-        ]);
+        ));
 
         $resolver->setRequired(array('class'));
         $resolver->setNormalizer('query', $queryNormalizer);
         $resolver->setNormalizer('choice_label', $choiceLabelNormalizer);
-        $resolver->setAllowedTypes('query', ['null', '\ModelCriteria']);
+        $resolver->setAllowedTypes('query', array('null', '\ModelCriteria'));
     }
 
     /**
