@@ -45,8 +45,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected $output;
 
-    protected $tempSchemas = [];
-
     use FormattingHelpers;
 
     /**
@@ -96,17 +94,15 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $finalSchemas = $this->getFinalSchemas($kernel, $this->bundle);
         foreach ($finalSchemas as $schema) {
-            /** @var Bundle $bundle */
+            /** @var null|Bundle $bundle */
             list($bundle, $finalSchema) = $schema;
 
-            $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
-            $this->tempSchemas[$tempSchema] = array(
-                'bundle'    => $bundle->getName(),
-                'basename'  => $finalSchema->getBaseName(),
-                'path'      => $finalSchema->getPathname(),
-            );
+            if ($bundle) {
+                $file = $cacheDir.DIRECTORY_SEPARATOR.'bundle-'.$bundle->getName().'-'.$finalSchema->getBaseName();
+            } else {
+                $file = $cacheDir.DIRECTORY_SEPARATOR.'app-'.$finalSchema->getBaseName();
+            }
 
-            $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
             $filesystem->copy((string) $finalSchema, $file, true);
 
             // the package needs to be set absolute
@@ -119,12 +115,18 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 // This is used to override the package resulting from namespace conversion.
                 $database['package'] = $database['package'];
             } elseif (isset($database['namespace'])) {
-
-                $database['package'] = $this->getPackageFromBundle($bundle, (string)$database['namespace']);
+                if ($bundle) {
+                    $database['package'] = $this->getPackageFromBundle($bundle, (string)$database['namespace']);
+                } else {
+                    $database['package'] = $this->getPackageFromApp((string)$database['namespace']);
+                }
             } else {
                 throw new \RuntimeException(
-                    sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
-                        $bundle->getName(), $finalSchema->getBaseName())
+                    sprintf(
+                        '%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
+                        $bundle ? $bundle->getName() : 'App',
+                        $finalSchema->getBaseName()
+                    )
                 );
             }
 
@@ -134,7 +136,6 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 if (!in_array((string) $database['name'], $connections)) {
                     // we skip this schema because the connection name doesn't
                     // match the input values
-                    unset($this->tempSchemas[$tempSchema]);
                     $filesystem->remove($file);
                     $this->output->writeln(sprintf(
                         '<info>Skipped schema %s due to database name missmatch (%s not in [%s]).</info>',
@@ -150,7 +151,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 if (isset($table['package'])) {
                     $table['package'] = $table['package'];
                 } elseif (isset($table['namespace'])) {
-                    $table['package'] = $this->getPackageFromBundle($bundle, (string)$table['namespace']);
+                    if ($bundle) {
+                        $table['package'] = $this->getPackageFromBundle($bundle, (string)$table['namespace']);
+                    } else {
+                        $table['package'] = $this->getPackageFromApp((string)$table['namespace']);
+                    }
                 } else {
                     $table['package'] = $database['package'];
                 }
@@ -175,7 +180,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             return $this->getSchemaLocator()->locateFromBundle($bundle);
         }
 
-        return $this->getSchemaLocator()->locateFromBundles($kernel->getBundles());
+        return $this->getSchemaLocator()->locateFromBundlesAndConfiguration($kernel->getBundles());
     }
 
     /**
@@ -302,6 +307,24 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getSchemaLocator()
     {
         return $this->getContainer()->get('propel.schema_locator');
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return string
+     */
+    protected function getPackageFromApp($namespace)
+    {
+        if ('\\' === $namespace[0]) {
+            $namespace = substr($namespace, 1);
+        }
+
+        if (0 === stripos($namespace, 'App\\')) {
+            $namespace = substr($namespace, 4);
+        }
+
+        return 'src.'.str_replace('\\', '.', $namespace);
     }
 
     /**
