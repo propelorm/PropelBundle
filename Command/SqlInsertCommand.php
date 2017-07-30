@@ -59,7 +59,7 @@ class SqlInsertCommand extends WrappedCommand
      */
     protected function getSubCommandArguments(InputInterface $input)
     {
-        $defaultSqlDir = sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
+        $defaultSqlDir = $this->getContainer()->getParameter('propel.configuration')['paths']['sqlDir'];
 
         return array(
             '--connection'  => $this->getConnections($input->getOption('connection')),

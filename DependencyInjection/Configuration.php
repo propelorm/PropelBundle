@@ -19,10 +19,29 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 class Configuration extends PropelConfiguration
 {
     private $debug;
+    private $defaultDir;
 
-    public function __construct($debug = true)
+    public function __construct($debug, $kernelDir)
     {
         $this->debug = $debug;
+        $this->defaultDir = $kernelDir.'/propel';
+    }
+
+    protected function addPathsSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('paths')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('schemaDir')->defaultValue($this->defaultDir)->end()
+                        ->scalarNode('sqlDir')->defaultValue($this->defaultDir.'/sql')->end()
+                        ->scalarNode('migrationDir')->defaultValue($this->defaultDir.'/migrations')->end()
+                        ->scalarNode('composerDir')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
     }
 
     protected function addRuntimeSection(ArrayNodeDefinition $node)

@@ -52,7 +52,7 @@ class MigrationDownCommand extends WrappedCommand
      */
     protected function getSubCommandArguments(InputInterface $input)
     {
-        $defaultOutputDir = $this->getApplication()->getKernel()->getRootDir().'/propel/migrations';
+        $defaultOutputDir = $this->getContainer()->getParameter('propel.configuration')['paths']['migrationDir'];
 
         return array(
             '--connection'      => $this->getConnections($input->getOption('connection')),
