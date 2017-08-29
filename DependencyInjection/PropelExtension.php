@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Definition\Processor;
 
 /**
  * PropelExtension loads the PropelBundle configuration.
@@ -32,9 +31,8 @@ class PropelExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
         $configuration = $this->getConfiguration($configs, $container);
-        $config = $processor->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
         if (1 === count($config['database']['connections'])) {
             $defaultConnection = array_keys($config['database']['connections'])[0];
