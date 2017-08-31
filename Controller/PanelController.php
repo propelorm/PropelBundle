@@ -11,6 +11,7 @@
 namespace Propel\Bundle\PropelBundle\Controller;
 
 use Propel\Runtime\Propel;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,23 +21,19 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController implements ContainerAwareInterface
+class PanelController extends Controller
 {
-    use ContainerAwareTrait;
-    
     /**
      * This method renders the global Propel configuration.
      */
     public function configurationAction()
     {
-        $templating = $this->container->get('templating');
-
-        return $templating->renderResponse(
-            'PropelBundle:Panel:configuration.html.twig',
+        return $this->render(
+            '@Propel/Panel/configuration.html.twig',
             array(
                 'propel_version'     => Propel::VERSION,
-                'configuration'      => $this->container->getParameter('propel.configuration'),
-                'logging'            => $this->container->getParameter('propel.logging'),
+                'configuration'      => $this->getParameter('propel.configuration'),
+                'logging'            => $this->getParameter('propel.logging'),
             )
         );
     }
@@ -52,7 +49,7 @@ class PanelController implements ContainerAwareInterface
      */
     public function explainAction($token, $connection, $query)
     {
-        $profiler = $this->container->get('profiler');
+        $profiler = $this->get('profiler');
         $profiler->disable();
 
         $profile = $profiler->loadProfile($token);
@@ -73,8 +70,8 @@ class PanelController implements ContainerAwareInterface
             return new Response('<div class="error">This query cannot be explained.</div>');
         }
 
-        return $this->container->get('templating')->renderResponse(
-            'PropelBundle:Panel:explain.html.twig',
+        return $this->render(
+            '@Propel/Panel/explain.html.twig',
             array(
                 'data' => $results,
                 'query' => $query,
