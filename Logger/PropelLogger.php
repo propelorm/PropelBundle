@@ -13,6 +13,7 @@ namespace Propel\Bundle\PropelBundle\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\VarDumper\Caster\TraceStub;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
@@ -64,10 +65,9 @@ class PropelLogger implements LoggerInterface
         }
 
         $add = true;
-        $stackTrace = $this->getStackTrace();
+        $trace = debug_backtrace();
 
         if (null !== $this->stopwatch) {
-            $trace = debug_backtrace();
             $method = $trace[3]['function'];
 
             $watch = 'Propel Query '.(count($this->queries)+1);
@@ -91,7 +91,7 @@ class PropelLogger implements LoggerInterface
                 'connection'    => $connection->getName(),
                 'time'          => $event->getDuration() / 1000,
                 'memory'        => $event->getMemory(),
-                'stackTrace'    => $stackTrace,
+                'trace'         => new TraceStub($trace),
             );
         }
 
@@ -101,26 +101,5 @@ class PropelLogger implements LoggerInterface
     public function getQueries()
     {
         return $this->queries;
-    }
-
-    /**
-     * Returns the current stack trace.
-     *
-     * @return array
-     */
-    private function getStackTrace()
-    {
-        $e = new \Exception();
-        $trace = explode("\n", $e->getTraceAsString());
-        $trace = array_reverse($trace);
-        array_shift($trace); // remove {main}
-        array_pop($trace); // remove call to this method
-
-        foreach ($trace as $i => &$value) {
-            $value = $i + 1 . ')' . substr($value, strpos($value, ' '));
-            $value = preg_replace('/\((\d+)\)/', ':$1', $value, 1);
-        }
-
-        return $trace;
     }
 }

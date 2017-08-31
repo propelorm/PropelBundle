@@ -51,7 +51,7 @@ class SyntaxExtension extends \Twig_Extension
             $absBytes /= 1024;
         }
 
-        return self::toPrecision($sign * $absBytes, $precision) . $suffix[$i];
+        return self::toPrecision($sign * $absBytes, $precision).' '.$suffix[$i];
     }
 
     public function formatSQL($sql)
