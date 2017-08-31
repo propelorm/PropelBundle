@@ -21,6 +21,7 @@
     <services>
         <service id="propel.schema_locator" class="%propel.schema_locator.class%">
             <argument type="service" id="file_locator" />
+            <argument>%propel.configuration%</argument>
         </service>
 
         <service id="propel.logger" class="%propel.logger.class%">

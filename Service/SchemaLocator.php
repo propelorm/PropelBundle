@@ -17,10 +17,25 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 class SchemaLocator
 {
     protected $fileLocator;
+    protected $configuration;
 
-    public function __construct(FileLocatorInterface $fileLocator)
+    public function __construct(FileLocatorInterface $fileLocator, array $configuration)
     {
         $this->fileLocator = $fileLocator;
+        $this->configuration = $configuration;
+    }
+
+    public function locateFromBundlesAndConfiguration(array $bundles)
+    {
+        $schemas = $this->locateFromBundles($bundles);
+
+        $path = $this->configuration['paths']['schemaDir'].'/schema.xml';
+        if (file_exists($path)) {
+            $schema = new \SplFileInfo($path);
+            $schemas[(string) $schema] = array(null, $schema);
+        }
+
+        return $schemas;
     }
 
     public function locateFromBundles(array $bundles)
