@@ -14,6 +14,7 @@ namespace Propel\Bundle\PropelBundle\Form\Type;
 use Propel\Bundle\PropelBundle\Form\ChoiceList\ModelChoiceList;
 use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -115,7 +116,7 @@ class ModelType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**

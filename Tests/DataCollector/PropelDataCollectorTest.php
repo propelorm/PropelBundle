@@ -84,7 +84,7 @@ class PropelDataCollectorTest extends TestCase
 
     private function createCollector($queries)
     {
-        $config = $this->getMock('\PropelConfiguration');
+        $config = $this->getMockBuilder('\PropelConfiguration')->getMock();
 
         $config
             ->expects($this->any())
@@ -92,7 +92,7 @@ class PropelDataCollectorTest extends TestCase
             ->will($this->returnArgument(1))
         ;
 
-        $logger = $this->getMock('\Propel\Bundle\PropelBundle\Logger\PropelLogger');
+        $logger = $this->getMockBuilder('\Propel\Bundle\PropelBundle\Logger\PropelLogger')->getMock();
         $logger
             ->expects($this->any())
             ->method('getQueries')
