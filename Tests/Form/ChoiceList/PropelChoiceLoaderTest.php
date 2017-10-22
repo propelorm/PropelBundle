@@ -2,12 +2,8 @@
 
 namespace Propel\Bundle\PropelBundle\Tests\Form\ChoiceList;
 
-use PHPUnit\Framework\TestCase;
 use Propel\Bundle\PropelBundle\Form\ChoiceList\PropelChoiceLoader;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\ItemQuery;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\map\BookTableMap;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
@@ -15,7 +11,7 @@ use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
 /**
  * @author Jérémie Augustin <jeremie.augustin@pixel-cookers.com>
  */
-class PropelChoiceLoaderTest extends TestCase
+class PropelChoiceLoaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ChoiceListFactoryInterface
