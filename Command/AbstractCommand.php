@@ -388,7 +388,7 @@ EOT
         <connection>
           <dsn>%dsn%</dsn>
           <user>%username%</user>
-          <password>%password%</password>
+          <password><![CDATA[%password%]]></password>
         </connection>
       </datasource>
 
