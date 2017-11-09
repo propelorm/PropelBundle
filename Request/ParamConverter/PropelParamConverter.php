@@ -1,12 +1,12 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Request\ParamConverter;
+namespace Propel\PropelBundle\Request\ParamConverter;
 
-use Propel\Bundle\PropelBundle\Util\PropelInflector;
+use Propel\PropelBundle\Util\PropelInflector;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 /**

@@ -7,10 +7,11 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\Command;
 
-use Propel\Bundle\PropelBundle\Command\GeneratorAwareCommand;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
+namespace Propel\PropelBundle\Tests\Command;
+
+use Propel\PropelBundle\Command\GeneratorAwareCommand;
+use Propel\PropelBundle\Tests\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

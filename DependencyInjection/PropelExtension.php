@@ -7,13 +7,15 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+namespace Propel\PropelBundle\DependencyInjection;
+
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Definition\Processor;
 
 /**
  * PropelExtension loads the PropelBundle configuration.
@@ -126,7 +128,7 @@ class PropelExtension extends Extension
 
         // Alias the default connection if not defined
         if (!isset($c['datasources']['default'])) {
-            $c['datasources']['default'] = $connectionName;
+            $c['datasources']['default'] = $c['datasources'][$connectionName];
         }
 
         $container->getDefinition('propel.configuration')->setArguments(array($c));

@@ -7,7 +7,8 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Validator\Constraints;
+
+namespace Propel\PropelBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -60,13 +61,14 @@ class UniqueObjectValidator extends ConstraintValidator
                 );
             }
 
-            $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->errorPath)
-                ->setParameters(array(
+            $this->context->addViolationAt(
+                $constraint->errorPath,
+                $constraint->message,
+                array(
                     '{{ object_class }}' => $class,
                     '{{ fields }}' => implode($constraint->messageFieldSeparator, $fieldParts)
-                ))
-                ->addViolation();
+                )
+            );
 
         }
     }

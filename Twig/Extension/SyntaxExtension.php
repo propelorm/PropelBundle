@@ -7,7 +7,8 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Twig\Extension;
+
+namespace Propel\PropelBundle\Twig\Extension;
 
 /**
  * SyntaxExtension class

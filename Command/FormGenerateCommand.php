@@ -7,7 +7,8 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Command;
+
+namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,11 +53,8 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($schemas = $this->getSchemasFromBundle($this->bundle)) {
-            $schemas = $this->getFinalSchemas($this->getContainer()->get('kernel'));
-
-            $transformer = new \XmlToAppData(null, null, 'UTF-8');
             foreach ($schemas as $fileName => $array) {
-                foreach ($this->getDatabasesFromSchema($array[1], $transformer) as $database) {
+                foreach ($this->getDatabasesFromSchema($array[1]) as $database) {
                     $this->createFormTypeFromDatabase($this->bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
                 }
             }

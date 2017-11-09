@@ -1,20 +1,22 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Translation;
+namespace Propel\PropelBundle\Tests\Translation;
 
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Translation as Entry;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
-use Propel\Bundle\PropelBundle\Translation\ModelTranslation;
+use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\Tests\Fixtures\Model\Translation as Entry;
+
+use Propel\PropelBundle\Translation\ModelTranslation;
+
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  *
- * @covers Propel\Bundle\PropelBundle\Translation\ModelTranslation
+ * @covers Propel\PropelBundle\Translation\ModelTranslation
  */
 class ModelTranslationTest extends TestCase
 {
-    const MODEL_CLASS = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Translation';
+    const MODEL_CLASS = 'Propel\PropelBundle\Tests\Fixtures\Model\Translation';
 
     /**
      * @var \PropelPDO
@@ -31,7 +33,7 @@ class ModelTranslationTest extends TestCase
 
         $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
-        if (class_exists('Propel\Bundle\PropelBundle\Tests\Fixtures\Model\map\TranslationTableMap')) {
+        if (class_exists('Propel\PropelBundle\Tests\Fixtures\Model\map\TranslationTableMap')) {
             $builder->setClassTargets(array());
         }
 

@@ -7,8 +7,10 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Command;
 
+namespace Propel\PropelBundle\Command;
+
+use Propel\PropelBundle\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,6 +52,9 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Bad require but needed :(
+        require_once $this->getContainer()->getParameter('propel.path') . '/generator/lib/util/PropelSqlManager.php';
+
         if ($input->getOption('force')) {
             $connections = $this->getConnections();
             $sqlDir = $this->getSqlDir();
@@ -75,7 +80,7 @@ EOT
 
     protected function getSqlDir()
     {
-        return sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getCacheDir());
+        return sprintf('%s/propel/sql', $this->getApplication()->getKernel()->getRootDir());
     }
 
     /**
@@ -111,10 +116,6 @@ EOT
 
         $connections = array();
         foreach ($propelConfiguration['datasources'] as $name => $config) {
-            if (is_scalar($config)) {
-                continue;
-            }
-
             $connections[$name] = $config['connection'];
         }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model;
+namespace Propel\PropelBundle\Tests\Fixtures\Model;
 
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om\BaseBookPeer;
+use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookPeer;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'book' table.

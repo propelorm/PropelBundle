@@ -7,15 +7,16 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
 
-use BaseObject;
-use BasePeer;
-use Propel;
-use Propel\Bundle\PropelBundle\DataFixtures\AbstractDataHandler;
-use Propel\Bundle\PropelBundle\Util\PropelInflector;
-use PropelColumnTypes;
-use PropelException;
+namespace Propel\PropelBundle\DataFixtures\Loader;
+
+use \BasePeer;
+use \BaseObject;
+use \Propel;
+use \PropelColumnTypes;
+use \PropelException;
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use Propel\PropelBundle\Util\PropelInflector;
 
 /**
  * Abstract class to manage a common logic to load datas.

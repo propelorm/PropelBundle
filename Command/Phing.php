@@ -7,7 +7,8 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Command;
+
+namespace Propel\PropelBundle\Command;
 
 /**
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
