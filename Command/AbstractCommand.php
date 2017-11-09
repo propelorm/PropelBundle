@@ -11,6 +11,7 @@ namespace Propel\Bundle\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -620,7 +621,7 @@ EOT;
      */
     protected function askConfirmation(OutputInterface $output, $question, $default = null)
     {
-        return $this->getHelperSet()->get('dialog')->askConfirmation($output, $question, $default);
+        return $this->getHelper('question')->ask($this->input, $output, new ConfirmationQuestion($question, $default));
     }
 
     /**
