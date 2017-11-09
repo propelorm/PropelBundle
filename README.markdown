@@ -1,31 +1,33 @@
 PropelBundle
 ============
 
-[![Build Status](https://secure.travis-ci.org/propelorm/PropelBundle.png)](http://travis-ci.org/propelorm/PropelBundle)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/propelorm/PropelBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.4)](https://travis-ci.org/propelorm/PropelBundle)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/propelorm/PropelBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
+This is the official implementation of [Propel](http://www.propelorm.org/Propel/) in Symfony.
 
 ## Branching model
 
-As `Propel2` will be released in the near future, we are migrating the branching model of this bundle in advance!
+### Propel1 integration
 
-* The `1.0` branch contains Propel *1.6* integration for Symfony *2.0* (*currently 2.0 branch*).
-* The `1.1` branch contains Propel *1.6* integration for Symfony *2.1* (*currently 2.1 branch*).
-* The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1* (*currently 2.2 and 2.3 *).
-* The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3* (*currently 2.4 and master branch*).
-* The `2.0` branch will contain `Propel2` integration for Symfony *2.1*.
-  We are still considering to integrate `Propel2` with Symfony *2.0*.
-  In case, we will do so, there will be a `2.1` and `2.0` branch integrating the respective Symfony version!
+The two major branches being supported are:
 
-**The 1.x branches are already available and you are encouraged to migrate your dependencies according to the listings!**
+* The [1.5](https://github.com/propelorm/PropelBundle/tree/1.5) branch contains Propel *1.6+* integration for Symfony *2.8 LTS*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.5)](https://travis-ci.org/propelorm/PropelBundle)
+* The [1.6](https://github.com/propelorm/PropelBundle/tree/1.6) branch contains Propel *1.6+* integration for Symfony *3.x*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.6)](https://travis-ci.org/propelorm/PropelBundle)
 
-* If you depend on Symfony `2.4` or `master` branch, switch to the `1.4` branch.
-* If you depend on Symfony `2.2` or `2.3`  branch, switch to the `1.2` branch.
-* If you depend on Symfony `2.1` branch, switch to the `1.1` branch.
-* If you depend on Symfony `2.0` branch, switch to the `1.0` branch.
+If you are running on an older version, you may require one of the following versions of this bundle.
 
-**Note:** the `master`, and `2.0` branches won't be updated anymore, and will trigger a `E_USER_DEPRECATED` error to notice people.
+* The [1.0](https://github.com/propelorm/PropelBundle/tree/1.0) branch contains Propel *1.6* integration for Symfony *2.0*.
+* The [1.1](https://github.com/propelorm/PropelBundle/tree/1.1) branch contains Propel *1.6* integration for Symfony *2.1*.
+* The [1.2](https://github.com/propelorm/PropelBundle/tree/1.2) branch contains Propel *1.6+* integration for Symfony *2.2-2.3*.
+* The [1.4](https://github.com/propelorm/PropelBundle/tree/1.4) branch contains Propel *1.6+* integration for Symfony *2.4-2.7*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.4)](https://travis-ci.org/propelorm/PropelBundle)
+
+### Propel2 integration
+
+* The [2.0](https://github.com/propelorm/PropelBundle/tree/2.0) branch contains `Propel2` integration for Symfony *2.5-2.8*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=2.0)](https://travis-ci.org/propelorm/PropelBundle)
+* The [3.0](https://github.com/propelorm/PropelBundle/tree/3.0) branch contains `Propel2` integration for Symfony *2.8-3.x*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=3.0)](https://travis-ci.org/propelorm/PropelBundle)
+
+**Note:** the `master` branch will not be updated anymore, and will trigger a `E_USER_DEPRECATED` error to notice people.
 
 ## Features
 
@@ -33,9 +35,9 @@ As `Propel2` will be released in the near future, we are migrating the branching
  * Insertion of SQL statements;
  * Runtime autoloading of Propel and generated classes;
  * Propel runtime initialization through the XML configuration;
- * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html);
- * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database);
- * Integration to the Symfony2 Profiler;
+ * [Propel Migrations](http://propelorm.org/Propel/documentation/10-migrations.html);
+ * Reverse engineering from [existing database](http://propelorm.org/Propel/cookbook/working-with-existing-databases.html);
+ * Integration to the Symfony Profiler;
  * Load SQL, YAML and XML fixtures;
  * Create/Drop databases;
  * Integration with the Form component;
@@ -46,7 +48,7 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.1/Resources/doc/index.markdown)
+[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.4/Resources/doc/index.markdown)
 
 For license, see:
 
