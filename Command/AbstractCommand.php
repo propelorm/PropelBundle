@@ -7,17 +7,16 @@
  *
  * @license    MIT License
  */
-
-namespace Propel\PropelBundle\Command;
+namespace Propel\Bundle\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Wrapper for Propel commands.
@@ -128,11 +127,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $this->checkConfiguration();
 
-        if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
-            $this->bundle = $this
-                ->getContainer()
-                ->get('kernel')
-                ->getBundle(substr($input->getArgument('bundle'), 1));
+        if ($input->hasArgument('bundle') && $input->getArgument('bundle')) {
+            $bundleName = $input->getArgument('bundle');
+            if (0 === strpos($bundleName, '@')) {
+                $bundleName = substr($bundleName, 1);
+            }
+
+            $this->bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
         }
     }
 
@@ -382,6 +383,10 @@ EOT
 
         $propelConfiguration = $container->get('propel.configuration');
         foreach ($propelConfiguration['datasources'] as $name => $datasource) {
+            if (is_scalar($datasource)) {
+                continue;
+            }
+
             $xml .= strtr(<<<EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>

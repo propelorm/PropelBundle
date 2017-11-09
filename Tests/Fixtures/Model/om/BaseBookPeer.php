@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Fixtures\Model\om;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om;
 
 use \BasePeer;
 use \Criteria;
@@ -9,9 +9,9 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Propel\PropelBundle\Tests\Fixtures\Model\Book;
-use Propel\PropelBundle\Tests\Fixtures\Model\BookPeer;
-use Propel\PropelBundle\Tests\Fixtures\Model\map\BookTableMap;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookPeer;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\map\BookTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'book' table.
@@ -28,7 +28,7 @@ abstract class BaseBookPeer
     const TABLE_NAME = 'book';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book';
+    const OM_CLASS = 'Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book';
 
     /** A class that can be returned by this peer. */
     const CLASS_DEFAULT = 'vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model.Book';

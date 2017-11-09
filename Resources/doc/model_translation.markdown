@@ -7,7 +7,7 @@ To make us of this `ModelTranslation` you only need to add the translation resou
 ``` yaml
 services:
     translation.loader.propel:
-        class: Propel\PropelBundle\Translation\ModelTranslation
+        class: Propel\Bundle\PropelBundle\Translation\ModelTranslation
         arguments:
             # The model to be used.
             - 'Acme\Model\Translation\Translation'
@@ -35,7 +35,7 @@ An example model schema for the translation model:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="translation" defaultIdMethod="native" namespace="Propel\PropelBundle\Tests\Fixtures\Model">
+<database name="translation" defaultIdMethod="native" namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\Model">
     <table name="translation">
         <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
         <column name="key" type="varchar" size="255" required="true" primaryString="true" />
@@ -68,7 +68,7 @@ In order to make use of the `VersionableBehavior` (or similar), you can map the 
 ``` yaml
 services:
     translation.loader.propel:
-        class: Propel\PropelBundle\Translation\ModelTranslation
+        class: Propel\Bundle\PropelBundle\Translation\ModelTranslation
         arguments:
             - 'Acme\Model\Translation\Translation'
             -

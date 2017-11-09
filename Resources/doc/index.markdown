@@ -50,7 +50,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Propel\PropelBundle\PropelBundle(),
+        new Propel\Bundle\PropelBundle\PropelBundle(),
     );
 
     // ...
@@ -108,7 +108,6 @@ class HelloController extends Controller
 
 Now you can read more about:
 
-* [The ACL Implementation](acl.markdown);
 * [The Commands](commands.markdown);
 * [The Fixtures](fixtures.markdown);
 * [The PropelParamConverter](param_converter.markdown);

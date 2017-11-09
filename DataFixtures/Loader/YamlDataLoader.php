@@ -7,11 +7,10 @@
  *
  * @license    MIT License
  */
-
-namespace Propel\PropelBundle\DataFixtures\Loader;
+namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Yaml\ParseException;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -52,7 +51,12 @@ class YamlDataLoader extends AbstractDataLoader
                     $args = func_get_args();
                     array_shift($args);
 
-                    echo Yaml::dump(call_user_func_array(array($generator, $type), $args)) . "\n";
+                    $value = call_user_func_array(array($generator, $type), $args);
+                    if ($value instanceof \DateTime) {
+                        $value = $value->format('Y-m-d H:i:s');
+                    }
+
+                    echo Yaml::dump($value) . "\n";
                 };
             } else {
                 $faker = function($text) {

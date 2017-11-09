@@ -1,12 +1,12 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Fixtures\Model\om;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om;
 
 use \Criteria;
 use \ModelCriteria;
 use \PropelPDO;
-use Propel\PropelBundle\Tests\Fixtures\Model\BookPeer;
-use Propel\PropelBundle\Tests\Fixtures\Model\BookQuery;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookPeer;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery;
 
 /**
  * Base class that represents a query for the 'book' table.
@@ -47,7 +47,7 @@ abstract class BaseBookQuery extends ModelCriteria
      * @param string $modelName  The phpName of a model, e.g. 'Book'
      * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'mydb', $modelName = 'Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book', $modelAlias = null)
+    public function __construct($dbName = 'mydb', $modelName = 'Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }

@@ -1,7 +1,7 @@
 PropelBundle
 ============
 
-[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.4)](https://travis-ci.org/propelorm/PropelBundle)
+[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.5)](https://travis-ci.org/propelorm/PropelBundle)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/propelorm/PropelBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This is the official implementation of [Propel](http://www.propelorm.org/Propel/) in Symfony.
@@ -48,7 +48,7 @@ For documentation, see:
 
     Resources/doc/
 
-[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.4/Resources/doc/index.markdown)
+[Read the documentation](https://github.com/propelorm/PropelBundle/blob/1.5/Resources/doc/index.markdown)
 
 For license, see:
 

@@ -7,13 +7,11 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle\Tests\Command;
 
-namespace Propel\PropelBundle\Tests\Command;
-
+use Propel\Bundle\PropelBundle\Command\FixturesLoadCommand;
+use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
-
-use Propel\PropelBundle\Tests\TestCase;
-use Propel\PropelBundle\Command\FixturesLoadCommand;
 
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>

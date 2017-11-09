@@ -7,15 +7,14 @@
  *
  * @license    MIT License
  */
+namespace Propel\Bundle\PropelBundle;
 
-namespace Propel\PropelBundle;
-
-use Symfony\Bridge\Propel1\DependencyInjection\Security\UserProvider\PropelFactory;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * PropelBundle
+ * PropelBundle.
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
@@ -51,7 +50,7 @@ class PropelBundle extends Bundle
                 ), false);
                 $config->setParameter('debugpdo.logging.details', array(
                     'time' => array('enabled' => true),
-                    'mem'  => array('enabled' => true),
+                    'mem' => array('enabled' => true),
                     'connection' => array('enabled' => true),
                 ));
 

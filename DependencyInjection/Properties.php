@@ -7,8 +7,7 @@
  *
  * @license    MIT License
  */
-
-namespace Propel\PropelBundle\DependencyInjection;
+namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
 /**
  * Properties.

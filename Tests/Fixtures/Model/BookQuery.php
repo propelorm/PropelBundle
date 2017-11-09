@@ -1,8 +1,8 @@
 <?php
 
-namespace Propel\PropelBundle\Tests\Fixtures\Model;
+namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model;
 
-use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBookQuery;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om\BaseBookQuery;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'book' table.
