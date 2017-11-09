@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="translation" defaultIdMethod="native" namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\Model">
+<database name="translation" defaultIdMethod="native" namespace="Propel\PropelBundle\Tests\Fixtures\Model">
     <table name="translation">
         <column name="id" type="integer" autoIncrement="true" primaryKey="true" />
         <column name="key" type="varchar" size="255" required="true" primaryString="true" />

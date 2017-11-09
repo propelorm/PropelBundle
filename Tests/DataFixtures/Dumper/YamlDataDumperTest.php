@@ -7,10 +7,11 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\DataFixtures\Dumper;
 
-use Propel\Bundle\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
-use Propel\Bundle\PropelBundle\Tests\DataFixtures\TestCase;
+namespace Propel\PropelBundle\Tests\DataFixtures\Dumper;
+
+use Propel\PropelBundle\Tests\DataFixtures\TestCase;
+use Propel\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
@@ -21,13 +22,13 @@ class YamlDataDumperTest extends TestCase
 {
     public function testYamlDump()
     {
-        $author = new \Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor();
+        $author = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor();
         $author->setName('A famous one')->save($this->con);
 
         $complementary = new \stdClass();
         $complementary->first_word_date = '2012-01-01';
 
-        $book = new \Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book();
+        $book = new \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book();
         $book
             ->setName('An important one')
             ->setAuthorId(1)
@@ -48,13 +49,13 @@ class YamlDataDumperTest extends TestCase
 
     protected function getYamlForSymfonyVersion()
     {
-        if (version_compare(AppKernel::VERSION, '2.8.3', '<')) {
+        if (version_compare(AppKernel::VERSION, '2.7.0', '<')) {
             return <<<YAML
-Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
     BookAuthor_1:
         id: '1'
         name: 'A famous one'
-Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
     Book_1:
         id: '1'
         name: 'An important one'
@@ -65,11 +66,11 @@ YAML;
         }
 
         return <<<YAML
-Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
     BookAuthor_1:
         id: '1'
         name: 'A famous one'
-Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
     Book_1:
         id: '1'
         name: 'An important one'

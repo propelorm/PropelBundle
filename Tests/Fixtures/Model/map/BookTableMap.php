@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\map;
+namespace Propel\PropelBundle\Tests\Fixtures\Model\map;
 
 use \RelationMap;
 use \TableMap;
@@ -36,7 +36,7 @@ class BookTableMap extends TableMap
         // attributes
         $this->setName('book');
         $this->setPhpName('Book');
-        $this->setClassname('Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
+        $this->setClassname('Propel\\PropelBundle\\Tests\\Fixtures\\Model\\Book');
         $this->setPackage('vendor/bundles/Propel/PropelBundle/Tests/Fixtures/Model');
         $this->setUseIdGenerator(true);
         // columns

@@ -8,33 +8,18 @@
     "name": "William Durand",
     "email": "william.durand1@gmail.com"
   }],
-
-  "autoload": {
-    "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
-    "files": ["autoload_aliases.php"],
-    "exclude-from-classmap": [ "Tests/" ]
-  },
-
   "require": {
-    "propel/propel1": "^1.6.8",
-    "symfony/framework-bundle": "^2.8.2"
+    "symfony/symfony": "~2.4",
+    "symfony/propel1-bridge": "~2.3",
+    "propel/propel1": "~1.6"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.8.21|^5.0.10",
-    "symfony/symfony": "^2.8.2",
-    "sensio/framework-extra-bundle": "^3.0.2",
+    "sensio/framework-extra-bundle": "~3.0",
     "fzaninotto/faker": "^1.5"
   },
-
-  "conflict": {
-    "symfony/propel1-bridge": ">=2.8.0"
+  "autoload": {
+    "psr-0": { "Propel\\PropelBundle": "" }
   },
-
-  "replace": {
-    "symfony/propel1-bridge": "<=2.8.0"
-  },
-
-  "suggest": {
-    "propel/propel-acl-bundle": "For using the Propel ACL implementation"
-  }
+  "target-dir": "Propel/PropelBundle"
 }

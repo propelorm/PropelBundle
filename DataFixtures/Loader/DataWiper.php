@@ -7,7 +7,8 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
+
+namespace Propel\PropelBundle\DataFixtures\Loader;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>

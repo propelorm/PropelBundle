@@ -7,10 +7,11 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\Util;
 
-use Propel\Bundle\PropelBundle\Tests\TestCase;
-use Propel\Bundle\PropelBundle\Util\PropelInflector;
+namespace Propel\PropelBundle\Tests\Util;
+
+use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\Util\PropelInflector;
 
 /**
  * @author William Durand <william.durand1@gmail.com>

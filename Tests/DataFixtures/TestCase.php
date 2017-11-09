@@ -7,9 +7,10 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\DataFixtures;
 
-use Propel\Bundle\PropelBundle\Tests\TestCase as BaseTestCase;
+namespace Propel\PropelBundle\Tests\DataFixtures;
+
+use Propel\PropelBundle\Tests\TestCase as BaseTestCase;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -35,7 +36,7 @@ class TestCase extends BaseTestCase
         $this->loadPropelQuickBuilder();
 
         $schema = <<<XML
-<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
+<database name="default" package="vendor.bundles.Propel.PropelBundle.Tests.Fixtures.DataFixtures.Loader" namespace="Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader" defaultIdMethod="native">
     <table name="book">
         <column name="id" type="integer" primaryKey="true" />
         <column name="name" type="varchar" size="255" />
@@ -57,7 +58,7 @@ XML;
 
         $builder = new \PropelQuickBuilder();
         $builder->setSchema($schema);
-        if (class_exists('Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book')) {
+        if (class_exists('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book')) {
             $builder->setClassTargets(array());
         }
 
