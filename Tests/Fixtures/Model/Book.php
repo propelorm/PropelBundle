@@ -1,8 +1,8 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model;
+namespace Propel\PropelBundle\Tests\Fixtures\Model;
 
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om\BaseBook;
+use Propel\PropelBundle\Tests\Fixtures\Model\om\BaseBook;
 
 /**
  * Skeleton subclass for representing a row from the 'book' table.

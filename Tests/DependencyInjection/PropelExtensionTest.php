@@ -7,10 +7,12 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\DependencyInjection;
 
-use Propel\Bundle\PropelBundle\DependencyInjection\PropelExtension;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
+namespace Propel\PropelBundle\Tests\DependencyInjection;
+
+use Propel\PropelBundle\Tests\TestCase;
+use Propel\PropelBundle\DependencyInjection\PropelExtension;
+use Symfony\Component\DependencyInjection\Container;
 
 class PropelExtensionTest extends TestCase
 {

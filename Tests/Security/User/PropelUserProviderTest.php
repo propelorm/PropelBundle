@@ -7,11 +7,12 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Tests\Security\User;
 
-use Propel\Bundle\PropelBundle\Security\User\PropelUserProvider;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\User;
-use Propel\Bundle\PropelBundle\Tests\TestCase;
+namespace Propel\PropelBundle\Tests\Security\User;
+
+use Propel\PropelBundle\Tests\Fixtures\Model\User;
+use Propel\PropelBundle\Tests\TestCase;
+use Symfony\Bridge\Propel1\Security\User\PropelUserProvider;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
@@ -23,7 +24,7 @@ class PropelUserProviderTest extends TestCase
         $this->loadPropelQuickBuilder();
 
         $schema = <<<SCHEMA
-<database name="users" defaultIdMethod="native" namespace="Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model">
+<database name="users" defaultIdMethod="native" namespace="Propel\\PropelBundle\\Tests\\Fixtures\\Model">
     <table name="user">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="username" type="varchar" size="255" primaryString="true" />
@@ -52,7 +53,7 @@ SCHEMA;
         $user2->setUsername('user2');
         $user2->save();
 
-        $provider = new PropelUserProvider('Propel\Bundle\PropelBundle\Tests\Fixtures\Model\User', 'username');
+        $provider = new PropelUserProvider('Propel\PropelBundle\Tests\Fixtures\Model\User', 'username');
 
         // try to change the user identity
         $user1->setUsername('user2');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Form;
+namespace Propel\PropelBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

@@ -7,12 +7,13 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\DataFixtures\Dumper;
 
-use PDO;
-use Propel;
-use Propel\Bundle\PropelBundle\DataFixtures\AbstractDataHandler;
-use PropelColumnTypes;
+namespace Propel\PropelBundle\DataFixtures\Dumper;
+
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use \PDO;
+use \Propel;
+use \PropelColumnTypes;
 
 /**
  * Abstract class to manage a common logic to dump data.

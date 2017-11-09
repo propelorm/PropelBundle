@@ -1,17 +1,17 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Tests\Fixtures\Model\om;
+namespace Propel\PropelBundle\Tests\Fixtures\Model\om;
 
-use BaseObject;
-use BasePeer;
-use Criteria;
-use PDO;
-use Persistent;
-use Propel;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookPeer;
-use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\BookQuery;
-use PropelException;
-use PropelPDO;
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Propel\PropelBundle\Tests\Fixtures\Model\BookPeer;
+use Propel\PropelBundle\Tests\Fixtures\Model\BookQuery;
 
 /**
  * Base class that represents a row from the 'book' table.
@@ -25,7 +25,7 @@ abstract class BaseBook extends BaseObject  implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\BookPeer';
+    const PEER = 'Propel\\PropelBundle\\Tests\\Fixtures\\Model\\BookPeer';
 
     /**
      * The Peer class.

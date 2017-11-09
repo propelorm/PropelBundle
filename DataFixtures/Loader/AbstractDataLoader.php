@@ -7,15 +7,16 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\DataFixtures\Loader;
 
-use BaseObject;
-use BasePeer;
-use Propel;
-use Propel\Bundle\PropelBundle\DataFixtures\AbstractDataHandler;
-use Propel\Bundle\PropelBundle\Util\PropelInflector;
-use PropelColumnTypes;
-use PropelException;
+namespace Propel\PropelBundle\DataFixtures\Loader;
+
+use \BasePeer;
+use \BaseObject;
+use \Propel;
+use \PropelColumnTypes;
+use \PropelException;
+use Propel\PropelBundle\DataFixtures\AbstractDataHandler;
+use Propel\PropelBundle\Util\PropelInflector;
 
 /**
  * Abstract class to manage a common logic to load datas.
@@ -150,7 +151,7 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                 continue;
             }
 
-            foreach ($datas as $key => $data) {
+            foreach ($datas as $key => $values) {
                 // create a new entry in the database
                 if (!class_exists($class)) {
                     throw new \InvalidArgumentException(sprintf('Unknown class "%s".', $class));
@@ -164,11 +165,11 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
                     );
                 }
 
-                if (!is_array($data)) {
+                if (!is_array($values)) {
                     throw new \InvalidArgumentException(sprintf('You must give a name for each fixture data entry (class %s).', $class));
                 }
 
-                foreach ($data as $name => $value) {
+                foreach ($values as $name => $value) {
                     if (is_array($value) && 's' === substr($name, -1)) {
                         try {
                             // many to many relationship
@@ -211,14 +212,15 @@ abstract class AbstractDataLoader extends AbstractDataHandler implements DataLoa
 
                         if ($column->isForeignKey() && null !== $value) {
                             $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
-                            if (!isset($this->object_references[$relatedTable->getClassname().'_'.$value])) {
+                            if (isset($this->object_references[$relatedTable->getClassname().'_'.$value])) {
+                                $value = $this
+                                    ->object_references[$relatedTable->getClassname().'_'.$value]
+                                    ->getByName($column->getRelatedName(), BasePeer::TYPE_COLNAME);
+                            } else if (isset($data[$relatedTable->getClassName()])) {
                                 throw new \InvalidArgumentException(
                                     sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getClassname())
                                 );
                             }
-                            $value = $this
-                                ->object_references[$relatedTable->getClassname().'_'.$value]
-                                ->getByName($column->getRelatedName(), BasePeer::TYPE_COLNAME);
                         }
                     }
 

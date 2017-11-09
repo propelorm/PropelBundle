@@ -7,13 +7,17 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Command;
+
+namespace Propel\PropelBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+
+use Propel\PropelBundle\Command\AbstractCommand;
 
 /**
  * SqlBuildCommand.
@@ -51,33 +55,41 @@ EOT
         $finder = new Finder();
         $filesystem = new Filesystem();
 
-        $sqlDir = $this->getApplication()->getKernel()->getCacheDir().DIRECTORY_SEPARATOR.'propel'.DIRECTORY_SEPARATOR.'sql';
+        $sqlDir = $this->getApplication()->getKernel()->getRootDir(). DIRECTORY_SEPARATOR . 'propel'. DIRECTORY_SEPARATOR . 'sql';
+        $cacheDir = $this->getApplication()->getKernel()->getCacheDir(). DIRECTORY_SEPARATOR . 'sql';
 
-        $filesystem->remove($sqlDir);
-        $filesystem->mkdir($sqlDir);
+        $filesystem->remove($cacheDir);
+        $filesystem->mkdir($cacheDir);
+
+        if (!$filesystem->exists($sqlDir)) {
+            $filesystem->mkdir($sqlDir);
+        }
 
         // Execute the task
         $ret = $this->callPhing('build-sql', array(
-            'propel.sql.dir' => $sqlDir,
+            'propel.sql.dir' => $cacheDir
         ));
 
         // Show the list of generated files
         if (true === $ret) {
-            $files = $finder->name('*')->in($sqlDir);
+            $files = $finder->name('*')->in($cacheDir);
 
             $nbFiles = 0;
             foreach ($files as $file) {
                 $fileExt = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-                $finalLocation = $sqlDir.DIRECTORY_SEPARATOR.$file->getFilename();
+                $finalLocation = $sqlDir. DIRECTORY_SEPARATOR. $file->getFilename();
 
                 if ($fileExt === 'map' && $filesystem->exists($finalLocation)) {
                     $this->mergeMapFiles($finalLocation, (string) $file);
+                } else {
+                    $filesystem->remove($finalLocation);
+                    $filesystem->rename((string) $file, $finalLocation);
                 }
 
                 $this->writeNewFile($output, (string) $file);
 
                 if ('sql' === $fileExt) {
-                    ++$nbFiles;
+                    $nbFiles++;
                 }
             }
 
@@ -88,7 +100,7 @@ EOT
             $this->writeSection($output, array(
                 '[Propel] Error',
                 '',
-                'An error has occured during the "propel:sql:build" command process. To get more details, run the command with the "--verbose" option.',
+                'An error has occured during the "propel:sql:build" command process. To get more details, run the command with the "--verbose" option.'
             ), 'fg=white;bg=red');
         }
     }
@@ -100,17 +112,16 @@ EOT
      * @param string $target    target map filename
      * @param string $generated generated map filename
      *
-     * @return bool
+     * @return boolean result
      */
     protected function mergeMapFiles($target, $generated)
     {
-        if (false === ($targetContent = file($target))) {
-            return false;
-        }
+        if(($targetContent = file($target)) === false)
 
-        if (false === ($generatedContent = file($generated))) {
             return false;
-        }
+        if(($generatedContent = file($generated)) === false)
+
+            return false;
 
         $targetContent = array_merge($generatedContent, array_diff($targetContent, $generatedContent));
 

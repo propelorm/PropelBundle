@@ -7,16 +7,17 @@
  *
  * @license    MIT License
  */
-namespace Propel\Bundle\PropelBundle\Command;
+
+namespace Propel\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Wrapper for Propel commands.
@@ -127,13 +128,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
         $this->checkConfiguration();
 
-        if ($input->hasArgument('bundle') && $input->getArgument('bundle')) {
-            $bundleName = $input->getArgument('bundle');
-            if (0 === strpos($bundleName, '@')) {
-                $bundleName = substr($bundleName, 1);
-            }
-
-            $this->bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
+        if ($input->hasArgument('bundle') && '@' === substr($input->getArgument('bundle'), 0, 1)) {
+            $this->bundle = $this
+                ->getContainer()
+                ->get('kernel')
+                ->getBundle(substr($input->getArgument('bundle'), 1));
         }
     }
 
@@ -174,7 +173,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
             if (in_array($arg, array('verbose', 'debug'))) {
-                $bufferPhingOutput = false;
+                $bufferPhingOutput = true;
             }
 
             $args[] = '-'.$arg;
@@ -209,7 +208,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $returnStatus = false;
         }
 
-        if ($bufferPhingOutput) {
+        if ($bufferPhingOutput === false) {
             ob_end_clean();
         } else {
             ob_end_flush();
@@ -383,17 +382,13 @@ EOT
 
         $propelConfiguration = $container->get('propel.configuration');
         foreach ($propelConfiguration['datasources'] as $name => $datasource) {
-            if (is_scalar($datasource)) {
-                continue;
-            }
-
             $xml .= strtr(<<<EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>
         <connection>
           <dsn>%dsn%</dsn>
           <user>%username%</user>
-          <password>%password%</password>
+          <password><![CDATA[%password%]]></password>
         </connection>
       </datasource>
 

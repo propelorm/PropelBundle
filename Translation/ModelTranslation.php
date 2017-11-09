@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Translation;
+namespace Propel\PropelBundle\Translation;
 
 use Symfony\Component\Config\Resource\ResourceInterface;
 use Symfony\Component\Translation\Dumper\DumperInterface;
