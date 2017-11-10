@@ -40,5 +40,4 @@ before_install:
 install:
     - composer update ${COMPOSER_FLAGS} --prefer-source
 
-script:
-    - vendor/bin/phpunit --colors
+script: vendor/bin/phpunit --colors

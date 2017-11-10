@@ -174,7 +174,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         // Add any arbitrary arguments last
         foreach ($this->additionalPhingArgs as $arg) {
             if (in_array($arg, array('verbose', 'debug'))) {
-                $bufferPhingOutput = false;
+                $bufferPhingOutput = true;
             }
 
             $args[] = '-'.$arg;
@@ -209,7 +209,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $returnStatus = false;
         }
 
-        if ($bufferPhingOutput) {
+        if ($bufferPhingOutput === false) {
             ob_end_clean();
         } else {
             ob_end_flush();
@@ -393,7 +393,7 @@ EOT
         <connection>
           <dsn>%dsn%</dsn>
           <user>%username%</user>
-          <password>%password%</password>
+          <password><![CDATA[%password%]]></password>
         </connection>
       </datasource>
 
