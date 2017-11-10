@@ -1,10 +1,10 @@
 PropelBundle
 ============
 
-[![Build Status](https://secure.travis-ci.org/propelorm/PropelBundle.png)](http://travis-ci.org/propelorm/PropelBundle)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/propelorm/PropelBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.5)](https://travis-ci.org/propelorm/PropelBundle)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/propelorm/PropelBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
+This is the official implementation of [Propel](http://www.propelorm.org/Propel/) in Symfony.
 
 ## Branching model
 
@@ -12,19 +12,20 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 The two major branches being supported are:
 
-* The `1.5` branch contains Propel *1.6+* integration for Symfony *2.8 LTS*.
-* The `1.6` branch contains Propel *1.6+* integration for Symfony *3.0*.
+* The [1.5](https://github.com/propelorm/PropelBundle/tree/1.5) branch contains Propel *1.6+* integration for Symfony *2.8 LTS*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.5)](https://travis-ci.org/propelorm/PropelBundle)
+* The [1.6](https://github.com/propelorm/PropelBundle/tree/1.6) branch contains Propel *1.6+* integration for Symfony *3.x*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.6)](https://travis-ci.org/propelorm/PropelBundle)
 
 If you are running on an older version, you may require one of the following versions of this bundle.
 
-* The `1.0` branch contains Propel *1.6* integration for Symfony *2.0*.
-* The `1.1` branch contains Propel *1.6* integration for Symfony *2.1*.
-* The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1*.
-* The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3*.
+* The [1.0](https://github.com/propelorm/PropelBundle/tree/1.0) branch contains Propel *1.6* integration for Symfony *2.0*.
+* The [1.1](https://github.com/propelorm/PropelBundle/tree/1.1) branch contains Propel *1.6* integration for Symfony *2.1*.
+* The [1.2](https://github.com/propelorm/PropelBundle/tree/1.2) branch contains Propel *1.6+* integration for Symfony *2.2-2.3*.
+* The [1.4](https://github.com/propelorm/PropelBundle/tree/1.4) branch contains Propel *1.6+* integration for Symfony *2.4-2.7*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.4)](https://travis-ci.org/propelorm/PropelBundle)
 
 ### Propel2 integration
 
-* The `2.0` branch will contain `Propel2` integration for Symfony *3.0*.
+* The [2.0](https://github.com/propelorm/PropelBundle/tree/2.0) branch contains `Propel2` integration for Symfony *2.5-2.8*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=2.0)](https://travis-ci.org/propelorm/PropelBundle)
+* The [3.0](https://github.com/propelorm/PropelBundle/tree/3.0) branch contains `Propel2` integration for Symfony *2.8-3.x*. [![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=3.0)](https://travis-ci.org/propelorm/PropelBundle)
 
 **Note:** the `master` branch won't be updated anymore, and will trigger an `E_USER_DEPRECATED` error to notice people.
 
@@ -34,9 +35,9 @@ If you are running on an older version, you may require one of the following ver
  * Insertion of SQL statements;
  * Runtime autoloading of Propel and generated classes;
  * Propel runtime initialization through the XML configuration;
- * Migrations [Propel 1.6](http://www.propelorm.org/documentation/10-migrations.html);
- * Reverse engineering from [existing database](http://www.propelorm.org/wiki/Documentation/1.6/Existing-Database);
- * Integration to the Symfony2 Profiler;
+ * [Propel Migrations](http://propelorm.org/Propel/documentation/10-migrations.html);
+ * Reverse engineering from [existing database](http://propelorm.org/Propel/cookbook/working-with-existing-databases.html);
+ * Integration to the Symfony Profiler;
  * Load SQL, YAML and XML fixtures;
  * Create/Drop databases;
  * Integration with the Form component;

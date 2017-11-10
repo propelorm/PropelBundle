@@ -44,6 +44,32 @@ YAML;
         $this->assertInstanceOf('Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor', $book->getBookAuthor());
     }
 
+    public function testYamlLoadOneToManyExternalReference()
+    {
+        $loader = new YamlDataLoader(__DIR__.'/../../Fixtures/DataFixtures/Loader');
+        $fixtures = <<<YAML
+\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
+    BookAuthor_1:
+        id: '1'
+        name: 'A famous one'
+YAML;
+        $filename = $this->getTempFile($fixtures);
+        $loader->load(array($filename), 'default');
+        $fixtures = <<<YAML
+\Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
+    Book_1:
+        id: '1'
+        name: 'An important one'
+        author_id: 1
+YAML;
+        $filename = $this->getTempFile($fixtures);
+        $loader->load(array($filename), 'default');
+        $books = \Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookQuery::create()->find($this->con);
+        $this->assertCount(1, $books);
+        $book = $books[0];
+        $this->assertInstanceOf('Propel\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor', $book->getBookAuthor());
+    }
+
     public function testYamlLoadManyToMany()
     {
         $schema = <<<XML
