@@ -14,9 +14,6 @@ namespace Propel\Bundle\PropelBundle\Form\Type;
 use Propel\Bundle\PropelBundle\Form\ChoiceList\PropelChoiceLoader;
 use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
-use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
-use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -37,7 +34,7 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  *  public function buildForm(FormBuilderInterface $builder, array $options)
  *  {
  *      $builder
- *          ->add('product', 'model', array(
+ *          ->add('product', ModelType::class, array(
  *              'class' => 'Model\Product',
  *              'query' => ProductQuery::create()
  *                  ->filterIsActive(true)
@@ -55,25 +52,6 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 class ModelType extends AbstractType
 {
-    /**
-     * @var ChoiceListFactoryInterface
-     */
-    private $choiceListFactory;
-
-    /**
-     * ModelType constructor.
-     *
-     * @param PropertyAccessorInterface|null  $propertyAccessor
-     * @param ChoiceListFactoryInterface|null $choiceListFactory
-     */
-    public function __construct(PropertyAccessorInterface $propertyAccessor = null, ChoiceListFactoryInterface $choiceListFactory = null)
-    {
-        $this->choiceListFactory = $choiceListFactory ?: new PropertyAccessDecorator(
-            new DefaultChoiceListFactory(),
-            $propertyAccessor
-        );
-    }
-
     /**
      * Creates the label for a choice.
      *
@@ -133,7 +111,6 @@ class ModelType extends AbstractType
             if (null === $options['choices']) {
 
                 $propelChoiceLoader = new PropelChoiceLoader(
-                    $this->choiceListFactory,
                     $options['class'],
                     $options['query']
                 );
@@ -252,6 +229,9 @@ class ModelType extends AbstractType
         return 'model';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return ChoiceType::class;
