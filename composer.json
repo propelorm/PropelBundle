@@ -1,6 +1,6 @@
 {
     "name": "propel/propel-bundle",
-    "description": "Integration of Propel in Symfony2",
+    "description": "Integration of Propel in Symfony",
     "keywords": ["propel", "orm", "persistence"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -21,9 +21,14 @@
         "symfony/framework-bundle": "^2.8|^3.0|^4.0",
         "symfony/security-acl": "^2.8|^3.0|^4.0"
     },
+    "suggest": {
+        "symfony/security-acl": "For using acl instead of voters"
+    },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.21|^5.0.10",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "fzaninotto/faker": "^1.5"
+        "phpunit/phpunit": "^6.0",
+        "sensio/framework-extra-bundle": "^4.0",
+        "fzaninotto/faker": "^1.5",
+        "symfony/security-acl": "^3.0",
+        "mikey179/vfsStream": "^1.6"
     }
 }

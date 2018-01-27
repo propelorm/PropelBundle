@@ -29,7 +29,7 @@ class AclTest extends AclTestCase
         $collection = new ObjectCollection();
         $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\AclClass');
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\Exception');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\Exception');
         new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
     }
 
@@ -138,7 +138,7 @@ class AclTest extends AclTestCase
         $aclObj = $this->getAclObjectIdentity();
         $acl = new Acl($collection, $aclObj, new PermissionGrantingStrategy());
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $acl->isSidLoaded('foo');
     }
 
@@ -149,7 +149,7 @@ class AclTest extends AclTestCase
 
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
         $acl->isGranted(array(64), array($this->getRoleSecurityIdentity()));
     }
 
@@ -167,7 +167,7 @@ class AclTest extends AclTestCase
 
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
         $acl->isGranted(array(64), array($this->getRoleSecurityIdentity('ROLE_USER')));
     }
 
@@ -178,7 +178,7 @@ class AclTest extends AclTestCase
 
         $acl = new Acl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
         $acl->isFieldGranted('name', array(64), array($this->getRoleSecurityIdentity()));
     }
 
