@@ -8,7 +8,6 @@ php:
     - 7.0
     - 7.1
     - 7.2
-    - nightly
 
 cache:
     directories:
@@ -19,22 +18,18 @@ env:
     - SYMFONY_VERSION="^2.8" COMPOSER_FLAGS="--prefer-lowest"
     - SYMFONY_VERSION="^3.0"
     - SYMFONY_VERSION="^3.0" COMPOSER_FLAGS="--prefer-lowest"
-    - SYMFONY_VERSION="dev-master"
-    - SYMFONY_VERSION="^4.0" DEPENDENCIES=beta
+    - SYMFONY_VERSION="^4.0"
 
 matrix:
     fast_finish: true
 
-    allow_failures:
-        - php: nightly
-
     exclude:
         - php: 5.5
-          env: SYMFONY_VERSION="^4.0" DEPENDENCIES=beta
+          env: SYMFONY_VERSION="^4.0"
         - php: 5.6
-          env: SYMFONY_VERSION="^4.0" DEPENDENCIES=beta
+          env: SYMFONY_VERSION="^4.0"
         - php: 7.0
-          env: SYMFONY_VERSION="^4.0" DEPENDENCIES=beta
+          env: SYMFONY_VERSION="^4.0"
         - php: 7.2
           env: SYMFONY_VERSION="^2.8"
         - php: 7.2
@@ -42,7 +37,6 @@ matrix:
 
 before_install:
     - composer self-update
-    - if [ "$DEPENDENCIES" = "beta" ]; then composer config minimum-stability beta; fi;
     - if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update "symfony/symfony:${SYMFONY_VERSION}"; fi;
 
 install:
