@@ -19,12 +19,12 @@
     </parameters>
 
     <services>
-        <service id="propel.schema_locator" class="%propel.schema_locator.class%">
+        <service id="propel.schema_locator" class="%propel.schema_locator.class%" public="true">
             <argument type="service" id="file_locator" />
             <argument>%propel.configuration%</argument>
         </service>
 
-        <service id="propel.logger" class="%propel.logger.class%">
+        <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
@@ -35,30 +35,30 @@
             <tag name="data_collector" template="@Propel/Collector/propel" id="propel" />
         </service>
 
-        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
+        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%" public="true">
             <tag name="twig.extension" />
         </service>
 
-        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
+        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%" public="true">
             <tag name="form.type_guesser" />
         </service>
 
-        <service id="propel.form.type.model" class="%propel.form.type.model.class%">
+        <service id="propel.form.type.model" class="%propel.form.type.model.class%" public="true">
             <tag name="form.type" alias="model" />
         </service>
 
-        <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%">
+        <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%" public="true">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
 
-        <service id="propel.loader.yaml" class="%propel.loader.yaml.class%">
+        <service id="propel.loader.yaml" class="%propel.loader.yaml.class%" public="true">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
             <argument type="service" id="faker.generator" on-invalid="null" />
         </service>
 
-        <service id="propel.loader.xml" class="%propel.loader.xml.class%">
+        <service id="propel.loader.xml" class="%propel.loader.xml.class%" public="true">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>

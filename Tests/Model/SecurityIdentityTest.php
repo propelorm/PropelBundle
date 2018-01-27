@@ -30,7 +30,7 @@ class SecurityIdentityTest extends AclTestCase
         $identity->setIdentifier('invalidIdentifier');
         $identity->setUsername(true);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         SecurityIdentity::toAclIdentity($identity);
     }
 
@@ -40,7 +40,7 @@ class SecurityIdentityTest extends AclTestCase
         $identity->setIdentifier('invalidIdentifier');
         $identity->setUsername(false);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         SecurityIdentity::toAclIdentity($identity);
     }
 
@@ -84,9 +84,9 @@ class SecurityIdentityTest extends AclTestCase
 
     public function testFromAclIdentityWithInvalid()
     {
-        $secIdentity = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $secIdentity = $this->getMockBuilder('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface')->getMock();
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         SecurityIdentity::fromAclIdentity($secIdentity, $this->con);
     }
 
