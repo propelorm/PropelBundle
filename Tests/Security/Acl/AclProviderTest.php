@@ -33,7 +33,7 @@ class AclProviderTest extends AclTestCase
     {
         $provider = $this->getAclProvider();
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\AclNotFoundException', 'There is no ACL available for this object identity. Please create one using the MutableAclProvider.');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\AclNotFoundException', 'There is no ACL available for this object identity. Please create one using the MutableAclProvider.');
         $provider->findAcl($this->getAclObjectIdentity());
     }
 
@@ -41,7 +41,7 @@ class AclProviderTest extends AclTestCase
     {
         $provider = $this->getAclProvider();
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\AclNotFoundException', 'There is at least no ACL for this object identity and the given security identities. Try retrieving the ACL without security identity filter and add ACEs for the security identities.');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\AclNotFoundException', 'There is at least no ACL for this object identity and the given security identities. Try retrieving the ACL without security identity filter and add ACEs for the security identities.');
         $provider->findAcl($this->getAclObjectIdentity(), array($this->getRoleSecurityIdentity()));
     }
 
@@ -74,7 +74,7 @@ class AclProviderTest extends AclTestCase
 
         $this->assertTrue($acl->isGranted(array(1, 2, 4, 8, 16, 32, 64), array($this->getRoleSecurityIdentity('ROLE_USER'))));
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\NoAceFoundException');
         $acl->isGranted(array(128), array($this->getRoleSecurityIdentity('ROLE_USER')));
     }
 

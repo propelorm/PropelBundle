@@ -80,7 +80,7 @@ class ObjectIdentityQueryTest extends AclTestCase
         $result = ObjectIdentityQuery::create()->findChildren($objIdentity, $this->con);
         $this->assertCount(1, $result);
         $this->assertInstanceOf('Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity', $result->getFirst());
-        $this->assertSame($childObjIdentity, $result->getFirst());
+        $this->assertEquals($childObjIdentity, $result->getFirst());
         $this->assertSame($objIdentity, $result->getFirst()->getObjectIdentityRelatedByParentObjectIdentityId());
     }
 

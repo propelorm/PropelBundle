@@ -31,7 +31,7 @@ class AuditableAclTest extends AclTestCase
 
         $acl = new AuditableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('OutOfBoundsException');
+        $this->expectException('OutOfBoundsException');
         $acl->updateObjectAuditing(0, false, false);
     }
 
@@ -51,7 +51,7 @@ class AuditableAclTest extends AclTestCase
         $collection->append($entry);
         $acl = new AuditableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $acl->updateObjectFieldAuditing(0, 'foo', false, false);
     }
 
@@ -70,7 +70,7 @@ class AuditableAclTest extends AclTestCase
         $collection->append($entry);
         $acl = new AuditableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy());
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $acl->updateObjectAuditing(0, 'foo', 'bar');
     }
 
