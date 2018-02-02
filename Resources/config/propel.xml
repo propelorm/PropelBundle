@@ -35,30 +35,30 @@
             <tag name="data_collector" template="@Propel/Collector/propel" id="propel" />
         </service>
 
-        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%" public="true">
+        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
             <tag name="twig.extension" />
         </service>
 
-        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%" public="true">
+        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
             <tag name="form.type_guesser" />
         </service>
 
-        <service id="propel.form.type.model" class="%propel.form.type.model.class%" public="true">
+        <service id="propel.form.type.model" class="%propel.form.type.model.class%">
             <tag name="form.type" alias="model" />
         </service>
 
-        <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%" public="true">
+        <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
 
-        <service id="propel.loader.yaml" class="%propel.loader.yaml.class%" public="true">
+        <service id="propel.loader.yaml" class="%propel.loader.yaml.class%">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
-            <argument type="service" id="faker.generator" on-invalid="null" public="true"/>
+            <argument type="service" id="faker.generator" on-invalid="null" />
         </service>
 
-        <service id="propel.loader.xml" class="%propel.loader.xml.class%" public="true">
+        <service id="propel.loader.xml" class="%propel.loader.xml.class%">
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
