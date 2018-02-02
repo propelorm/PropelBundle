@@ -12,9 +12,11 @@ namespace Propel\Bundle\PropelBundle\Tests\Service;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use PHPUnit\Framework\MockObject\MockObject;
 use Propel\Bundle\PropelBundle\Service\SchemaLocator;
+use Propel\Bundle\PropelBundle\Tests\Fixtures\FakeBundle\FakeBundle;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
+use Propel\Common\Config\FileLocator;
 use Symfony\Component\HttpKernel\Kernel;
 
 class SchemaLocatorTest extends TestCase
@@ -34,18 +36,21 @@ class SchemaLocatorTest extends TestCase
      */
     private $configuration;
 
+    private $fileLocator;
+
+    /**
+     * @var MockObject
+     */
+    private $bundleMock;
+
     public function setUp()
     {
         $pathStructure = [
-                'schema' => [
-                    'first.schema.xml' => 'First database schema',
-                    'second.schema.xml' => 'Second database schema'
-                ],
                 'configuration' => [
                     'directory' => [
                         'schema.xml' => 'Schema from configuration'
                     ]
-                ]
+                ],
         ];
         $this->root = vfsStream::setup('projectDir');
         vfsStream::create($pathStructure);
@@ -53,32 +58,40 @@ class SchemaLocatorTest extends TestCase
         $this->kernelMock = $this->getMockBuilder(Kernel::class)->disableOriginalConstructor()-> getMock();
         $this->kernelMock->method('getProjectDir')->willReturn($this->root->url());
 
+        $this->bundleMock = new FakeBundle();
+
         $this->configuration['paths']['schemaDir'] = vfsStream::url('projectDir/configuration/directory');
+        $this->fileLocator = new FileLocator(
+            [
+                __DIR__ . '/../Fixtures',
+            ]
+        );
     }
 
-    public function testLocateFromProject()
+    public function testLocateFromBundle()
     {
-        $locator = new SchemaLocator($this->configuration);
-        $files = $locator->locateFromProject($this->kernelMock);
+
+        $locator = new SchemaLocator($this->fileLocator, $this->configuration);
+        $files = $locator->locateFromBundle($this->bundleMock);
+
+        $this->assertCount(1, $files);
+        $this->assertTrue(isset($files[__DIR__ . '/../Fixtures/FakeBundle/Resources/config/bundle.schema.xml']));
+        $this->assertEquals('bundle.schema.xml', $files[__DIR__ . '/../Fixtures/FakeBundle/Resources/config/bundle.schema.xml'][1]->getFileName());
+
+    }
+
+    public function testLocateFromBundlesAndConfiguration()
+    {
+        $locator = new SchemaLocator($this->fileLocator, $this->configuration);
+        $files = $locator->locateFromBundlesAndConfiguration(
+            [$this->bundleMock]
+        );
 
         $this->assertCount(2, $files);
-        $this->assertTrue(isset($files['vfs://projectDir/schema/first.schema.xml']));
-        $this->assertEquals('first.schema.xml', $files['vfs://projectDir/schema/first.schema.xml']->getFileName());
-        $this->assertTrue(isset($files['vfs://projectDir/schema/second.schema.xml']));
-        $this->assertEquals('second.schema.xml', $files['vfs://projectDir/schema/second.schema.xml']->getFileName());
-    }
-
-    public function testLocateFromProjectAndConfiguration()
-    {
-        $locator = new SchemaLocator($this->configuration);
-        $files = $locator->locateFromProjectAndConfiguration($this->kernelMock);
-
-        $this->assertCount(3, $files);
-        $this->assertTrue(isset($files['vfs://projectDir/schema/first.schema.xml']));
-        $this->assertEquals('first.schema.xml', $files['vfs://projectDir/schema/first.schema.xml']->getFileName());
-        $this->assertTrue(isset($files['vfs://projectDir/schema/second.schema.xml']));
-        $this->assertEquals('second.schema.xml', $files['vfs://projectDir/schema/second.schema.xml']->getFileName());
+        $this->assertTrue(isset($files[__DIR__ . '/../Fixtures/FakeBundle/Resources/config/bundle.schema.xml']));
+        $this->assertEquals('bundle.schema.xml', $files[__DIR__ . '/../Fixtures/FakeBundle/Resources/config/bundle.schema.xml'][1]->getFileName());
         $this->assertTrue(isset($files['vfs://projectDir/configuration/directory/schema.xml']));
-        $this->assertEquals('schema.xml', $files['vfs://projectDir/configuration/directory/schema.xml']->getFileName());
+        $this->assertEquals('schema.xml', $files['vfs://projectDir/configuration/directory/schema.xml'][1]->getFileName());
+
     }
 }

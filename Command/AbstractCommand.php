@@ -169,18 +169,18 @@ abstract class AbstractCommand extends ContainerAwareCommand
      * Return a list of final schema files that will be processed.
      *
      * @param KernelInterface $kernel The application kernel.
-     * @param bool $projectOnly If given, only the project schemas will
+     * @param BundleInterface $bundle If given, only the bundle's schemas will
      *                                be returned.
      *
      * @return array A list of schemas.
      */
-    protected function getFinalSchemas(KernelInterface $kernel, $projectOnly = false)
+    protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
     {
-        if (true === $projectOnly) {
-            return $this->getSchemaLocator()->locateFromProject($kernel);
+        if (null !== $bundle) {
+            return $this->getSchemaLocator()->locateFromBundle($bundle);
         }
 
-        return $this->getSchemaLocator()->locateFromProjectAndConfiguration($kernel);
+        return $this->getSchemaLocator()->locateFromBundlesAndConfiguration($kernel->getBundles());
     }
 
     /**
