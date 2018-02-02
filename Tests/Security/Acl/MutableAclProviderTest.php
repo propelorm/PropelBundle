@@ -83,7 +83,7 @@ class MutableAclProviderTest extends AclTestCase
         $acl->insertObjectAce($this->getRoleSecurityIdentity(), 64);
         $this->getAclProvider()->updateAcl($acl);
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException');
         $this->getAclProvider()->createAcl($this->getAclObjectIdentity(1));
     }
 
@@ -109,9 +109,9 @@ class MutableAclProviderTest extends AclTestCase
 
     public function testUpdateAclInvalidAcl()
     {
-        $acl = $this->createMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
+        $acl = $this->getMockBuilder('Symfony\Component\Security\Acl\Model\MutableAclInterface')->getMock();
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->getAclProvider()->updateAcl($acl);
     }
 

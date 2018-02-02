@@ -28,7 +28,7 @@ class YamlDataDumper extends AbstractDataDumper
             $data,
             $inline = 3,
             $indent = 4,
-            $objectSupport = true
+            Yaml::DUMP_OBJECT
         );
     }
 }

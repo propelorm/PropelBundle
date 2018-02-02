@@ -1,6 +1,6 @@
 {
     "name": "propel/propel-bundle",
-    "description": "Integration of Propel in Symfony 4.0",
+    "description": "Integration of Propel in Symfony",
     "keywords": ["propel", "orm", "persistence"],
     "type": "symfony-bundle",
     "license": "MIT",
@@ -13,21 +13,17 @@
         "exclude-from-classmap": [ "Tests/" ]
     },
     "require": {
-        "propel/propel": "~2.0@dev",
+        "propel/propel": "dev-master",
         "symfony/console": "^2.8|^3.0|^4.0",
         "symfony/dependency-injection": "^2.8|^3.0|^4.0",
         "symfony/framework-bundle": "^2.8|^3.0|^4.0",
         "symfony/security-acl": "^2.8|^3.0|^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.21|^5.0.10",
-        "sensio/framework-extra-bundle": "^3.0.2|^4.0",
+        "phpunit/phpunit": "^6.0",
+        "sensio/framework-extra-bundle": "^4.0",
         "symfony/form": "^2.8|^3.0|^4.0",
-        "fzaninotto/faker": "^1.5"
-    },
-    "extra": {
-        "branch-alias": {
-            "4.0": "4.0"
-        }
+        "fzaninotto/faker": "^1.5",
+        "mikey179/vfsStream": "^1.6"
     }
 }

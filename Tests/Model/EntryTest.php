@@ -24,7 +24,10 @@ class EntryTest extends AclTestCase
 {
     public function testToAclEntry()
     {
-        $acl = $this->createMock('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl');
+        $acl = $this->getMockBuilder('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $entry = $this->createModelEntry();
 
         $aclEntry = ModelEntry::toAclEntry($entry, $acl);
@@ -45,7 +48,9 @@ class EntryTest extends AclTestCase
      */
     public function testToAclEntryFieldEntry()
     {
-        $acl = $this->createMock('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl');
+        $acl = $this->getMockBuilder('Propel\Bundle\PropelBundle\Security\Acl\Domain\AuditableAcl')
+            ->disableOriginalConstructor()
+            ->getMock();
         $entry = $this->createModelEntry();
         $entry->setFieldName('name');
 

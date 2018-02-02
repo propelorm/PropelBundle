@@ -54,13 +54,7 @@ class YamlDataDumperTest extends TestCase
         complementary_infos: !php/object 'O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}'
 
 YAML;
-
         $result = file_get_contents($filename);
-
-        //yaml changed the way objects are serialized in
-        // -> https://github.com/symfony/yaml/commit/d5a7902da7e5af069bb8fdcfcf029a229deb1111
-        //so we need to replace old behavior with new, to get this test working in all versions
-        $result = str_replace(' !!php/object', ' !php/object', $result);
 
         $this->assertEquals($expected, $result);
     }
