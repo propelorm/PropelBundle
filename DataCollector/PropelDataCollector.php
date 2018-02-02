@@ -105,4 +105,12 @@ class PropelDataCollector extends DataCollector
     {
         return count($this->logger->getQueries());
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function reset()
+    {
+        // TODO: Implement reset() method.
+    }
 }
