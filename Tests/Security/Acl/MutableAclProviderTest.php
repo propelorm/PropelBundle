@@ -109,7 +109,7 @@ class MutableAclProviderTest extends AclTestCase
 
     public function testUpdateAclInvalidAcl()
     {
-        $acl = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
+        $acl = $this->createMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
 
         $this->setExpectedException('InvalidArgumentException');
         $this->getAclProvider()->updateAcl($acl);

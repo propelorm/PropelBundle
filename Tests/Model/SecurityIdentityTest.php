@@ -84,7 +84,7 @@ class SecurityIdentityTest extends AclTestCase
 
     public function testFromAclIdentityWithInvalid()
     {
-        $secIdentity = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $secIdentity = $this->createMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
         $this->setExpectedException('InvalidArgumentException');
         SecurityIdentity::fromAclIdentity($secIdentity, $this->con);
