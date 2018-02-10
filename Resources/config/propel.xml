@@ -19,12 +19,12 @@
     </parameters>
 
     <services>
-        <service id="propel.schema_locator" class="%propel.schema_locator.class%">
+        <service id="propel.schema_locator" class="%propel.schema_locator.class%" public="true">
             <argument type="service" id="file_locator" />
             <argument>%propel.configuration%</argument>
         </service>
 
-        <service id="propel.logger" class="%propel.logger.class%">
+        <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
@@ -62,5 +62,7 @@
             <argument>%kernel.root_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
+
+
     </services>
 </container>

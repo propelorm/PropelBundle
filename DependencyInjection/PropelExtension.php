@@ -53,6 +53,7 @@ class PropelExtension extends Extension
             $loader->load('propel.xml');
             $loader->load('converters.xml');
             $loader->load('security.xml');
+            $loader->load('console.xml');
         }
     }
 

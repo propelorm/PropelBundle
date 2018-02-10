@@ -30,7 +30,7 @@ class MutableAclTest extends AclTestCase
         $collection = new ObjectCollection();
         $collection->setModel('Propel\Bundle\PropelBundle\Model\Acl\AclClass');
 
-        $this->setExpectedException('Symfony\Component\Security\Acl\Exception\Exception');
+        $this->expectException('Symfony\Component\Security\Acl\Exception\Exception');
         new MutableAcl($collection, $this->getAclObjectIdentity(), new PermissionGrantingStrategy(), array(), null, false, $this->con);
     }
 
@@ -68,14 +68,14 @@ class MutableAclTest extends AclTestCase
     public function testInsertAceInvalidMask()
     {
         $acl = $this->createEmptyAcl();
-        $this->setExpectedException('InvalidArgumentException', 'The given mask is not valid. Please provide an integer.');
+        $this->expectException('InvalidArgumentException', 'The given mask is not valid. Please provide an integer.');
         $acl->insertClassAce($this->getRoleSecurityIdentity(), 'foo');
     }
 
     public function testInsertAceOutofBounds()
     {
         $acl = $this->createEmptyAcl();
-        $this->setExpectedException('OutOfBoundsException', 'The index must be in the interval [0, 0].');
+        $this->expectException('OutOfBoundsException', 'The index must be in the interval [0, 0].');
         $acl->insertClassAce($this->getRoleSecurityIdentity(), 64, 1);
     }
 
@@ -120,7 +120,7 @@ class MutableAclTest extends AclTestCase
     public function testUpdateAceInvalidIndex()
     {
         $acl = $this->createEmptyAcl();
-        $this->setExpectedException('OutOfBoundsException');
+        $this->expectException('OutOfBoundsException');
         $acl->updateClassAce(0, 64);
     }
 
@@ -132,7 +132,7 @@ class MutableAclTest extends AclTestCase
         $acl = $this->createEmptyAcl();
         $acl->insertClassAce($this->getRoleSecurityIdentity(), 64);
 
-        $this->setExpectedException('InvalidArgumentException', 'The given field "name" does not exist.');
+        $this->expectException('InvalidArgumentException', 'The given field "name" does not exist.');
         $acl->updateClassFieldAce(0, 'name', 128);
     }
 
