@@ -10,6 +10,8 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
+use Propel\Bundle\PropelBundle\DataFixtures\Loader\YamlDataLoader;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 
 /**
  * FixturesLoadCommand
@@ -43,6 +46,38 @@ class FixturesLoadCommand extends AbstractCommand
      * @var \Symfony\Component\Filesystem\Filesystem
      */
     private $filesystem = null;
+
+    /**
+     * @var YamlDataLoader
+     */
+    protected $yamlDataLoader;
+
+    /**
+     * @var XmlDataLoader
+     */
+    protected $xmlDataLoader;
+
+    /**
+     * @var FileLocator
+     */
+    protected $fileLocator;
+
+
+    /**
+     * FixturesLoadCommand constructor.
+     * @param YamlDataLoader $yamlDataLoader
+     * @param XmlDataLoader $xmlDataLoader
+     * @param FileLocator $fileLocator
+     * @param string|null $name
+     */
+    public function __construct(YamlDataLoader $yamlDataLoader, XmlDataLoader $xmlDataLoader, FileLocator $fileLocator, string $name = null)
+    {
+        $this->yamlDataLoader = $yamlDataLoader;
+        $this->xmlDataLoader = $xmlDataLoader;
+        $this->fileLocator = $fileLocator;
+
+        parent::__construct($name);
+    }
 
     /**
      * @see Command
@@ -171,9 +206,9 @@ EOT
         $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
 
         if ('yml' === $type) {
-            $loader = $this->getContainer()->get('propel.loader.yaml');
+            $loader = $this->yamlDataLoader;
         } elseif ('xml' === $type) {
-            $loader = $this->getContainer()->get('propel.loader.xml');
+            $loader = $this->xmlDataLoader;
         } else {
             return;
         }
@@ -316,6 +351,6 @@ EOT
      */
     protected function getFileLocator()
     {
-        return $this->getContainer()->get('file_locator');
+        return $this->fileLocator;
     }
 }

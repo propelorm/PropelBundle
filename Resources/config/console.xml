@@ -24,10 +24,14 @@
         <service class="Propel\Bundle\PropelBundle\Command\FixturesDumpCommand"
                  id="propel_bundle_propel.command.fixtures_dump_command">
             <tag name="console.command" command="propel:fixtures:dump"/>
+            <argument type="service" id="propel.dumper.yaml" />
         </service>
         <service class="Propel\Bundle\PropelBundle\Command\FixturesLoadCommand"
                  id="propel_bundle_propel.command.fixtures_load_command">
             <tag name="console.command" command="propel:fixtures:load"/>
+            <argument type="service" id="propel.loader.yaml" />
+            <argument type="service" id="propel.loader.xml" />
+            <argument type="service" id="file_locator" />
         </service>
         <service class="Propel\Bundle\PropelBundle\Command\FormGenerateCommand"
                  id="propel_bundle_propel.command.form_generate_command">
