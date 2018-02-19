@@ -10,6 +10,8 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Propel\Bundle\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
+use Propel\Generator\Schema\Dumper\XmlDumper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +28,25 @@ class FixturesDumpCommand extends AbstractCommand
      * Default fixtures directory.
      * @var string
      */
-    protected $defaultFixturesDir = 'app/propel/fixtures';
+    protected $defaultFixturesDir = 'src/propel/fixtures';
+
+    /**
+     * @var YamlDataDumper
+     */
+    protected $yamlDataDumper;
+
+    /**
+     * FixturesDumpCommand constructor.
+     * @param YamlDataDumper $yamlDataDumper
+     * @param string|null $name
+     */
+    public function __construct(YamlDataDumper $yamlDataDumper, string $name = null)
+    {
+        $this->yamlDataDumper = $yamlDataDumper;
+
+        parent::__construct($name);
+    }
+
 
     /**
      * @see Command
@@ -72,9 +92,8 @@ EOT
         }
 
         $filename = $path . '/fixtures_' . time() . '.yml';
-        $dumper = $this->getContainer()->get('propel.dumper.yaml');
 
-        $dumper->dump($filename, $input->getOption('connection'));
+        $this->yamlDataDumper->dump($filename, $input->getOption('connection'));
 
         $this->writeNewFile($output, $filename);
 
