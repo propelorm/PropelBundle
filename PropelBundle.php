@@ -93,10 +93,12 @@ class PropelBundle extends Bundle
         $serviceContainer->setLogger('defaultLogger', $this->container->get('propel.logger'));
 
         foreach ($serviceContainer->getConnectionManagers() as $manager) {
-            $connection = $manager->getReadConnection($serviceContainer->getAdapter($manager->getName()));
+            $adapter = $serviceContainer->getAdapter($manager->getName());
+
+            $connection = $manager->getReadConnection($adapter);
             $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
 
-            $connection = $manager->getWriteConnection();
+            $connection = $manager->getWriteConnection($adapter);
             $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
         }
     }
