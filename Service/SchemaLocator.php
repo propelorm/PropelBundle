@@ -85,6 +85,6 @@ class SchemaLocator
             $schema->getRealPath()
         );
 
-        return sprintf('%s/Resources/config/%s', $bundle->getName(), $schemaPath);
+        return sprintf('@%s/Resources/config/%s', $bundle->getName(), $schemaPath);
     }
 }
