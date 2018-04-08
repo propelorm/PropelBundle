@@ -16,7 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Propel\Bundle\PropelBundle\Service\SchemaLocator;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\FakeBundle\FakeBundle;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
-use Propel\Common\Config\FileLocator;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\Kernel;
 
 class SchemaLocatorTest extends TestCase
@@ -57,15 +57,14 @@ class SchemaLocatorTest extends TestCase
 
         $this->kernelMock = $this->getMockBuilder(Kernel::class)->disableOriginalConstructor()-> getMock();
         $this->kernelMock->method('getProjectDir')->willReturn($this->root->url());
+        $this->kernelMock->method('locateResource')->will($this->returnCallback( function($argument) {
+            return (str_replace('@', __DIR__ . '/../Fixtures/', $argument));
+        }));
 
         $this->bundleMock = new FakeBundle();
 
         $this->configuration['paths']['schemaDir'] = vfsStream::url('projectDir/configuration/directory');
-        $this->fileLocator = new FileLocator(
-            [
-                __DIR__ . '/../Fixtures',
-            ]
-        );
+        $this->fileLocator = new FileLocator($this->kernelMock,  __DIR__ . '/../Fixtures');
     }
 
     public function testLocateFromBundle()
