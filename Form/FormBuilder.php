@@ -28,12 +28,12 @@ class FormBuilder
      *
      * @return string
      */
-    public function buildFormType(BundleInterface $bundle, Table $table, $formTypeNamespace)
+    public function buildFormType(BundleInterface $bundle = null, Table $table, $formTypeNamespace)
     {
         $modelName = $table->getPhpName();
         $formTypeContent = file_get_contents(__DIR__ . '/../Resources/skeleton/FormType.php');
-
-        $formTypeContent = str_replace('##NAMESPACE##', $bundle->getNamespace() . str_replace('/', '\\', $formTypeNamespace), $formTypeContent);
+        $namespace = null === $bundle ? 'App' : $bundle->getNamespace();
+        $formTypeContent = str_replace('##NAMESPACE##', $namespace . str_replace('/', '\\', $formTypeNamespace), $formTypeContent);
         $formTypeContent = str_replace('##CLASS##', $modelName . 'Type', $formTypeContent);
         $formTypeContent = str_replace('##FQCN##', sprintf('%s\%s', $table->getNamespace(), $modelName), $formTypeContent);
         $formTypeContent = str_replace('##TYPE_NAME##', strtolower($modelName), $formTypeContent);

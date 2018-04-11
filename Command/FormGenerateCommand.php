@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -65,7 +66,7 @@ EOT
         $models = $input->getArgument('models');
         $force = $input->getOption('force');
 
-        $bundle = $this->getBundle($input, $output);
+        $bundle = $this->askForBundle($input, $output) ? $this->getBundle($input, $output) : null;
 
         $this->setupBuildTimeFiles();
         $schemas = $this->getFinalSchemas($kernel, $bundle);
@@ -92,7 +93,7 @@ EOT
      * @param OutputInterface $output   An OutputInterface instance
      * @param boolean         $force    Override files if present.
      */
-    protected function createFormTypeFromDatabase(BundleInterface $bundle, Database $database, $models, OutputInterface $output, $force = false)
+    protected function createFormTypeFromDatabase(BundleInterface $bundle = null, Database $database, $models, OutputInterface $output, $force = false)
     {
         $dir = $this->createDirectory($bundle, $output);
 
@@ -119,11 +120,13 @@ EOT
      *
      * @return string The path to the created directory.
      */
-    protected function createDirectory(BundleInterface $bundle, OutputInterface $output)
+    protected function createDirectory(BundleInterface $bundle = null, OutputInterface $output)
     {
         $fs = new Filesystem();
 
-        if (!$fs->exists($dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
+        $path = (null !== $bundle) ? $bundle->getPath() : $this->getApplication()->getKernel()->getProjectDir() . "/src";
+
+        if (!$fs->exists($dir = $path . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
             $fs->mkdir($dir);
             $this->writeNewDirectory($output, $dir);
         }
@@ -140,7 +143,7 @@ EOT
      * @param boolean         $force  Is the write forced?
      * @param OutputInterface $output An OutputInterface instance.
      */
-    protected function writeFormType(BundleInterface $bundle, Table $table, \SplFileInfo $file, $force, OutputInterface $output)
+    protected function writeFormType(BundleInterface $bundle = null, Table $table, \SplFileInfo $file, $force, OutputInterface $output)
     {
         $formBuilder = new FormBuilder();
         $formTypeContent = $formBuilder->buildFormType($bundle, $table, self::DEFAULT_FORM_TYPE_DIRECTORY);
@@ -197,5 +200,17 @@ EOT
         $manager->setSchemas($schemaFiles);
 
         return $manager;
+    }
+
+    protected function askForBundle(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->hasArgument('bundle') && $input->getArgument('bundle') !== null) {
+            return true;
+        }
+
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion("You don't specify a bundle: do you want to do it? [no]", false);
+
+        return $helper->ask($input, $output, $question);
     }
 }
