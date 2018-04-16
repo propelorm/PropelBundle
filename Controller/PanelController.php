@@ -9,9 +9,11 @@
  */
 namespace Propel\Bundle\PropelBundle\Controller;
 
+use PropelConfiguration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
@@ -25,19 +27,20 @@ class PanelController implements ContainerAwareInterface
     /**
      * This method renders the global Propel configuration.
      */
-    public function configurationAction()
+    public function configurationAction(EngineInterface $templating, PropelConfiguration $propelConfiguration)
     {
-        $templating = $this->container->get('templating');
-
-        return $templating->renderResponse(
-            'PropelBundle:Panel:configuration.html.twig',
-            array(
-                'propel_version'     => \Propel::VERSION,
-                'configuration'      => $this->container->get('propel.configuration')->getParameters(),
-                'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
-                'logging'            => $this->container->getParameter('propel.logging'),
-                'path'               => $this->container->getParameter('propel.path'),
-                'phing_path'         => $this->container->getParameter('propel.phing_path'),
+        $response = new Response();
+        $response->setContent(
+            $templating->render(
+                'PropelBundle:Panel:configuration.html.twig',
+                array(
+                    'propel_version' => \Propel::VERSION,
+                    'configuration' => $propelConfiguration->getParameters(),
+                    'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
+                    'logging' => $this->container->getParameter('propel.logging'),
+                    'path' => $this->container->getParameter('propel.path'),
+                    'phing_path' => $this->container->getParameter('propel.phing_path'),
+                )
             )
         );
     }
@@ -45,8 +48,8 @@ class PanelController implements ContainerAwareInterface
     /**
      * Renders the profiler panel for the given token.
      *
-     * @param string  $token      The profiler token
-     * @param string  $connection The connection name
+     * @param string $token The profiler token
+     * @param string $connection The connection name
      * @param integer $query
      *
      * @return Symfony\Component\HttpFoundation\Response A Response instance

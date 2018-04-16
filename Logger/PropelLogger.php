@@ -45,8 +45,8 @@ class PropelLogger implements \BasicLogger
     /**
      * Constructor.
      *
-     * @param LoggerInterface $logger    A LoggerInterface instance
-     * @param Stopwatch       $stopwatch A Stopwatch instance
+     * @param LoggerInterface $logger A LoggerInterface instance
+     * @param Stopwatch $stopwatch A Stopwatch instance
      */
     public function __construct(LoggerInterface $logger = null, Stopwatch $stopwatch = null)
     {
@@ -173,5 +173,14 @@ class PropelLogger implements \BasicLogger
     public function getQueries()
     {
         return $this->queries;
+    }
+
+    /**
+     * Resets this logger to its initial state.
+     */
+    public function reset()
+    {
+        $this->queries = array();
+        $this->isPrepared = false;
     }
 }
