@@ -9,11 +9,9 @@
  */
 namespace Propel\Bundle\PropelBundle\Controller;
 
-use PropelConfiguration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
@@ -27,20 +25,20 @@ class PanelController implements ContainerAwareInterface
     /**
      * This method renders the global Propel configuration.
      */
-    public function configurationAction(EngineInterface $templating, PropelConfiguration $propelConfiguration)
+    public function configurationAction()
     {
-        $response = new Response();
-        $response->setContent(
-            $templating->render(
-                'PropelBundle:Panel:configuration.html.twig',
-                array(
-                    'propel_version' => \Propel::VERSION,
-                    'configuration' => $propelConfiguration->getParameters(),
-                    'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
-                    'logging' => $this->container->getParameter('propel.logging'),
-                    'path' => $this->container->getParameter('propel.path'),
-                    'phing_path' => $this->container->getParameter('propel.phing_path'),
-                )
+        $templating = $this->container->get('templating');
+        $propelConfiguration = $this->container->get('propel.configuration');
+
+        return $this->container->get('templating')->renderResponse(
+            'PropelBundle:Panel:configuration.html.twig',
+            array(
+                'propel_version' => \Propel::VERSION,
+                'configuration' => $propelConfiguration->getParameters(),
+                'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
+                'logging' => $this->container->getParameter('propel.logging'),
+                'path' => $this->container->getParameter('propel.path'),
+                'phing_path' => $this->container->getParameter('propel.phing_path'),
             )
         );
     }
