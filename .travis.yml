@@ -3,7 +3,6 @@ sudo: false
 language: php
 
 php:
-    - 7.0
     - 7.1
     - 7.2
 
@@ -17,8 +16,6 @@ env:
     - SYMFONY_VERSION="^4.0.0" COMPOSER_FLAGS="--prefer-lowest"
 
 allow_failures:
-    - php: hhvm
-    - php: nightly
     - env: SYMFONY_VERSION="^3.4.0"
 
 matrix:
