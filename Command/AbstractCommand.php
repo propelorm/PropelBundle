@@ -164,6 +164,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function callPhing($taskName, $properties = array())
     {
+        /** @var KernelInterface $kernel */
         $kernel = $this->getApplication()->getKernel();
 
         if (isset($properties['propel.schema.dir'])) {
@@ -267,7 +268,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             // the package needs to be set absolute
             // besides, the automated namespace to package conversion has
             // not taken place yet so it needs to be done manually
-            $database = simplexml_load_file($file);
+            $database = simplexml_load_string(file_get_contents($file)); // workaround for PHP Bug #73328 / Disabling entity loading breaks XMLReader
 
             if (isset($database['package'])) {
                 // Do not use the prefix!

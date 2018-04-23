@@ -109,7 +109,7 @@ abstract class AbstractDataDumper extends AbstractDataHandler implements DataDum
                     $adapter = Propel::getDB($connectionName);
                     // Quote fieldnames
                     $countFields = count($in);
-                    for ($i=0;$i<$countFields;$i++) {
+                    for ($i = 0; $i < $countFields; $i++) {
                         $in[$i] = $adapter->quoteIdentifier($in[$i]);
                     }
                     $stmt = $this
