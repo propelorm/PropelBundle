@@ -8,7 +8,7 @@ like menus, labels, ... you need by default in your database in production.
 
 The following command is designed to load fixtures:
 
-    > php app/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]] [bundle]
+    > php bin/console propel:fixtures:load [-d|--dir[="..."]] [--xml] [--sql] [--yml] [--connection[="..."]] [bundle]
 
 As you can see, there are many options to allow you to easily load fixtures.
 
@@ -25,7 +25,7 @@ If none of this parameter are set all files YAML, XML and SQL in the directory w
 
 You can pass a bundle name to load fixtures from it. A bundle's name starts with `@` like `@AcmeDemoBundle`.
 
-    > php app/console propel:fixtures:load @AcmeDemoBundle
+    > php bin/console propel:fixtures:load @AcmeDemoBundle
 
 
 ### XML Fixtures ###
@@ -93,7 +93,7 @@ allows to write strong fixtures efficiently.
 
 You can dump data from your database into YAML fixtures file by using this command:
 
-    > php app/console propel:fixtures:dump [--connection[="..."]]
+    > php bin/console propel:fixtures:dump [--connection[="..."]]
 
 Dumped files will be written in the fixtures directory: `app/propel/fixtures/` with the following name:
 `fixtures_99999.yml` where `99999` is a timestamp.

@@ -9,14 +9,14 @@ and so on.
 
 You can create a **database**:
 
-    > php app/console propel:database:create [--connection[=""]]
+    > php bin/console propel:database:create [--connection[=""]]
 
 As usual, `--connection` allows to specify a connection.
 
 
 You can drop a **database**:
 
-    > php app/console propel:database:drop [--connection[=""]] [--force]
+    > php bin/console propel:database:drop [--connection[=""]] [--force]
 
 As usual, `--connection` allows to specify a connection.
 
@@ -27,20 +27,20 @@ Note that the `--force` option is needed to actually execute the SQL statements.
 
 You can generate stub classes based on your `schema.xml` in a given bundle:
 
-    > php app/console propel:form:generate [-f|--force] bundle [models1] ... [modelsN]
+    > php bin/console propel:form:generate [-f|--force] bundle [models1] ... [modelsN]
 
 It will write Form Type classes in `src/YourVendor/YourBundle/Form/Type`.
 
 You can choose which Form Type to build by specifing Model names:
 
-    > php app/console propel:form:generate @AcmeDemoBundle Book Author
+    > php bin/console propel:form:generate @AcmeDemoBundle Book Author
 
 
 ## Graphviz ##
 
 You can generate **Graphviz** file for your project by using the following command line:
 
-    > php app/console propel:graphviz:generate
+    > php bin/console propel:graphviz:generate
 
 It will write files in `app/propel/graph/`.
 
@@ -49,32 +49,32 @@ It will write files in `app/propel/graph/`.
 
 Generates SQL diff between the XML schemas and the current database structure:
 
-    > php app/console propel:migration:generate-diff [--connection[=""]]
+    > php bin/console propel:migration:generate-diff [--connection[=""]]
 
 As usual, `--connection` allows to specify a connection.
 
 Executes the migrations:
 
-    > php app/console propel:migration:migrate
+    > php bin/console propel:migration:migrate
 
 Executes the next migration up:
 
-    > php app/console propel:migration:migrate --up
+    > php bin/console propel:migration:migrate --up
 
 Executes the previous migration down:
 
-    > php app/console propel:migration:migrate --down
+    > php bin/console propel:migration:migrate --down
 
 Lists the migrations yet to be executed:
 
-    > php app/console propel:migration:status
+    > php bin/console propel:migration:status
 
 
 ## Table Manipulations ##
 
 You can drop one or several **tables**:
 
-    > php app/console propel:table:drop [--force] [--connection[="..."]] [table1] ... [tableN]
+    > php bin/console propel:table:drop [--force] [--connection[="..."]] [table1] ... [tableN]
 
 As usual, `--connection` allows to specify a connection.
 
@@ -87,11 +87,11 @@ Note that the `--force` option is needed to actually execute the deletion.
 
 Run the following command to generate an XML schema from your `default` database:
 
-    > php app/console propel:reverse
+    > php bin/console propel:reverse
 
 You can define which connection to use:
 
-    > php app/console propel:reverse --connection=default
+    > php bin/console propel:reverse --connection=default
 
 
 [Back to index](index.markdown)
