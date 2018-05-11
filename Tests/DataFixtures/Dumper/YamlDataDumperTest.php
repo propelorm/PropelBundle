@@ -54,6 +54,9 @@ Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
 YAML;
 
         $result = file_get_contents($filename);
+        if (strpos($result, '!php/object:') === FALSE) {
+            $expected = preg_replace('|!php/object:(.*?)$|', '!php/object \'$1\'', $expected);
+        }
         $this->assertEquals($expected, $result);
     }
 }
