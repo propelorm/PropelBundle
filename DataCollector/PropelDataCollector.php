@@ -49,6 +49,11 @@ class PropelDataCollector extends DataCollector
         $this->propelConfiguration = $propelConfiguration;
     }
 
+    public function reset()
+    {
+        $this->logger->reset();
+    }
+
     /**
      * {@inheritdoc}
      */
