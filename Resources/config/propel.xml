@@ -17,11 +17,11 @@
     </parameters>
 
     <services>
-        <service id="propel.configuration" class="%propel.configuration.class%" />
+        <service id="propel.configuration" class="%propel.configuration.class%" public="true"/>
 
         <service id="propel.build_properties" class="%propel.build_properties.class%" />
 
-        <service id="propel.logger" class="%propel.logger.class%">
+        <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
