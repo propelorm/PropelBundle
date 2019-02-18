@@ -131,11 +131,11 @@ class PropelExtension extends Extension
 
         // copy master connection setting to slave connections
         foreach ($c['datasources'] as $datasource => $masterConnection) {
-            foreach (['options', 'attributes', 'settings'] as $attribute) {
-                if (!isset($c['datasources'][$datasource]['slaves'])) {
-                    continue;
-                }
+            if (!isset($c['datasources'][$datasource]['slaves'])) {
+                continue;
+            }
 
+            foreach (['options', 'attributes', 'settings'] as $attribute) {
                 foreach ($c['datasources'][$datasource]['slaves']['connection'] as $slave => $slaveConnection) {
                     $c['datasources'][$datasource]['slaves']['connection'][$slave][$attribute] = $c['datasources'][$datasource]['connection'][$attribute];
                 }
