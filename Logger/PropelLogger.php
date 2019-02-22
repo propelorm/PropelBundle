@@ -23,6 +23,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class PropelLogger implements \BasicLogger
 {
     /**
+     * @var bool
+     */
+    private $isPrepared = false;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -30,17 +35,12 @@ class PropelLogger implements \BasicLogger
     /**
      * @var array
      */
-    protected $queries = array();
+    protected $queries = [];
 
     /**
      * @var Stopwatch
      */
     protected $stopwatch;
-
-    /**
-     * @var bool
-     */
-    private $isPrepared = false;
 
     /**
      * Constructor.
@@ -73,38 +73,6 @@ class PropelLogger implements \BasicLogger
     /**
      * {@inheritdoc}
      */
-    public function err($message)
-    {
-        $this->log($message, 'err');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function warning($message)
-    {
-        $this->log($message, 'warning');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function notice($message)
-    {
-        $this->log($message, 'notice');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function info($message)
-    {
-        $this->log($message, 'info');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function debug($message)
     {
         $add = true;
@@ -129,6 +97,32 @@ class PropelLogger implements \BasicLogger
             $this->queries[] = $message;
             $this->log($message, 'debug');
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function err($message)
+    {
+        $this->log($message, 'err');
+    }
+
+    /**
+     * Returns queries.
+     *
+     * @return array Queries
+     */
+    public function getQueries()
+    {
+        return $this->queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function info($message)
+    {
+        $this->log($message, 'info');
     }
 
     /**
@@ -166,12 +160,23 @@ class PropelLogger implements \BasicLogger
     }
 
     /**
-     * Returns queries.
-     *
-     * @return array Queries
+     * {@inheritdoc}
      */
-    public function getQueries()
+    public function notice($message)
     {
-        return $this->queries;
+        $this->log($message, 'notice');
+    }
+
+    public function resetQueries()
+    {
+        $this->queries = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function warning($message)
+    {
+        $this->log($message, 'warning');
     }
 }

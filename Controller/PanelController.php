@@ -49,7 +49,7 @@ class PanelController implements ContainerAwareInterface
      * @param string  $connection The connection name
      * @param integer $query
      *
-     * @return Symfony\Component\HttpFoundation\Response A Response instance
+     * @return Response A Response instance
      */
     public function explainAction($token, $connection, $query)
     {

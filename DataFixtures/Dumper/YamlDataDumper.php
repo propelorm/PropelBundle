@@ -27,8 +27,7 @@ class YamlDataDumper extends AbstractDataDumper
             $data,
             $inline = 3,
             $indent = 4,
-            $exceptionOnInvalidType = false,
-            $objectSupport = true
+            Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE|Yaml::DUMP_OBJECT
         );
     }
 }

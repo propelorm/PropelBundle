@@ -54,10 +54,10 @@ class PropelDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data = array(
+        $this->data = [
             'queries' => $this->buildQueries(),
             'querycount' => $this->countQueries(),
-        );
+        ];
     }
 
     /**
@@ -105,6 +105,13 @@ class PropelDataCollector extends DataCollector
         return $time;
     }
 
+    public function reset()
+    {
+        $this->data = [];
+
+        $this->logger->resetQueries();
+    }
+
     /**
      * Computes the stats of all executed SQL queries.
      *
@@ -112,7 +119,7 @@ class PropelDataCollector extends DataCollector
      */
     private function buildQueries()
     {
-        $queries = array();
+        $queries = [];
 
         $outerGlue = $this->propelConfiguration->getParameter('debugpdo.logging.outerglue', ' | ');
         $innerGlue = $this->propelConfiguration->getParameter('debugpdo.logging.innerglue', ': ');
@@ -129,7 +136,7 @@ class PropelDataCollector extends DataCollector
             $time = trim($times[1]);
             $memory = trim($memories[1]);
 
-            $queries[] = array('connection' => $con, 'sql' => $sql, 'time' => $time, 'memory' => $memory);
+            $queries[] = ['connection' => $con, 'sql' => $sql, 'time' => $time, 'memory' => $memory];
         }
 
         return $queries;
