@@ -1,41 +1,57 @@
 {
   "name": "propel/propel-bundle",
   "description": "Integration of Propel in Symfony2",
-  "keywords": ["propel", "orm", "persistence"],
+  "keywords": [
+    "propel",
+    "orm",
+    "persistence"
+  ],
   "type": "symfony-bundle",
   "license": "MIT",
-  "authors": [{
-    "name": "William Durand",
-    "email": "william.durand1@gmail.com"
-  }],
-
+  "authors": [
+    {
+      "name": "William Durand",
+      "email": "william.durand1@gmail.com"
+    }
+  ],
   "autoload": {
-    "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
-    "files": ["autoload_aliases.php"],
-    "exclude-from-classmap": [ "Tests/" ]
+    "psr-4": {
+      "Propel\\Bundle\\PropelBundle\\": ""
+    },
+    "files": [
+      "autoload_aliases.php"
+    ],
+    "exclude-from-classmap": [
+      "Tests/"
+    ]
   },
-
   "require": {
+    "ext-pdo": "*",
+    "ext-simplexml": "*",
     "propel/propel1": "^1.6.8",
-    "symfony/framework-bundle": "^3.0.2"
+    "sensio/framework-extra-bundle": "^5.2",
+    "symfony/framework-bundle": "^3.4"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8.21|^5.0.10",
+    "fzaninotto/faker": "^1.5",
     "phing/phing": "^2.12",
-    "symfony/symfony": "^3.0.2",
-    "sensio/framework-extra-bundle": "^3.0.2",
-    "fzaninotto/faker": "^1.5"
+    "phpunit/phpunit": "^4.8.21|^5.0.10",
+    "symfony/phpunit-bridge": "*"
   },
-
   "conflict": {
     "symfony/propel1-bridge": ">=2.8.0"
   },
-
   "replace": {
     "symfony/propel1-bridge": "<=2.8.0"
   },
-
   "suggest": {
     "propel/propel-acl-bundle": "For using the Propel ACL implementation"
+  },
+  "config": {
+    "vendor-dir": "vendor",
+    "sort-packages": true,
+    "platform": {
+      "php": "7.0.8"
+    }
   }
 }

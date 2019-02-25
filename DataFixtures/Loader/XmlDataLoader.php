@@ -27,7 +27,7 @@ class XmlDataLoader extends AbstractDataLoader
     }
 
     /**
-     * @param  SimpleXMLElement $xml
+     * @param  \SimpleXMLElement $xml
      * @return array
      */
     protected function simpleXmlToArray($xml)

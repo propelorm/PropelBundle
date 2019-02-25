@@ -51,7 +51,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $buffer = null;
 
     /**
-     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @var BundleInterface
      */
     protected $bundle = null;
 
