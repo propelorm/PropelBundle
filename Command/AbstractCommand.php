@@ -666,9 +666,9 @@ EOT;
      *
      * @param OutputInterface $output The output.
      * @param string $question A given question.
-     * @param string $default A default response.
+     * @param boolean $default A default response.
      */
-    protected function askConfirmation(OutputInterface $output, $question, $default = null)
+    protected function askConfirmation(OutputInterface $output, $question, $default = false)
     {
         return $this->getHelper('question')->ask($this->input, $output, new ConfirmationQuestion($question, $default));
     }
