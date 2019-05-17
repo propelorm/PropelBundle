@@ -204,7 +204,7 @@ EOT
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
+        $tmpdir = $this->getApplication()->getKernel()->getCacheDir() . '/propel';
         $datas  = $this->getFixtureFiles('sql');
 
         $this->prepareCache($tmpdir);
