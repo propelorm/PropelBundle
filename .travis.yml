@@ -5,6 +5,7 @@ language: php
 php:
     - 7.1
     - 7.2
+    - 7.3
 
 cache:
     directories:
@@ -14,6 +15,12 @@ env:
     - SYMFONY_VERSION="^3.4.0"
     - SYMFONY_VERSION="^4.0.0"
     - SYMFONY_VERSION="^4.0.0" COMPOSER_FLAGS="--prefer-lowest"
+    - SYMFONY_VERSION="^4.1.0"
+    - SYMFONY_VERSION="^4.1.0" COMPOSER_FLAGS="--prefer-lowest"
+    - SYMFONY_VERSION="^4.2.0"
+    - SYMFONY_VERSION="^4.2.0" COMPOSER_FLAGS="--prefer-lowest"
+    - SYMFONY_VERSION="^4.3.0"
+    - SYMFONY_VERSION="^4.3.0" COMPOSER_FLAGS="--prefer-lowest"
 
 allow_failures:
     - env: SYMFONY_VERSION="^3.4.0"
