@@ -53,7 +53,7 @@ class AclTestCase extends TestCase
     /**
      * @return \Propel\Bundle\PropelBundle\Model\Acl\ObjectIdentity
      */
-    protected function createModelObjectIdentity($identifier)
+    protected function createModelObjectIdentity($identifier) : void
     {
         $aclClass = $this->getAclClass();
         $objIdentity = new ModelObjectIdentity();
@@ -67,7 +67,7 @@ class AclTestCase extends TestCase
         return $objIdentity;
     }
 
-    protected function createEntry()
+    protected function createEntry() : void
     {
         $entry = new Entry();
         $entry
@@ -82,22 +82,22 @@ class AclTestCase extends TestCase
         return $entry;
     }
 
-    protected function getAclClass()
+    protected function getAclClass() : void
     {
         return AclClass::fromAclObjectIdentity($this->getAclObjectIdentity(), $this->con);
     }
 
-    protected function getAclProvider()
+    protected function getAclProvider() : void
     {
         return new MutableAclProvider(new PermissionGrantingStrategy(), $this->con, $this->cache);
     }
 
-    protected function getAclObjectIdentity($identifier = 1)
+    protected function getAclObjectIdentity($identifier = 1) : void
     {
         return new ObjectIdentity($identifier, 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book');
     }
 
-    protected function getRoleSecurityIdentity($role = 'ROLE_USER')
+    protected function getRoleSecurityIdentity($role = 'ROLE_USER') : void
     {
         return new RoleSecurityIdentity(new Role($role));
     }
