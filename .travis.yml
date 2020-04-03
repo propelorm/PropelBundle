@@ -11,11 +11,15 @@ jobs:
     include:
         - php: 7.1.33
           env:
-            - SYMFONY_VERSION="^4.3"
+            - SYMFONY_VERSION="^3.4.0"
 
-        - php: 7.3
+        - php: 7.1.33
           env:
-            - SYMFONY_VERSION="^4.3" COMPOSER_FLAGS="--prefer-lowest"
+            - SYMFONY_VERSION="4.0.*"
+
+        - php: 7.1.33
+          env:
+            - SYMFONY_VERSION="4.0.*" COMPOSER_FLAGS="--prefer-lowest"
             
         - php: 7.3
           env:
