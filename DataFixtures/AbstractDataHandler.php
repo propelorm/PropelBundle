@@ -21,10 +21,12 @@ abstract class AbstractDataHandler
      * @var string
      */
     protected $rootDir;
+
     /**
      * @var \PDO
      */
     protected $con;
+
     /**
      * @var \DatabaseMap
      */
@@ -62,6 +64,7 @@ abstract class AbstractDataHandler
         $this->dbMap = Propel::getDatabaseMap($connectionName);
         if (0 === count($this->dbMap->getTables())) {
             $finder = new Finder();
+            /** @var Finder $files */
             $files  = $finder->files()->name('*TableMap.php')
                 ->in($this->getModelSearchPaths($connectionName))
                 ->exclude('PropelBundle')

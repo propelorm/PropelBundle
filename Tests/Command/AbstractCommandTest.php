@@ -12,6 +12,7 @@ namespace Propel\Bundle\PropelBundle\Tests\Command;
 use Propel\Bundle\PropelBundle\Command\AbstractCommand;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -24,9 +25,21 @@ class AbstractCommandTest extends TestCase
      */
     protected $command;
 
+    /**
+     * @var \Symfony\Component\Config\FileLocator|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $fileLocator;
+
     public function setUp()
     {
         $this->command = new TestableAbstractCommand('testable-command');
+        $this->fileLocator = $this->getMockBuilder('Symfony\Component\Config\FileLocator')
+            ->setMethods(array(
+                'locate'
+            ))
+            ->getMock();
+
+        $this->command->setFileLocator($this->fileLocator);
     }
 
     public function testParseDbName()
@@ -94,8 +107,10 @@ class AbstractCommandTest extends TestCase
 
         $aSchema = realpath(__DIR__ . '/../Fixtures/src/My/SuperBundle/Resources/config/a-schema.xml');
 
-        // hack to by pass the file locator
-        $this->command->setLocateResponse($aSchema);
+        $this->fileLocator
+            ->expects(self::atLeastOnce())
+            ->method('locate')
+            ->willReturn($aSchema);
 
         $schemas = $this->command->getSchemasFromBundle($bundle);
 
@@ -160,8 +175,10 @@ class AbstractCommandTest extends TestCase
 
         $aSchema = realpath(__DIR__ . '/../Fixtures/src/My/SuperBundle/Resources/config/a-schema.xml');
 
-        // hack to by pass the file locator
-        $this->command->setLocateResponse($aSchema);
+        $this->fileLocator
+            ->expects(self::atLeastOnce())
+            ->method('locate')
+            ->willReturn($aSchema);
 
         $kernel
             ->expects($this->once())
@@ -194,8 +211,10 @@ class AbstractCommandTest extends TestCase
 
         $aSchema = realpath(__DIR__ . '/../Fixtures/src/My/SuperBundle/Resources/config/a-schema.xml');
 
-        // hack to by pass the file locator
-        $this->command->setLocateResponse($aSchema);
+        $this->fileLocator
+            ->expects(self::atLeastOnce())
+            ->method('locate')
+            ->willReturn($aSchema);
 
         $kernel
             ->expects($this->never())
@@ -214,28 +233,6 @@ class AbstractCommandTest extends TestCase
 
 class TestableAbstractCommand extends AbstractCommand
 {
-    private $locate;
-
-    public function setLocateResponse($locate)
-    {
-        $this->locate = $locate;
-    }
-
-    public function getContainer()
-    {
-        return $this;
-    }
-
-    public function get($service)
-    {
-        return $this;
-    }
-
-    public function locate($file)
-    {
-        return $this->locate;
-    }
-
     public function parseDbName($dsn)
     {
         return parent::parseDbName($dsn);

@@ -21,13 +21,13 @@ class XmlDataLoader extends AbstractDataLoader
      */
     protected function transformDataToArray($file)
     {
-        $xml = simplexml_load_file($file);
+        $xml = simplexml_load_string(file_get_contents($file)); // fix for PHP Bug #73328 / Disabling entity loading breaks XMLReader
 
         return $this->simpleXmlToArray($xml);
     }
 
     /**
-     * @param  SimpleXMLElement $xml
+     * @param  \SimpleXMLElement $xml
      * @return array
      */
     protected function simpleXmlToArray($xml)

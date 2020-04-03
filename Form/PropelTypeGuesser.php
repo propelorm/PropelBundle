@@ -162,22 +162,35 @@ class PropelTypeGuesser implements FormTypeGuesserInterface
         }
     }
 
+    /**
+     * @param string $class
+     *
+     * @return \TableMap
+     */
     protected function getTable($class)
     {
-        if (isset($this->cache[$class])) {
+        if (array_key_exists($class, $this->cache)) {
             return $this->cache[$class];
         }
 
         if (class_exists($queryClass = $class.'Query')) {
+            /** @var \ModelCriteria $query */
             $query = new $queryClass();
 
             return $this->cache[$class] = $query->getTableMap();
         }
     }
 
+    /**
+     * @param string $class
+     * @param string $property
+     *
+     * @return \ColumnMap
+     * @throws \PropelException
+     */
     protected function getColumn($class, $property)
     {
-        if (isset($this->cache[$class.'::'.$property])) {
+        if (array_key_exists($class.'::'.$property, $this->cache)) {
             return $this->cache[$class.'::'.$property];
         }
 

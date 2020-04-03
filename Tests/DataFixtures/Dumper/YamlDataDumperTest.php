@@ -49,7 +49,7 @@ Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
         id: '1'
         name: 'An important one'
         author_id: BookAuthor_1
-        complementary_infos: !php/object:O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}
+        complementary_infos: !php/object 'O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}'
 
 YAML;
 

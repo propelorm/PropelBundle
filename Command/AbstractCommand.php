@@ -10,9 +10,10 @@
 namespace Propel\Bundle\PropelBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -29,12 +30,14 @@ abstract class AbstractCommand extends ContainerAwareCommand
 {
     /**
      * Additional Phing args to add in specialized commands.
+     *
      * @var array
      */
     protected $additionalPhingArgs = array();
 
     /**
      * Temporary XML schemas used on command execution.
+     *
      * @var array
      */
     protected $tempSchemas = array();
@@ -46,12 +49,13 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
     /**
      * The Phing output.
+     *
      * @string
      */
     protected $buffer = null;
 
     /**
-     * @var Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @var \Symfony\Component\HttpKernel\Bundle\BundleInterface
      */
     protected $bundle = null;
 
@@ -61,10 +65,24 @@ abstract class AbstractCommand extends ContainerAwareCommand
     private $alreadyWroteConnection = false;
 
     /**
-     *
-     * @var InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
     protected $input;
+
+    /**
+     * @var \Symfony\Component\Config\FileLocatorInterface
+     */
+    protected $fileLocator;
+
+    /**
+     * Set relation on FileLocator
+     *
+     * @param \Symfony\Component\Config\FileLocatorInterface $fileLocator
+     */
+    public function setFileLocator(FileLocatorInterface $fileLocator)
+    {
+        $this->fileLocator = $fileLocator;
+    }
 
     /**
      * Return the package for a given bundle.
@@ -76,7 +94,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected function getPackage(Bundle $bundle, $namespace = '', $baseDirectory = '')
     {
-        $path  = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
+        $path = explode(DIRECTORY_SEPARATOR, realpath($bundle->getPath()));
         $bundle_namespace = explode('\\', $bundle->getNamespace());
 
         $diff = array_diff($bundle_namespace, $path);
@@ -141,11 +159,12 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**
      * Call a Phing task.
      *
-     * @param string $taskName   A Propel task name.
-     * @param array  $properties An array of properties to pass to Phing.
+     * @param string $taskName A Propel task name.
+     * @param array $properties An array of properties to pass to Phing.
      */
     protected function callPhing($taskName, $properties = array())
     {
+        /** @var KernelInterface $kernel */
         $kernel = $this->getApplication()->getKernel();
 
         if (isset($properties['propel.schema.dir'])) {
@@ -238,18 +257,18 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
             $tempSchema = $bundle->getName().'-'.$finalSchema->getBaseName();
             $this->tempSchemas[$tempSchema] = array(
-                'bundle'    => $bundle->getName(),
-                'basename'  => $finalSchema->getBaseName(),
-                'path'      => $finalSchema->getPathname(),
+                'bundle' => $bundle->getName(),
+                'basename' => $finalSchema->getBaseName(),
+                'path' => $finalSchema->getPathname(),
             );
 
             $file = $cacheDir.DIRECTORY_SEPARATOR.$tempSchema;
-            $filesystem->copy((string) $finalSchema, $file, true);
+            $filesystem->copy((string)$finalSchema, $file, true);
 
             // the package needs to be set absolute
             // besides, the automated namespace to package conversion has
             // not taken place yet so it needs to be done manually
-            $database = simplexml_load_file($file);
+            $database = simplexml_load_string(file_get_contents($file)); // workaround for PHP Bug #73328 / Disabling entity loading breaks XMLReader
 
             if (isset($database['package'])) {
                 // Do not use the prefix!
@@ -259,8 +278,11 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 $package = $this->getPackage($bundle, $database['namespace'], $base);
             } else {
                 throw new \RuntimeException(
-                    sprintf('%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
-                        $bundle->getName(), $finalSchema->getBaseName())
+                    sprintf(
+                        '%s : Please define a `package` attribute or a `namespace` attribute for schema `%s`',
+                        $bundle->getName(),
+                        $finalSchema->getBaseName()
+                    )
                 );
             }
 
@@ -317,7 +339,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
         $finalSchemas = array();
 
         if (is_dir($dir = $bundle->getPath().'/Resources/config')) {
-            $finder  = new Finder();
+            $finder = new Finder();
             $schemas = $finder->files()->name('*schema.xml')->followLinks()->in($dir);
 
             if (iterator_count($schemas)) {
@@ -325,7 +347,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
                     $logicalName = $this->transformToLogicalName($schema, $bundle);
                     $finalSchema = new \SplFileInfo($this->getFileLocator()->locate($logicalName));
 
-                    $finalSchemas[(string) $finalSchema] = array($bundle, $finalSchema);
+                    $finalSchemas[(string)$finalSchema] = array($bundle, $finalSchema);
                 }
             }
         }
@@ -335,18 +357,22 @@ abstract class AbstractCommand extends ContainerAwareCommand
 
     /**
      * @param  \SplFileInfo $file
+     *
      * @return string
      */
     protected function getRelativeFileName(\SplFileInfo $file)
     {
-        return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../'), '', $file), 1);
+        return substr(
+            str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir').'/../'), '', $file),
+            1
+        );
     }
 
     /**
      * Create a 'build.properties' file.
      *
      * @param KernelInterface $kernel The application kernel.
-     * @param string          $file   Should be 'build.properties'.
+     * @param string $file Should be 'build.properties'.
      */
     protected function createBuildPropertiesFile(KernelInterface $kernel, $file)
     {
@@ -373,14 +399,17 @@ abstract class AbstractCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException('Could not find Propel configuration.');
         }
 
-        $xml = strtr(<<<EOT
+        $xml = strtr(
+            <<<EOT
 <?xml version="1.0"?>
 <config>
   <propel>
     <datasources default="%default_connection%">
 
 EOT
-        , array('%default_connection%' => $container->getParameter('propel.dbal.default_connection')));
+            ,
+            array('%default_connection%' => $container->getParameter('propel.dbal.default_connection'))
+        );
 
         $propelConfiguration = $container->get('propel.configuration');
         foreach ($propelConfiguration['datasources'] as $name => $datasource) {
@@ -388,7 +417,8 @@ EOT
                 continue;
             }
 
-            $xml .= strtr(<<<EOT
+            $xml .= strtr(
+                <<<EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>
         <connection>
@@ -399,13 +429,15 @@ EOT
       </datasource>
 
 EOT
-            , array(
-                '%name%'     => $name,
-                '%adapter%'  => $datasource['adapter'],
-                '%dsn%'      => $datasource['connection']['dsn'],
-                '%username%' => $datasource['connection']['user'],
-                '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
-            ));
+                ,
+                array(
+                    '%name%' => $name,
+                    '%adapter%' => $datasource['adapter'],
+                    '%dsn%' => $datasource['connection']['dsn'],
+                    '%username%' => $datasource['connection']['user'],
+                    '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
+                )
+            );
         }
 
         $xml .= <<<EOT
@@ -421,6 +453,7 @@ EOT;
      * Returns an array of properties as key/value pairs from an input file.
      *
      * @param  string $file A file properties.
+     *
      * @return array  An array of properties as key/value pairs.
      */
     protected function getProperties($file)
@@ -438,9 +471,9 @@ EOT;
                 continue;
             }
 
-            $pos      = strpos($line, '=');
+            $pos = strpos($line, '=');
             $property = trim(substr($line, 0, $pos));
-            $value    = trim(substr($line, $pos + 1));
+            $value = trim(substr($line, $pos + 1));
 
             if ("true" === $value) {
                 $value = true;
@@ -456,6 +489,7 @@ EOT;
 
     /**
      * Return the current Propel cache directory.
+     *
      * @return string The current Propel cache directory.
      */
     protected function getCacheDir()
@@ -468,7 +502,7 @@ EOT;
      */
     protected function getFileLocator()
     {
-        return $this->getContainer()->get('file_locator');
+        return $this->fileLocator;
     }
 
     /**
@@ -476,15 +510,18 @@ EOT;
      * Returns the default connection if no option specified or an exception
      * if the specified connection doesn't exist.
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @throw \InvalidArgumentException If the connection does not exist.
+     *
      * @return array
      */
     protected function getConnection(InputInterface $input, OutputInterface $output)
     {
         $propelConfiguration = $this->getContainer()->get('propel.configuration');
-        $name = $input->getOption('connection') ?: $this->getContainer()->getParameter('propel.dbal.default_connection');
+        $name = $input->getOption('connection') ?: $this->getContainer()->getParameter(
+            'propel.dbal.default_connection'
+        );
 
         if (isset($propelConfiguration['datasources'][$name])) {
             $defaultConfig = $propelConfiguration['datasources'][$name];
@@ -493,8 +530,12 @@ EOT;
         }
 
         if (false === $this->alreadyWroteConnection) {
-            $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
-                $name, $this->getApplication()->getKernel()->getEnvironment())
+            $output->writeln(
+                sprintf(
+                    'Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
+                    $name,
+                    $this->getApplication()->getKernel()->getEnvironment()
+                )
             );
             $this->alreadyWroteConnection = true;
         }
@@ -511,6 +552,7 @@ EOT;
      * Extract the database name from a given DSN
      *
      * @param  string $dsn A DSN
+     *
      * @return string The database name extracted from the given DSN
      */
     protected function parseDbName($dsn)
@@ -540,14 +582,14 @@ EOT;
     /**
      * Write Propel output as summary based on a Regexp.
      *
-     * @param OutputInterface $output   The output object.
-     * @param string          $taskname A task name
+     * @param OutputInterface $output The output object.
+     * @param string $taskname A task name
      */
     protected function writeSummary(OutputInterface $output, $taskname)
     {
         foreach (explode("\n", $this->buffer) as $line) {
-            if (false !== strpos($line, '[' . $taskname . ']')) {
-                $arr  = preg_split('#\[' . $taskname . '\] #', $line);
+            if (false !== strpos($line, '['.$taskname.']')) {
+                $arr = preg_split('#\['.$taskname.'\] #', $line);
                 $info = $arr[1];
 
                 if ('"' === $info[0]) {
@@ -561,78 +603,86 @@ EOT;
 
     /**
      * Comes from the SensioGeneratorBundle.
+     *
      * @see https://github.com/sensio/SensioGeneratorBundle/blob/master/Command/Helper/DialogHelper.php#L52
      *
      * @param OutputInterface $output The output.
-     * @param string          $text   A text message.
-     * @param string          $style  A style to apply on the section.
+     * @param string|array $text A text message.
+     * @param string $style A style to apply on the section.
      */
     protected function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
     {
-        $output->writeln(array(
-            '',
-            $this->getHelperSet()->get('formatter')->formatBlock($text, $style, true),
-            '',
-        ));
+        $output->writeln(
+            array(
+                '',
+                $this->getHelperSet()->get('formatter')->formatBlock($text, $style, true),
+                '',
+            )
+        );
     }
 
     /**
      * Renders an error message if a task has failed.
      *
-     * @param OutputInterface $output   The output.
-     * @param string          $taskName A task name.
-     * @param Boolean         $more     Whether to add a 'more details' message or not.
+     * @param OutputInterface $output The output.
+     * @param string $taskName A task name.
+     * @param Boolean $more Whether to add a 'more details' message or not.
      */
     protected function writeTaskError($output, $taskName, $more = true)
     {
         $moreText = $more ? ' To get more details, run the command with the "--verbose" option.' : '';
 
-        return $this->writeSection($output, array(
-            '[Propel] Error',
-            '',
-            'An error has occured during the "' . $taskName . '" task process.' . $moreText
-        ), 'fg=white;bg=red');
+        return $this->writeSection(
+            $output,
+            array(
+                '[Propel] Error',
+                '',
+                'An error has occured during the "'.$taskName.'" task process.'.$moreText,
+            ),
+            'fg=white;bg=red'
+        );
     }
 
     /**
-     * @param OutputInterface $output   The output.
-     * @param string          $filename The filename.
+     * @param OutputInterface $output The output.
+     * @param string $filename The filename.
      */
     protected function writeNewFile(OutputInterface $output, $filename)
     {
-        $output->writeln('>>  <info>File+</info>    ' . $filename);
+        $output->writeln('>>  <info>File+</info>    '.$filename);
     }
 
     /**
-     * @param OutputInterface $output    The output.
-     * @param string          $directory The directory.
+     * @param OutputInterface $output The output.
+     * @param string $directory The directory.
      */
     protected function writeNewDirectory(OutputInterface $output, $directory)
     {
-        $output->writeln('>>  <info>Dir+</info>     ' . $directory);
+        $output->writeln('>>  <info>Dir+</info>     '.$directory);
     }
 
     /**
      * Ask confirmation from the user.
      *
-     * @param OutputInterface $output   The output.
-     * @param string          $question A given question.
-     * @param string          $default  A default response.
+     * @param OutputInterface $output The output.
+     * @param string $question A given question.
+     * @param boolean $default A default response.
      */
-    protected function askConfirmation(OutputInterface $output, $question, $default = null)
+    protected function askConfirmation(OutputInterface $output, $question, $default = false)
     {
         return $this->getHelper('question')->ask($this->input, $output, new ConfirmationQuestion($question, $default));
     }
 
     /**
-     * @param  \SplFileInfo    $schema
+     * @param  \SplFileInfo $schema
      * @param  BundleInterface $bundle
+     *
      * @return string
      */
     protected function transformToLogicalName(\SplFileInfo $schema, BundleInterface $bundle)
     {
         $schemaPath = str_replace(
-            $bundle->getPath(). DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR,
+            $bundle->getPath().DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR,
             '',
             $schema->getRealPath()
         );
@@ -642,6 +692,7 @@ EOT;
 
     /**
      * Compiles arguments/properties for the Phing process.
+     *
      * @return array
      */
     private function getPhingArguments(KernelInterface $kernel, $workingDirectory, $properties)
@@ -649,20 +700,23 @@ EOT;
         $args = array();
 
         // Default properties
-        $properties = array_merge(array(
-            'propel.database'           => 'mysql',
-            'project.dir'               => $workingDirectory,
-            'propel.output.dir'         => $kernel->getRootDir().'/propel',
-            'propel.php.dir'            => $kernel->getRootDir().'/..',
-            'propel.packageObjectModel' => true,
-            'propel.useDateTimeClass'   => true,
-            'propel.dateTimeClass'      => 'DateTime',
-            'propel.defaultTimeFormat'  => '',
-            'propel.defaultDateFormat'  => '',
-            'propel.addClassLevelComment'       => false,
-            'propel.defaultTimeStampFormat'     => '',
-            'propel.builder.pluralizer.class'   => 'builder.util.StandardEnglishPluralizer',
-        ), $properties);
+        $properties = array_merge(
+            array(
+                'propel.database' => 'mysql',
+                'project.dir' => $workingDirectory,
+                'propel.output.dir' => $kernel->getRootDir().'/propel',
+                'propel.php.dir' => $kernel->getRootDir().'/..',
+                'propel.packageObjectModel' => true,
+                'propel.useDateTimeClass' => true,
+                'propel.dateTimeClass' => 'DateTime',
+                'propel.defaultTimeFormat' => '',
+                'propel.defaultDateFormat' => '',
+                'propel.addClassLevelComment' => false,
+                'propel.defaultTimeStampFormat' => '',
+                'propel.builder.pluralizer.class' => 'builder.util.StandardEnglishPluralizer',
+            ),
+            $properties
+        );
 
         // Adding user defined properties from the configuration
         $properties = array_merge(

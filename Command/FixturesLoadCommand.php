@@ -155,12 +155,12 @@ EOT
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return;
+            return 0;
         }
 
         $datas = $this->getFixtureFiles($type);
@@ -169,14 +169,14 @@ EOT
             return -1;
         }
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        list($name) = $this->getConnection($input, $output);
 
         if ('yml' === $type) {
             $loader = new YamlDataLoader($this->getApplication()->getKernel()->getRootDir(), $this->getContainer());
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getRootDir());
         } else {
-            return;
+            return 0;
         }
 
         try {
@@ -200,11 +200,11 @@ EOT
      *
      * @param  \Symfony\Component\Console\Input\InputInterface   $input
      * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @return int
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
-        $tmpdir = $this->getApplication()->getKernel()->getRootDir() . '/cache/propel';
+        $tmpdir = $this->getApplication()->getKernel()->getCacheDir() . '/propel';
         $datas  = $this->getFixtureFiles('sql');
 
         $this->prepareCache($tmpdir);
@@ -254,6 +254,13 @@ EOT
 
     /**
      * Insert SQL
+     *
+     * @param array $config
+     * @param string $sqlDir
+     * @param string $schemaDir
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
+     * @return bool
      */
     protected function insertSql($config, $sqlDir, $schemaDir, $output)
     {

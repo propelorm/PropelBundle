@@ -24,16 +24,19 @@ class PanelController implements ContainerAwareInterface
 
     /**
      * This method renders the global Propel configuration.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response A Response instance
      */
     public function configurationAction()
     {
         $templating = $this->container->get('templating');
+        $propelConfiguration = $this->container->get('propel.configuration');
 
         return $templating->renderResponse(
             'PropelBundle:Panel:configuration.html.twig',
             array(
                 'propel_version'     => \Propel::VERSION,
-                'configuration'      => $this->container->get('propel.configuration')->getParameters(),
+                'configuration'      => $propelConfiguration->getParameters(),
                 'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
                 'logging'            => $this->container->getParameter('propel.logging'),
                 'path'               => $this->container->getParameter('propel.path'),
@@ -45,11 +48,11 @@ class PanelController implements ContainerAwareInterface
     /**
      * Renders the profiler panel for the given token.
      *
-     * @param string  $token      The profiler token
-     * @param string  $connection The connection name
+     * @param string $token The profiler token
+     * @param string $connection The connection name
      * @param integer $query
      *
-     * @return Symfony\Component\HttpFoundation\Response A Response instance
+     * @return \Symfony\Component\HttpFoundation\Response A Response instance
      */
     public function explainAction($token, $connection, $query)
     {
