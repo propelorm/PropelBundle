@@ -1,7 +1,7 @@
 PropelBundle
 ============
 
-[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=1.7)](https://travis-ci.org/propelorm/PropelBundle)
+[![Build Status](https://travis-ci.org/roman_tymoshyk/PropelBundle.svg?branch=1.7)](https://travis-ci.org/roman_tymoshyk/PropelBundle)
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony2.
 
@@ -11,9 +11,8 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 The two major branches being supported are:
 
-* The `1.5` branch contains Propel *1.6+* integration for Symfony *2.8 LTS*.
-* The `1.6` branch contains Propel *1.6+* integration for Symfony *3.0*.
-* The `1.7` branch contains Propel *1.6+* integration for Symfony *4.0*.
+* The `1.7` branch contains Propel *1.6+* integration for Symfony *3.4*-*4.4*.
+* The `1.8` branch contains Propel *1.6+* integration for Symfony *4.3.7*-*5.0*.
 
 If you are running on an older version, you may require one of the following versions of this bundle.
 
@@ -21,6 +20,8 @@ If you are running on an older version, you may require one of the following ver
 * The `1.1` branch contains Propel *1.6* integration for Symfony *2.1*.
 * The `1.2` branch contains Propel *1.6* integration for Symfony *>2.1*.
 * The `1.4` branch contains Propel *1.6* integration for Symfony *>2.3*.
+* The `1.5` branch contains Propel *1.6+* integration for Symfony *2.8 LTS*.
+* The `1.6` branch contains Propel *1.6+* integration for Symfony *3.0*.
 
 ### Propel2 integration
 
