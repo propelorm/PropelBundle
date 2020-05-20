@@ -36,7 +36,7 @@ class PropelDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'queries'       => $this->cloneVar($this->buildQueries()),
+            'queries'       => method_exists($this, 'cloneVar') ? $this->cloneVar($this->buildQueries()) : $this->buildQueries(),
             'querycount'    => $this->countQueries(),
         );
     }
