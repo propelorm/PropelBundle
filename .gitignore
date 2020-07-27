@@ -7,3 +7,4 @@
 # Composer
 /vendor
 /composer.lock
+/.idea/
