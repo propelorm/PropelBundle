@@ -155,7 +155,7 @@ EOT
      */
     protected function getRelativeFileName(\SplFileInfo $file)
     {
-        return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../'), '', $file), 1);
+        return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.project_dir') . '/../'), '', $file), 1);
     }
 
     /**

@@ -24,7 +24,7 @@ class TestCase extends BaseTestCase
     {
         $container = new ContainerBuilder(new ParameterBag(array(
             'kernel.debug'      => false,
-            'kernel.root_dir'   => __DIR__ . '/../',
+            'kernel.project_dir'   => __DIR__ . '/../',
         )));
 
         $container->setParameter('propel.configuration', array());
