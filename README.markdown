@@ -15,6 +15,20 @@ As `Propel2` will be released in the near future, we are migrating the branching
 * The `2.0` branch contains `Propel2` integration for Symfony *2.5-2.8*.
 * The `3.0` branch contains `Propel2` integration for Symfony *2.8-3.x*.
 * The `4.0` branch contains `Propel2` integration for Symfony *3.4-4.x*.
+* The **`5.0`** branch contains `Propel2` integration for Symfony **4.x|5.x**.
+
+## Symfony 5.0 Installation
+### Requirements
+- php: 7.4.7(tested with)
+- propel/propel
+
+### Composer command
+- composer require propel/propel "2.0.x-dev"
+- composer require propel/propel-bundle "5.0"
+
+### composer.json -> add in "require"
+- "propel/propel": "2.0.x-dev"
+- "propel/propel-bundle": "*@dev"
 
 ## Features
 
