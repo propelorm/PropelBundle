@@ -1,0 +1,10 @@
+services:
+    _defaults:
+      autowire: true
+      autoconfigure: true
+      public: false
+    Propel\Bundle\PropelBundle\:
+      resource: '../../*'
+      ## Resources\skeleton contains not valid php
+      ## Twig\Extension\SyntaxExtension.php is defined in Propel.xml
+      exclude: '../../{Propel,Model,Migrations,Tests,Helpers,DependencyInjection,Form,Listener,Validator,Resources\skeleton,Twig\Extension\SyntaxExtension.php,DataCollector}'

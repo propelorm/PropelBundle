@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * PropelExtension loads the PropelBundle configuration.
@@ -54,6 +55,9 @@ class PropelExtension extends Extension
             $loader->load('converters.xml');
             $loader->load('security.xml');
             $loader->load('console.xml');
+
+            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('services.yml');
         }
     }
 
