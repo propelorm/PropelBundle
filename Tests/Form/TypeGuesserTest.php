@@ -29,7 +29,7 @@ class TypeGuesserTest extends TestCase
 
     private $guesser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->guesser = new TypeGuesser();
     }

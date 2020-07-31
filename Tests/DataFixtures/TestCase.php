@@ -31,7 +31,7 @@ class TestCase extends BaseTestCase
      */
     protected $tmpFiles = array();
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -64,7 +64,7 @@ XML;
         $this->con->beginTransaction();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->tmpFiles as $eachFile) {
             @unlink($eachFile);

@@ -18,10 +18,12 @@ use Propel\Bundle\PropelBundle\Tests\TestCase;
 
 /**
  * @author William Durand <william.durand1@gmail.com>
+ *
+ * NOTE: currently no driver is selected "sqlite" will be used by default
  */
 class PropelUserProviderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $schema = <<<SCHEMA
 <database name="users" defaultIdMethod="native" namespace="Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model">

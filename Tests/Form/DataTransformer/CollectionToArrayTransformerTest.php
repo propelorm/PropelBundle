@@ -19,7 +19,7 @@ class CollectionToArrayTransformerTest extends TestCase
 {
     private $transformer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('Symfony\Component\Form\Form')) {
             $this->markTestSkipped('The "Form" component is not available');

@@ -26,7 +26,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
     const TRANSLATABLE_I18N_CLASS   = 'Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n';
     const NON_TRANSLATION_CLASS     = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
