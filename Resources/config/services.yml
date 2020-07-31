@@ -8,3 +8,5 @@ services:
       ## Resources\skeleton contains not valid php
       ## Twig\Extension\SyntaxExtension.php is defined in Propel.xml
       exclude: '../../{Propel,Model,Migrations,Tests,Helpers,DependencyInjection,Form,Listener,Validator,Resources\skeleton,Twig\Extension\SyntaxExtension.php,DataCollector}'
+
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'

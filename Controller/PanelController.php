@@ -12,8 +12,8 @@ namespace Propel\Bundle\PropelBundle\Controller;
 
 use Propel\Runtime\Propel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
@@ -46,9 +46,8 @@ class PanelController extends AbstractController
      *
      * @return Response A Response instance
      */
-    public function explainAction($token, $connection, $query, ContainerBagInterface $container)
+    public function explainAction($token, $connection, $query, ?Profiler $profiler)
     {
-        $profiler = $container->get('profiler');
         $profiler->disable();
 
         $profile = $profiler->loadProfile($token);
