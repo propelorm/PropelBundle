@@ -10,12 +10,12 @@
 
 namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * PropelExtension loads the PropelBundle configuration.
@@ -44,7 +44,7 @@ class PropelExtension extends Extension
                 $config['generator']['defaultConnection'] = $defaultConnection;
             }
         }
-        
+
         $container->setParameter('propel.logging', $config['runtime']['logging']);
         $container->setParameter('propel.configuration', $config);
 
@@ -56,7 +56,7 @@ class PropelExtension extends Extension
             $loader->load('security.xml');
             $loader->load('console.xml');
 
-            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('services.yml');
         }
     }

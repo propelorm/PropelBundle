@@ -12,7 +12,7 @@ namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Runtime\Adapter\Pdo\MysqlAdapter;
 use Propel\Runtime\Propel;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class TableDropCommand extends ContainerAwareCommand
+class TableDropCommand extends Command
 {
     use FormattingHelpers;
 
