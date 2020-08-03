@@ -56,6 +56,6 @@ class YamlDataDumperTest extends TestCase
 YAML;
         $result = file_get_contents($filename);
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals(str_replace (["\r\n", "\n", "\r"], '', $expected), str_replace (["\r\n", "\n", "\r"], '', $result));
     }
 }
