@@ -17,6 +17,8 @@ As `Propel2` will be released in the near future, we are migrating the branching
 * The `4.0` branch contains `Propel2` integration for Symfony *3.4-4.x*.
 * The **`5.0`** branch contains `Propel2` integration for Symfony **4.x|5.x**.
 
+tested with symfony **4.4.11, 5.0, 5.1**
+
 ## Symfony 5.0 Installation
 ### Requirements
 - php: 7.4.7(tested with)
