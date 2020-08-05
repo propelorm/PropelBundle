@@ -49,7 +49,9 @@ class DatabaseCreateCommand extends AbstractCommand
         $dbName = $this->parseDbName($config['dsn']);
 
         if (null === $dbName) {
-            return $output->writeln('<error>No database name found.</error>');
+            $output->writeln('<error>No database name found.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         } else {
             $query  = 'CREATE DATABASE '. $dbName .';';
         }
@@ -67,6 +69,9 @@ class DatabaseCreateCommand extends AbstractCommand
         $statement->execute();
 
         $output->writeln(sprintf('<info>Database <comment>%s</comment> has been created.</info>', $dbName));
+
+        // s 5.1 expect integer to be returned. Introduces Command::SUCCESS and Command::FAILURE constants
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 
     /**

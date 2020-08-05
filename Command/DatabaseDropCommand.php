@@ -56,7 +56,7 @@ EOT
         if (!$input->getOption('force')) {
             $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
 
-            return;
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {
@@ -65,6 +65,7 @@ EOT
             if (false === $this->askConfirmation($input, $output, 'Are you sure ? (y/n) ', false)) {
                 $output->writeln('Aborted, nice decision !');
 
+                // s 5.1 expect integer to be returned
                 return -2;
             }
         }
@@ -75,7 +76,9 @@ EOT
         $dbName = $this->parseDbName($config['dsn']);
 
         if (null === $dbName) {
-            return $output->writeln('<error>No database name found.</error>');
+            $output->writeln('<error>No database name found.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         } else {
             $query  = 'DROP DATABASE '. $dbName .';';
         }
@@ -94,6 +97,8 @@ EOT
         $statement->execute();
 
         $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 
     /**

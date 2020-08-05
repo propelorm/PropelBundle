@@ -49,11 +49,15 @@ class TableDropCommand extends Command
         $adapter = Propel::getAdapter($connection->getName());
 
         if (!$adapter instanceof MysqlAdapter) {
-            return $output->writeln('<error>This command is MySQL only.</error>');
+            $output->writeln('<error>This command is MySQL only.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         if (!$input->getOption('force')) {
-            return $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+            $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         $tablesToDelete = $input->getArgument('table');
@@ -108,5 +112,7 @@ class TableDropCommand extends Command
         }
 
         $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 }

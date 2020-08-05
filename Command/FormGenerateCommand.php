@@ -71,7 +71,8 @@ EOT
         $schemas = $this->getFinalSchemas($kernel, $bundle);
         if (!$schemas) {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
-            return;
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         $manager = $this->getModelManager($input, $schemas);
@@ -81,6 +82,8 @@ EOT
                 $this->createFormTypeFromDatabase($bundle, $database, $models, $output, $force);
             }
         }
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 
     /**

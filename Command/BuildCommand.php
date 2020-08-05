@@ -76,5 +76,7 @@ class BuildCommand extends Command
             $cmd = $this->getApplication()->find('propel:sql:insert');
             $cmd->run($in, $output);
         }
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 }
