@@ -1,0 +1,3 @@
+## dev only
+services:
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'

@@ -40,10 +40,11 @@ class PanelController extends AbstractController
     /**
      * Renders the profiler panel for the given token.
      *
-     * @param string  $token      The profiler token
-     * @param string  $connection The connection name
+     * @param string $token The profiler token
+     * @param string $connection The connection name
      * @param integer $query
      *
+     * @param Profiler|null $profiler
      * @return Response A Response instance
      */
     public function explainAction($token, $connection, $query, ?Profiler $profiler)
