@@ -60,8 +60,8 @@ class PropelExtension extends Extension
             $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('services.yml');
 
-            if (($env = $container->getParameter('kernel.environment')) !== 'prod') {
-                $loader->load('services_'.$env.'.yml');
+            if (($env = $container->getParameter('kernel.environment')) === 'dev') {
+                $loader->load('services_dev.yml');
             }
         }
     }
