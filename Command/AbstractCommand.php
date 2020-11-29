@@ -47,7 +47,7 @@ abstract class AbstractCommand extends Command
     /**
      * @var ContainerInterface
      */
-    private ContainerInterface $container;
+    private $container;
 
     use FormattingHelpers;
 
