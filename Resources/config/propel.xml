@@ -28,7 +28,7 @@
         </service>
 
         <service id="propel.data_collector" class="%propel.data_collector.class%" public="false">
-            <tag name="data_collector" template="PropelBundle:Collector:propel" id="propel" />
+            <tag name="data_collector" template="@Propel/Collector/propel" id="propel" />
             <argument type="service" id="propel.logger" />
             <argument type="service" id="propel.configuration" />
         </service>
