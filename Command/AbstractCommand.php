@@ -47,7 +47,7 @@ abstract class AbstractCommand extends Command
     /**
      * @var ContainerInterface
      */
-    private ContainerInterface $container;
+    private $container;
 
     use FormattingHelpers;
 
@@ -363,7 +363,7 @@ abstract class AbstractCommand extends Command
             $namespaceDiff = substr($namespace, strlen($baseNamespace) + 1);
 
             $bundlePath = realpath($bundle->getPath()) . '/' . str_replace('\\', '/', $namespaceDiff);
-            $appPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/..');
+            $appPath = realpath($this->getApplication()->getKernel()->getProjectDir());
 
             $path = static::getRelativePath($bundlePath, $appPath);
 
