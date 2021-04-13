@@ -470,7 +470,7 @@ EOT;
      */
     protected function getFileLocator()
     {
-        return $this->getContainer()->get('file_locator');
+        return $this->getContainer()->get('propel.file_locator');
     }
 
     /**
