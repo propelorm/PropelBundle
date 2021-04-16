@@ -9,8 +9,6 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
-include __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'AppBundle.php';
-
 use App\AppBundle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

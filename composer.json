@@ -10,6 +10,7 @@
     }],
     "autoload": {
         "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
+        "classmap": ["AppBundle.php"],
         "exclude-from-classmap": [ "Tests/" ]
     },
     "require": {

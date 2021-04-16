@@ -26,6 +26,11 @@ class SchemaLocatorTest extends TestCase
      */
     private $kernelMock;
 
+    /*
+     * container generated for the tasts
+     */
+    private $container;
+
     /**
      * @var vfsStreamDirectory
      */
@@ -61,6 +66,10 @@ class SchemaLocatorTest extends TestCase
             return (str_replace('@', __DIR__ . '/../Fixtures/', $argument));
         }));
 
+        // attach kernel service to container
+        $this->container = $this->getContainer();
+        $this->container->set('kernel', $this->kernelMock);
+
         $this->bundleMock = new FakeBundle();
 
         $this->configuration['paths']['schemaDir'] = vfsStream::url('projectDir/configuration/directory');
@@ -69,8 +78,7 @@ class SchemaLocatorTest extends TestCase
 
     public function testLocateFromBundle()
     {
-
-        $locator = new SchemaLocator($this->fileLocator, $this->configuration);
+        $locator = new SchemaLocator($this->container, $this->fileLocator, $this->configuration);
         $files = $locator->locateFromBundle($this->bundleMock);
 
         $this->assertCount(1, $files);
@@ -82,7 +90,7 @@ class SchemaLocatorTest extends TestCase
 
     public function testLocateFromBundlesAndConfiguration()
     {
-        $locator = new SchemaLocator($this->fileLocator, $this->configuration);
+        $locator = new SchemaLocator($this->container, $this->fileLocator, $this->configuration);
         $files = $locator->locateFromBundlesAndConfiguration(
             [$this->bundleMock]
         );
