@@ -3,7 +3,12 @@ sudo: false
 language: php
 
 php:
-  - 7.4.7
+  - 7.0
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
+  - 8.0
 
 cache:
   directories:
@@ -13,6 +18,7 @@ env:
   - SYMFONY_VERSION="^4.4"
   - SYMFONY_VERSION="^5.0"
   - SYMFONY_VERSION="^5.1"
+  - SYMFONY_VERSION="^5.2"
 
 matrix:
   fast_finish: true

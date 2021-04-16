@@ -10,6 +10,7 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
+use App\AppBundle;
 use Propel\Bundle\PropelBundle\Form\FormBuilder;
 use Propel\Generator\Config\GeneratorConfig;
 use Propel\Generator\Model\Database;
@@ -69,6 +70,7 @@ EOT
 
         $this->setupBuildTimeFiles();
         $schemas = $this->getFinalSchemas($kernel, $bundle);
+
         if (!$schemas) {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
 
@@ -126,7 +128,13 @@ EOT
     {
         $fs = new Filesystem();
 
-        if (!$fs->exists($dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
+        if ($bundle->getName() == AppBundle::NAME) {
+            $dir = $bundle->getPath() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Form';
+        } else {
+            $dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY;
+        }
+
+        if (!$fs->exists($dir)) {
             $fs->mkdir($dir);
             $this->writeNewDirectory($output, $dir);
         }

@@ -179,10 +179,10 @@ YAML;
         $book = $books[0];
         $this->assertNotNull($book->getName());
         $this->assertNotEquals('null', strtolower($book->getName()));
-        $this->assertMatchesRegularExpression('#[a-z]+#', $book->getName());
+        $this->assertRegExp('#[a-z]+#', $book->getName());
         $this->assertNotNull($book->getDescription());
         $this->assertNotEquals('null', strtolower($book->getDescription()));
-        $this->assertMatchesRegularExpression('#[\w ]+#', $book->getDescription());
+        $this->assertRegExp('#[\w ]+#', $book->getDescription());
     }
 
     public function testYamlLoadManyToMany()

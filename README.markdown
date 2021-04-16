@@ -17,11 +17,16 @@ As `Propel2` will be released in the near future, we are migrating the branching
 * The `4.0` branch contains `Propel2` integration for Symfony *3.4-4.x*.
 * The **`5.0`** branch contains `Propel2` integration for Symfony **4.x|5.x**.
 
-tested with symfony **4.4.11, 5.0, 5.1**
+## Version 5.0 Changes
+* PHP 7.2+ support is added
+* support for **s4+** no bundle dir structure is added(Bundle dir structure also work)
+* XML/YML schema directory: **project_root/config**
+
+tested with symfony **4.4, 5.0, 5.1, 5.2**
 
 ## Symfony 5.0 Installation
 ### Requirements
-- php: 7.4.7(tested with)
+- php: 7.2+
 - propel/propel
 
 ### Composer command
