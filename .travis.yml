@@ -31,7 +31,8 @@ before_install:
   - if [ "${SYMFONY_VERSION}" != "" ]; then composer require --no-update "symfony/symfony:${SYMFONY_VERSION}"; fi;
 
 install:
-  - composer update ${COMPOSER_FLAGS} --prefer-source
+  - if [[ $TRAVIS_PHP_VERSION < 8 ]]; then composer update ${COMPOSER_FLAGS} --prefer-source; fi
+  - if [[ $TRAVIS_PHP_VERSION >= 8 ]]; then composer update ${COMPOSER_FLAGS} --prefer-source --ignore-platform-req=php; fi
 
 script:
   - vendor/bin/phpunit --colors
