@@ -31,11 +31,11 @@ tested with symfony **4.4, 5.0, 5.1, 5.2**
 
 ### Composer command
 - composer require propel/propel "2.0.x-dev"
-- composer require propel/propel-bundle "5.0"
+- composer require skyfox/propel-bundle "5.0.0" or "5.0.x-dev"
 
 ### composer.json -> add in "require"
 - "propel/propel": "2.0.x-dev"
-- "propel/propel-bundle": "*@dev"
+- "skyfox/propel-bundle": "5.0.0" or "5.0.x-dev"
 
 ## Features
 
