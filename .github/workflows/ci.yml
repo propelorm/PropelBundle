@@ -1,0 +1,56 @@
+name: PHP Composer
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.2', '7.3', '7.4' ]
+        composer: [ '', '--prefer-lowest' ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: sqlite3, zip
+          coverage: xdebug
+          tools: composer:v1
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-dir)"
+        working-directory: ./
+
+      - name: cache dependencies
+        id: angular-dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.php }}-${{ matrix.composer }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.php }}-${{ matrix.composer }}-composer-
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+        working-directory: ./
+
+      - name: Install dependencies
+        env:
+          COMPOSER_FLAGS: ${{ matrix.composer }}
+        run: composer update ${COMPOSER_FLAGS} --prefer-source
+        working-directory: ./
+
+      - name: Run Tests
+        run: composer run-script ci-test
+        working-directory: ./
+        env:
+          SYMFONY_DEPRECATIONS_HELPER: weak

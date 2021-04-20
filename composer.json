@@ -16,7 +16,7 @@
   },
 
   "require": {
-    "propel/propel1": "^1.6.8",
+    "propel/propel1": "^1.7.2",
     "symfony/framework-bundle": "^3.4|^4.0"
   },
   "require-dev": {
@@ -38,5 +38,12 @@
 
   "suggest": {
     "propel/propel-acl-bundle": "For using the Propel ACL implementation"
+  },
+
+  "scripts": {
+    "ci-test": [
+      "Composer\\Config::disableProcessTimeout",
+      "vendor/phpunit/phpunit/phpunit -c ./phpunit.xml.dist"
+    ]
   }
 }
