@@ -1,5 +1,5 @@
 {
-    "name": "propel/propel-bundle",
+    "name": "skyfox/propel-bundle",
     "description": "Integration of Propel in Symfony",
     "keywords": ["propel", "orm", "persistence"],
     "type": "symfony-bundle",
