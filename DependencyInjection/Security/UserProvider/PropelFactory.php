@@ -14,7 +14,7 @@ namespace Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\UserProvider\UserProviderFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 
 /**
  * PropelFactory creates services for Propel user provider.
@@ -41,7 +41,7 @@ class PropelFactory implements UserProviderFactoryInterface
     public function create(ContainerBuilder $container, $id, $config)
     {
         $container
-            ->setDefinition($id, new DefinitionDecorator($this->providerId))
+            ->setDefinition($id, new ChildDefinition($this->providerId))
             ->addArgument($config['class'])
             ->addArgument($config['property'])
         ;
