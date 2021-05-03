@@ -7,11 +7,12 @@ use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\Model\map\BookTableMap;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
+use PHPUnit\Framework\TestCase as PHPUnit_Framework_TestCase;
 
 /**
  * @author Jérémie Augustin <jeremie.augustin@pixel-cookers.com>
  */
-class PropelChoiceLoaderTest extends \PHPUnit_Framework_TestCase
+class PropelChoiceLoaderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ChoiceListFactoryInterface

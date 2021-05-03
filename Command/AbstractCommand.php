@@ -392,6 +392,7 @@ EOT
       <datasource id="%name%">
         <adapter>%adapter%</adapter>
         <connection>
+          <classname>%classname%</classname>
           <dsn>%dsn%</dsn>
           <user>%username%</user>
           <password>%password%</password>
@@ -402,6 +403,7 @@ EOT
             , array(
                 '%name%'     => $name,
                 '%adapter%'  => $datasource['adapter'],
+                '%classname%'=> $datasource['connection']['classname'],
                 '%dsn%'      => $datasource['connection']['dsn'],
                 '%username%' => $datasource['connection']['user'],
                 '%password%' => isset($datasource['connection']['password']) ? $datasource['connection']['password'] : '',
@@ -468,7 +470,7 @@ EOT;
      */
     protected function getFileLocator()
     {
-        return $this->getContainer()->get('file_locator');
+        return $this->getContainer()->get('propel.file_locator');
     }
 
     /**
