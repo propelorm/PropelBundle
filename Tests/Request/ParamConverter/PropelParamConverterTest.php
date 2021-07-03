@@ -27,6 +27,8 @@ class PropelParamConverterTest extends TestCase
 
         // @fixme: some tests fail if instance pooling is disabled...
         //Propel::disableInstancePooling();
+
+        $this->loadDatabaseMap(['Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model\\Map\\BookTableMap']);
     }
 
     public function tearDown(): void

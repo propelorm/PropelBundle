@@ -226,6 +226,10 @@ abstract class AbstractCommand extends Command
             $extraParameters['--config-dir'] = $this->cacheDir;
         }
 
+        if ($input->hasOption('loader-script-dir') && !empty($input->getOption('loader-script-dir'))) {
+            $parameters['--loader-script-dir'] = $input->getOption('loader-script-dir');
+        }
+
         $parameters = array_merge($extraParameters, $parameters);
 
         if ($input->hasOption('platform')) {

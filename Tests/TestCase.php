@@ -32,4 +32,15 @@ class TestCase extends BaseTestCase
 
         return $container;
     }
+
+    /**
+     * load propel database maps
+     * @param array $databaseMapsArray
+     */
+    protected function loadDatabaseMap(array $databaseMapsArray) {
+        $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+        $serviceContainer->initDatabaseMaps(array (
+            'default' => $databaseMapsArray
+        ));
+    }
 }

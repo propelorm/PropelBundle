@@ -11,9 +11,9 @@
 namespace Propel\Bundle\PropelBundle;
 
 use Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
+use Propel\Runtime\Connection\ConnectionManagerPrimaryReplica;
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
-use Propel\Runtime\Connection\ConnectionManagerMasterSlave;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -60,17 +60,17 @@ class PropelBundle extends Bundle
         $serviceContainer = Propel::getServiceContainer();
         $serviceContainer->setDefaultDatasource($defaultConnection);
 
-        foreach ($config['database']['connections'] as $name => $config) {
-            if (!empty($config['slaves'])) {
-                $manager = new ConnectionManagerMasterSlave();
+        foreach ($config['database']['connections'] as $name => $connection) {
+            if (!empty($connection['slaves'])) {
+                $manager = new ConnectionManagerPrimaryReplica();
 
                 // configure the master (write) connection
-                $manager->setWriteConfiguration($config);
+                $manager->setWriteConfiguration($connection);
 
                 // configure the slave (read) connections
                 $slaveConnections = [];
-                foreach ($config['slaves'] as $slave) {
-                    $slaveConnections[] = array_merge($config, [
+                foreach ($connection['slaves'] as $slave) {
+                    $slaveConnections[] = array_merge($connection, [
                         'dsn' => $slave['dsn'],
                         'slaves' => null
                     ]);
@@ -79,11 +79,16 @@ class PropelBundle extends Bundle
                 $manager->setReadConfiguration($slaveConnections);
             } else {
                 $manager = new ConnectionManagerSingle();
-                $manager->setConfiguration($config);
+                $manager->setConfiguration($connection);
             }
 
-            $serviceContainer->setAdapterClass($name, $config['adapter']);
+            $serviceContainer->setAdapterClass($name, $connection['adapter']);
             $serviceContainer->setConnectionManager($name, $manager);
+
+            // load database maps
+            if(file_exists($config['paths']['loaderScriptDir'].'/loadDatabase.php') && is_readable($config['paths']['loaderScriptDir'].'/loadDatabase.php')) {
+                require_once($config['paths']['loaderScriptDir'] . '/loadDatabase.php');
+            }
         }
     }
 
