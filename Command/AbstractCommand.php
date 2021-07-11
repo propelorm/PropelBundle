@@ -10,11 +10,11 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-abstract class AbstractCommand extends ContainerAwareCommand
+abstract class AbstractCommand extends Command
 {
     /**
      * @var string
@@ -31,7 +31,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected $cacheDir = null;
 
     /**
-     * @var \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @var BundleInterface
      */
     protected $bundle = null;
 
@@ -45,7 +45,19 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     protected $output;
 
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     use FormattingHelpers;
+
+    public function __construct(ContainerInterface $container, $name = null)
+    {
+        $this->container = $container;
+
+        parent::__construct($name);
+    }
 
     /**
      * {@inheritdoc}
@@ -64,6 +76,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
                 ->get('kernel')
                 ->getBundle(substr($input->getArgument('bundle'), 1));
         }
+    }
+
+    public function getContainer() {
+        return $this->container;
     }
 
     /**
@@ -211,6 +227,10 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $extraParameters['--config-dir'] = $this->cacheDir;
         }
 
+        if ($input->hasOption('loader-script-dir') && !empty($input->getOption('loader-script-dir'))) {
+            $parameters['--loader-script-dir'] = $input->getOption('loader-script-dir');
+        }
+
         $parameters = array_merge($extraParameters, $parameters);
 
         if ($input->hasOption('platform')) {
@@ -348,7 +368,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
             $namespaceDiff = substr($namespace, strlen($baseNamespace) + 1);
 
             $bundlePath = realpath($bundle->getPath()) . '/' . str_replace('\\', '/', $namespaceDiff);
-            $appPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/..');
+            $appPath = realpath($this->getApplication()->getKernel()->getProjectDir());
 
             $path = static::getRelativePath($bundlePath, $appPath);
 
@@ -449,6 +469,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     protected function getPlatform()
     {
         $config = $this->getContainer()->getParameter('propel.configuration');
+
         return $config['generator']['platformClass'];
     }
 }

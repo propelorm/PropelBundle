@@ -24,12 +24,23 @@ class TestCase extends BaseTestCase
     {
         $container = new ContainerBuilder(new ParameterBag(array(
             'kernel.debug'      => false,
-            'kernel.root_dir'   => __DIR__ . '/../',
+            'kernel.project_dir'   => __DIR__ . '/../',
         )));
 
         $container->setParameter('propel.configuration', array());
         $container->setDefinition('propel', new Definition('Propel\Runtime\Propel'));
 
         return $container;
+    }
+
+    /**
+     * load propel database maps
+     * @param array $databaseMapsArray
+     */
+    protected function loadDatabaseMap(array $databaseMapsArray) {
+        $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+        $serviceContainer->initDatabaseMaps(array (
+            'default' => $databaseMapsArray
+        ));
     }
 }

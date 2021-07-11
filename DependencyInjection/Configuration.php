@@ -20,11 +20,13 @@ class Configuration extends PropelConfiguration
 {
     private $debug;
     private $defaultDir;
+    private $kernelDir;
 
     public function __construct($debug, $kernelDir)
     {
         $this->debug = $debug;
         $this->defaultDir = $kernelDir.'/propel';
+        $this->kernelDir = $kernelDir;
     }
 
     protected function addPathsSection(ArrayNodeDefinition $node)
@@ -38,6 +40,7 @@ class Configuration extends PropelConfiguration
                         ->scalarNode('sqlDir')->defaultValue($this->defaultDir.'/sql')->end()
                         ->scalarNode('migrationDir')->defaultValue($this->defaultDir.'/migrations')->end()
                         ->scalarNode('composerDir')->defaultNull()->end()
+                        ->scalarNode('loaderScriptDir')->defaultValue($this->kernelDir.'/generated-conf')->end()
                     ->end()
                 ->end()
             ->end()

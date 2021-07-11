@@ -215,7 +215,7 @@ class ModelType extends AbstractType
                     /** @var ModelCriteria $query */
                     $query = $options['query'];
 
-                    $choiceLabel = function($choice) use ($valueProperty) {
+                    $choiceLabel = function($choice) use ($valueProperty, $query) {
                         $getter = 'get'.ucfirst($valueProperty);
                         if (!method_exists($choice, $getter)) {
                             $getter = 'get' . ucfirst($query->getTableMap()->getColumn($valueProperty)->getPhpName());

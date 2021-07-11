@@ -12,7 +12,7 @@ namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Runtime\Adapter\Pdo\MysqlAdapter;
 use Propel\Runtime\Propel;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  */
-class TableDropCommand extends ContainerAwareCommand
+class TableDropCommand extends Command
 {
     use FormattingHelpers;
 
@@ -49,11 +49,15 @@ class TableDropCommand extends ContainerAwareCommand
         $adapter = Propel::getAdapter($connection->getName());
 
         if (!$adapter instanceof MysqlAdapter) {
-            return $output->writeln('<error>This command is MySQL only.</error>');
+            $output->writeln('<error>This command is MySQL only.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         if (!$input->getOption('force')) {
-            return $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+            $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         $tablesToDelete = $input->getArgument('table');
@@ -108,5 +112,7 @@ class TableDropCommand extends ContainerAwareCommand
         }
 
         $connection->exec('SET FOREIGN_KEY_CHECKS = 1;');
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 }

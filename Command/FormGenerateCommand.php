@@ -10,6 +10,7 @@
 
 namespace Propel\Bundle\PropelBundle\Command;
 
+use App\AppBundle;
 use Propel\Bundle\PropelBundle\Form\FormBuilder;
 use Propel\Generator\Config\GeneratorConfig;
 use Propel\Generator\Model\Database;
@@ -69,9 +70,11 @@ EOT
 
         $this->setupBuildTimeFiles();
         $schemas = $this->getFinalSchemas($kernel, $bundle);
+
         if (!$schemas) {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
-            return;
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         $manager = $this->getModelManager($input, $schemas);
@@ -81,6 +84,8 @@ EOT
                 $this->createFormTypeFromDatabase($bundle, $database, $models, $output, $force);
             }
         }
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 
     /**
@@ -123,7 +128,13 @@ EOT
     {
         $fs = new Filesystem();
 
-        if (!$fs->exists($dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY)) {
+        if ($bundle->getName() == AppBundle::NAME) {
+            $dir = $bundle->getPath() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Form';
+        } else {
+            $dir = $bundle->getPath() . self::DEFAULT_FORM_TYPE_DIRECTORY;
+        }
+
+        if (!$fs->exists($dir)) {
             $fs->mkdir($dir);
             $this->writeNewDirectory($output, $dir);
         }
@@ -155,7 +166,7 @@ EOT
      */
     protected function getRelativeFileName(\SplFileInfo $file)
     {
-        return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../'), '', $file), 1);
+        return substr(str_replace(realpath($this->getContainer()->getParameter('kernel.project_dir') . '/../'), '', $file), 1);
     }
 
     /**

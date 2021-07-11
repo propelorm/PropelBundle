@@ -16,9 +16,11 @@ use Propel\Bundle\PropelBundle\Tests\Fixtures\Item;
 use Propel\Bundle\PropelBundle\Form\PropelExtension;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n;
 use Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItem;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class TranslationCollectionTypeTest extends TypeTestCase
 {
@@ -26,7 +28,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
     const TRANSLATABLE_I18N_CLASS   = 'Propel\Bundle\PropelBundle\Tests\Fixtures\TranslatableItemI18n';
     const NON_TRANSLATION_CLASS     = 'Propel\Bundle\PropelBundle\Tests\Fixtures\Item';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -99,7 +101,7 @@ class TranslationCollectionTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
+     *
      */
     public function testNoArrayGiven()
     {
@@ -116,15 +118,19 @@ class TranslationCollectionTypeTest extends TypeTestCase
             )
         ));
 
+        $this->expectException(UnexpectedTypeException::class);
+
         $form = $builder->getForm();
         $form->setData($item);
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     *
      */
     public function testNoDataClassAdded()
     {
+        $this->expectException(MissingOptionsException::class);
+
         $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
             'languages' => array('en', 'fr'),
             'entry_options' => array(
@@ -134,10 +140,12 @@ class TranslationCollectionTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     *
      */
     public function testNoLanguagesAdded()
     {
+        $this->expectException(MissingOptionsException::class);
+
         $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
            'entry_options' => array(
                'data_class' => self::TRANSLATABLE_I18N_CLASS,
@@ -147,10 +155,12 @@ class TranslationCollectionTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\MissingOptionsException
+     *
      */
     public function testNoColumnsAdded()
     {
+        $this->expectException(MissingOptionsException::class);
+
         $this->factory->createNamed('itemI18ns', TranslationCollectionType::class, null, array(
             'languages' => array('en', 'fr'),
             'entry_options' => array(

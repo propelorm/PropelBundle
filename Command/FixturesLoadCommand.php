@@ -123,9 +123,11 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $this->writeSection($output, array(
+            $this->writeSection($output, array(
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
             ), 'fg=white;bg=red');
+
+            return \Propel\Generator\Command\AbstractCommand::CODE_ERROR;
         }
 
         $noOptions = !$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml');
@@ -147,6 +149,8 @@ EOT
                 $output->writeln('No <info>YML</info> fixtures found.');
             }
         }
+
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 
     /**

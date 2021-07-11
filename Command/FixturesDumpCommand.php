@@ -78,6 +78,6 @@ EOT
 
         $this->writeNewFile($output, $filename);
 
-        return true;
+        return \Propel\Generator\Command\AbstractCommand::CODE_SUCCESS;
     }
 }

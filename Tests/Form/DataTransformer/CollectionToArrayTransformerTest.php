@@ -14,12 +14,13 @@ namespace Propel\Bundle\PropelBundle\Tests\Form\Form\DataTransformer;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class CollectionToArrayTransformerTest extends TestCase
 {
     private $transformer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('Symfony\Component\Form\Form')) {
             $this->markTestSkipped('The "Form" component is not available');
@@ -47,10 +48,12 @@ class CollectionToArrayTransformerTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     *
      */
     public function testTransformThrowsExceptionIfNotObjectCollection()
     {
+        $this->expectException(TransformationFailedException::class);
+
         $this->transformer->transform(new DummyObject());
     }
 
@@ -84,10 +87,12 @@ class CollectionToArrayTransformerTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     *
      */
     public function testReverseTransformThrowsExceptionIfNotArray()
     {
+        $this->expectException(TransformationFailedException::class);
+
         $this->transformer->reverseTransform(new DummyObject());
     }
 

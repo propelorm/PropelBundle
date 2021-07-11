@@ -4,9 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="propel_bundle_propel.command.acl_init_command" class="Propel\Bundle\PropelBundle\Command\AclInitCommand">
-            <tag name="console.command" command="propel:acl:init" />
-        </service>
+        <defaults autowire="true" autoconfigure="true" public="false">
+            <bind key="$container" type="service" id="service_container" />
+        </defaults>
         <service id="propel_bundle_propel.command.build_command" class="Propel\Bundle\PropelBundle\Command\BuildCommand">
             <tag name="console.command" command="propel:build" />
         </service>
