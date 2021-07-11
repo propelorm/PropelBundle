@@ -31,7 +31,7 @@ abstract class AbstractCommand extends Command
     protected $cacheDir = null;
 
     /**
-     * @var \Symfony\Component\HttpKernel\Bundle\BundleInterface
+     * @var BundleInterface
      */
     protected $bundle = null;
 
@@ -44,6 +44,7 @@ abstract class AbstractCommand extends Command
      * @var OutputInterface
      */
     protected $output;
+
     /**
      * @var ContainerInterface
      */
@@ -51,9 +52,9 @@ abstract class AbstractCommand extends Command
 
     use FormattingHelpers;
 
-    public function __construct(KernelInterface $karnel, $name = null)
+    public function __construct(ContainerInterface $container, $name = null)
     {
-        $this->container = $karnel->getContainer();
+        $this->container = $container;
 
         parent::__construct($name);
     }
@@ -468,6 +469,7 @@ abstract class AbstractCommand extends Command
     protected function getPlatform()
     {
         $config = $this->getContainer()->getParameter('propel.configuration');
+
         return $config['generator']['platformClass'];
     }
 }
