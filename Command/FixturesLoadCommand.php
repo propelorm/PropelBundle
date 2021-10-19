@@ -30,7 +30,7 @@ class FixturesLoadCommand extends AbstractCommand
      * Default fixtures directory.
      * @var string
      */
-    private $defaultFixturesDir = 'app/propel/fixtures';
+    private $defaultFixturesDir = 'propel/fixtures';
 
     /**
      * Absolute path for fixtures directory
@@ -60,7 +60,7 @@ The <info>propel:fixtures:load</info> loads <info>XML</info>, <info>SQL</info> a
 The <info>--connection</info> parameter allows you to change the connection to use.
 The default connection is the active connection (propel.dbal.default_connection).
 
-The <info>--dir</info> parameter allows you to change the directory that contains <info>XML</info> or/and <info>SQL</info> fixtures files <comment>(default: app/propel/fixtures)</comment>.
+The <info>--dir</info> parameter allows you to change the directory that contains <info>XML</info> or/and <info>SQL</info> fixtures files <comment>(default: propel/fixtures)</comment>.
 
 The <info>--xml</info> parameter allows you to load only <info>XML</info> fixtures.
 The <info>--sql</info> parameter allows you to load only <info>SQL</info> fixtures.
@@ -119,7 +119,7 @@ EOT
         if (null !== $this->bundle) {
             $this->absoluteFixturesPath = $this->getFixturesPath($this->bundle);
         } else {
-            $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
+            $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getProjectDir() . '/' . $input->getOption('dir'));
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
@@ -182,7 +182,7 @@ EOT
             return;
         }
 
-        $nb = $loader->load($datas, $connectionName);
+        $nb = $loader->load(iterator_to_array($datas), $connectionName);
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
 

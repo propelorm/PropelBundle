@@ -149,10 +149,10 @@ abstract class AbstractDataHandler
         if (!empty($this->datasources['database']['connections'][$connectionName]['model_paths'])) {
             $modelPaths = $this->datasources['database']['connections'][$connectionName]['model_paths'];
             foreach ($modelPaths as $modelPath) {
-                $searchPath[] = $this->getRootDir() . '/../' . $modelPath;
+                $searchPath[] = $this->getRootDir() . '/' . $modelPath;
             }
         } else {
-            $searchPath[] = $this->getRootDir() . '/../';
+            $searchPath[] = $this->getRootDir() . '/';
         }
 
         return $searchPath;
