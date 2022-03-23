@@ -39,11 +39,11 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
-        if: ${{ matrix.php-version }} == '8.0'
+        if: matrix.php-version == '8.0'
         run: composer install --prefer-source --ignore-platform-req=php
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
-          if: ${{ matrix.php-version }} != '8.0'
+          if: matrix.php-version != '8.0'
           run: composer install --prefer-source
 
       - name: Code Coverage Report
