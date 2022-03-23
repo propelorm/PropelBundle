@@ -1,7 +1,10 @@
 PropelBundle
 ============
 
-[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=4.0)](https://travis-ci.org/propelorm/PropelBundle)
+[![Github actions Status](https://github.com/SkyFoxvn/PropelBundle/workflows/CI/badge.svg?branch=5.0)](https://github.com/propelorm/Propel2/actions?query=workflow%3ACI+branch%3Amaster)
+[![codecov](https://codecov.io/gh/SkyFoxvn/PropelBundle/branch/5.0/graph/badge.svg?token=L1thFB9nOG)](https://codecov.io/gh/SkyFoxvn/PropelBundle)
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
+
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony.
 
