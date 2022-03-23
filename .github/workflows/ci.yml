@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '5.0'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  testsuite:
+    name: "Test Suite"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ 7.2', '7.3', '7.4', '8.0' ]
+        symfony-version: [ '4.4', '5.0', '5.1', '5.2', '5.3', '5.4' ]
+    steps:
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          #extensions: json, libxml, pdo, pdo_mysql, pdo_sqlite, pdo_pgsql, sqlite3
+          coverage: pcov
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Composer get cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Composer cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Composer install (Symfony version ${{ matrix.symfony-version }})
+        if: ${{ matrix.php-version }} == '8.0'
+        run: composer install --prefer-source --ignore-platform-req=php
+
+      - name: Composer install (Symfony version ${{ matrix.symfony-version }})
+          if: ${{ matrix.php-version }} != '8.0'
+          run: composer install --prefer-source
+
+      - name: Code Coverage Report
+        uses: codecov/codecov-action@v2
+        with:
+          flags: ${{ matrix.php-version }}, ${{ matrix.symfony-version }}
+          file: tests/coverage.xml
