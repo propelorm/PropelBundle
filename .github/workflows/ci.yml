@@ -43,8 +43,8 @@ jobs:
         run: composer install --prefer-source --ignore-platform-req=php
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
-          if: matrix.php-version != '8.0'
-          run: composer install --prefer-source
+        if: matrix.php-version != '8.0'
+        run: composer install --prefer-source
 
       - name: Code Coverage Report
         uses: codecov/codecov-action@v2
