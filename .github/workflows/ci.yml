@@ -1,4 +1,4 @@
-name: CI
+name: CI Branch 5.0
 
 on:
   push:
@@ -46,8 +46,11 @@ jobs:
         if: matrix.php-version != '8.0'
         run: composer install --prefer-source
 
+      - name: Run tests
+        run: vendor/bin/phpunit
+
       - name: Code Coverage Report
         uses: codecov/codecov-action@v2
         with:
           flags: ${{ matrix.php-version }}, ${{ matrix.symfony-version }}
-          file: tests/coverage.xml
+          file: Tests/coverage.xml
