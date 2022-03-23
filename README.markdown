@@ -1,7 +1,7 @@
 PropelBundle
 ============
 
-[![Github actions Status](https://github.com/SkyFoxvn/PropelBundle/workflows/CI/badge.svg?branch=5.0)](https://github.com/propelorm/Propel2/actions?query=workflow%3ACI+branch%3Amaster)
+[![Github actions Status](https://github.com/SkyFoxvn/PropelBundle/workflows/CI/badge.svg?branch=5.0)](https://github.com/SkyFoxvn/PropelBundle/actions?query=workflow%3ACI+branch%3A5.0)
 [![codecov](https://codecov.io/gh/SkyFoxvn/PropelBundle/branch/5.0/graph/badge.svg?token=L1thFB9nOG)](https://codecov.io/gh/SkyFoxvn/PropelBundle)
 [![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%207.2-8892BF.svg)](https://php.net/)
 
