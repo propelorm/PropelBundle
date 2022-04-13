@@ -101,7 +101,7 @@ class PropelBundle extends Bundle
             $connection = $manager->getReadConnection($serviceContainer->getAdapter($manager->getName()));
             $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
 
-            $connection = $manager->getWriteConnection();
+            $connection = $manager->getWriteConnection($serviceContainer->getAdapter($manager->getName()));
             $connection->setLogMethods(array_merge($connection->getLogMethods(), array('prepare')));
         }
     }
