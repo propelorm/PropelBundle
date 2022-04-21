@@ -55,8 +55,8 @@ jobs:
         run: vendor/bin/phpunit --verbose --coverage-clover=Tests/coverage.xml
 
       - name: Run tests
-          if: matrix.php-version == '8.0'
-          run: vendor/bin/phpunit --verbose
+        if: matrix.php-version == '8.0'
+        run: vendor/bin/phpunit --verbose
 
       - name: Code Coverage Report
         if: matrix.php-version != '8.0'
