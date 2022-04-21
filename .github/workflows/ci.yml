@@ -5,6 +5,8 @@ on:
     branches:
       - '5.0'
   pull_request:
+    branches:
+      - '5.0'
   workflow_dispatch:
 
 jobs:
@@ -26,13 +28,15 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MY_PAT }}
 
       - name: Composer get cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Composer cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
@@ -40,11 +44,11 @@ jobs:
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
         if: matrix.php-version == '8.0'
-        run: composer install --prefer-source --ignore-platform-req=php
+        run: composer install --prefer-dist --no-interaction --ignore-platform-req=php
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
         if: matrix.php-version != '8.0'
-        run: composer install --prefer-source
+        run: composer install --prefer-dist --no-interaction
 
       - name: Run tests
         run: vendor/bin/phpunit
@@ -52,5 +56,8 @@ jobs:
       - name: Code Coverage Report
         uses: codecov/codecov-action@v2
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           flags: ${{ matrix.php-version }}, ${{ matrix.symfony-version }}
           file: Tests/coverage.xml
+          fail_ci_if_error: true
+          verbose: true
