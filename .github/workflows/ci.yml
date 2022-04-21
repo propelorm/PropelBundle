@@ -51,9 +51,15 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Run tests
+        if: matrix.php-version < '8.0'
         run: vendor/bin/phpunit --verbose --coverage-clover=Tests/coverage.xml
 
+      - name: Run tests
+          if: matrix.php-version >= '8.0'
+          run: vendor/bin/phpunit --verbose
+
       - name: Code Coverage Report
+        if: matrix.php-version < '8.0'
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
