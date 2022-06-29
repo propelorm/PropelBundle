@@ -37,7 +37,7 @@
     </thead>
     <tbody>
         {% for name, config in configuration.datasources %}
-            {% if if config is iterable %}
+            {% if config is iterable %}
             <tr>
                 <th rowspan="5" style="vertical-align: top;">
                     {{ name }}
