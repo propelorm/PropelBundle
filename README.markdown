@@ -14,6 +14,7 @@ The two major branches being supported are:
 
 * The `1.5` branch contains Propel *1.6+* integration for Symfony *2.8 LTS*.
 * The `1.6` branch contains Propel *1.6+* integration for Symfony *3.0*.
+* The `1.7` branch contains Propel *1.7+* integration for Symfony *4.0*.
 
 If you are running on an older version, you may require one of the following versions of this bundle.
 

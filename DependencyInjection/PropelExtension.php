@@ -67,6 +67,7 @@ class PropelExtension extends Extension
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('propel.xml');
             $loader->load('converters.xml');
+            $loader->load('console.xml');
         }
 
         // build properties

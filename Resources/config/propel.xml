@@ -17,18 +17,18 @@
     </parameters>
 
     <services>
-        <service id="propel.configuration" class="%propel.configuration.class%" />
+        <service id="propel.configuration" class="%propel.configuration.class%" public="true"/>
 
-        <service id="propel.build_properties" class="%propel.build_properties.class%" />
+        <service id="propel.build_properties" class="%propel.build_properties.class%" public="true" />
 
-        <service id="propel.logger" class="%propel.logger.class%">
+        <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
         </service>
 
         <service id="propel.data_collector" class="%propel.data_collector.class%" public="false">
-            <tag name="data_collector" template="PropelBundle:Collector:propel" id="propel" />
+            <tag name="data_collector" template="@Propel/Collector/propel" id="propel" />
             <argument type="service" id="propel.logger" />
             <argument type="service" id="propel.configuration" />
         </service>

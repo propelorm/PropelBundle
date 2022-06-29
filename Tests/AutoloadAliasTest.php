@@ -2,7 +2,9 @@
 
 namespace Propel\Bundle\PropelBundle\Tests;
 
-class AutoloadAliasTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase as PHPUnit_Framework_TestCase;
+
+class AutoloadAliasTest extends PHPUnit_Framework_TestCase
 {
     public function testOldNamespaceWorks()
     {
