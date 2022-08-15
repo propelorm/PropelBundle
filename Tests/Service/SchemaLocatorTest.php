@@ -43,7 +43,7 @@ class SchemaLocatorTest extends TestCase
      */
     private $bundleMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $pathStructure = [
                 'configuration' => [

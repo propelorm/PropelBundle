@@ -21,7 +21,7 @@ use Propel\Bundle\PropelBundle\Tests\TestCase;
  */
 class PropelUserProviderTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $schema = <<<SCHEMA
 <database name="users" defaultIdMethod="native" namespace="Propel\\Bundle\\PropelBundle\\Tests\\Fixtures\\Model">

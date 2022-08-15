@@ -32,7 +32,7 @@ class AclTestCase extends TestCase
     protected $con = null;
     protected $cache = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

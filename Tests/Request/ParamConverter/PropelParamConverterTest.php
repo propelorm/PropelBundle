@@ -16,7 +16,7 @@ class PropelParamConverterTest extends TestCase
 {
     protected $con;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class PropelParamConverterTest extends TestCase
         //Propel::disableInstancePooling();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         //Propel::enableInstancePooling();
 

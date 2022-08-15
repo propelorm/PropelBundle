@@ -23,7 +23,7 @@ use Propel\Bundle\PropelBundle\Tests\AclTestCase;
  */
 class EntryQueryTest extends AclTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
