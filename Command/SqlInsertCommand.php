@@ -47,7 +47,7 @@ class SqlInsertCommand extends WrappedCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('force')) {
-            parent::execute($input, $output);
+            return parent::execute($input, $output);
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
             return 1;
