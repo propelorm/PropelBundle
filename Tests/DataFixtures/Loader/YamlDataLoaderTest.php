@@ -165,7 +165,7 @@ Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\CoolBook:
     CoolBook_1:
         id: '1'
         name: <?php \$faker('word'); ?>
-        description: <?php \$faker('sentence'); ?>
+        description: <?php \$faker('word'); ?>
 
 YAML;
         $filename  = $this->getTempFile($fixtures);

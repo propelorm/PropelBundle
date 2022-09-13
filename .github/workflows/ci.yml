@@ -43,11 +43,6 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Composer install (Symfony version ${{ matrix.symfony-version }})
-        if: matrix.php-version == '8.0'
-        run: composer install --prefer-dist --no-interaction --ignore-platform-req=php
-
-      - name: Composer install (Symfony version ${{ matrix.symfony-version }})
-        if: matrix.php-version != '8.0'
         run: composer install --prefer-dist --no-interaction
 
       - name: Run tests
@@ -60,10 +55,9 @@ jobs:
 
       - name: Code Coverage Report
         if: matrix.php-version != '8.0'
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: ${{ matrix.php-version }}, ${{ matrix.symfony-version }}
-          file: Tests/coverage.xml
+          file: ./Tests/coverage.xml
           fail_ci_if_error: true
           verbose: true
