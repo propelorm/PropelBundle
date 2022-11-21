@@ -1,7 +1,9 @@
 PropelBundle
 ============
 
-[![Build Status](https://travis-ci.org/propelorm/PropelBundle.svg?branch=4.0)](https://travis-ci.org/propelorm/PropelBundle)
+**DEPRECATED: This repo is not maintained anymore. Please use https://github.com/SkyFoxvn/PropelBundle instead.**
+
+
 
 This is the official implementation of [Propel](http://www.propelorm.org/) in Symfony.
 
