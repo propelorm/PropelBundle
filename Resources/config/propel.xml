@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <parameter key="propel.dbal.default_connection">default</parameter>
@@ -17,11 +17,11 @@
     </parameters>
 
     <services>
-        <service id="propel.configuration" class="%propel.configuration.class%" />
+        <service id="propel.configuration" class="%propel.configuration.class%" public="true" />
 
-        <service id="propel.build_properties" class="%propel.build_properties.class%" />
+        <service id="propel.build_properties" class="%propel.build_properties.class%" public="true" />
 
-        <service id="propel.logger" class="%propel.logger.class%">
+        <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
@@ -45,7 +45,87 @@
             <tag name="form.type_guesser" />
         </service>
 
-        <service id="propel.security.user.provider" class="%propel.security.user.provider.class%" abstract="true" public="false">
+        <service id="propel.security.user.provider" class="%propel.security.user.provider.class%" abstract="true" public="false" />
+
+        <service id="Propel\Bundle\PropelBundle\Command\AbstractCommand" abstract="true">
+            <call method="setFileLocator">
+                <argument type="service" id="file_locator" />
+            </call>
+        </service>
+
+        <service id="propel.build_command" class="Propel\Bundle\PropelBundle\Command\BuildCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:build" />
+        </service>
+
+        <service id="propel.database_create_command" class="Propel\Bundle\PropelBundle\Command\DatabaseCreateCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:database:create" />
+        </service>
+
+        <service id="propel.database_drop_command" class="Propel\Bundle\PropelBundle\Command\DatabaseDropCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:database:drop" />
+        </service>
+
+        <service id="propel.database_dump_command" class="Propel\Bundle\PropelBundle\Command\FixturesDumpCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:fixtures:dump" />
+        </service>
+
+        <service id="propel.database_load_command" class="Propel\Bundle\PropelBundle\Command\FixturesLoadCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:fixtures:load" />
+        </service>
+
+        <service id="propel.form_generate_command" class="Propel\Bundle\PropelBundle\Command\FormGenerateCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:form:generate" />
+        </service>
+
+        <service id="propel.graphviz_generate_command" class="Propel\Bundle\PropelBundle\Command\GraphvizGenerateCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:graphviz:generate" />
+        </service>
+
+        <service id="propel.migration_generate_diff_command" class="Propel\Bundle\PropelBundle\Command\MigrationGenerateDiffCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:migration:generate-diff" />
+        </service>
+
+        <service id="propel.migration_migrate_command" class="Propel\Bundle\PropelBundle\Command\MigrationMigrateCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:migration:migrate" />
+        </service>
+
+        <service id="propel.migration_status_command" class="Propel\Bundle\PropelBundle\Command\MigrationStatusCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:migration:status" />
+        </service>
+
+        <service id="propel.model_build_command" class="Propel\Bundle\PropelBundle\Command\ModelBuildCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:model:build" />
+        </service>
+
+        <service id="propel.reverse_command" class="Propel\Bundle\PropelBundle\Command\ReverseCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:reverse" />
+        </service>
+
+        <service id="propel.sql_build_command" class="Propel\Bundle\PropelBundle\Command\SqlBuildCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:sql:build" />
+        </service>
+
+        <service id="propel.sql_insert_command" class="Propel\Bundle\PropelBundle\Command\SqlInsertCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:sql:insert" />
+        </service>
+
+        <service id="propel.table_drop_command" class="Propel\Bundle\PropelBundle\Command\TableDropCommand"
+                 parent="Propel\Bundle\PropelBundle\Command\AbstractCommand">
+            <tag name="console.command" command="propel:table:drop" />
         </service>
     </services>
 </container>

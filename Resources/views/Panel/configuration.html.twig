@@ -36,42 +36,44 @@
         </tr>
     </thead>
     <tbody>
-        {% for name, config in configuration.datasources if config is iterable %}
-        <tr>
-            <th rowspan="5" style="vertical-align: top;">
-                {{ name }}
-            </th>
-            <th>Adapter</th>
-            <td>{{ config.adapter }}</td>
-        </tr>
-        <tr>
-            <th>DSN</th>
-            <td>{{ config.connection.dsn }}</td>
-        </tr>
-        <tr>
-            <th>Class</th>
-            <td>{{ config.connection.classname }}</td>
-        </tr>
-        <tr>
-            <th>Options</th>
-            <td>
-                <ul>
-                    {% for key, value in config.connection.options %}
-                    <li>{{ key }} : {{ value }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <th>Attributes</th>
-            <td>
-                <ul>
-                    {% for key, value in config.connection.attributes %}
-                    <li>{{ key }} : {{ value }}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-        </tr>
+        {% for name, config in configuration.datasources %}
+            {% if config is iterable %}
+            <tr>
+                <th rowspan="5" style="vertical-align: top;">
+                    {{ name }}
+                </th>
+                <th>Adapter</th>
+                <td>{{ config.adapter }}</td>
+            </tr>
+            <tr>
+                <th>DSN</th>
+                <td>{{ config.connection.dsn }}</td>
+            </tr>
+            <tr>
+                <th>Class</th>
+                <td>{{ config.connection.classname }}</td>
+            </tr>
+            <tr>
+                <th>Options</th>
+                <td>
+                    <ul>
+                        {% for key, value in config.connection.options %}
+                        <li>{{ key }} : {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Attributes</th>
+                <td>
+                    <ul>
+                        {% for key, value in config.connection.attributes %}
+                        <li>{{ key }} : {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>
