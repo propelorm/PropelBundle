@@ -11,8 +11,8 @@ This is the official implementation of [Propel](http://www.propelorm.org/) in Sy
 
 As `Propel2` will be released in the near future, we are migrating the branching model of this bundle in advance!
 
-* The `1.6` branch contains Propel *1.6* integration for Symfony *^2.8* (*currently master branch*).
-* The `3.0` branch contains [Propel2](https://github.com/propelorm/Propel2/) integration for Symfony *2.8-3.x*.
+* The `1.6` branch contains Propel *1.6* integration for Symfony *^2.8* (*currently master branch*). [EOL]
+* The `3.0` branch contains [Propel2](https://github.com/propelorm/Propel2/) integration for Symfony *2.8-3.x*. [EOL]
 * The `4.0` branch contains [Propel2](https://github.com/propelorm/Propel2/) integration for Symfony *3.4-4.x*.
 
 ## Features
