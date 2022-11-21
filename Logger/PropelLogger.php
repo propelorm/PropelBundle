@@ -54,6 +54,11 @@ class PropelLogger implements \BasicLogger
         $this->stopwatch = $stopwatch;
     }
 
+    public function reset()
+    {
+        $this->queries = array();
+    }
+
     /**
      * {@inheritdoc}
      */
