@@ -1,5 +1,5 @@
 {
-  "name": "propel/propel-bundle",
+  "name": "dayspring-tech/propel-bundle",
   "description": "Integration of Propel in Symfony2",
   "keywords": ["propel", "orm", "persistence"],
   "type": "symfony-bundle",
@@ -28,12 +28,9 @@
     "symfony/phpunit-bridge": "^3.4|^4.0"
   },
 
-  "conflict": {
-    "symfony/propel1-bridge": ">=2.8.0"
-  },
-
   "replace": {
-    "symfony/propel1-bridge": "<=2.8.0"
+    "symfony/propel1-bridge": "<=2.8.0",
+    "propel/propel-bundle": "^1.7.0"
   },
 
   "suggest": {
