@@ -16,7 +16,7 @@
   },
 
   "require": {
-    "propel/propel1": "^1.7.2",
+    "dayspring-tech/propel1": "^1.7",
     "symfony/framework-bundle": "^3.4|^4.0"
   },
   "require-dev": {
